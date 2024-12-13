@@ -9,6 +9,10 @@
   "author": "Benjamin.G",
   "license": "ISC",
   "description": "",
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
   "devDependencies": {
     "concurrently": "^9.1.0"
   }
