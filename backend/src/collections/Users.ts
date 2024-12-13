@@ -10,4 +10,11 @@ export const Users: CollectionConfig = {
     // Email added by default
     // Add more fields as needed
   ],
+  hooks: {
+    beforeChange: [
+      async ({ req }) => {
+        console.log('Request Headers:', req?.headers);
+      },
+    ],
+  },
 }
