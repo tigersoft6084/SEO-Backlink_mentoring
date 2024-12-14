@@ -31,22 +31,43 @@ export const Orders: CollectionConfig = {
       path: '/:id/tracking',
       method: 'post',
       handler: async (req) => {
+        // Check if request body parsing is available
         if (!req.json) {
           return Response.json({ error: 'Request body parsing is unavailable' }, { status: 400 });
         }
     
+        // Parse the request body
         const data = await req.json();
     
-        await req.payload.update({
-          collection: 'tracking',
-          data: {
-            // Use `data` for updates
-          },
-        });
+        // Check if the `id` parameter exists
+        const { id } = req.routeParams || {};
+        if (!id) {
+          return Response.json({ error: 'ID parameter is missing' }, { status: 400 });
+        }
     
-        return Response.json({
-          message: 'Successfully updated tracking info',
-        });
+        // Perform the update using the Payload CMS `update` method
+        try {
+          await req.payload.update({
+            collection: 'tracking', // Ensure this collection exists in your Payload CMS configuration
+            id: id as string, // Use the ID from the route parameters
+            data: {
+              // Use data from the request body to update the document
+              status: data.status,
+              carrier: data.carrier,
+              trackingNumber: data.trackingNumber,
+            },
+          });
+    
+          return Response.json({
+            message: 'Successfully updated tracking info',
+          });
+        } catch (error) {
+          console.error('Error updating tracking info:', error);
+          return Response.json(
+            { error: 'Failed to update tracking info' },
+            { status: 500 }
+          );
+        }
       },
     },
     {
