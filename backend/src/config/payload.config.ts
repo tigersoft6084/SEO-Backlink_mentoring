@@ -7,13 +7,14 @@ import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
 
-import { Users } from '../collections/Users'
+import { Users } from '../collections/user-management/Users'
 import { Media } from '../collections/Media'
 import { Orders } from '../collections/Orders'
 import { Tracking } from '../collections/Orders'
+import { Credentials } from '../collections/user-management/Credentials'
 
 import { fetch, Response, Request, Headers } from 'undici';
-import { Scrapers } from '@/collections/Scrapers'
+import { Scrapers } from '@/collections/scraping/Scrapers'
 
 // Cast fetch-related objects to match global types
 global.fetch = fetch as unknown as typeof globalThis.fetch;
@@ -33,7 +34,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Orders, Tracking, Scrapers],
+  collections: [Users, Media, Orders, Tracking, Scrapers, Credentials],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

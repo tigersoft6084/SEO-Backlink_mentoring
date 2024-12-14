@@ -16,6 +16,7 @@ export interface Config {
     orders: Order;
     tracking: Tracking;
     scrapers: Scraper;
+    credentials: Credential;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -27,6 +28,7 @@ export interface Config {
     orders: OrdersSelect<false> | OrdersSelect<true>;
     tracking: TrackingSelect<false> | TrackingSelect<true>;
     scrapers: ScrapersSelect<false> | ScrapersSelect<true>;
+    credentials: CredentialsSelect<false> | CredentialsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -133,6 +135,17 @@ export interface Scraper {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "credentials".
+ */
+export interface Credential {
+  id: string;
+  email: string;
+  password: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -157,6 +170,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'scrapers';
         value: string | Scraper;
+      } | null)
+    | ({
+        relationTo: 'credentials';
+        value: string | Credential;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -259,6 +276,16 @@ export interface TrackingSelect<T extends boolean = true> {
  * via the `definition` "scrapers_select".
  */
 export interface ScrapersSelect<T extends boolean = true> {
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "credentials_select".
+ */
+export interface CredentialsSelect<T extends boolean = true> {
+  email?: T;
+  password?: T;
   updatedAt?: T;
   createdAt?: T;
 }

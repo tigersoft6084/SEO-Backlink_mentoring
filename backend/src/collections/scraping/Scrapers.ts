@@ -1,4 +1,3 @@
-import { create } from 'domain';
 import type { CollectionConfig } from 'payload';
 import puppeteer from 'puppeteer';
 
