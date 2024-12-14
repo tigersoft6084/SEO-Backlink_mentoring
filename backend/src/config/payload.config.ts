@@ -13,6 +13,7 @@ import { Orders } from '../collections/Orders'
 import { Tracking } from '../collections/Orders'
 
 import { fetch, Response, Request, Headers } from 'undici';
+import { Scrapers } from '@/collections/Scrapers'
 
 // Cast fetch-related objects to match global types
 global.fetch = fetch as unknown as typeof globalThis.fetch;
@@ -32,7 +33,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Orders, Tracking],
+  collections: [Users, Media, Orders, Tracking, Scrapers],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

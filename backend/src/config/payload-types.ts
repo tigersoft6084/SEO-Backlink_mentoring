@@ -15,6 +15,7 @@ export interface Config {
     media: Media;
     orders: Order;
     tracking: Tracking;
+    scrapers: Scraper;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -25,6 +26,7 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     orders: OrdersSelect<false> | OrdersSelect<true>;
     tracking: TrackingSelect<false> | TrackingSelect<true>;
+    scrapers: ScrapersSelect<false> | ScrapersSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -120,6 +122,15 @@ export interface Tracking {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "scrapers".
+ */
+export interface Scraper {
+  id: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -140,6 +151,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'tracking';
         value: string | Tracking;
+      } | null)
+    | ({
+        relationTo: 'scrapers';
+        value: string | Scraper;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -232,6 +247,14 @@ export interface TrackingSelect<T extends boolean = true> {
   status?: T;
   carrier?: T;
   trackingNumber?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "scrapers_select".
+ */
+export interface ScrapersSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
 }
