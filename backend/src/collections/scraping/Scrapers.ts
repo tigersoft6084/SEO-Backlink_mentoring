@@ -1,5 +1,6 @@
 import type { CollectionConfig } from 'payload';
 import puppeteer from 'puppeteer';
+import {getCredentials} from "../../services/credentialService";
 
 interface ScrapedData {
   title: string;
@@ -20,6 +21,9 @@ export const Scrapers: CollectionConfig = {
         let browser;
 
         try {
+
+          // const {email, password} =await getCredentials();
+
           // Launch Puppeteer browser
           browser = await puppeteer.launch({
             args: ['--no-sandbox', '--disable-setuid-sandbox'], // Server-safe options
@@ -32,7 +36,7 @@ export const Scrapers: CollectionConfig = {
           // Navigate to the target URL
           await page.goto('https://www.paper.club/en/', {
             waitUntil: 'domcontentloaded',
-            timeout: 30000,
+            timeout: 10000,
           });
 
           // Extract data using DOM selectors
@@ -47,7 +51,7 @@ export const Scrapers: CollectionConfig = {
           return new Response(
             JSON.stringify({
               success: true,
-              message: 'Scraping successful',
+              message: `Scraping successful`,
               data,
             }),
             { status: 200, headers: { 'Content-Type': 'application/json' } }
@@ -70,6 +74,7 @@ export const Scrapers: CollectionConfig = {
         }
       },
     },
+
     {
       path: '/:id/forbidden',
       method: 'post',

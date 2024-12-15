@@ -8,20 +8,9 @@ import { fileURLToPath } from 'url'
 import sharp from 'sharp'
 
 import { Users } from '../collections/user-management/Users'
-import { Media } from '../collections/Media'
-import { Orders } from '../collections/Orders'
-import { Tracking } from '../collections/Orders'
 import { Credentials } from '../collections/user-management/Credentials'
 
-import { fetch, Response, Request, Headers } from 'undici';
 import { Scrapers } from '@/collections/scraping/Scrapers'
-
-// Cast fetch-related objects to match global types
-global.fetch = fetch as unknown as typeof globalThis.fetch;
-global.Response = Response as unknown as typeof globalThis.Response;
-global.Request = Request as unknown as typeof globalThis.Request;
-global.Headers = Headers as unknown as typeof globalThis.Headers;
-
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -34,7 +23,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Orders, Tracking, Scrapers, Credentials],
+  collections: [Users, Scrapers, Credentials],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
