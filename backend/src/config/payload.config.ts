@@ -11,7 +11,7 @@ import { Users } from '../collections/user-management/Users'
 import { Credentials } from '../collections/user-management/Credentials'
 
 import { Scrapers } from '@/collections/scraping/Scrapers'
-import { Erefers } from '@/collections/scraping/Erefers'
+import { WebsiteForScraping } from '@/collections/scraping/WebsiteForScraping'
 
 
 const filename = fileURLToPath(import.meta.url)
@@ -19,24 +19,24 @@ const dirname = path.dirname(filename)
 
 
 export default buildConfig({
-  admin: {
-    user: Users.slug,
-    importMap: {
-      baseDir: path.resolve(dirname),
+    admin: {
+      user: Users.slug,
+      importMap: {
+        baseDir: path.resolve(dirname),
+      },
     },
-  },
-  collections: [Users, Scrapers, Credentials, Erefers],
-  editor: lexicalEditor(),
-  secret: process.env.PAYLOAD_SECRET || '',
-  typescript: {
-    outputFile: path.resolve(dirname, 'payload-types.ts'),
-  },
-  db: mongooseAdapter({
-    url: process.env.DATABASE_URI || '',
-  }),
-  sharp,
-  plugins: [
-    payloadCloudPlugin(),
-    // storage-adapter-placeholder
-  ],
+    collections: [Users, Scrapers, Credentials, WebsiteForScraping],
+    editor: lexicalEditor(),
+    secret: process.env.PAYLOAD_SECRET || '',
+    typescript: {
+      outputFile: path.resolve(dirname, 'payload-types.ts'),
+    },
+    db: mongooseAdapter({
+      url: process.env.DATABASE_URI || '',
+    }),
+    sharp,
+    plugins: [
+      payloadCloudPlugin(),
+      // storage-adapter-placeholder
+    ],
 })

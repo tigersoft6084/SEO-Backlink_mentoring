@@ -14,7 +14,7 @@ export interface Config {
     users: User;
     scrapers: Scraper;
     credentials: Credential;
-    erefers: Erefer;
+    websiteForScraping: WebsiteForScraping;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -24,7 +24,7 @@ export interface Config {
     users: UsersSelect<false> | UsersSelect<true>;
     scrapers: ScrapersSelect<false> | ScrapersSelect<true>;
     credentials: CredentialsSelect<false> | CredentialsSelect<true>;
-    erefers: ErefersSelect<false> | ErefersSelect<true>;
+    websiteForScraping: WebsiteForScrapingSelect<false> | WebsiteForScrapingSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -97,15 +97,18 @@ export interface Credential {
   id: string;
   email: string;
   password: string;
+  secretKey?: string | null;
   updatedAt: string;
   createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "erefers".
+ * via the `definition` "websiteForScraping".
  */
-export interface Erefer {
+export interface WebsiteForScraping {
   id: string;
+  name: string;
+  website: string;
   updatedAt: string;
   createdAt: string;
 }
@@ -129,8 +132,8 @@ export interface PayloadLockedDocument {
         value: string | Credential;
       } | null)
     | ({
-        relationTo: 'erefers';
-        value: string | Erefer;
+        relationTo: 'websiteForScraping';
+        value: string | WebsiteForScraping;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -206,14 +209,17 @@ export interface ScrapersSelect<T extends boolean = true> {
 export interface CredentialsSelect<T extends boolean = true> {
   email?: T;
   password?: T;
+  secretKey?: T;
   updatedAt?: T;
   createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "erefers_select".
+ * via the `definition` "websiteForScraping_select".
  */
-export interface ErefersSelect<T extends boolean = true> {
+export interface WebsiteForScrapingSelect<T extends boolean = true> {
+  name?: T;
+  website?: T;
   updatedAt?: T;
   createdAt?: T;
 }

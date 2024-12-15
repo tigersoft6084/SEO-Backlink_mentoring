@@ -1,11 +1,20 @@
 import puppeteer, { Page } from 'puppeteer';
+// import puppeteer from 'puppeteer-extra';
+// import StealthPlugin from 'puppeteer-extra-plugin-stealth';
 import { Publisher } from '../models/publisher';
 import { getCredentials } from '../services/credentialService';
+import { scrapePaperClubPrice } from '@/scripts/scrapPages/paperClub';
+import { scrapeErefererPrice } from '@/scripts/scrapPages/ereferer';
 
-export const scraperService = async (): Promise<Publisher[]> => {
-  const browser = await puppeteer.launch({
+// puppeteer.use(StealthPlugin());
+
+export const scraperService = async (websiteUrl : string) => {
+
+  let browser;
+  
+  browser = await puppeteer.launch({
     args: ['--no-sandbox', '--disable-setuid-sandbox'],
-    headless: true, // Use 'true' for production
+    headless: false, // Use 'true' for production
   });
   const page: Page = await browser.newPage();
 
@@ -15,61 +24,60 @@ export const scraperService = async (): Promise<Publisher[]> => {
     const { email, password } = await getCredentials();
 
     // Navigate to Paper Club login page
-    await page.goto('https://www.paper.club/en/', { waitUntil: 'networkidle2' });
+    await page.goto(websiteUrl, { waitUntil: 'networkidle2' });
 
-    // Click "Join the Club" button
-    await page.evaluate(() => {
-      const joinButton = Array.from(document.querySelectorAll('button, a')).find(
-        (el) => el.textContent?.trim() === 'Join the Club'
-      );
-      if (joinButton) (joinButton as HTMLElement).click();
-    });
+     let price;
 
-    await page.waitForNavigation({ waitUntil: 'networkidle0' });
-
-    // Perform login
-    await page.type('input[name="email"]', email);
-    await page.type('input[name="password"]', "Challenge@624");
-
-    await page.evaluate(() => {
-      const loginButton = Array.from(document.querySelectorAll('button, a')).find(
-        (el) => el.textContent?.trim() === 'Login'
-      );
-      if (loginButton) (loginButton as HTMLElement).click();
-    });
-
-    await page.waitForNavigation({ waitUntil: 'networkidle0' });
-
-    // Search for the domain
-    const searchInput = 'input[placeholder="Domain name or keyword(s)"]';
-    await page.waitForSelector(searchInput, { visible: true });
-    await page.type(searchInput, 'www.pcmag.com');
-    await page.keyboard.press('Enter');
-
-    // Extract the price
-    const priceSelector = '.m-tableLine__column.-price.-center > p';
-    await page.waitForSelector(priceSelector);
-    const price = await page.$eval(priceSelector, (el) => el.textContent?.trim());
-
+     switch(websiteUrl){
+        case "https://www.paper.club/en/":
+            {
+            // Use scrapeDomainPrice to perform the scraping process
+            const domain1 = 'www.pcmag.com'; // Example domain to scrape
+            price = await scrapePaperClubPrice(page, email, password, domain1);
+            break;}
+        case "https://en.ereferer.com/":
+            {// Use scrapeDomainPrice to perform the scraping process
+            const domain = 'https://www.bleepingcomputer.com/'; // Example domain to scrape
+            price = await scrapeErefererPrice(page, email, password, domain);
+            break;}
+        default : 
+            throw new Error(`Unsupported website URL: ${websiteUrl}`);
+     }
+     
 
     // Create the publishers array based on the updated Publisher interface
     const publishers: Publisher[] = [
       {
-        url: 'www.pcmag.com',
+        url: websiteUrl,
         price: price ?? 'N/A', // Fallback in case the price is null or undefined
       },
     ];
 
     console.log('Scraped Publishers:', publishers);
+    
+      // Construct the JSON response with the desired style
+      return new Response(
+        JSON.stringify({
+          success: true,
+          message: 'Scraping successful',
+          data: {
+            price: price ?? 'N/A', // Provide the scraped price or a fallback
+          },
+        }),
+        {
+          status: 200,
+          headers: { 'Content-Type': 'application/json' },
+        }
+      );
 
-    await browser.close();
-    return publishers;
   } catch (error) {
-    // Log and handle errors
-    console.error('Error during scraping:', error);
-    await browser.close();
-    throw new Error(
-      error instanceof Error ? error.message : 'An unknown error occurred during scraping.'
-    );
-  }
+        // Log and handle errors
+        console.error('Error during scraping:', error);
+        throw new Error(
+            error instanceof Error ? error.message : 'An unknown error occurred during scraping.'
+        );
+    } finally {
+        // Ensure browser is closed
+        await browser.close();
+    }
 };
