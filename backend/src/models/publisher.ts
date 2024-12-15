@@ -1,6 +1,5 @@
 export interface Publisher {
-    name: string;
+    url: string;
     price: string;
-    category: string;
   }
   

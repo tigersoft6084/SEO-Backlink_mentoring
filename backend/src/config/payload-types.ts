@@ -14,6 +14,7 @@ export interface Config {
     users: User;
     scrapers: Scraper;
     credentials: Credential;
+    erefers: Erefer;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -23,6 +24,7 @@ export interface Config {
     users: UsersSelect<false> | UsersSelect<true>;
     scrapers: ScrapersSelect<false> | ScrapersSelect<true>;
     credentials: CredentialsSelect<false> | CredentialsSelect<true>;
+    erefers: ErefersSelect<false> | ErefersSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -100,6 +102,15 @@ export interface Credential {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "erefers".
+ */
+export interface Erefer {
+  id: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -116,6 +127,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'credentials';
         value: string | Credential;
+      } | null)
+    | ({
+        relationTo: 'erefers';
+        value: string | Erefer;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -191,6 +206,14 @@ export interface ScrapersSelect<T extends boolean = true> {
 export interface CredentialsSelect<T extends boolean = true> {
   email?: T;
   password?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "erefers_select".
+ */
+export interface ErefersSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
 }

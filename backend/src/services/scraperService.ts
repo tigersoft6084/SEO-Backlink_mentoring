@@ -3,7 +3,10 @@ import { Publisher } from '../models/publisher';
 import { getCredentials } from '../services/credentialService';
 
 export const scraperService = async (): Promise<Publisher[]> => {
-  const browser = await puppeteer.launch({ headless: true });
+  const browser = await puppeteer.launch({
+    args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    headless: true, // Use 'true' for production
+  });
   const page: Page = await browser.newPage();
 
   try {
@@ -11,27 +14,51 @@ export const scraperService = async (): Promise<Publisher[]> => {
     // Fetch credentials using credentialService
     const { email, password } = await getCredentials();
 
-    // Scrape logic as written previously
-    await page.goto('https://app.paper.club/en');
-    await page.click('a[href="/login"]');
-    await page.waitForNavigation();
+    // Navigate to Paper Club login page
+    await page.goto('https://www.paper.club/en/', { waitUntil: 'networkidle2' });
 
-    await page.type('input[name="email"]', email);
-    await page.type('input[name="password"]', password);
-    await page.click('button[type="submit"]');
+    // Click "Join the Club" button
+    await page.evaluate(() => {
+      const joinButton = Array.from(document.querySelectorAll('button, a')).find(
+        (el) => el.textContent?.trim() === 'Join the Club'
+      );
+      if (joinButton) (joinButton as HTMLElement).click();
+    });
+
     await page.waitForNavigation({ waitUntil: 'networkidle0' });
 
-    if (page.url() !== 'https://app.paper.club/annonceur/dashboard') {
-      throw new Error('Failed to log in or navigate to the dashboard.');
-    }
+    // Perform login
+    await page.type('input[name="email"]', email);
+    await page.type('input[name="password"]', "Challenge@624");
 
-    const publishers: Publisher[] = await page.evaluate(() => {
-      return Array.from(document.querySelectorAll('.newly-added-publishers .publisher-card')).map((card) => ({
-        name: (card.querySelector('.publisher-name') as HTMLElement)?.innerText ?? '',
-        price: (card.querySelector('.publisher-price') as HTMLElement)?.innerText ?? '',
-        category: (card.querySelector('.publisher-category') as HTMLElement)?.innerText ?? '',
-      }));
+    await page.evaluate(() => {
+      const loginButton = Array.from(document.querySelectorAll('button, a')).find(
+        (el) => el.textContent?.trim() === 'Login'
+      );
+      if (loginButton) (loginButton as HTMLElement).click();
     });
+
+    await page.waitForNavigation({ waitUntil: 'networkidle0' });
+
+    // Search for the domain
+    const searchInput = 'input[placeholder="Domain name or keyword(s)"]';
+    await page.waitForSelector(searchInput, { visible: true });
+    await page.type(searchInput, 'www.pcmag.com');
+    await page.keyboard.press('Enter');
+
+    // Extract the price
+    const priceSelector = '.m-tableLine__column.-price.-center > p';
+    await page.waitForSelector(priceSelector);
+    const price = await page.$eval(priceSelector, (el) => el.textContent?.trim());
+
+
+    // Create the publishers array based on the updated Publisher interface
+    const publishers: Publisher[] = [
+      {
+        url: 'www.pcmag.com',
+        price: price ?? 'N/A', // Fallback in case the price is null or undefined
+      },
+    ];
 
     console.log('Scraped Publishers:', publishers);
 

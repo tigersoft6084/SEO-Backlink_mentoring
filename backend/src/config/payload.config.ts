@@ -11,6 +11,8 @@ import { Users } from '../collections/user-management/Users'
 import { Credentials } from '../collections/user-management/Credentials'
 
 import { Scrapers } from '@/collections/scraping/Scrapers'
+import { Erefers } from '@/collections/scraping/Erefers'
+
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -23,7 +25,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Scrapers, Credentials],
+  collections: [Users, Scrapers, Credentials, Erefers],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

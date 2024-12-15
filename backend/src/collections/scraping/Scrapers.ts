@@ -21,7 +21,7 @@ export const Scrapers: CollectionConfig = {
           // Launch Puppeteer browser
           browser = await puppeteer.launch({
             args: ['--no-sandbox', '--disable-setuid-sandbox'],
-            headless: true, // Use 'true' for production
+            headless: false, // Use 'true' for production
           });
 
           const page = await browser.newPage();
