@@ -3,7 +3,7 @@ import { scraperService } from '../services/scraperService';
 import { getMarketPlaces } from '@/services/marketPlacePlatformService';
 
 export const scrapEndpoint: Endpoint = {
-  path: '/paperClub',
+  path: '/marketPlaceScraping',
   method: 'get',
   handler: async () => {
     try {
