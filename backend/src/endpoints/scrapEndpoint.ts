@@ -1,30 +1,57 @@
-import { Endpoint, PayloadRequest } from 'payload';
+import { Endpoint } from 'payload';
 import { scraperService } from '../services/scraperService';
+import { getMarketPlaces } from '@/services/marketPlacePlatformService';
 
 export const scrapEndpoint: Endpoint = {
   path: '/paperClub',
   method: 'get',
   handler: async () => {
     try {
-      // Call scraperService to scrape data
-      const response = await scraperService('https://www.paper.club/en/');
+      // Fetch the marketplaces
+      const marketplaces = await getMarketPlaces();
 
-      // Parse the response if it contains a `json` method
-      const scrapedData = typeof response.json === 'function' ? await response.json() : response;
-
-      // Return the response in JSON format
-      if (Array.isArray(scrapedData) && scrapedData.length > 0) {
+      if (!Array.isArray(marketplaces) || marketplaces.length === 0) {
         return new Response(JSON.stringify({
-          message: 'Data scraped and saved successfully.',
-          data: scrapedData,
+          message: 'No marketplaces found.',
         }), {
-          status: 200,
+          status: 404,
           headers: { 'Content-Type': 'application/json' },
         });
       }
 
+      // Iterate over the marketplaces and scrape data
+      const scrapeResults = await Promise.all(
+        marketplaces.map(async ({ name, website }) => {
+          try {
+            const response = await scraperService(website);
+
+            // Parse the response if it contains a `json` method
+            const scrapedData = typeof response.json === 'function'
+              ? await response.json()
+              : response;
+
+            return {
+              name,
+              website,
+              data: scrapedData,
+              success: true,
+            };
+          } catch (scrapeError : any) {
+            console.error(`Error scraping ${website}:`, scrapeError);
+            return {
+              name,
+              website,
+              error: scrapeError.message || 'Scraping failed',
+              success: false,
+            };
+          }
+        })
+      );
+
+      // Return the collected results
       return new Response(JSON.stringify({
-        message: scrapedData,
+        message: 'Scraping completed.',
+        results: scrapeResults,
       }), {
         status: 200,
         headers: { 'Content-Type': 'application/json' },

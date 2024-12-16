@@ -5,6 +5,7 @@ import { Publisher } from '../models/publisher';
 import { getCredentials } from '../services/credentialService';
 import { scrapePaperClubPrice } from '@/scripts/scrapPages/paperClub';
 import { scrapeErefererPrice } from '@/scripts/scrapPages/ereferer';
+import { getMarketPlaces } from './marketPlacePlatformService';
 
 // puppeteer.use(StealthPlugin());
 
