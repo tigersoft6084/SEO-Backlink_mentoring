@@ -12,7 +12,6 @@ export interface Config {
   };
   collections: {
     users: User;
-    scrapers: Scraper;
     credentials: Credential;
     websiteForScraping: WebsiteForScraping;
     'payload-locked-documents': PayloadLockedDocument;
@@ -22,7 +21,6 @@ export interface Config {
   collectionsJoins: {};
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
-    scrapers: ScrapersSelect<false> | ScrapersSelect<true>;
     credentials: CredentialsSelect<false> | CredentialsSelect<true>;
     websiteForScraping: WebsiteForScrapingSelect<false> | WebsiteForScrapingSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -82,21 +80,21 @@ export interface User {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "scrapers".
- */
-export interface Scraper {
-  id: string;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "credentials".
  */
 export interface Credential {
   id: string;
+  name: string;
   email: string;
   password: string;
+  authenticateUrls?:
+    | {
+        url: string;
+        token?: string | null;
+        expiresAt?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   secretKey?: string | null;
   updatedAt: string;
   createdAt: string;
@@ -122,10 +120,6 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'users';
         value: string | User;
-      } | null)
-    | ({
-        relationTo: 'scrapers';
-        value: string | Scraper;
       } | null)
     | ({
         relationTo: 'credentials';
@@ -196,19 +190,20 @@ export interface UsersSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "scrapers_select".
- */
-export interface ScrapersSelect<T extends boolean = true> {
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "credentials_select".
  */
 export interface CredentialsSelect<T extends boolean = true> {
+  name?: T;
   email?: T;
   password?: T;
+  authenticateUrls?:
+    | T
+    | {
+        url?: T;
+        token?: T;
+        expiresAt?: T;
+        id?: T;
+      };
   secretKey?: T;
   updatedAt?: T;
   createdAt?: T;

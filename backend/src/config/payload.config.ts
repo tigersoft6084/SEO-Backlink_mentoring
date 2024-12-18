@@ -25,7 +25,7 @@ export default buildConfig({
         baseDir: path.resolve(dirname),
       },
     },
-    collections: [Users, Scrapers, Credentials, WebsiteForScraping],
+    collections: [Users, Credentials, WebsiteForScraping],
     editor: lexicalEditor(),
     secret: process.env.PAYLOAD_SECRET || '',
     typescript: {
