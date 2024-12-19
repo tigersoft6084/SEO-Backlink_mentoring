@@ -10,9 +10,9 @@ import sharp from 'sharp'
 import { Users } from '../collections/user-management/Users'
 import { Credentials } from '../collections/user-management/Credentials'
 
-import { Scrapers } from '@/collections/scraping/Scrapers'
+// import { Scrapers } from '@/collections/scraping/Scrapers'
 import { WebsiteForScraping } from '@/collections/scraping/WebsiteForScraping'
-
+import {fetchSerpEndpoint} from '../endpoints/fetchSerpEndpoint';
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -38,5 +38,8 @@ export default buildConfig({
     plugins: [
       payloadCloudPlugin(),
       // storage-adapter-placeholder
+    ],
+    endpoints: [
+      fetchSerpEndpoint
     ],
 })
