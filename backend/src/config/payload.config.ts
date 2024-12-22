@@ -10,9 +10,9 @@ import sharp from 'sharp'
 import { Users } from '../collections/user-management/Users'
 import { Credentials } from '../collections/user-management/Credentials'
 
-// import { Scrapers } from '@/collections/scraping/Scrapers'
 import { WebsiteForScraping } from '@/collections/scraping/WebsiteForScraping'
 import {fetchSerpEndpoint} from '../endpoints/fetchSerpEndpoint';
+import Backlinks from '@/collections/Backlinks'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -25,7 +25,7 @@ export default buildConfig({
         baseDir: path.resolve(dirname),
       },
     },
-    collections: [Users, Credentials, WebsiteForScraping],
+    collections: [Users, Credentials, WebsiteForScraping, Backlinks],
     editor: lexicalEditor(),
     secret: process.env.PAYLOAD_SECRET || '',
     typescript: {

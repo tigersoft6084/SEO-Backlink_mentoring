@@ -14,6 +14,7 @@ export interface Config {
     users: User;
     credentials: Credential;
     websiteForScraping: WebsiteForScraping;
+    backlinks: Backlink;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -23,6 +24,7 @@ export interface Config {
     users: UsersSelect<false> | UsersSelect<true>;
     credentials: CredentialsSelect<false> | CredentialsSelect<true>;
     websiteForScraping: WebsiteForScrapingSelect<false> | WebsiteForScrapingSelect<true>;
+    backlinks: BacklinksSelect<false> | BacklinksSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -91,6 +93,7 @@ export interface Credential {
     | {
         url: string;
         token?: string | null;
+        cookie?: string | null;
         expiresAt?: string | null;
         id?: string | null;
       }[]
@@ -112,6 +115,22 @@ export interface WebsiteForScraping {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "backlinks".
+ */
+export interface Backlink {
+  id: string;
+  domain: string;
+  RD: number;
+  TF: number;
+  CF: number;
+  price: number;
+  source: 'paper_club' | 'press_whizz' | 'bulldoz';
+  dateFetched: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -128,6 +147,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'websiteForScraping';
         value: string | WebsiteForScraping;
+      } | null)
+    | ({
+        relationTo: 'backlinks';
+        value: string | Backlink;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -201,6 +224,7 @@ export interface CredentialsSelect<T extends boolean = true> {
     | {
         url?: T;
         token?: T;
+        cookie?: T;
         expiresAt?: T;
         id?: T;
       };
@@ -215,6 +239,21 @@ export interface CredentialsSelect<T extends boolean = true> {
 export interface WebsiteForScrapingSelect<T extends boolean = true> {
   name?: T;
   website?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "backlinks_select".
+ */
+export interface BacklinksSelect<T extends boolean = true> {
+  domain?: T;
+  RD?: T;
+  TF?: T;
+  CF?: T;
+  price?: T;
+  source?: T;
+  dateFetched?: T;
   updatedAt?: T;
   createdAt?: T;
 }
