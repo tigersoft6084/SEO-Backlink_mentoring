@@ -7,8 +7,6 @@ declare module 'payload/types' {
     role?: 'admin' | 'user';
   }
 
-
-
   // Backlink interface definition
   export interface Backlink {
     domain: string;

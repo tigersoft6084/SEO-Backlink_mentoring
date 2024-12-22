@@ -1,6 +1,6 @@
 import { CollectionConfig } from 'payload';
 import { generateKey, encrypt, decrypt } from '../../utils/encryption';
-import { authenticateAndSave } from '../../services/authenticate';
+import { authenticateAdmin } from '../../services/authenticate';
 
 interface AuthenticateUrl {
   url: string;
@@ -45,7 +45,7 @@ export const Credentials: CollectionConfig = {
   
             try {
               // Authenticate and update the data using authenticateAndSave
-              const authResponse = await authenticateAndSave(
+              const authResponse = await authenticateAdmin(
                 req.payload,
                 updatedData.email,
                 decrypt(updatedData.password, secretKey),
