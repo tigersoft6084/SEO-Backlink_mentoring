@@ -13,6 +13,8 @@ import { Credentials } from '../collections/user-management/Credentials'
 import { WebsiteForScraping } from '@/collections/scraping/WebsiteForScraping'
 import {fetchSerpEndpoint} from '../endpoints/fetchSerpEndpoint';
 import Backlinks from '@/collections/Backlinks'
+import { fetchPaperclubEndpoint } from '@/endpoints/paperclubEndpoint'
+import { customEndpoints } from '@/endpoints'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -40,6 +42,6 @@ export default buildConfig({
       // storage-adapter-placeholder
     ],
     endpoints: [
-      fetchSerpEndpoint
+      ...customEndpoints
     ],
 })

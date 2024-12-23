@@ -1,0 +1,43 @@
+import { getPaperclubData } from '@/services/getBacklinks/paperClub';
+import { Endpoint } from 'payload';
+
+
+export const fetchPaperclubEndpoint: Endpoint = {
+  path: '/fecth-paperclub',
+  method: 'get',
+  handler: async () => {
+    try {
+      // Fetch the paperclubData
+      const paperclubData = await getPaperclubData();
+
+      if (!Array.isArray(paperclubData) || paperclubData.length === 0) {
+        return new Response(JSON.stringify({
+          message: 'No paperclubData found.',
+        }), {
+          status: 404,
+          headers: { 'Content-Type': 'application/json' },
+        });
+      }
+
+      
+      // Return the collected results
+      return new Response(JSON.stringify({
+        message: 'Fetch completed.',
+        results: paperclubData,
+      }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    } catch (error: any) {
+      console.error('Error occurred while fetching:', error);
+
+      return new Response(JSON.stringify({
+        message: 'An error occurred while fetching data.',
+        error: error.message || 'Unknown error',
+      }), {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+  },
+};

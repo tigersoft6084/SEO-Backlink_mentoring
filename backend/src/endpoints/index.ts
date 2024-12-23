@@ -1,9 +1,7 @@
-// import { scrapEndpoint } from './scrapEndpoint';
-// // Import other endpoints as needed
-// // import { anotherCustomEndpoint } from './anotherCustomEndpoint';
+import { fetchSerpEndpoint } from './fetchSerpEndpoint';
+import { fetchPaperclubEndpoint } from './paperclubEndpoint';
 
-// export const customEndpoints = [
-//     scrapEndpoint,
-//   // Add other endpoints here
-//   // anotherCustomEndpoint,
-// ];
+export const customEndpoints = [
+    fetchSerpEndpoint,
+    fetchPaperclubEndpoint
+];

@@ -1,6 +1,6 @@
 import { CollectionConfig } from 'payload';
 import { generateKey, encrypt, decrypt } from '../../utils/encryption';
-import { authenticateAdmin } from '../../services/authenticate';
+import { authenticateAdmin } from '../../services/authenticateSaveToCredential';
 
 interface AuthenticateUrl {
   url: string;

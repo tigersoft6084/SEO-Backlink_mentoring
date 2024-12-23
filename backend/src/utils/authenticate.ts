@@ -23,7 +23,6 @@ export async function authenticateAndSave(
       });
 
       console.log('Response Status:', response.status);
-      console.log('Response Headers:', response.headers);
 
       if (!response.ok && response.status !== 302) {
         console.error(`Request failed with status ${response.status} for URL: ${url}`);
@@ -39,7 +38,6 @@ export async function authenticateAndSave(
 
       if (isJsonResponse) {
         const responseData: unknown = await response.json();
-        console.log('Full API Response:', responseData);
 
         if (typeof responseData === 'object' && responseData !== null && ('token' in responseData || 'cookie' in responseData)) {
 
