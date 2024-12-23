@@ -2,6 +2,9 @@ import { CollectionConfig } from 'payload';
 
 const Backlinks: CollectionConfig = {
   slug: 'backlinks',
+  admin: {
+    useAsTitle: 'domain', // Use the email field as the title in the admin panel
+  },
   labels: {
     singular: 'Backlink',
     plural: 'Backlinks',

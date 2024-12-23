@@ -148,10 +148,10 @@ export const getPaperclubData = async () => {
     
             return {
               domain: result.name || "Unknown",
-              tf: kpi.trustFlow || "N/A",
-              cf: kpi.citationFlow || "N/A",
-              rd: kpi.refDomain || "N/A",
-              price: article.price || "N/A",
+              tf: kpi.trustFlow || 0,
+              cf: kpi.citationFlow || 0,
+              rd: kpi.refDomain || 0,
+              price: article.price || 0,
             };
           })
         );

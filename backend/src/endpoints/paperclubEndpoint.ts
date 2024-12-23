@@ -3,9 +3,9 @@ import { Endpoint } from 'payload';
 
 
 export const fetchPaperclubEndpoint: Endpoint = {
-  path: '/fecth-paperclub',
+  path: '/fetch-paperclub',
   method: 'get',
-  handler: async () => {
+  handler: async ({payload}) => {
     try {
       // Fetch the paperclubData
       const paperclubData = await getPaperclubData();
@@ -18,6 +18,38 @@ export const fetchPaperclubEndpoint: Endpoint = {
           headers: { 'Content-Type': 'application/json' },
         });
       }
+
+
+        const savePromises = paperclubData.map((item) => {
+        // Ensure the numeric fields are properly parsed
+        const RD = Number(item.rd); // Convert to number
+        const TF = Number(item.tf);
+        const CF = Number(item.cf);
+        const price = Number(item.price);
+
+        // Validate that the conversion was successful
+        if (isNaN(RD) || isNaN(TF) || isNaN(CF) || isNaN(price)) {
+          throw new Error(
+            `Invalid data received: RD=${item.rd}, TF=${item.tf}, CF=${item.cf}, price=${item.price}`
+          );
+        }
+
+        return payload.create({
+          collection: 'backlinks',
+          data: {
+            domain: item.domain,
+            RD, // Referring Domains
+            TF, // Trust Flow
+            CF, // Citation Flow
+            price,
+            source: 'paper_club', // Hardcoded source for Paper Club
+            dateFetched: new Date().toISOString(), // Current date
+          },
+        });
+      });
+
+      // Wait for all save operations to complete
+      await Promise.all(savePromises);
 
       
       // Return the collected results
