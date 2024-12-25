@@ -15,8 +15,23 @@ export const encrypt = (text: string, key: string) => {
 
 // Decrypt text
 export const decrypt = (encryptedText: string, key: string) => {
+
   const [ivHex, encryptedData] = encryptedText.split(':');
-  const decipher = crypto.createDecipheriv(algorithm, Buffer.from(key, 'hex'), Buffer.from(ivHex, 'hex'));
-  const decrypted = Buffer.concat([decipher.update(Buffer.from(encryptedData, 'hex')), decipher.final()]);
+  if (!ivHex || !encryptedData) {
+    throw new Error('Invalid encrypted text format');
+  }
+
+  const iv = Buffer.from(ivHex, 'hex'); // IV is a buffer from hex
+  const encryptedBuffer = Buffer.from(encryptedData, 'hex'); // Encrypted data is a buffer from hex
+
+  // Ensure key is 32 bytes (256 bits)
+  const keyBuffer = Buffer.from(key, 'hex');
+  if (keyBuffer.length !== 32) {
+    throw new Error('Secret key must be 32 bytes for aes-256-cbc.');
+  }
+
+  const decipher = crypto.createDecipheriv('aes-256-cbc', keyBuffer, iv);
+
+  const decrypted = Buffer.concat([decipher.update(encryptedBuffer), decipher.final()]);
   return decrypted.toString('utf8');
 };

@@ -1,11 +1,9 @@
-import { Payload } from 'payload';
 import { AuthResponse, AuthenticateUrl } from '../types/auth.d';
 import { getFetchAuthOptions } from './fetchAuthOptions';
 import { getValidCookies } from './cookieUtils';
 import { config } from '../config/apiConfig';
 
 export async function authenticateAndSave(
-  payload: Payload,
   email: string,
   password: string,
   urls: string[]

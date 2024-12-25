@@ -42,6 +42,7 @@ const Backlinks: CollectionConfig = {
         { label: 'Paper Club', value: 'paper_club' },
         { label: 'Press Whizz', value: 'press_whizz' },
         { label: 'Bulldoz', value: 'bulldoz' },
+        { label: 'Prensalink', value: 'prensalink' },
         // Add more sources as needed
       ],
       required: true,

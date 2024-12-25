@@ -1,106 +1,87 @@
 import { CollectionConfig } from 'payload';
 import { generateKey, encrypt, decrypt } from '../../utils/encryption';
-import { authenticateAdmin } from '../../services/authenticateSaveToCredential';
+import { DataForCreate_CredentialsForMarketplaces } from '@/types/auth';
 
-interface AuthenticateUrl {
-  url: string;
-  token?: string;
-  cookie?: string;
-  expiresAt?: string;
-}
-
-interface CredentialsData {
-  name: string;
-  email: string;
-  password: string;
-  secretKey?: string;
-  authenticateUrls: AuthenticateUrl[];
-}
+// Regular expression for validating email format
+const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
 
 export const Credentials: CollectionConfig = {
-  slug: 'credentials',
+  slug: 'CredentialsForMarketplaces',
   admin: {
-    useAsTitle: 'email', // Use the email field as the title in the admin panel
+    useAsTitle: 'email',
+    description: 'Manage user credentials',
   },
   access: {
     create: () => true,
-    read: ({ req }) => req.user?.role === 'admin',
+    read: () => true,
     update: ({ req }) => req.user?.role === 'admin',
     delete: ({ req }) => req.user?.role === 'admin',
   },
   hooks: {
     beforeChange: [
       async ({ data, operation, originalDoc, req }) => {
-        // Type assertion to assert that `data` is of type `CredentialsData`
-        const updatedData = data as CredentialsData; 
-  
-        if ((operation === 'create' || operation === 'update') && updatedData.password) {
-          const secretKey = operation === 'create' ? generateKey() : originalDoc?.secretKey || generateKey();
-          updatedData.password = encrypt(updatedData.password, secretKey);
-          updatedData.secretKey = secretKey;
-  
-          // Ensure authenticateUrls exist and is an array
-          if (Array.isArray(updatedData.authenticateUrls)) {
-            const uniqueUrls = Array.from(new Set(updatedData.authenticateUrls.map(urlObj => urlObj.url)));
-  
-            try {
-              // Authenticate and update the data using authenticateAndSave
-              const authResponse = await authenticateAdmin(
-                req.payload,
-                updatedData.email,
-                decrypt(updatedData.password, secretKey),
-                uniqueUrls
-              );
-  
-              // Assuming authenticateAndSave returns updated data with 'authenticateUrls' as part of the result
-              updatedData.authenticateUrls = authResponse.authenticateUrls.map(urlObj => {
-                // Ensure you're correctly merging the updated token and expiration date
-                const updatedUrlObj = updatedData.authenticateUrls.find(existingUrlObj => existingUrlObj.url === urlObj.url);
-  
-                return {
-                  ...updatedUrlObj, // Merge existing data
-                  ...urlObj, // Apply updated values (token, expiresAt, etc.)
-                };
-              });
-  
-            } catch (error) {
-              console.error('Error in authenticateAndSave:', error);
-              throw new Error('Authentication failed. Please verify your credentials.');
-            }
-          }
+        const credentialData = data as DataForCreate_CredentialsForMarketplaces;
+
+        // Email validation
+        if (credentialData.email && !emailRegex.test(credentialData.email)) {
+          throw new Error('Invalid email format');
         }
-  
-        console.log(updatedData)
-        return updatedData;
+
+        // Only encrypt the password if it's being changed
+        if (operation === 'create' || (operation === 'update' && credentialData.password !== originalDoc?.password)) {
+          const secretKey = operation === 'create' ? generateKey() : originalDoc?.secretKey;
+          credentialData.password = encrypt(credentialData.password, secretKey);
+          credentialData.secretKey = secretKey; // Store the secret key in the document
+        }
+
+        return credentialData;
       },
     ],
   },
-  
   fields: [
-    { name: 'name', type: 'text', required: true },
-    { name: 'email', type: 'text', required: true, unique: true },
     { 
-      name: 'password', 
+      name: 'email', 
       type: 'text', 
       required: true, 
-      admin: { readOnly: false } 
+      unique: true,
+      validate: (value: string | string[] | null | undefined) => {
+        if (typeof value === 'string' && !emailRegex.test(value)) {
+          return 'Invalid email format';
+        }
+        return true;
+      }
     },
     {
-      name: 'authenticateUrls',
-      type: 'array',
-      fields: [
-        { name: 'url', type: 'text', required: true },
-        { name: 'token', type: 'text', admin: { readOnly: true } },
-        { name: 'cookie', type: 'text', admin: { readOnly: true } },
-        { name: 'expiresAt', type: 'date', admin: { readOnly: true } },
-      ],
+      name: 'password',
+      type: 'text',
+      required: true,
+      admin: { readOnly: false },
     },
-    { 
-      name: 'secretKey', 
-      type: 'text', 
-      admin: { readOnly: true }, 
-      hidden: true, 
-      defaultValue: generateKey 
+    {
+      name: 'secretKey',
+      type: 'text',
+      admin: { readOnly: true },
+      hidden: false,  // This makes it hidden in the admin panel
+      defaultValue: generateKey,  // Automatically generates a key if not provided
+    },
+    {
+      name: 'websiteTarget',
+      type: 'array', // Change to 'array' for multi-select
+      admin: {
+        position: 'sidebar',
+      },
+      required: true,
+      fields: [
+        {
+          name: 'value',
+          type: 'select',
+          options: [
+            { label: 'PaperClub', value: 'PaperClub' },
+            { label: 'Link.Builders', value: 'Link.Builders' },
+            { label: 'Prensalink', value: 'Prensalink' },
+          ],
+        },
+      ],
     },
   ],
 };

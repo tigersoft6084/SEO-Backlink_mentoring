@@ -12,7 +12,7 @@ export interface Config {
   };
   collections: {
     users: User;
-    credentials: Credential;
+    CredentialsForMarketplaces: CredentialsForMarketplace;
     websiteForScraping: WebsiteForScraping;
     backlinks: Backlink;
     'payload-locked-documents': PayloadLockedDocument;
@@ -22,7 +22,7 @@ export interface Config {
   collectionsJoins: {};
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
-    credentials: CredentialsSelect<false> | CredentialsSelect<true>;
+    CredentialsForMarketplaces: CredentialsForMarketplacesSelect<false> | CredentialsForMarketplacesSelect<true>;
     websiteForScraping: WebsiteForScrapingSelect<false> | WebsiteForScrapingSelect<true>;
     backlinks: BacklinksSelect<false> | BacklinksSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -82,23 +82,17 @@ export interface User {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "credentials".
+ * via the `definition` "CredentialsForMarketplaces".
  */
-export interface Credential {
+export interface CredentialsForMarketplace {
   id: string;
-  name: string;
   email: string;
   password: string;
-  authenticateUrls?:
-    | {
-        url: string;
-        token?: string | null;
-        cookie?: string | null;
-        expiresAt?: string | null;
-        id?: string | null;
-      }[]
-    | null;
   secretKey?: string | null;
+  websiteTarget: {
+    value?: ('PaperClub' | 'Link.Builders' | 'Prensalink') | null;
+    id?: string | null;
+  }[];
   updatedAt: string;
   createdAt: string;
 }
@@ -124,7 +118,7 @@ export interface Backlink {
   TF: number;
   CF: number;
   price: number;
-  source: 'paper_club' | 'press_whizz' | 'bulldoz';
+  source: 'paper_club' | 'press_whizz' | 'bulldoz' | 'prensalink';
   dateFetched: string;
   updatedAt: string;
   createdAt: string;
@@ -141,8 +135,8 @@ export interface PayloadLockedDocument {
         value: string | User;
       } | null)
     | ({
-        relationTo: 'credentials';
-        value: string | Credential;
+        relationTo: 'CredentialsForMarketplaces';
+        value: string | CredentialsForMarketplace;
       } | null)
     | ({
         relationTo: 'websiteForScraping';
@@ -213,22 +207,18 @@ export interface UsersSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "credentials_select".
+ * via the `definition` "CredentialsForMarketplaces_select".
  */
-export interface CredentialsSelect<T extends boolean = true> {
-  name?: T;
+export interface CredentialsForMarketplacesSelect<T extends boolean = true> {
   email?: T;
   password?: T;
-  authenticateUrls?:
+  secretKey?: T;
+  websiteTarget?:
     | T
     | {
-        url?: T;
-        token?: T;
-        cookie?: T;
-        expiresAt?: T;
+        value?: T;
         id?: T;
       };
-  secretKey?: T;
   updatedAt?: T;
   createdAt?: T;
 }

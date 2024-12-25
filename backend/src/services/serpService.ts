@@ -1,7 +1,6 @@
 // services/serpService.ts
+import { DATA_FOR_SEO_API_URL } from '@/global/marketplaceUrls';
 import axios from 'axios';
-
-const API_URL = 'https://data.dataforseo.com/api/explorer/serp/google/organic/live/advanced';
 
 export const fetchSerpData = async (keyword: string, locationCode: number, languageCode: string, depth: number) => {
   const token = process.env.DATAFORSEO_API_TOKEN; // Access token from .env file
@@ -13,7 +12,7 @@ export const fetchSerpData = async (keyword: string, locationCode: number, langu
   console.log(keyword, locationCode, languageCode, depth)
 
   const response = await axios.post(
-    API_URL,
+    DATA_FOR_SEO_API_URL,
     {
       keyword : keyword,
       location_code: locationCode,
