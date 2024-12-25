@@ -9,6 +9,8 @@ export const PRENSALINK_API_URL = 'https://shop.prensalink.com/api/v1/login';
 
 export const PaperClub_API_URL = 'https://app.paper.club/api/authenticate';
 
+export const SeoJungle_API_URL = 'https://api.seo-jungle.com/auth/signin';
+
 
 // URLs for Backlinks
 export const GET_BACKLINK_FROM_BACKLINKED_URL = "https://app.backlinked.com/api/contentlinks";
@@ -88,3 +90,5 @@ export const GET_BACKLINK_FROM_PRENSALINK_URLS = [
     "https://shop.prensalink.com/api/v2/prensalink/products/newspapers_blogs?country=WW&page=3&pageSize=5000&order=default",
     "https://shop.prensalink.com/api/v2/prensalink/products/newspapers_blogs?country=WW&page=4&pageSize=5000&order=default",
 ];
+
+export const GET_BACKLINK_FROM_SeoJungle_URL = "https://api.seo-jungle.com/support/search";

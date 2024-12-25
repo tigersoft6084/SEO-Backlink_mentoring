@@ -90,7 +90,7 @@ export interface CredentialsForMarketplace {
   password: string;
   secretKey?: string | null;
   websiteTarget: {
-    value?: ('PaperClub' | 'Link.Builders' | 'Prensalink') | null;
+    value?: ('PaperClub' | 'Link.Builders' | 'Prensalink' | 'Seo-Jungle') | null;
     id?: string | null;
   }[];
   updatedAt: string;

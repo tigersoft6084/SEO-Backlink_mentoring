@@ -41,3 +41,15 @@ export interface PrensalinkResult {
         };
     }>;
 }
+
+export interface SeoJungleResult {
+  price?: number; // Price outside the newspapers array
+  newspapers?: Array<{
+      url?: string; // URL of the newspaper
+      metrics?: {
+      tf?: number; // Trust flow
+      cf?: number; // Citation flow
+      rd?: number; // Referring domains
+      };
+  }>;
+}
