@@ -4,14 +4,11 @@ import { getTokenForSeoJungle } from "../getTokens/seo-jungle";
 
 const GET_BACKLINK_FROM_SeoJungle_URL = "https://api.seo-jungle.com/support/search";
 
-const themes = ["Actu du web", "Actualités - Médias généraliste", "Adultes - Rencontre - Sexe", "Agriculture", "Animaux"];
-const totalPages = 463;
 const MAX_CONCURRENT_REQUESTS = 10;
-
 let cachedToken: string | null = null;
 const limit = pLimit(MAX_CONCURRENT_REQUESTS);
 
-const fetchPageData = async (page: number, token: string): Promise<any> => {
+const fetchPageData = async (page: number, token: string, themes: string[]): Promise<any> => {
     const body = {
         searchField: "",
         tfMin: 0,
@@ -58,7 +55,7 @@ const fetchPageData = async (page: number, token: string): Promise<any> => {
     }
 };
 
-export const fetchAllData = async () => {
+const fetchDataForThemes = async (themes: string[], totalPages: number) => {
     // Retrieve and cache token if not already cached
     if (!cachedToken) {
         cachedToken = await getTokenForSeoJungle();
@@ -84,7 +81,7 @@ export const fetchAllData = async () => {
     for (let page = 0; page < totalPages; page++) {
         promises.push(
             limit(() =>
-                fetchPageData(page, cachedToken as string)
+                fetchPageData(page, cachedToken as string, themes)
                     .then((data) => {
                         results.push(data);
                         updateProgress();
@@ -96,6 +93,23 @@ export const fetchAllData = async () => {
 
     await Promise.allSettled(promises);
 
-    console.log(`Fetched ${results.length} pages successfully`);
+    console.log(`Fetched ${results.length} pages successfully for themes: ${themes.join(", ")}`);
     return results;
+};
+
+export const fetchAllData = async () => {
+    const themeSets = [
+        { themes: ["Actu du web", "Actualités - Médias généraliste", "Adultes - Rencontre - Sexe", "Agriculture", "Animaux"], totalPages: 463 },
+        { themes: ["Assurance - Mutuelle", "Auto - Moto", "B2B - Entrepreneurs - Marketing - Communication", "Banque - Finance - Economie", "Beauté"], totalPages: 563 },
+    ];
+
+    const allResults: any[] = [];
+
+    for (const { themes, totalPages } of themeSets) {
+        const results = await fetchDataForThemes(themes, totalPages);
+        allResults.push(...results);
+    }
+
+    console.log(`Total results fetched: ${allResults.length}`);
+    return allResults;
 };
