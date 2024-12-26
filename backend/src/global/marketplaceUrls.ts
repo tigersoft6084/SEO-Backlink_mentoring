@@ -1,8 +1,10 @@
 // URL for DataForSeo
 export const DATA_FOR_SEO_API_URL = 'https://data.dataforseo.com/api/explorer/serp/google/organic/live/advanced';
 
+//URLs for fetch local Database
+export const FETCH_DATABASE = 'http://localhost:2024/backlinks';
 
-// URLs for API
+// URLs for Login API
 export const LINK_BUILDERS_API_URL = 'https://app.link.builders/api/auth/login';
 
 export const PRENSALINK_API_URL = 'https://shop.prensalink.com/api/v1/login';

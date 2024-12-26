@@ -1,6 +1,7 @@
 import { getDataFromLinkbuilders } from '@/services/getBacklinks/linkbuilders';
 import { getSeoJungleData } from '@/services/getBacklinks/seo-jungle';
 import { getTokenForSeoJungle } from '@/services/getTokens/seo-jungle';
+
 import { Endpoint } from 'payload';
 
 export const myTestEndpoint: Endpoint = {
@@ -8,7 +9,7 @@ export const myTestEndpoint: Endpoint = {
   method: 'get',
   handler: async ({ payload }) => {
     try {
-      // Fetch the paperclubData
+      // Fetch the testData
       const token = await getSeoJungleData();
 
       // Return the collected results

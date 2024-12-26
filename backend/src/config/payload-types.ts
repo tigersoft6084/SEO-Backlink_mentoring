@@ -13,7 +13,6 @@ export interface Config {
   collections: {
     users: User;
     CredentialsForMarketplaces: CredentialsForMarketplace;
-    websiteForScraping: WebsiteForScraping;
     backlinks: Backlink;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -23,7 +22,6 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     CredentialsForMarketplaces: CredentialsForMarketplacesSelect<false> | CredentialsForMarketplacesSelect<true>;
-    websiteForScraping: WebsiteForScrapingSelect<false> | WebsiteForScrapingSelect<true>;
     backlinks: BacklinksSelect<false> | BacklinksSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -90,20 +88,9 @@ export interface CredentialsForMarketplace {
   password: string;
   secretKey?: string | null;
   websiteTarget: {
-    value?: ('PaperClub' | 'Link.Builders' | 'Prensalink' | 'Seo-Jungle') | null;
+    value?: ('DataForSeo' | 'PaperClub' | 'Link.Builders' | 'Prensalink' | 'Seo-Jungle') | null;
     id?: string | null;
   }[];
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "websiteForScraping".
- */
-export interface WebsiteForScraping {
-  id: string;
-  name: string;
-  website: string;
   updatedAt: string;
   createdAt: string;
 }
@@ -119,6 +106,7 @@ export interface Backlink {
   CF: number;
   price: number;
   source: 'paper_club' | 'press_whizz' | 'bulldoz' | 'prensalink' | 'seoJungle';
+  'expiry date'?: string | null;
   dateFetched: string;
   updatedAt: string;
   createdAt: string;
@@ -137,10 +125,6 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'CredentialsForMarketplaces';
         value: string | CredentialsForMarketplace;
-      } | null)
-    | ({
-        relationTo: 'websiteForScraping';
-        value: string | WebsiteForScraping;
       } | null)
     | ({
         relationTo: 'backlinks';
@@ -224,16 +208,6 @@ export interface CredentialsForMarketplacesSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "websiteForScraping_select".
- */
-export interface WebsiteForScrapingSelect<T extends boolean = true> {
-  name?: T;
-  website?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "backlinks_select".
  */
 export interface BacklinksSelect<T extends boolean = true> {
@@ -243,6 +217,7 @@ export interface BacklinksSelect<T extends boolean = true> {
   CF?: T;
   price?: T;
   source?: T;
+  'expiry date'?: T;
   dateFetched?: T;
   updatedAt?: T;
   createdAt?: T;

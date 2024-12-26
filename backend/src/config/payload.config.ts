@@ -10,10 +10,7 @@ import sharp from 'sharp'
 import { Users } from '../collections/user-management/Users'
 import { Credentials } from '../collections/user-management/Credentials'
 
-import { WebsiteForScraping } from '@/collections/scraping/WebsiteForScraping'
-import {fetchSerpEndpoint} from '../endpoints/fetchSerpEndpoint';
 import Backlinks from '@/collections/Backlinks'
-import { fetchPaperclubEndpoint } from '@/endpoints/paperclubEndpoint'
 import { customEndpoints } from '@/endpoints'
 
 const filename = fileURLToPath(import.meta.url)
@@ -27,7 +24,7 @@ export default buildConfig({
         baseDir: path.resolve(dirname),
       },
     },
-    collections: [Users, Credentials, WebsiteForScraping, Backlinks],
+    collections: [Users, Credentials, Backlinks],
     editor: lexicalEditor(),
     secret: process.env.PAYLOAD_SECRET || '',
     typescript: {
