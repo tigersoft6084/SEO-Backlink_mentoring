@@ -1,14 +1,15 @@
 import axios, { AxiosResponse } from "axios";
 import pLimit from "p-limit";
 import { getTokenForSeoJungle } from "../getTokens/seo-jungle";
+import { BackLinkData, SeoJungleResult } from "@/types/backlink";
+import { log } from "console";
 
 const GET_BACKLINK_FROM_SeoJungle_URL = "https://api.seo-jungle.com/support/search";
-
 const MAX_CONCURRENT_REQUESTS = 10;
 let cachedToken: string | null = null;
 const limit = pLimit(MAX_CONCURRENT_REQUESTS);
 
-const fetchPageData = async (page: number, token: string, themes: string[]): Promise<any> => {
+const fetchPageData = async (page: number, token: string, themes: string[]): Promise<BackLinkData[]> => {
     const body = {
         searchField: "",
         tfMin: 0,
@@ -48,15 +49,25 @@ const fetchPageData = async (page: number, token: string, themes: string[]): Pro
                 Referer: "https://app.seo-jungle.com/",
             },
         });
-        return response.data;
+
+        const data = response.data.data.support || [];
+        return data.map((item: SeoJungleResult) => {
+            const price = item.products?.[0]?.margedPrice || 0;
+            return {
+                domain: item.url || "",
+                tf: item.trustFlow || 0,
+                cf: item.citationFlow || 0,
+                rd: item.referringDomains || 0,
+                price,
+            };
+        });
     } catch (error: any) {
         console.error(`Error fetching page ${page}:`, error.response?.data || error.message);
         throw new Error(`Failed to fetch page ${page}: ${error.message}`);
     }
 };
 
-const fetchDataForThemes = async (themes: string[], totalPages: number) => {
-    // Retrieve and cache token if not already cached
+const fetchDataForThemes = async (themes: string[], totalPages: number): Promise<BackLinkData[]> => {
     if (!cachedToken) {
         cachedToken = await getTokenForSeoJungle();
         console.log("Token retrieved:", cachedToken);
@@ -75,7 +86,7 @@ const fetchDataForThemes = async (themes: string[], totalPages: number) => {
         }
     };
 
-    const results: any[] = [];
+    const results: BackLinkData[] = [];
     const promises = [];
 
     for (let page = 0; page < totalPages; page++) {
@@ -83,7 +94,7 @@ const fetchDataForThemes = async (themes: string[], totalPages: number) => {
             limit(() =>
                 fetchPageData(page, cachedToken as string, themes)
                     .then((data) => {
-                        results.push(data);
+                        results.push(...data);
                         updateProgress();
                     })
                     .catch((error) => console.error(`Error processing page ${page}:`, error.message))
@@ -93,17 +104,30 @@ const fetchDataForThemes = async (themes: string[], totalPages: number) => {
 
     await Promise.allSettled(promises);
 
-    console.log(`Fetched ${results.length} pages successfully for themes: ${themes.join(", ")}`);
+    console.log(`Fetched ${results.length} items successfully for themes: ${themes.join(", ")}`);
     return results;
 };
 
-export const fetchAllData = async () => {
+export const getSeoJungleData = async (): Promise<BackLinkData[]> => {
     const themeSets = [
-        { themes: ["Actu du web", "Actualités - Médias généraliste", "Adultes - Rencontre - Sexe", "Agriculture", "Animaux"], totalPages: 463 },
-        { themes: ["Assurance - Mutuelle", "Auto - Moto", "B2B - Entrepreneurs - Marketing - Communication", "Banque - Finance - Economie", "Beauté"], totalPages: 563 },
+        { themes: ["Actu du web", "Actualités - Médias généraliste", "Adultes - Rencontre - Sexe", "Agriculture", "Animaux"], totalPages: 464 },
+        { themes: ["Assurance - Mutuelle", "Auto - Moto", "B2B - Entrepreneurs - Marketing - Communication", "Banque - Finance - Economie", "Beauté"], totalPages: 564 },
+        { themes: ["Bio","Bons plans - Promo - Shopping -  Concours","Bricolage","BTP - Travaux B2B - Industrie","Bureautique"], totalPages: 86 },
+        { themes: ["Business - Entreprise","Buzz","Chasse - Pêche","Cinéma","Communauté - société"], totalPages: 506 },
+        { themes: ["Cuisine - Vins - Gastronomie - Boissons - Alimentation","Culture - Art","Décoration","Divers","DIY - Do It Youself"], totalPages: 360 },
+        { themes: ["Droit - Gouvernement - Juridique","E-commerce","Ecologie - Environnement","Education - Emploi - Formation - Carrière","Energie"], totalPages: 324 },
+        { themes: ["Enfant","Evénementiel","Famille","Féminin","Gaming"], totalPages: 121 },
+        { themes: ["Geek","Généraliste","High tech","Hygiène ","Idée cadeau"], totalPages: 667 },
+        { themes: ["Immobilier","Informatique - Webmaster","Jardin","Jeux d'argent - Poker","Jeux vidéo"], totalPages: 478 },
+        { themes: ["Jouet","Lifestyle","Littérature - Bande dessinée","Local","Loisirs - Sorties - Divertissement"], totalPages: 206 },
+        { themes: ["Luxe","Maison","Management","Mariage","Masculin"], totalPages: 460 },
+        { themes: ["Mode","Musique","Nautisme","Ouvrages de référence","People"], totalPages: 230 },
+        { themes: ["Politique","Presse","Psychologie","Référencement - SEO","Religion"], totalPages: 56 },
+        { themes: ["Rencontre","Santé - Bien-être","Sciences - Nature","Sécurité","Sénior"], totalPages: 524 },
+        { themes: ["Spiritualité - Voyance - Croyance - Esotérisme","Sport","Transport","Voyage - Tourisme","Webmarketing"], totalPages: 493 },
     ];
 
-    const allResults: any[] = [];
+    const allResults: BackLinkData[] = [];
 
     for (const { themes, totalPages } of themeSets) {
         const results = await fetchDataForThemes(themes, totalPages);

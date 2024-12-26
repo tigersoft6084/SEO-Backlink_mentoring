@@ -49,6 +49,8 @@ function getDomain(url: string): string {
 export const getPrensalinkData = async () => {
   const Token = await getTokenForPrensalink();
 
+  console.log("Receive token from Prenalink : ", Token)
+
   console.log(Token)
   if (!Token) {
     throw new Error("API token is missing");

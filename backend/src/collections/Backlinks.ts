@@ -43,6 +43,7 @@ const Backlinks: CollectionConfig = {
         { label: 'Press Whizz', value: 'press_whizz' },
         { label: 'Bulldoz', value: 'bulldoz' },
         { label: 'Prensalink', value: 'prensalink' },
+        { label: 'SeoJungle', value: 'seoJungle' },
         // Add more sources as needed
       ],
       required: true,

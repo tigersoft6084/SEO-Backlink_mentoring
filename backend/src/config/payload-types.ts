@@ -118,7 +118,7 @@ export interface Backlink {
   TF: number;
   CF: number;
   price: number;
-  source: 'paper_club' | 'press_whizz' | 'bulldoz' | 'prensalink';
+  source: 'paper_club' | 'press_whizz' | 'bulldoz' | 'prensalink' | 'seoJungle';
   dateFetched: string;
   updatedAt: string;
   createdAt: string;
