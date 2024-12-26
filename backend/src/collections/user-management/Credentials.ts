@@ -1,83 +1,88 @@
 import { CollectionConfig } from 'payload';
-import crypto from 'crypto';
-import { API_KEY } from '@/config/apiConfig';
+import { generateKey, encrypt, decrypt } from '../../utils/encryption';
+import { DataForCreate_CredentialsForMarketplaces } from '@/types/auth';
 
-// Encryption configuration
-const algorithm = 'aes-256-cbc';
-
-// Function to generate a unique 256-bit key
-const generateKey = () => crypto.randomBytes(32).toString('hex');
-
-// Function to encrypt data using a specific key
-const encrypt = (text: string, key: string) => {
-  const iv = crypto.randomBytes(16); // Unique IV for each encryption
-  const cipher = crypto.createCipheriv(algorithm, Buffer.from(key, 'hex'), iv);
-  const encrypted = Buffer.concat([cipher.update(text, 'utf8'), cipher.final()]);
-  return `${iv.toString('hex')}:${encrypted.toString('hex')}`; // Combine IV and encrypted data
-};
-
-// Function to decrypt data using a specific key
-const decrypt = (encryptedText: string, key: string) => {
-  const [ivHex, encryptedData] = encryptedText.split(':');
-  const decipher = crypto.createDecipheriv(algorithm, Buffer.from(key, 'hex'), Buffer.from(ivHex, 'hex'));
-  const decrypted = Buffer.concat([decipher.update(Buffer.from(encryptedData, 'hex')), decipher.final()]);
-  return decrypted.toString('utf8');
-};
+// Regular expression for validating email format
+const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
 
 export const Credentials: CollectionConfig = {
-  slug: 'credentials',
+  slug: 'CredentialsForMarketplaces',
+  admin: {
+    useAsTitle: 'email',
+    description: 'Manage user credentials',
+  },
   access: {
     create: () => true,
-    read: ({ req }) => {
-      const apiKey = req.headers.get('authorization')?.split(' ')[1];
-      const user = req.user;
-      if (user?.role === 'admin') {
-        return true;
-      }
-      return apiKey === API_KEY;
-    },
-    update: ({ req: { user } }) => user?.role === 'admin',
-    delete: ({ req: { user } }) => user?.role === 'admin',
+    read: () => true,
+    update: ({ req }) => req.user?.role === 'admin',
+    delete: ({ req }) => req.user?.role === 'admin',
   },
   hooks: {
     beforeChange: [
-      async ({ data, operation, originalDoc }) => {
-        if ((operation === 'create' || operation === 'update') && data?.password) {
-          // Generate or use the existing secret key
-          const userSecretKey = operation === 'create' ? generateKey() : originalDoc.secretKey;
+      async ({ data, operation, originalDoc, req }) => {
+        const credentialData = data as DataForCreate_CredentialsForMarketplaces;
 
-          // Encrypt the password using the user's secret key
-          data.password = encrypt(data.password, userSecretKey);
-
-          // Ensure the secret key is saved with the user
-          data.secretKey = userSecretKey;
+        // Email validation
+        if (credentialData.email && !emailRegex.test(credentialData.email)) {
+          throw new Error('Invalid email format');
         }
-        return data;
+
+        // Only encrypt the password if it's being changed
+        if (operation === 'create' || (operation === 'update' && credentialData.password !== originalDoc?.password)) {
+          const secretKey = operation === 'create' ? generateKey() : originalDoc?.secretKey;
+          credentialData.password = encrypt(credentialData.password, secretKey);
+          credentialData.secretKey = secretKey; // Store the secret key in the document
+        }
+
+        return credentialData;
       },
     ],
   },
   fields: [
-    {
-      name: 'email',
-      type: 'text',
-      required: true,
+    { 
+      name: 'email', 
+      type: 'text', 
+      required: true, 
       unique: true,
+      validate: (value: string | string[] | null | undefined) => {
+        if (typeof value === 'string' && !emailRegex.test(value)) {
+          return 'Invalid email format';
+        }
+        return true;
+      }
     },
     {
       name: 'password',
       type: 'text',
       required: true,
-      admin: {
-        readOnly: false, // Prevent password visibility in the admin panel
-      },
+      admin: { readOnly: false },
     },
     {
       name: 'secretKey',
       type: 'text',
+      admin: { readOnly: true },
+      hidden: false,  // This makes it hidden in the admin panel
+      defaultValue: generateKey,  // Automatically generates a key if not provided
+    },
+    {
+      name: 'websiteTarget',
+      type: 'array', // Change to 'array' for multi-select
       admin: {
-        readOnly: true, // Prevent password visibility in the admin panel
+        position: 'sidebar',
       },
-      hidden: false, // Hide the secret key from the admin panel
+      required: true,
+      fields: [
+        {
+          name: 'value',
+          type: 'select',
+          options: [
+            { label: 'PaperClub', value: 'PaperClub' },
+            { label: 'Link.Builders', value: 'Link.Builders' },
+            { label: 'Prensalink', value: 'Prensalink' },
+            { label: 'Seo-Jungle', value: 'Seo-Jungle' },
+          ],
+        },
+      ],
     },
   ],
 };

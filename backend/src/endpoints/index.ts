@@ -1,9 +1,13 @@
-import { scrapEndpoint } from './scrapEndpoint';
-// Import other endpoints as needed
-// import { anotherCustomEndpoint } from './anotherCustomEndpoint';
+import { fetchSerpEndpoint } from './fetchSerpEndpoint';
+import { fetchPaperclubEndpoint } from './paperclubEndpoint';
+import { fetchLinkbuildersEndpoint } from './linkbuildersEndpoint';
+import { fetchprensalinkEndpoint } from './prensalinkEndpoint';
+import { myTestEndpoint } from './myTest';
 
 export const customEndpoints = [
-    scrapEndpoint,
-  // Add other endpoints here
-  // anotherCustomEndpoint,
+    fetchSerpEndpoint,
+    fetchPaperclubEndpoint,
+    fetchLinkbuildersEndpoint,
+    fetchprensalinkEndpoint,
+    myTestEndpoint
 ];

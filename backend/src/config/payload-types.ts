@@ -12,9 +12,9 @@ export interface Config {
   };
   collections: {
     users: User;
-    scrapers: Scraper;
-    credentials: Credential;
+    CredentialsForMarketplaces: CredentialsForMarketplace;
     websiteForScraping: WebsiteForScraping;
+    backlinks: Backlink;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -22,9 +22,9 @@ export interface Config {
   collectionsJoins: {};
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
-    scrapers: ScrapersSelect<false> | ScrapersSelect<true>;
-    credentials: CredentialsSelect<false> | CredentialsSelect<true>;
+    CredentialsForMarketplaces: CredentialsForMarketplacesSelect<false> | CredentialsForMarketplacesSelect<true>;
     websiteForScraping: WebsiteForScrapingSelect<false> | WebsiteForScrapingSelect<true>;
+    backlinks: BacklinksSelect<false> | BacklinksSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -82,22 +82,17 @@ export interface User {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "scrapers".
+ * via the `definition` "CredentialsForMarketplaces".
  */
-export interface Scraper {
-  id: string;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "credentials".
- */
-export interface Credential {
+export interface CredentialsForMarketplace {
   id: string;
   email: string;
   password: string;
   secretKey?: string | null;
+  websiteTarget: {
+    value?: ('PaperClub' | 'Link.Builders' | 'Prensalink' | 'Seo-Jungle') | null;
+    id?: string | null;
+  }[];
   updatedAt: string;
   createdAt: string;
 }
@@ -114,6 +109,22 @@ export interface WebsiteForScraping {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "backlinks".
+ */
+export interface Backlink {
+  id: string;
+  domain: string;
+  RD: number;
+  TF: number;
+  CF: number;
+  price: number;
+  source: 'paper_club' | 'press_whizz' | 'bulldoz' | 'prensalink';
+  dateFetched: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -124,16 +135,16 @@ export interface PayloadLockedDocument {
         value: string | User;
       } | null)
     | ({
-        relationTo: 'scrapers';
-        value: string | Scraper;
-      } | null)
-    | ({
-        relationTo: 'credentials';
-        value: string | Credential;
+        relationTo: 'CredentialsForMarketplaces';
+        value: string | CredentialsForMarketplace;
       } | null)
     | ({
         relationTo: 'websiteForScraping';
         value: string | WebsiteForScraping;
+      } | null)
+    | ({
+        relationTo: 'backlinks';
+        value: string | Backlink;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -196,20 +207,18 @@ export interface UsersSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "scrapers_select".
+ * via the `definition` "CredentialsForMarketplaces_select".
  */
-export interface ScrapersSelect<T extends boolean = true> {
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "credentials_select".
- */
-export interface CredentialsSelect<T extends boolean = true> {
+export interface CredentialsForMarketplacesSelect<T extends boolean = true> {
   email?: T;
   password?: T;
   secretKey?: T;
+  websiteTarget?:
+    | T
+    | {
+        value?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }
@@ -220,6 +229,21 @@ export interface CredentialsSelect<T extends boolean = true> {
 export interface WebsiteForScrapingSelect<T extends boolean = true> {
   name?: T;
   website?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "backlinks_select".
+ */
+export interface BacklinksSelect<T extends boolean = true> {
+  domain?: T;
+  RD?: T;
+  TF?: T;
+  CF?: T;
+  price?: T;
+  source?: T;
+  dateFetched?: T;
   updatedAt?: T;
   createdAt?: T;
 }
