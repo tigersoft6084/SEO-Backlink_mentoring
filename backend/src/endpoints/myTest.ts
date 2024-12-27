@@ -1,6 +1,7 @@
 import { getDataFromLinkbuilders } from '@/services/getBacklinks/linkbuilders';
 import { getSeoJungleData } from '@/services/getBacklinks/seo-jungle';
 import { getTokenForSeoJungle } from '@/services/getTokens/seo-jungle';
+import { startWhoisProcessing } from '@/services/whoiserService';
 
 import { Endpoint } from 'payload';
 
@@ -10,7 +11,7 @@ export const myTestEndpoint: Endpoint = {
   handler: async ({ payload }) => {
     try {
       // Fetch the testData
-      const token = await getSeoJungleData();
+      const token = await startWhoisProcessing();
 
       // Return the collected results
       return new Response(

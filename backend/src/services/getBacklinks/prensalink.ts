@@ -58,7 +58,7 @@ export const getPrensalinkData = async () => {
 
   const limit = pLimit(2); // Limit concurrent requests to 2
   const batchSize = 10; // Process 10 URLs in a batch
-  let allData: BackLinkData[] = [];
+  const allData: BackLinkData[] = [];
 
   for (let i = 0; i < GET_BACKLINK_FROM_PRENSALINK_URLS.length; i += batchSize) {
     const batchUrls = GET_BACKLINK_FROM_PRENSALINK_URLS.slice(i, i + batchSize);
