@@ -1,5 +1,5 @@
 import { CollectionConfig } from 'payload';
-import { generateKey, encrypt, decrypt } from '../../utils/encryption';
+import { generateKey, encrypt } from '../../utils/encryption';
 import { DataForCreate_CredentialsForMarketplaces } from '@/types/auth';
 
 // Regular expression for validating email format
