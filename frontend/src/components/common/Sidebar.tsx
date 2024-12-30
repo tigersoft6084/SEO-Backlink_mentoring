@@ -32,6 +32,7 @@ export default function Sidebar({ menuItems, quotaUsed }: SidebarProps) {
 
   return (
     <aside className="bg-gray-100 dark:bg-gray-800 w-72 p-4 flex flex-col justify-between h-screen">
+      
       {/* Top Menu */}
       <div>
         <ul className="space-y-2">
@@ -77,13 +78,14 @@ export default function Sidebar({ menuItems, quotaUsed }: SidebarProps) {
           Extend Your Quota
         </button>
       </div>
+
       {/* Bottom Menu */}
       <div className="mt-6">
         <ul className="space-y-1">
           <li
-            onClick={() => setSelectedItem("support")}
+            onClick={() => {setSelectedItem("Support"), setSelectedMenuItem("Support")}}
             className={`flex items-center space-x-3 p-3 cursor-pointer rounded-full transition-colors ${
-              selectedItem === "support"
+              selectedItem === "Support"
                 ? "bg-gray-500 text-white"
                 : "text-gray-700 dark:text-gray-300 hover:bg-gray-300 hover:text-black dark:hover:bg-gray-400"
             }`}
@@ -92,9 +94,9 @@ export default function Sidebar({ menuItems, quotaUsed }: SidebarProps) {
             <span className="text-sm font-medium">Support</span>
           </li>
           <li
-            onClick={() => setSelectedItem("settings")}
+            onClick={() => {setSelectedItem("Account Settings"), setSelectedMenuItem("Account Settings")}}
             className={`flex items-center space-x-3 p-3 cursor-pointer rounded-full transition-colors ${
-              selectedItem === "settings"
+              selectedItem === "Account Settings"
                 ? "bg-gray-500 text-white"
                 : "text-gray-700 dark:text-gray-300 hover:bg-gray-300 hover:text-black dark:hover:bg-gray-400"
             }`}
