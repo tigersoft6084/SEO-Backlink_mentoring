@@ -15,7 +15,7 @@ export default function KeywordSearch({placeholder }) {
   return (
     <div className="flex-1 p-6">
 
-        <div className="flex flex-col flex-1 p-6 border rounded-lg shadow-md bg-white dark:bg-gray-800 dark:border-gray-700 dark:text-gray-200">
+        <div className="flex flex-col flex-1 p-10 border rounded-lg shadow-md bg-white dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200">
 
             {/* Location header */}
             <div className="flex items-center text-blue-500 font-medium mb-4">
@@ -37,7 +37,7 @@ export default function KeywordSearch({placeholder }) {
 
             {/* Textarea */}
             <textarea
-                className="w-full p-4 border border-gray-300 rounded-lg dark:bg-gray-800 dark:border-gray-500 dark:text-gray-200"
+                className="w-full p-4 border border-gray-300 rounded-lg dark:bg-gray-800 dark:border-gray-400 dark:text-gray-200"
                 placeholder={placeholder}
                 rows={10}
                 value={keyword}

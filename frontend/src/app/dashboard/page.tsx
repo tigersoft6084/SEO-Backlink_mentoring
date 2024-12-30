@@ -8,6 +8,11 @@ import { FaGauge } from "react-icons/fa6";
 import { TbRadarFilled } from "react-icons/tb";
 import KeywordSearch from "./keyword-search/page";
 import { useSidebar } from "../../context/SidebarContext";
+import BulkSearch from "./bulk-search/page";
+import CompetitiveAnalysis from "./competitive-analysis/page";
+import SerpScanner from "./serp-scanner/page";
+import ExpiredDomains from "./expired-domains/page";
+import Projects from "./projects/page";
 
 export default function Home() {
   // Add icons and descriptions to the menu items
@@ -37,17 +42,17 @@ export default function Home() {
   const renderContent = () => {
     switch (selectedMenuItem) {
       case "Bulk Search":
-        return <div>Bulk Search Content</div>;
+        return <BulkSearch placeholder="Enter up to 30000 domains or URLs (1 per line) to see if they are available on the marketplaces" />;
       case "Keyword Search":
         return <KeywordSearch placeholder="Enter up to 20 keywords (1 per line) to scan Google SERPs." />;
       case "Competitive Analysis":
-        return <div>Competitive analysis Content</div>;
+        return <CompetitiveAnalysis placeholder="Enter up to 15 competitor domain (1 per line) names to analyze their backlinks" />;
       case "Projects":
-        return <div>Projects Content</div>;
+        return <Projects/>;
       case "Expired Domains":
-        return <div>Expired Domains Content</div>;
+        return <ExpiredDomains/>;
       case "Serp Scanner":
-        return <div>Serp Scanner Content</div>;
+        return <SerpScanner placeholder="Enter a keyword to scan the backlinks of the top 10 search results" />;
       default:
         return <div>Select a menu item to view its content.</div>;
       }
