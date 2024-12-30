@@ -54,7 +54,7 @@ export default function Home() {
       case "Serp Scanner":
         return <SerpScanner placeholder="Enter a keyword to scan the backlinks of the top 10 search results" />;
       default:
-        return <div>Select a menu item to view its content.</div>;
+        return <BulkSearch placeholder="Enter up to 30000 domains or URLs (1 per line) to see if they are available on the marketplaces" />;
       }
     };
 

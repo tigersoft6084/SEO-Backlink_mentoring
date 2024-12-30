@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { FiEdit, FiTrash2 } from "react-icons/fi";
+import { MdAdd } from "react-icons/md";
 
 export default function Projects() {
   const [sortOpen, setSortOpen] = useState(false);
@@ -27,8 +28,23 @@ export default function Projects() {
     );
   };
 
+  const handleCreateNewProject = () => {
+    // Add search logic here
+    console.log("Search initiated with:", );
+  };
+
   return (
     <div className="flex-1 p-6">
+
+    <div className="flex">
+      <button
+        className="px-3 py-2 bg-gradient-to-r text-white text-sm rounded-2xl flex items-center space-x-2 from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 ml-auto mb-4"
+        onClick={handleCreateNewProject}>
+          <MdAdd />
+          <span>Create a new Project</span>
+      </button>
+    </div>
+
       <div className="mx-auto overflow-hidden rounded-lg shadow-lg bg-white">
         <table className="min-w-full border-collapse">
           <thead className="bg-gray-200 border-b border-gray-600 dark:bg-gray-600 dark:border-gray-800">
