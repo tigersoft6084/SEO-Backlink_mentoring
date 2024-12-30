@@ -49,7 +49,7 @@ export default function KeywordSearch({placeholder }) {
                 className={`mt-4 px-6 py-2 bg-gradient-to-r text-white font-medium rounded-lg flex items-center space-x-2 self-end ${
                     keyword
                     ? "from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 dark:bg-blue-700 dark:hover:bg-blue-800"
-                    : "bg-gray-300 cursor-not-allowed"
+                    : "from-blue-300 to-purple-300 cursor-not-allowed"
             }`}
                 disabled={!keyword} // Disable button when there is no keyword
                 onClick={handleSearch}>
