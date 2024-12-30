@@ -3,7 +3,7 @@ import ThemeToggle from './ThemeToggle'; // Ensure the theme toggle works global
 
 export default function Navbar() {
   return (
-    <nav className="flex items-center justify-between px-6 py-4 shadow-md bg-white dark:bg-gray-800">
+    <nav className="flex items-center justify-between px-6 py-4 shadow-md dark:bg-gray-800">
       <div className="flex items-center space-x-2">
         <div className="text-yellow-500 text-2xl">
           ⭐ {/* Replace with an SVG or image if needed */}

@@ -12,3 +12,24 @@ body.dark,
 html.dark {
   @apply bg-gray-800 text-white;
 }
+
+@font-face {
+  font-family: 'Euclid Circular A';
+  src: url('/fonts/euclid-circular-a/EuclidCircularA-Regular.ttf') format('truetype');
+  font-weight: 400; /* Regular */
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Euclid Circular A';
+  src: url('/fonts/euclid-circular-a/EuclidCircularA-Bold.ttf') format('truetype');
+  font-weight: 700; /* Bold */
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Euclid Circular A';
+  src: url('/fonts/euclid-circular-a/EuclidCircularA-Italic.ttf') format('truetype');
+  font-weight: 400; /* Regular Italic */
+  font-style: italic;
+}

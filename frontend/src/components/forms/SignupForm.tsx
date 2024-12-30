@@ -4,7 +4,8 @@ import { useState } from "react";
 import FormInput from "./FormInput";
 import { BiLogInCircle } from "react-icons/bi";
 import { useRouter } from "next/navigation"; // Import the useRouter hook
-import GoogleAuthButton from "./GoogleSigninButton";
+import GoogleAuthButton from "../ui/GoogleSigninButton";
+import Link from "next/link";
 
 export default function SignupForm() {
   const [formData, setFormData] = useState({
@@ -149,9 +150,9 @@ export default function SignupForm() {
       <div className="mt-4 text-center">
         <p className="text-sm text-gray-700 dark:text-gray-200">
           Already have an account?{" "}
-          <a href="/auth/signin" className="text-blue-600 font-medium hover:underline">
+          <Link href="/auth/signin" className="text-blue-600 font-medium hover:underline">
             Sign In
-          </a>
+          </Link>
         </p>
       </div>
     </div>

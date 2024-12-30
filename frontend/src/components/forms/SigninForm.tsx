@@ -4,7 +4,8 @@ import { useState } from "react";
 import { BiSearch } from "react-icons/bi";
 import { useRouter } from "next/navigation";
 import FormInput from "./FormInput";
-import GoogleAuthButton from "./GoogleSigninButton";
+import GoogleAuthButton from "../ui/GoogleSigninButton";
+import Link from "next/link";
 
 export default function SigninForm() {
   const [formData, setFormData] = useState({
@@ -62,12 +63,12 @@ export default function SigninForm() {
         <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
           Sign In
         </h2>
-        <a
+        <Link
           href="/auth/forgot-password"
           className="text-sm text-blue-600 font-medium hover:underline"
         >
           Forgot password?
-        </a>
+        </Link>
       </div>
 
       <hr className="border-t border-gray-300 dark:border-gray-500 mb-6" />
