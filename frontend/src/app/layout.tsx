@@ -1,6 +1,9 @@
+"use client"
+
+import { SidebarProvider } from "../context/SidebarContext";
 import { Geist, Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "../context/ThemeContext";
-import "../styles/globals.css"; // Ensure Tailwind is imported
+import "../styles/globals.css";
 import Navbar from "../components/common/Navbar";
 
 const geistSans = Geist({
@@ -13,18 +16,20 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata = {
-  title: "Link Finder",
-  description: "This is about finding links.",
-};
+// export const metadata = {
+//   title: "Link Finder",
+//   description: "This is about finding links.",
+// };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className="font-sans antialiased">
+      <body className="antialiased">
         <ThemeProvider>
-          <Navbar />
-          {children}
+          <SidebarProvider>
+            <Navbar />
+            {children}
+          </SidebarProvider>
         </ThemeProvider>
       </body>
     </html>

@@ -38,7 +38,7 @@ export default function Home() {
 
         {/* Dynamic content */}
         <DynamicContent
-          title="Keyword Search"
+          title=""
           description="Enter up to 20 keywords (1 per line) to scan Google SERPs"
           placeholder="Paste URLs"
           onSearch={handleSearch}
