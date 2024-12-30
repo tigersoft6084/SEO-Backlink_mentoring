@@ -3,8 +3,7 @@ import ThemeToggle from './ThemeToggle'; // Ensure the theme toggle works global
 
 export default function Navbar() {
   return (
-    <nav className="flex items-center justify-between px-6 py-4 shadow-md">
-      {/* Left Section: Logo */}
+    <nav className="flex items-center justify-between px-6 py-4 shadow-md bg-white dark:bg-gray-800">
       <div className="flex items-center space-x-2">
         <div className="text-yellow-500 text-2xl">
           ⭐ {/* Replace with an SVG or image if needed */}
@@ -13,11 +12,7 @@ export default function Navbar() {
           {PROJECT_NAME}
         </h1>
       </div>
-
-      {/* Right Section: Theme Toggle */}
-      <div>
-        <ThemeToggle />
-      </div>
+      <ThemeToggle />
     </nav>
   );
 }

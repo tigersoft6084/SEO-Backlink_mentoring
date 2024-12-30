@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-// components/SignupForm.tsx
 import { useState } from "react";
 import FormInput from "./FormInput";
-import GoogleSignUpButton from "./GoogleSignupButton"; // Import the new GoogleSignUpButton component
 import { BiLogInCircle } from "react-icons/bi";
+import { useRouter } from "next/navigation"; // Import the useRouter hook
+import GoogleAuthButton from "./GoogleSigninButton";
 
 export default function SignupForm() {
   const [formData, setFormData] = useState({
@@ -16,6 +16,7 @@ export default function SignupForm() {
   });
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const router = useRouter(); // Initialize the useRouter hook
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value, type, checked } = e.target;
@@ -54,7 +55,11 @@ export default function SignupForm() {
 
       const data = await response.json();
       setSuccess("Sign-up successful! Redirecting...");
+
       console.log("Signup successful:", data);
+
+      // Redirect to the sign-in page after a successful sign-up
+      router.push("/auth/signin"); // Redirect to the sign-in page
     } catch (err) {
       console.error(err);
       setError(err.message || "An unexpected error occurred.");
@@ -67,7 +72,7 @@ export default function SignupForm() {
         <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Sign Up</h2>
 
         {/* Google Sign-Up Button */}
-        <GoogleSignUpButton />
+        <GoogleAuthButton action="signup" />
       </div>
 
       <hr className="border-t border-gray-300 dark:border-gray-500 mb-6" />
@@ -132,7 +137,8 @@ export default function SignupForm() {
         <div className="flex justify-center mt-6">
           <button
             type="submit"
-            className="w-full py-3 px-8 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-medium rounded-md shadow-sm hover:from-blue-600 hover:to-purple-600 flex items-center gap-x-2 justify-center max-w-xs"
+            disabled={!formData.terms}  // Disable the button if 'terms' is false
+            className={`w-full py-3 px-8 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-medium rounded-md shadow-sm hover:from-blue-600 hover:to-purple-600 flex items-center gap-x-2 justify-center max-w-xs ${!formData.terms ? "opacity-50 cursor-not-allowed" : ""}`}
           >
             <BiLogInCircle />
             <span>Sign Up</span>
