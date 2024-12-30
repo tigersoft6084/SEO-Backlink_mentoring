@@ -1,20 +1,23 @@
+"use client"
+
 import Sidebar from "../../components/common/Sidebar";
-import DynamicContent from "../../components/ui/DynamicContent";
 
 // Import icons
 import { FaSearch, FaFolderOpen, FaLink, FaGoogle } from "react-icons/fa";
 import { FaGauge } from "react-icons/fa6";
 import { TbRadarFilled } from "react-icons/tb";
+import KeywordSearch from "./keyword-search/page";
+import { useSidebar } from "../../context/SidebarContext";
 
 export default function Home() {
-  // Add icons to the menu items
+  // Add icons and descriptions to the menu items
   const menuItems = [
-    { name: "Bulk Search", icon: <FaSearch /> },
-    { name: "Keyword Search", icon: <FaGoogle /> },
-    { name: "Competitive Analysis", icon: <TbRadarFilled /> },
-    { name: "Projects", icon: <FaFolderOpen /> },
-    { name: "Expired Domains", icon: <FaLink /> },
-    { name: "Serp Scanner", icon: <FaGauge /> },
+    { name: "Bulk Search", icon: <FaSearch />, description: "Search in bulk for multiple domains at once." },
+    { name: "Keyword Search", icon: <FaGoogle />, description: "Search keywords on Google to analyze rankings." },
+    { name: "Competitive Analysis", icon: <TbRadarFilled />, description: "Analyze competitors' domains and backlinks." },
+    { name: "Projects", icon: <FaFolderOpen />, description: "Manage and organize your projects here." },
+    { name: "Expired Domains", icon: <FaLink />, description: "Find expired domains for backlink opportunities." },
+    { name: "Serp Scanner", icon: <FaGauge />, description: "Scan Google SERPs to track keyword rankings." },
   ];
 
   const quotaUsed = [
@@ -29,20 +32,33 @@ export default function Home() {
     console.log("Search initiated");
   };
 
+  const {selectedMenuItem} = useSidebar();
+
+  const renderContent = () => {
+    switch (selectedMenuItem) {
+      case "Bulk Search":
+        return <div>Bulk Search Content</div>;
+      case "Keyword Search":
+        return <KeywordSearch placeholder="Enter up to 20 keywords (1 per line) to scan Google SERPs." />;
+      case "Competitive Analysis":
+        return <div>Competitive analysis Content</div>;
+      case "Projects":
+        return <div>Projects Content</div>;
+      case "Expired Domains":
+        return <div>Expired Domains Content</div>;
+      case "Serp Scanner":
+        return <div>Serp Scanner Content</div>;
+      default:
+        return <div>Select a menu item to view its content.</div>;
+      }
+    };
+
   return (
     <div className="h-screen flex flex-col">
-
       <div className="flex flex-1">
-        {/* Sidebar with dynamic icons */}
+        {/* Sidebar with dynamic icons and descriptions */}
         <Sidebar menuItems={menuItems} quotaUsed={quotaUsed} />
-
-        {/* Dynamic content */}
-        <DynamicContent
-          title=""
-          description="Enter up to 20 keywords (1 per line) to scan Google SERPs"
-          placeholder="Paste URLs"
-          onSearch={handleSearch}
-        />
+        {renderContent()}
       </div>
     </div>
   );
