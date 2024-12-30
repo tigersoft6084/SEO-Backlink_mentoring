@@ -5,6 +5,9 @@ const Backlinks: CollectionConfig = {
   admin: {
     useAsTitle: 'domain', // Use the email field as the title in the admin panel
   },
+  access: {
+    read: () => true,
+  },
   labels: {
     singular: 'Backlink',
     plural: 'Backlinks',
@@ -43,9 +46,14 @@ const Backlinks: CollectionConfig = {
         { label: 'Press Whizz', value: 'press_whizz' },
         { label: 'Bulldoz', value: 'bulldoz' },
         { label: 'Prensalink', value: 'prensalink' },
+        { label: 'SeoJungle', value: 'seoJungle' },
         // Add more sources as needed
       ],
       required: true,
+    },
+    {
+      name: 'expiry date',
+      type: 'text',
     },
     {
       name: 'dateFetched',

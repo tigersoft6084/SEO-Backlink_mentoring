@@ -1,5 +1,5 @@
 import { CollectionConfig } from 'payload';
-import { generateKey, encrypt, decrypt } from '../../utils/encryption';
+import { generateKey, encrypt } from '../../utils/encryption';
 import { DataForCreate_CredentialsForMarketplaces } from '@/types/auth';
 
 // Regular expression for validating email format
@@ -76,6 +76,7 @@ export const Credentials: CollectionConfig = {
           name: 'value',
           type: 'select',
           options: [
+            { label: 'DataForSeo', value: 'DataForSeo' },
             { label: 'PaperClub', value: 'PaperClub' },
             { label: 'Link.Builders', value: 'Link.Builders' },
             { label: 'Prensalink', value: 'Prensalink' },

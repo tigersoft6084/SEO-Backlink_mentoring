@@ -3,32 +3,45 @@ import type { CollectionConfig } from 'payload';
 export const Users: CollectionConfig = {
   slug: 'users',
   admin: {
-    useAsTitle: 'email', // Use the email field as the title in the admin panel
+    useAsTitle: 'email',
   },
-  auth: true, // Enable authentication for this collection
+  auth: {
+    // Additional auth configuration can be added here if needed
+  },
+  access: {
+    create: () => true,  // Allow creation for all
+    update: ({ req }) => req.user?.role === 'admin', // Allow only admins to update
+    read: () => true
+  },
   fields: [
-    // Email field is added by default in auth-enabled collections
     {
       name: 'role',
       type: 'select',
-      required: true, // Make role selection mandatory
+      required: true,
       options: [
-        {
-          label: 'Admin',
-          value: 'admin',
-        },
-        {
-          label: 'User',
-          value: 'user',
-        },
+        { label: 'Admin', value: 'admin' },
+        { label: 'User', value: 'user' },
       ],
-      defaultValue: 'user', // Default role is 'user'
+      defaultValue: 'user',
+      access: {
+        create: ({ req }) => req.user?.role === 'admin',
+        update: ({ req }) => req.user?.role === 'admin',
+      },
     },
-    // Add more fields as needed, for example, a username or profile picture field
     {
       name: 'username',
       type: 'text',
-      required: false, // Optional field
+      required: false,
+    },
+    {
+      name: 'profilePicture',
+      type: 'upload',
+      relationTo: 'media', // Reference the "media" collection
+      required: false,
+    },
+    {
+      name: 'authProvider',
+      type: 'text',  // To track which auth provider was used (Google)
     },
   ],
   hooks: {
@@ -40,4 +53,3 @@ export const Users: CollectionConfig = {
     ],
   },
 };
-

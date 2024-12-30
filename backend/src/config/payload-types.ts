@@ -12,8 +12,8 @@ export interface Config {
   };
   collections: {
     users: User;
+    media: Media;
     CredentialsForMarketplaces: CredentialsForMarketplace;
-    websiteForScraping: WebsiteForScraping;
     backlinks: Backlink;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -22,8 +22,8 @@ export interface Config {
   collectionsJoins: {};
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
+    media: MediaSelect<false> | MediaSelect<true>;
     CredentialsForMarketplaces: CredentialsForMarketplacesSelect<false> | CredentialsForMarketplacesSelect<true>;
-    websiteForScraping: WebsiteForScrapingSelect<false> | WebsiteForScrapingSelect<true>;
     backlinks: BacklinksSelect<false> | BacklinksSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -69,6 +69,8 @@ export interface User {
   id: string;
   role: 'admin' | 'user';
   username?: string | null;
+  profilePicture?: (string | null) | Media;
+  authProvider?: string | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -82,6 +84,25 @@ export interface User {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media".
+ */
+export interface Media {
+  id: string;
+  altText?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "CredentialsForMarketplaces".
  */
 export interface CredentialsForMarketplace {
@@ -90,20 +111,9 @@ export interface CredentialsForMarketplace {
   password: string;
   secretKey?: string | null;
   websiteTarget: {
-    value?: ('PaperClub' | 'Link.Builders' | 'Prensalink' | 'Seo-Jungle') | null;
+    value?: ('DataForSeo' | 'PaperClub' | 'Link.Builders' | 'Prensalink' | 'Seo-Jungle') | null;
     id?: string | null;
   }[];
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "websiteForScraping".
- */
-export interface WebsiteForScraping {
-  id: string;
-  name: string;
-  website: string;
   updatedAt: string;
   createdAt: string;
 }
@@ -118,7 +128,8 @@ export interface Backlink {
   TF: number;
   CF: number;
   price: number;
-  source: 'paper_club' | 'press_whizz' | 'bulldoz' | 'prensalink';
+  source: 'paper_club' | 'press_whizz' | 'bulldoz' | 'prensalink' | 'seoJungle';
+  'expiry date'?: string | null;
   dateFetched: string;
   updatedAt: string;
   createdAt: string;
@@ -135,12 +146,12 @@ export interface PayloadLockedDocument {
         value: string | User;
       } | null)
     | ({
-        relationTo: 'CredentialsForMarketplaces';
-        value: string | CredentialsForMarketplace;
+        relationTo: 'media';
+        value: string | Media;
       } | null)
     | ({
-        relationTo: 'websiteForScraping';
-        value: string | WebsiteForScraping;
+        relationTo: 'CredentialsForMarketplaces';
+        value: string | CredentialsForMarketplace;
       } | null)
     | ({
         relationTo: 'backlinks';
@@ -195,6 +206,8 @@ export interface PayloadMigration {
 export interface UsersSelect<T extends boolean = true> {
   role?: T;
   username?: T;
+  profilePicture?: T;
+  authProvider?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -204,6 +217,24 @@ export interface UsersSelect<T extends boolean = true> {
   hash?: T;
   loginAttempts?: T;
   lockUntil?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media_select".
+ */
+export interface MediaSelect<T extends boolean = true> {
+  altText?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -224,16 +255,6 @@ export interface CredentialsForMarketplacesSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "websiteForScraping_select".
- */
-export interface WebsiteForScrapingSelect<T extends boolean = true> {
-  name?: T;
-  website?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "backlinks_select".
  */
 export interface BacklinksSelect<T extends boolean = true> {
@@ -243,6 +264,7 @@ export interface BacklinksSelect<T extends boolean = true> {
   CF?: T;
   price?: T;
   source?: T;
+  'expiry date'?: T;
   dateFetched?: T;
   updatedAt?: T;
   createdAt?: T;
