@@ -31,7 +31,7 @@ export default function Sidebar({ menuItems, quotaUsed }: SidebarProps) {
   };
 
   return (
-    <aside className="bg-gray-100 dark:bg-gray-800 w-64 p-4 flex flex-col justify-between h-screen">
+    <aside className="bg-gray-100 dark:bg-gray-800 w-72 p-4 flex flex-col justify-between h-screen">
       {/* Top Menu */}
       <div>
         <ul className="space-y-2">
@@ -54,7 +54,7 @@ export default function Sidebar({ menuItems, quotaUsed }: SidebarProps) {
 
 
       {/* Quota Section */}
-      <div className="mt-6 border border-gray-400 dark:border-gray-700 rounded-3xl p-4 dark:bg-gray-900 shadow-sm">
+      <div className="mt-6 border border-gray-400 dark:border-gray-700 rounded-3xl p-4 dark:bg-gray-700 shadow-sm">
         <h2 className="text-gray-600 dark:text-gray-400 mb-4 text-lg font-semibold">QUOTA USED</h2>
         <div className="space-y-4">
           {quotaUsed.map(({ name, value, max }, index) => (
@@ -63,7 +63,7 @@ export default function Sidebar({ menuItems, quotaUsed }: SidebarProps) {
                 <span className="font-medium text-gray-900 dark:text-gray-100">{name}</span>
                 <span className="text-gray-500 dark:text-gray-400">{`${value}/${max}`}</span>
               </div>
-              <div className="w-full bg-gray-300 dark:bg-gray-700 h-2 rounded-full relative">
+              <div className="w-full bg-gray-300 dark:bg-gray-900 h-2 rounded-full relative">
                 <div
                   className="h-2 bg-blue-500 dark:bg-blue-700 rounded-full"
                   style={{ width: `${(value / max) * 100}%` }}

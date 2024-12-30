@@ -17,7 +17,7 @@ export default function Navbar() {
       </div>
 
       {/* Right Section: Dynamic Context */}
-      <div className="absolute" style={{ left: "17.5rem" }}>
+      <div className="absolute left-80">
         <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-200">
           {selectedMenuItem}
         </h1>
