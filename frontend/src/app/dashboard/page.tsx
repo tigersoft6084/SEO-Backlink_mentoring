@@ -13,6 +13,7 @@ import CompetitiveAnalysis from "./competitive-analysis/page";
 import SerpScanner from "./serp-scanner/page";
 import ExpiredDomains from "./expired-domains/page";
 import Projects from "./projects/page";
+import AccountSettings from "./account-settings/page";
 
 export default function Home() {
   // Add icons and descriptions to the menu items
@@ -53,6 +54,10 @@ export default function Home() {
         return <ExpiredDomains/>;
       case "Serp Scanner":
         return <SerpScanner placeholder="Enter a keyword to scan the backlinks of the top 10 search results" />;
+      case "Support":
+        return <SerpScanner placeholder="Enter a keyword to scan the backlinks of the top 10 search results" />;
+      case "Account Settings":
+        return <AccountSettings/>;
       default:
         return <BulkSearch placeholder="Enter up to 30000 domains or URLs (1 per line) to see if they are available on the marketplaces" />;
       }
