@@ -78,8 +78,23 @@ export default function ExpiredDomains() {
                     </label>
                     <select className="w-full px-4 py-2 border rounded-lg shadow-sm focus:ring focus:ring-blue-200 focus:outline-none dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600">
                         <option value="Select">Select</option>
-                        <option value="Category1">Category 1</option>
-                        <option value="Category2">Category 2</option>
+                        <option value="Category1">Adult</option>
+                        <option value="Category2">Arts</option>
+                        <option value="Category2">Business</option>
+                        <option value="Category2">Computers</option>
+                        <option value="Category2">Games</option>
+                        <option value="Category2">Health</option>
+                        <option value="Category2">Home</option>
+                        <option value="Category2">Kids</option>
+                        <option value="Category2">News</option>
+                        <option value="Category2">Recreation</option>
+                        <option value="Category2">Reference</option>
+                        <option value="Category2">Regional</option>
+                        <option value="Category2">Science</option>
+                        <option value="Category2">Shopping</option>
+                        <option value="Category2">Society</option>
+                        <option value="Category2">Sports</option>
+                        <option value="Category2">World</option>
                     </select>
                 </div>
 
@@ -140,6 +155,12 @@ export default function ExpiredDomains() {
                         <option value="All">All</option>
                         <option value="En">English</option>
                         <option value="Fr">French</option>
+                        <option value="Fr">Spanish</option>
+                        <option value="Fr">Russian</option>
+                        <option value="Fr">Deutsche</option>
+                        <option value="Fr">Islian</option>
+                        <option value="Fr">Portuguese</option>
+                        <option value="Fr">Netherlands</option>
                     </select>
                 </div>
 

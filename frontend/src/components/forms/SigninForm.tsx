@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { BiSearch } from "react-icons/bi";
 import { useRouter } from "next/navigation";
+import { useUser } from "../../context/UserContext"; // Import the User context
 import FormInput from "./FormInput";
 import GoogleAuthButton from "../ui/GoogleSigninButton";
 import Link from "next/link";
@@ -14,6 +15,7 @@ export default function SigninForm() {
   });
   const [error, setError] = useState<string | null>(null);
   const router = useRouter(); // For navigation
+  const { setEmail } = useUser(); // Use the global User context to store email
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
@@ -44,6 +46,9 @@ export default function SigninForm() {
 
       const data = await response.json();
       console.log("Sign-in successful:", data);
+
+      // Store the signed-in email in global context
+      setEmail(data.user.email);
 
       // Redirect to the dashboard after successful sign-in
       router.push("/dashboard");
@@ -83,7 +88,7 @@ export default function SigninForm() {
           placeholder="Enter your email"
           value={formData.email}
           onChange={handleChange}
-          className="w-full" // This makes the input field take the full width
+          className="w-full"
         />
         <FormInput
           id="password"
@@ -92,7 +97,7 @@ export default function SigninForm() {
           placeholder="Enter your password"
           value={formData.password}
           onChange={handleChange}
-          className="w-full" // This makes the input field take the full width
+          className="w-full"
         />
         <div className="flex justify-center">
           <button
@@ -111,7 +116,6 @@ export default function SigninForm() {
         <GoogleAuthButton action="signin" /> {/* Centered Google button */}
       </div>
 
-      {/* Button to go to the sign-up page */}
       <div className="text-center mt-4">
         <p className="text-sm text-gray-600 dark:text-gray-400">
           Don&apos;t have an account?{" "}

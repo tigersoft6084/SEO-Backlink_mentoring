@@ -1,12 +1,14 @@
-import { useState } from "react";
+"use client";
+
+import { useUser } from "../../../context/UserContext";
 
 export default function AccountSettings() {
+  const { email } = useUser(); // Access the globally stored email
+
   return (
     <div className="flex-1 p-6 bg-gray-100 dark:bg-gray-800 items-center">
-
       <div className="w-full p-6 bg-white dark:bg-gray-700 rounded shadow-md">
         <div className="divide-y divide-gray-300 dark:divide-gray-500">
-            
           {/* Default Google Geolocation */}
           <div className="py-4 flex justify-between items-center">
             <label className="text-gray-700 dark:text-gray-300">
@@ -23,7 +25,7 @@ export default function AccountSettings() {
           <div className="py-4 flex justify-between items-center">
             <label className="text-gray-700 dark:text-gray-300">Email</label>
             <p className="w-1/2 text-gray-900 dark:text-gray-200">
-              test@example.com{" "}
+              {email || "Loading..."}{" "}
               <a
                 href="#"
                 className="text-blue-500 hover:underline dark:text-blue-400"

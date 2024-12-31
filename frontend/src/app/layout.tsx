@@ -1,6 +1,7 @@
-"use client"
+"use client";
 
 import { SidebarProvider } from "../context/SidebarContext";
+import { UserProvider } from "../context/UserContext"; // Import UserProvider
 import { Geist, Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "../context/ThemeContext";
 import "../styles/globals.css";
@@ -21,10 +22,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ThemeProvider>
-          <SidebarProvider>
-            <Navbar />
-            {children}
-          </SidebarProvider>
+          <UserProvider> {/* Wrap everything with UserProvider */}
+            <SidebarProvider>
+              <Navbar />
+              {children}
+            </SidebarProvider>
+          </UserProvider>
         </ThemeProvider>
       </body>
     </html>
