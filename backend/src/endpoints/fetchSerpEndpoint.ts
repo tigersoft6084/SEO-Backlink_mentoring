@@ -27,7 +27,7 @@ export const fetchSerpEndpoint: Endpoint = {
       const links = extractLinks(serpData);
 
       return new Response(
-        JSON.stringify({ links }),
+        JSON.stringify({ serpData }),
         { status: 200, headers: { 'Content-Type': 'application/json' } }
       );
     } catch (error: any) {

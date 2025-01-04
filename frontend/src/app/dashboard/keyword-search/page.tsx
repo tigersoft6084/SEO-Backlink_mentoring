@@ -10,6 +10,9 @@ export default function KeywordSearch({placeholder }) {
     // if (keyword && onSearch) {
     //   onSearch(keyword); // Trigger onSearch with the keyword
     // }
+    if(keyword){
+        console.log(keyword);
+    }
   };
 
   return (

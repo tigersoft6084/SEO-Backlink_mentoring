@@ -1,5 +1,6 @@
 // URL for DataForSeo
 export const DATA_FOR_SEO_API_URL = 'https://data.dataforseo.com/api/explorer/serp/google/organic/live/advanced';
+export const BULK_KEYWORD_SEARCH_URL = 'https://data.dataforseo.com/api/explorer/datalabs/google/serp_competitors';
 
 //URLs for fetch local Database
 export const FETCH_DATABASE = 'http://localhost:2024/backlinks';

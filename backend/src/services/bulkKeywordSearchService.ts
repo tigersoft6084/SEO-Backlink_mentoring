@@ -1,25 +1,23 @@
 // services/serpService.ts
-import { DATA_FOR_SEO_API_URL } from '@/global/marketplaceUrls';
+import { BULK_KEYWORD_SEARCH_URL } from '@/global/marketplaceUrls';
 import axios from 'axios';
 
-export const fetchSerpData = async (keyword: string, locationCode: number, languageCode: string, depth: number) => {
+export const getResultsFromBulkKeywordSearch = async (keywords: string[], locationCode: number, languageCode: string) => {
   const token = process.env.DATAFORSEO_API_TOKEN; // Access token from .env file
 
   if (!token) {
     throw new Error('API token is missing');
   }
 
-  console.log(keyword, locationCode, languageCode, depth)
-
   const response = await axios.post(
-    DATA_FOR_SEO_API_URL,
+    BULK_KEYWORD_SEARCH_URL,
     {
-      keyword : keyword,
+      keywords : keywords,
       location_code: locationCode,
       language_code: languageCode,
-      device: 'desktop',
-      os: 'windows',
-      depth : depth,
+      include_subdomains : true,
+      item_types : ["organic", "paid", "featured_snippet", "local_pack"], 
+      limit : 100,
     },
     {
       headers: {

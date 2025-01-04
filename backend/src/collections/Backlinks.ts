@@ -1,21 +1,20 @@
 import { CollectionConfig } from 'payload';
 
-const Backlinks: CollectionConfig = {
+export const Backlinks: CollectionConfig = {
   slug: 'backlinks',
   admin: {
     useAsTitle: 'domain', // Use the email field as the title in the admin panel
   },
   access: {
     read: () => true,
-  },
-  labels: {
-    singular: 'Backlink',
-    plural: 'Backlinks',
+    create: () => true,  // Allow creation for all
+    update: ({ req }) => req.user?.role === 'admin', // Allow only admins to update
   },
   fields: [
     {
       name: 'domain',
       type: 'text',
+      index: true,
       required: true,
     },
     {
@@ -62,5 +61,3 @@ const Backlinks: CollectionConfig = {
     },
   ],
 };
-
-export default Backlinks;

@@ -18,6 +18,14 @@ export default function AccountSettings() {
               <option>United States</option>
               <option>Canada</option>
               <option>United Kingdom</option>
+              <option>France</option>
+              <option>Spain</option>
+              <option>Germany</option>
+              <option>Brazil</option>
+              <option>Portugal</option>
+              <option>Italy</option>
+              <option>Belgium</option>
+              <option>Switzerland</option>
             </select>
           </div>
 
