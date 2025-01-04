@@ -8,7 +8,7 @@ import sharp from 'sharp';
 
 import { Users } from '../collections/user-management/Users';
 import { Credentials } from '../collections/user-management/Credentials';
-import Backlinks from '@/collections/Backlinks';
+import { Backlinks } from '@/collections/Backlinks';
 import { customEndpoints } from '@/endpoints';
 import { Media } from '@/collections/user-management/Media';
 
