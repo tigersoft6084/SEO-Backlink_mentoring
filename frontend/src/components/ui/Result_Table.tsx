@@ -4,6 +4,7 @@ import { TiShoppingCart } from "react-icons/ti";
 import { MdFilterList } from "react-icons/md";
 import { FaList } from "react-icons/fa";
 import FilterDropdown from "./Result_Table_FilterDropdown";
+import RightSidebar from "./Result_Table_RightSidebar";
 
 interface Row {
   domain: string;
@@ -11,7 +12,7 @@ interface Row {
   RD: number;
   TF: number;
   CF: number;
-  price: string;
+  price: number;
   source: string;
 
 }
@@ -31,6 +32,37 @@ const TableSection: React.FC<TableSectionProps> = ({
   selectAll,
   setSelectAll,
 }) => {
+
+  const [sortedRows, setSortedRows] = useState(rows);
+  const [sortConfig, setSortConfig] = useState<{ key: keyof Row; direction: "asc" | "desc"} | null>(null);
+
+  const [sidebarVisible, setSidebarVisible] = useState(false);
+  const [selectedRowData, setSelectedRowData] = useState<Row | null>(null);
+
+  useEffect(() => {
+    setSortedRows(rows);
+  }, [rows]);
+
+  const handleSort = (key: keyof Row) => {
+    let direction: "asc" | "desc" = "asc";
+
+    if(sortConfig && sortConfig.key === key && sortConfig.direction === "asc") {
+      direction = "desc";
+    }
+
+    const sorted = [...rows].sort((a, b) => {
+      if (a[key] < b[key]) {
+        return direction === "asc" ? -1 : 1;
+      }
+      if (a[key] > b[key]) {
+        return direction === "asc" ? 1 : -1;
+      }
+      return 0;
+    });
+    setSortedRows(sorted);
+    setSortConfig({ key, direction});
+  }
+
   const handleRowCheckboxChange = (index: number) => {
     setSelectedRows((prevSelected) => {
       const newSelected = new Set(prevSelected);
@@ -124,15 +156,17 @@ const TableSection: React.FC<TableSectionProps> = ({
                       />
                   </div>
                 </th>
-                <th className="py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400">
+                <th className="py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400 cursor-pointer" onClick={() => handleSort("domain")}>
                     <div className="flex items-center gap-2">
                         <span>Domain</span>
+                        {sortConfig?.key === "domain" && (sortConfig.direction === "asc" ? "▲" : "▼")}
                         <MdFilterList />
+                        
                     </div>
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400">Tools</th>
 
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 tracking-wider dark:text-gray-400 relative ">
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 tracking-wider dark:text-gray-400 relative" onClick={() => handleSort("RD")}>
                   <div className="flex items-center gap-2">
                     <span className="group relative cursor-pointer">
                       RD
@@ -143,38 +177,45 @@ const TableSection: React.FC<TableSectionProps> = ({
                       </div>
                     </span>
 
+                    {sortConfig?.key === "RD" && (sortConfig.direction === "asc" ? "▲" : "▼")}
+
                     <FilterDropdown onFilterChange={handleFilterChange} />
+                    
                     
                   </div>
                 </th>
                 
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400">
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400" onClick={() => handleSort("TF")}>
                     <div className="flex items-center gap-2">
-                        <span>TF</span>
+                        <span className="cursor-pointer">TF</span>
+                        {sortConfig?.key === "TF" && (sortConfig.direction === "asc" ? "▲" : "▼")}
+                        <FilterDropdown onFilterChange={handleFilterChange} />
+                    </div>
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400" onClick={() => handleSort("CF")}>
+                    <div className="flex items-center gap-2">
+                        <span className="cursor-pointer">CF</span>
+                        {sortConfig?.key === "CF" && (sortConfig.direction === "asc" ? "▲" : "▼")}
                         <FilterDropdown onFilterChange={handleFilterChange} />
                     </div>
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400">
                     <div className="flex items-center gap-2">
-                        <span>CF</span>
-                        <FilterDropdown onFilterChange={handleFilterChange} />
-                    </div>
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400">
-                    <div className="flex items-center gap-2">
-                        <span>TTF</span>
+                        <span className="cursor-pointer">TTF</span>
                         <MdFilterList />
                     </div>
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400">
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400" onClick={() => handleSort("price")}>
                     <div className="flex items-center gap-2">
-                        <span>Best Price</span>
+                        <span className="cursor-pointer">Best Price</span>
+                        {sortConfig?.key === "price" && (sortConfig.direction === "asc" ? "▲" : "▼")}
                         <FilterDropdown onFilterChange={handleFilterChange} />
                     </div>
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400">
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400" onClick={() => handleSort("keyword")}>
                     <div className="flex items-center gap-2">
-                        <span>Keyword</span>
+                        <span className="cursor-pointer">Keyword</span>
+                        {sortConfig?.key === "keyword" && (sortConfig.direction === "asc" ? "▲" : "▼")}
                         <MdFilterList />
                     </div>
                     
@@ -185,7 +226,7 @@ const TableSection: React.FC<TableSectionProps> = ({
             </tr>
           </thead>
           <tbody className="bg-white dark:bg-gray-700">
-            {rows.map((row, idx) => (
+            {sortedRows.map((row, idx) => (
               <tr key={idx} 
                   className="hover:bg-blue-100 hover:rounded-3xl hover:scale-y-60 transition-all duration-100"
                   onClick={() => handleRowCheckboxChange(idx)}>
@@ -335,7 +376,14 @@ const TableSection: React.FC<TableSectionProps> = ({
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{row.keyword}</td>
 
                 <td className="py-4 whitespace-nowrap text-sm text-blue-500 dark:text-blue-300" onClick={(e) => e.stopPropagation()}>
-                  <div className=" flex justify-center">
+                  <div 
+                    className=" flex justify-center cursor-pointer" 
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedRowData(row); // Set row data
+                        setSidebarVisible(true); // Open sidebar
+                      }}
+                  >
                       <FaList style={{ transform: "scaleX(-1)" }} />
                   </div>
                   
@@ -345,6 +393,12 @@ const TableSection: React.FC<TableSectionProps> = ({
           </tbody>
         </table>
       </div>
+      {/* Sidebar */}
+      <RightSidebar
+        visible={sidebarVisible}
+        data={selectedRowData}
+        onClose={() => setSidebarVisible(false)}
+      />
     </div>
   );
 };
