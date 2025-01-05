@@ -22,15 +22,17 @@ export default function ResultsView({ keywords, onBack }) {
       ttf: "Society/Relationships",
       bestPrice: "275€",
       source : "PaperClub",
+      keyword: "best vpn",
     },
     {
-      domain: "http://localhost:1212/dashboard",
+      domain: "http://localhost:1212/",
       rd: 1400,
       tf: 30,
       cf: 62,
       ttf: "Recreation/Travel",
       bestPrice: "15519€",
       source : "Seojungle",
+      keyword: "best cheap vpn",
     },
     // Add more rows here
   ];

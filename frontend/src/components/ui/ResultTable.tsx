@@ -11,7 +11,8 @@ interface Row {
   cf: number;
   ttf: string;
   bestPrice: string;
-  source : string
+  source: string;
+  keyword: string;
 }
 
 interface TableSectionProps {
@@ -121,6 +122,9 @@ const TableSection: React.FC<TableSectionProps> = ({
                     </div>
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400">
+                    Keyword
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400">
                     All Prices
                 </th>
             </tr>
@@ -141,11 +145,11 @@ const TableSection: React.FC<TableSectionProps> = ({
                 <td className="py-4 whitespace-nowrap text-sm text-blue-500 dark:text-blue-300">{row.domain}</td>
                 <td className="px-6 py-4">
                   <div className="flex gap-1 items-center justify-center">
-                      <Image
-                                src={'/images/icons/IconMajesctic.svg'}
-                                alt="IconMajesctic"
-                                width={16}
-                                height={16}
+                        <Image
+                            src={'/images/icons/IconMajesctic.svg'}
+                            alt="IconMajesctic"
+                            width={16}
+                            height={16}
                             />
                         <Image
                             src={'/images/icons/IconSeobserver.svg'}
@@ -189,6 +193,7 @@ const TableSection: React.FC<TableSectionProps> = ({
                       {row.source}
                   </div>   
                 </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{row.keyword}</td>
                 <td className="py-4 whitespace-nowrap text-sm text-blue-500 dark:text-blue-300">
                   <div className=" flex justify-center">
                       <FaList style={{ transform: "scaleX(-1)" }} />

@@ -11,7 +11,7 @@ interface KeywordItem {
 interface BacklinkData {
   domain: string;
   keyword: string;
-  RD: number;
+  RD: string;
   TF: number;
   CF: number;
   price: number;
@@ -87,7 +87,7 @@ export const bulkKeywordSearchEndpoint: Endpoint = {
         return {
           domain: doc.domain,
           keyword,
-          RD: doc.RD,
+          RD: doc.RD > 1000 ? `${(doc.RD / 1000).toFixed(1)}k` : doc.RD,
           TF: doc.TF,
           CF: doc.CF,
           price: doc.price,
@@ -95,20 +95,21 @@ export const bulkKeywordSearchEndpoint: Endpoint = {
         };
       });
 
-      // Identify missing domains
+      const backlink_found = result[0]?.total_count || 0;
       const foundDomains = backlinks.map((backlink) => backlink.domain);
-      const missingDomains = domains.filter((domain) => !foundDomains.includes(domain));
-      const nonMissingCount = foundDomains.length;
-      const totalCount = result[0]?.total_count || 0;
+      const foundCount = `${foundDomains.length}/${backlink_found}`;
+      const minPrice = backlinks.reduce((total, backlink) => total + backlink.price, 0);
+      const avgPrice = Math.floor(minPrice / foundDomains.length);
+
+      // const missingDomains = domains.filter((domain) => !foundDomains.includes(domain));
 
       // Respond with the processed data
       return new Response(
         JSON.stringify({
-          totalCount,
-          domains,
+          foundCount,
+          avgPrice,
+          minPrice,
           backlinks,
-          missingDomains,
-          nonMissingCount,
         }),
         { status: 200, headers: { 'Content-Type': 'application/json' } }
       );
