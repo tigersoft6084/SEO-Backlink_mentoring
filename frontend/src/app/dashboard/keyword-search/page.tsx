@@ -7,7 +7,7 @@ import ResultsView from "./ResultsView";
 export default function App() {
   const {
     currentView,
-    keywords,
+    responseData,
     switchToResults,
     switchToInput,
   } = useKeywordSearchView();
@@ -20,7 +20,7 @@ export default function App() {
           onSearch={switchToResults}
         />
       ) : (
-        <ResultsView keywords={keywords} onBack={switchToInput} />
+        <ResultsView responseData={responseData} onBack={switchToInput} />
       )}
     </div>
   );

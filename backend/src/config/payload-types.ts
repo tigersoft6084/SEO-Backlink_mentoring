@@ -128,7 +128,7 @@ export interface Backlink {
   TF: number;
   CF: number;
   price: number;
-  source: 'paper_club' | 'press_whizz' | 'bulldoz' | 'prensalink' | 'seoJungle';
+  source: 'Paperclub' | 'Presswhizz' | 'Bulldoz' | 'Prensalink' | 'Seojungle';
   'expiry date'?: string | null;
   dateFetched: string;
   updatedAt: string;
