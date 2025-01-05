@@ -13,10 +13,10 @@ export default function App() {
   } = useKeywordSearchView();
 
   return (
-    <div className="flex-1 p-6 bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+    <div className="flex-1 p-6 bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100">
       {currentView === "input" ? (
         <InputView
-          placeholder="Enter keywords, one per line..."
+          placeholder="Enter up to 20 keywords (1 per line) to scan Google SERPs."
           onSearch={switchToResults}
         />
       ) : (

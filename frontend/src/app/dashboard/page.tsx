@@ -45,7 +45,7 @@ export default function Home() {
       case "Bulk Search":
         return <BulkSearch placeholder="Enter up to 30000 domains or URLs (1 per line) to see if they are available on the marketplaces" />;
       case "Keyword Search":
-        return <KeywordSearch placeholder="Enter up to 20 keywords (1 per line) to scan Google SERPs." />;
+        return <KeywordSearch/>;
       case "Competitive Analysis":
         return <CompetitiveAnalysis placeholder="Enter up to 15 competitor domain (1 per line) names to analyze their backlinks" />;
       case "Projects":
@@ -55,11 +55,11 @@ export default function Home() {
       case "Serp Scanner":
         return <SerpScanner placeholder="Enter a keyword to scan the backlinks of the top 10 search results" />;
       case "Support":
-        return <SerpScanner placeholder="Enter a keyword to scan the backlinks of the top 10 search results" />;
+        return <div/>;
       case "Account Settings":
         return <AccountSettings/>;
       default:
-        return <BulkSearch placeholder="Enter up to 30000 domains or URLs (1 per line) to see if they are available on the marketplaces" />;
+        return <div/>;
       }
     };
 
