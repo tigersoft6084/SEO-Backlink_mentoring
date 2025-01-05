@@ -1,0 +1,39 @@
+// StatsSection.tsx
+import { FaArrowUp, FaArrowDown } from "react-icons/fa";
+import { FaUpDown } from "react-icons/fa6";
+import { TbRadarFilled } from "react-icons/tb";
+
+export default function StatsSection() {
+  return (
+    <div className="flex items-center gap-16 py-4">
+      <div className="text-center">
+        <p className="text-gray-600 dark:text-gray-400 flex items-center justify-center gap-2">
+          <TbRadarFilled className="text-blue-600" size={20} />
+          <span>BACKLINKS FOUND</span>
+        </p>
+        <p className="text-2xl font-bold">1859</p>
+      </div>
+      <div className="text-center">
+        <p className="text-gray-600 dark:text-gray-400 flex items-center justify-center gap-2">
+          <FaUpDown className="text-orange-500" size={20} />
+          <span>AVG DOMAIN PRICE</span>
+        </p>
+        <p className="text-2xl font-bold">608€</p>
+      </div>
+      <div className="text-center">
+        <p className="text-gray-600 dark:text-gray-400 flex items-center justify-center gap-2">
+          <FaArrowDown className="text-green-600" size={20} />
+          <span>MIN BUDGET</span>
+        </p>
+        <p className="text-2xl font-bold">1 071 473€</p>
+      </div>
+      <div className="text-center">
+        <p className="text-gray-600 dark:text-gray-400 flex items-center justify-center gap-2">
+          <FaArrowUp className="text-red-600" size={20} />
+          <span>MAX BUDGET</span>
+        </p>
+        <p className="text-2xl font-bold">1 997 480€</p>
+      </div>
+    </div>
+  );
+}
