@@ -16,6 +16,7 @@ interface BacklinkData {
   CF: number;
   price: number;
   source: string;
+  other_sources: { source: string; price: number }[];
 }
 
 export const bulkKeywordSearchEndpoint: Endpoint = {
@@ -77,23 +78,41 @@ export const bulkKeywordSearchEndpoint: Endpoint = {
         }, entries[0])[0];
       };
 
-      // Map backlinks and determine relevant keywords
-      const backlinks: BacklinkData[] = backlinksData.docs.map((doc: any) => {
+      // Filter to get unique domains with the smallest price
+      const backlinksMap: Record<string, BacklinkData> = {};
+
+      backlinksData.docs.forEach((doc: any) => {
         const relatedItem = items.find((item) => item.domain === doc.domain);
         const keyword = relatedItem
           ? getKeywordWithHighestValue(relatedItem.keywords_positions)
           : '';
 
-        return {
-          domain: doc.domain,
-          keyword,
-          RD: doc.RD > 1000 ? `${(doc.RD / 1000).toFixed(1)}k` : doc.RD,
-          TF: doc.TF,
-          CF: doc.CF,
-          price: doc.price,
-          source: doc.source,
-        };
+        const existingBacklink = backlinksMap[doc.domain];
+        if (!existingBacklink || doc.price < existingBacklink.price) {
+          const otherSources = backlinksData.docs
+            .filter(
+              (source: any) =>
+                source.domain === doc.domain && source.source !== doc.source
+            )
+            .map((source: any) => ({
+              source: source.source,
+              price: source.price,
+            }));
+
+          backlinksMap[doc.domain] = {
+            domain: doc.domain,
+            keyword,
+            RD: doc.RD > 1000 ? `${(doc.RD / 1000).toFixed(1)}k` : doc.RD,
+            TF: doc.TF,
+            CF: doc.CF,
+            price: doc.price,
+            source: doc.source,
+            other_sources: otherSources,
+          };
+        }
       });
+
+      const backlinks = Object.values(backlinksMap);
 
       const backlink_found = result[0]?.total_count || 0;
       const foundDomains = backlinks.map((backlink) => backlink.domain);
@@ -101,8 +120,6 @@ export const bulkKeywordSearchEndpoint: Endpoint = {
       const minPrice = backlinks.reduce((total, backlink) => total + backlink.price, 0);
       const avgPrice = Math.floor(minPrice / foundDomains.length);
       const aboutPrice = [foundCount, avgPrice, minPrice];
-
-      // const missingDomains = domains.filter((domain) => !foundDomains.includes(domain));
 
       // Respond with the processed data
       return new Response(
