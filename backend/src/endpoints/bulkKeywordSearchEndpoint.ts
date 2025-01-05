@@ -97,18 +97,18 @@ export const bulkKeywordSearchEndpoint: Endpoint = {
 
       const backlink_found = result[0]?.total_count || 0;
       const foundDomains = backlinks.map((backlink) => backlink.domain);
-      const foundCount = `${foundDomains.length}/${backlink_found}`;
+      const foundCount = `${foundDomains.length} / ${backlink_found}`;
       const minPrice = backlinks.reduce((total, backlink) => total + backlink.price, 0);
       const avgPrice = Math.floor(minPrice / foundDomains.length);
+      const aboutPrice = [foundCount, avgPrice, minPrice];
 
       // const missingDomains = domains.filter((domain) => !foundDomains.includes(domain));
 
       // Respond with the processed data
       return new Response(
         JSON.stringify({
-          foundCount,
-          avgPrice,
-          minPrice,
+          keywords,
+          aboutPrice,
           backlinks,
         }),
         { status: 200, headers: { 'Content-Type': 'application/json' } }

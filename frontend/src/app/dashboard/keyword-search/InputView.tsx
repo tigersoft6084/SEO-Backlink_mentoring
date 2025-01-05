@@ -35,8 +35,8 @@ export default function InputView({ placeholder, onSearch }) {
         });
 
         if (response.ok) {
-          const data = await response.json();
-          onSearch(keywordsArray);
+          const responseJSON = await response.json();
+          onSearch(responseJSON);
         } else {
           const errorData = await response.json();
           alert(`Error: ${errorData.error}`);

@@ -6,13 +6,13 @@ import { FaList } from "react-icons/fa";
 
 interface Row {
   domain: string;
-  rd: number;
-  tf: number;
-  cf: number;
-  ttf: string;
-  bestPrice: string;
-  source: string;
   keyword: string;
+  RD: number;
+  TF: number;
+  CF: number;
+  price: string;
+  source: string;
+
 }
 
 interface TableSectionProps {
@@ -122,10 +122,14 @@ const TableSection: React.FC<TableSectionProps> = ({
                     </div>
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400">
-                    Keyword
+                    <div className="flex items-center gap-2">
+                        <span>Keyword</span>
+                        <MdFilterList />
+                    </div>
+                    
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400">
-                    All Prices
+                    All
                 </th>
             </tr>
           </thead>
@@ -178,17 +182,17 @@ const TableSection: React.FC<TableSectionProps> = ({
                   </div>
                     
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{row.rd}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{row.tf}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{row.cf}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{row.ttf}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{row.RD}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{row.TF}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{row.CF}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">Society/Relationships</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">
                   <div className="flex items-center gap-2">
                       <button 
                             className="w-24 h-7 px-3 py-1 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg shadow hover:from-blue-600 hover:to-purple-600 flex items-center justify-center gap-2"
                         >
                           <TiShoppingCart />
-                          {row.bestPrice}
+                          {row.price}
                       </button>
                       {row.source}
                   </div>   

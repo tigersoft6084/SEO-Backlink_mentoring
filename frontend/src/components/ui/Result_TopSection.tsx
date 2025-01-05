@@ -1,16 +1,16 @@
 import { FaSearch } from "react-icons/fa";
 
 interface TopSectionProps {
-  keywords: string[];
+  responseData: string[];
   onBack: () => void;
   maxKeywordsToShow: number;
 }
 
-export default function TopSection({ keywords, onBack, maxKeywordsToShow }: TopSectionProps) {
+export default function TopSection({ responseData, onBack, maxKeywordsToShow }: TopSectionProps) {
   return (
     <div className="flex justify-between items-center mb-4">
       <div className="flex gap-2 flex-wrap">
-        {keywords.slice(0, maxKeywordsToShow).map((keyword, index) => (
+        {responseData.slice(0, maxKeywordsToShow).map((keyword, index) => (
           <span
             key={index}
             className="px-3 py-1 bg-gray-200 text-gray-800 rounded-full dark:bg-gray-700 dark:text-gray-300"
@@ -18,9 +18,9 @@ export default function TopSection({ keywords, onBack, maxKeywordsToShow }: TopS
             {keyword}
           </span>
         ))}
-        {keywords.length > maxKeywordsToShow && (
+        {responseData.length > maxKeywordsToShow && (
           <span className="px-3 py-1 text-blue-600 dark:text-blue-300">
-            and {keywords.length - maxKeywordsToShow} more
+            and {responseData.length - maxKeywordsToShow} more
           </span>
         )}
       </div>
