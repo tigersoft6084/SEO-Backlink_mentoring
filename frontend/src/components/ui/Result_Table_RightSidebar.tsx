@@ -25,12 +25,41 @@ interface RightSidebarProps {
   onClose: () => void;
 }
 
+const validSellers = [
+  "Ereferer",
+  "paper_club",
+  "Bulldoz",
+  "prensalink",
+  "Linkatomic",
+  "Backlinked",
+  "Conexoo",
+  "Prnews",
+  "seoJungle",
+  "Soumette",
+  "Dealerdetemps",
+  "123media",
+  "Mynilinks",
+  "Unancor",
+  "Linkbroker",
+  "Linkbuilders",
+  "Whitepress",
+  "Linkavista",
+  "Develink",
+  "Boosterlink",
+  "Mistergoodlink",
+  "Growwer",
+  "Publisuites",
+  "Motherlink",
+  "Getalink",
+  "Lenmilink",
+  "Presswhizz",
+];
+
 const RightSidebar: React.FC<RightSidebarProps> = ({ visible, data, sellers, onClose }) => {
   if (!visible || !data) return null;
 
   return (
-    <div className="px-4 py-4 fixed top-0 right-0 h-full w-96 bg-white dark:bg-gray-700 shadow-lg z-50">
-
+    <div className="px-4 fixed top-0 right-0 h-full w-96 bg-white dark:bg-gray-700 shadow-lg z-50 flex flex-col">
       {/* Close Button */}
       <div className="p-4 dark:border-gray-500">
         <button
@@ -43,9 +72,9 @@ const RightSidebar: React.FC<RightSidebarProps> = ({ visible, data, sellers, onC
 
       {/* Domain Name */}
       <div className="p-4 text-blue-600 text-xl font-bold text-center">
-        <a 
-          href={`https://${data.domain}`} 
-          target="_blank" 
+        <a
+          href={`https://${data.domain}`}
+          target="_blank"
           rel="noopener noreferrer"
           className="hover:underline"
         >
@@ -54,7 +83,7 @@ const RightSidebar: React.FC<RightSidebarProps> = ({ visible, data, sellers, onC
       </div>
 
       {/* Price and Metrics */}
-      <div className="p-4 flex items-center justify-between gap-[96px]">
+      <div className="p-4 flex items-center justify-between">
         <div className="flex items-center space-x-6">
           <div className="flex flex-col items-center">
             <span className="text-sm text-gray-600 font-bold">RD</span>
@@ -75,50 +104,53 @@ const RightSidebar: React.FC<RightSidebarProps> = ({ visible, data, sellers, onC
       </div>
 
       {/* Divider */}
-      <hr className="border-gray-300 dark:border-gray-600" />
+      <hr className="border-gray-300 dark:border-gray-600 py-2" />
 
       {/* Sellers and Prices Table */}
-      <div className="p-4 flex justify-center items-center space-x-[96px]">
-
-        <div className="overflow-y-auto max-h-64 justify-center items-center">
-
-          <table className="w-full text-center border-collapse justify-center items-center">
-
-            <thead>
-              <tr>
-                <th className="py-2 text-sm font-bold text-gray-700 dark:text-gray-300 text-center">Seller</th>
-                <th className="py-2 text-sm font-bold text-gray-700 dark:text-gray-300 text-center">Price</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {sellers.map((seller, index) => (
-                <tr key={index} className="dark:border-gray-600">
+      <div className="flex-grow overflow-y-auto">
+        <table className="w-full border-collapse text-center">
+          <thead>
+            <tr>
+              <th className="py-2 text-sm font-bold text-gray-700 dark:text-gray-300">
+                Seller
+              </th>
+              <th className="py-2 text-sm font-bold text-gray-700 dark:text-gray-300">
+                Price
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {validSellers.map((validSeller) => {
+              const matchingSeller = sellers.find(
+                (seller) => seller.source === validSeller
+              );
+              return (
+                <tr key={validSeller} className="dark:border-gray-600">
                   {/* Seller Column */}
-                  <td className="py-2 px-6 text-gray-800 dark:text-gray-200 text-left">
-                    {seller.source}
+                  <td className="py-2 px-6 text-gray-800 dark:text-gray-200 text-center">
+                    {validSeller}
                   </td>
 
                   {/* Price Column */}
-                  <td className="py-2 px-6 text-gray-800 dark:text-gray-200 text-right">
-                    <DynamicPrice
-                      source={seller.source}
-                      price={seller.price}
-                      domain={data.domain}
-                      onClick={(e) => e.stopPropagation()}
-                      showSource={false}
-                    />
+                  <td className="py-2 px-6 text-gray-800 dark:text-gray-200 text-center flex justify-center items-center">
+                    {matchingSeller ? (
+                      <DynamicPrice
+                        source={matchingSeller.source}
+                        price={matchingSeller.price}
+                        domain={data.domain}
+                        onClick={(e) => e.stopPropagation()}
+                        showSource={false}
+                      />
+                    ) : (
+                      <IoCloseSharp size={20} className="text-red-500" />
+                    )}
                   </td>
                 </tr>
-              ))}
-            </tbody>
-
-          </table>
-
-        </div>
-
+              );
+            })}
+          </tbody>
+        </table>
       </div>
-
     </div>
   );
 };
