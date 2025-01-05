@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import StatsSection from "../../../components/ui/StatsSection";
 import ActionButtons from "../../../components/ui/ActionButtons";
 import TopSection from "../../../components/ui/Result_TopSection";
-import TableSection from "../../../components/ui/ResultTable";
+import TableSection from "../../../components/ui/Result_Table";
 
 export default function ResultsView({ responseData, onBack }) {
   const maxKeywordsToShow = 3;

@@ -13,7 +13,7 @@ export default function TopSection({ responseData, onBack, maxKeywordsToShow }: 
         {responseData.slice(0, maxKeywordsToShow).map((keyword, index) => (
           <span
             key={index}
-            className="px-3 py-1 bg-gray-200 text-gray-800 rounded-full dark:bg-gray-700 dark:text-gray-300"
+            className="px-3 py-1 bg-gray-300 text-gray-800 rounded-full dark:bg-gray-700 dark:text-gray-300"
           >
             {keyword}
           </span>

@@ -41,11 +41,11 @@ export const Backlinks: CollectionConfig = {
       name: 'source',
       type: 'select', // Source of the backlink (Paper Club, Press Whizz, etc.)
       options: [
-        { label: 'Paper Club', value: 'paper_club' },
-        { label: 'Press Whizz', value: 'press_whizz' },
-        { label: 'Bulldoz', value: 'bulldoz' },
-        { label: 'Prensalink', value: 'prensalink' },
-        { label: 'SeoJungle', value: 'seoJungle' },
+        { label: 'Paperclub', value: 'Paperclub' },
+        { label: 'Presswhizz', value: 'Presswhizz' },
+        { label: 'Bulldoz', value: 'Bulldoz' },
+        { label: 'Prensalink', value: 'Prensalink' },
+        { label: 'Seojungle', value: 'Seojungle' },
         // Add more sources as needed
       ],
       required: true,

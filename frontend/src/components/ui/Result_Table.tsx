@@ -61,6 +61,41 @@ const TableSection: React.FC<TableSectionProps> = ({
     return "indeterminate"; // Some rows selected
   };
 
+  const getDynamicPrice = (source, price, domain) => {
+    switch (source) {
+      case "paper_club":
+        return (
+          <a
+            href={`https://app.paper.club/annonceur/resultats?type=simple&term=${domain}`}
+            target="_blank"
+          >
+            {price}
+          </a>
+        );
+      case "seoJungle":
+        return (
+          <a
+            href={`https://app.seo-jungle.com/search?searchField=${domain}&priceMax=110.6`}
+            target="_blank"
+          >
+            {price}
+          </a>
+        );
+      case "prensalink":
+        return (
+          <a
+            href={`https://shop.prensalink.com/products/medias`}
+            target="_blank"
+          >
+            {price}
+          </a>
+        );
+      default:
+        return price; // Default price
+    }
+  };
+  
+
   useEffect(() => {
     // When rows are selected/deselected, update selectAll state dynamically
     setSelectAll(selectedRows.size === rows.length);
@@ -136,6 +171,7 @@ const TableSection: React.FC<TableSectionProps> = ({
           <tbody className="bg-white dark:bg-gray-700">
             {rows.map((row, idx) => (
               <tr key={idx}>
+
                 <td className="px-6 whitespace-nowrap text-center">
                   <div className="flex items-center justify-center">
                       <input
@@ -146,58 +182,108 @@ const TableSection: React.FC<TableSectionProps> = ({
                       />
                   </div>
                 </td>
-                <td className="py-4 whitespace-nowrap text-sm text-blue-500 dark:text-blue-300">{row.domain}</td>
+
+                <td className="py-4 whitespace-nowrap text-sm text-blue-500 dark:text-blue-300">
+                    <a 
+                      href={`https://${row.domain}`} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="hover:underline"
+                    >
+                      {row.domain}
+                    </a>
+                </td>
+
                 <td className="px-6 py-4">
                   <div className="flex gap-1 items-center justify-center">
-                        <Image
-                            src={'/images/icons/IconMajesctic.svg'}
-                            alt="IconMajesctic"
-                            width={16}
-                            height={16}
+                        <a 
+                            href={`https://majestic.com/reports/site-explorer?q=${row.domain}&oq=${row.domain}&IndexDataSource=F`} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                        >
+                            <Image
+                              src={'/images/icons/IconMajesctic.svg'}
+                              alt="IconMajesctic"
+                              width={16}
+                              height={16}
                             />
+                        </a>
+
                         <Image
                             src={'/images/icons/IconSeobserver.svg'}
                             alt="IconSeobserver"
                             width={16}
                             height={16}
                         />
-                        <Image
-                            src={'/images/icons/IconSemrush.svg'}
-                            alt="IconSemrush"
-                            width={16}
-                            height={16}
-                        />
-                        <Image
-                            src={'/images/icons/IconAhrefs.svg'}
-                            alt="IconAhrefs"
-                            width={16}
-                            height={16}
-                        />
-                        <Image
-                            src={'/images/icons/IconHaloScanMonochrome.svg'}
-                            alt="IconHaloScanMonochrome"
-                            width={16}
-                            height={16}
-                        />
+
+                        <a 
+                            href={`https://www.semrush.com/analytics/overview/?q=${row.domain}&protocol=https&searchType=domain`} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                        >
+                            <Image
+                                src={'/images/icons/IconSemrush.svg'}
+                                alt="IconSemrush"
+                                width={16}
+                                height={16}
+                            />
+                        </a>
+
+                        <a 
+                            href={`https://app.ahrefs.com/v2-site-explorer/overview?backlinksChartMode=metrics&backlinksChartPerformanceSources=domainRating%7C%7CurlRating&backlinksCompetitorsSource=%22UrlRating%22&backlinksRefdomainsSource=%22RefDomainsNew%22&bestFilter=all&brandedTrafficSource=Branded&chartGranularity=daily&chartInterval=all&competitors=&countries=&country=all&generalChartBrandedTraffic=Branded%7C%7CNon-Branded&generalChartIntents=branded%7C%7Ccommercial%7C%7Cinformational%7C%7Clocal%7C%7Cnavigational%7C%7Ctransactional&generalChartMode=metrics&generalChartPerformanceSources=organicTraffic%7C%7CpaidTraffic%7C%7CrefDomains&generalChartTopPosition=top11_20%7C%7Ctop21_50%7C%7Ctop3%7C%7Ctop4_10%7C%7Ctop51&generalCompetitorsSource=%22OrganicTraffic%22&generalCountriesSource=organic-traffic&generalPagesByTrafficChartMode=Percentage&generalPagesByTrafficSource=Pages%7C%7CTraffic&highlightChanges=none&intentsMainSource=informational&keywordsSource=all&organicChartBrandedTraffic=Branded%7C%7CNon-Branded&organicChartIntents=branded%7C%7Ccommercial%7C%7Cinformational%7C%7Clocal%7C%7Cnavigational%7C%7Ctransactional&organicChartMode=metrics&organicChartPerformanceSources=impressions%7C%7CorganicTraffic%7C%7CorganicTrafficValue&organicChartTopPosition=top11_20%7C%7Ctop21_50%7C%7Ctop3%7C%7Ctop4_10%7C%7Ctop51&organicCompetitorsSource=%22OrganicTraffic%22&organicCountriesSource=organic-traffic&organicPagesByTrafficChartMode=Percentage&organicPagesByTrafficSource=Pages%7C%7CTraffic&overview_tab=general&paidTrafficSources=cost%7C%7Ctraffic&target=${row.domain}&topLevelDomainFilter=all&topOrganicKeywordsMode=normal&topOrganicPagesMode=normal&trafficType=organic&volume_type=monthly`} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                        >
+                            <Image
+                                src={'/images/icons/IconAhrefs.svg'}
+                                alt="IconAhrefs"
+                                width={16}
+                                height={16}
+                            />
+                        </a>
+
+                        <a 
+                            href={`https://tool.haloscan.com/domain/overview?input=${row.domain}&mode=root&autoLoad=true`} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                        >
+                            <Image
+                                src={'/images/icons/IconHaloScanMonochrome.svg'}
+                                alt="IconHaloScanMonochrome"
+                                width={16}
+                                height={16}
+                            />
+                        </a>
+                        
+                        
                   </div>
                     
                 </td>
+
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{row.RD}</td>
+
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{row.TF}</td>
+
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{row.CF}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">Society/Relationships</td>
+
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">
+                    Society/Adult
+                </td>
+
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">
                   <div className="flex items-center gap-2">
                       <button 
                             className="w-24 h-7 px-3 py-1 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg shadow hover:from-blue-600 hover:to-purple-600 flex items-center justify-center gap-2"
                         >
                           <TiShoppingCart />
-                          {row.price}
+                          {getDynamicPrice(row.source, row.price, row.domain)}
                       </button>
                       {row.source}
                   </div>   
                 </td>
+
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{row.keyword}</td>
+
                 <td className="py-4 whitespace-nowrap text-sm text-blue-500 dark:text-blue-300">
                   <div className=" flex justify-center">
                       <FaList style={{ transform: "scaleX(-1)" }} />
