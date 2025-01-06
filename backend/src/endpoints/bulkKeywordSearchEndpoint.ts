@@ -99,6 +99,11 @@ export const bulkKeywordSearchEndpoint: Endpoint = {
               price: source.price,
             }));
 
+            otherSources.push({
+              source : doc.source,
+              price : doc.price,
+            })
+
           backlinksMap[doc.domain] = {
             domain: doc.domain,
             keyword,
