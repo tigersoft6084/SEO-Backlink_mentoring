@@ -1,3 +1,4 @@
+
 import { CollectionConfig } from 'payload';
 
 export const Backlinks: CollectionConfig = {
@@ -38,10 +39,21 @@ export const Backlinks: CollectionConfig = {
       required: true,
     },
     {
+      name: 'TTF',
+      type: 'text', // Price
+      required: true,
+    },
+    {
+      name: 'Title',
+      type: 'text', // Price
+      required: true,
+    },
+    {
       name: 'source',
       type: 'select', // Source of the backlink (Paper Club, Press Whizz, etc.)
       options: [
         { label: 'Paperclub', value: 'Paperclub' },
+        { label: 'Ereferer', value: 'Ereferer' },
         { label: 'Presswhizz', value: 'Presswhizz' },
         { label: 'Bulldoz', value: 'Bulldoz' },
         { label: 'Prensalink', value: 'Prensalink' },

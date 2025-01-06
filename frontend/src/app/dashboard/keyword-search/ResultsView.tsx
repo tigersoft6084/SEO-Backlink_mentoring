@@ -1,6 +1,6 @@
 // ResultsView.tsx
 import { useState, useEffect } from "react";
-import StatsSection from "../../../components/ui/StatsSection";
+import StatsSection from "../../../components/ui/Result_StatsSection";
 import ActionButtons from "../../../components/ui/ActionButtons";
 import TopSection from "../../../components/ui/Result_TopSection";
 import TableSection from "../../../components/ui/Result_Table";

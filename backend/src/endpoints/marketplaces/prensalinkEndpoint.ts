@@ -73,7 +73,7 @@ export const fetchprensalinkEndpoint: Endpoint = {
               TF,
               CF,
               price,
-              source: 'prensalink', // Hardcoded source for Paper Club
+              source: 'Prensalink', // Hardcoded source for Paper Club
               dateFetched: new Date().toISOString(), // Current date
             },
           });

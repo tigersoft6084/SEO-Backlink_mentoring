@@ -37,7 +37,7 @@ export default function StatsSection({responseData} : StatsSectionProps) {
           <FaArrowUp className="text-red-600" size={20} />
           <span>MAX BUDGET</span>
         </p>
-        <p className="text-2xl font-bold">1 997 480€</p>
+        <p className="text-2xl font-bold">{responseData[3]} €</p>
       </div>
     </div>
   );

@@ -53,7 +53,7 @@ const processInBatches = async (data: any[], batchSize: number, payload: any) =>
             TF,
             CF,
             price,
-            source: 'seoJungle', // Hardcoded source for SeoJungle
+            source: 'Seojungle', // Hardcoded source for SeoJungle
             dateFetched: new Date().toISOString(), // Current date
           },
         });
