@@ -15,7 +15,7 @@ interface Row {
   CF: number;
   price: number;
   source: string;
-  other_sources: any;
+  allSources: any;
 }
 
 interface TableSectionProps {
@@ -310,7 +310,7 @@ const TableSection: React.FC<TableSectionProps> = ({
       <RightSidebar
         visible={sidebarVisible}
         data={selectedRowData}
-        sellers={selectedRowData?.other_sources || []}
+        sellers={selectedRowData?.allSources || []}
         onClose={() => setSidebarVisible(false)}
       />
     </div>

@@ -16,7 +16,7 @@ interface BacklinkData {
   CF: number;
   price: number;
   source: string;
-  other_sources: { source: string; price: number }[];
+  allSources: { source: string; price: number }[];
 }
 
 export const bulkKeywordSearchEndpoint: Endpoint = {
@@ -112,7 +112,7 @@ export const bulkKeywordSearchEndpoint: Endpoint = {
             CF: doc.CF,
             price: doc.price,
             source: doc.source,
-            other_sources: otherSources,
+            allSources: otherSources,
           };
         }
       });
