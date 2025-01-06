@@ -72,7 +72,7 @@ export const fetchPaperclubEndpoint: Endpoint = {
               TF,
               CF,
               price,
-              source: 'paper_club', // Hardcoded source for Paper Club
+              source: 'Paperclub', // Hardcoded source for Paper Club
               dateFetched: new Date().toISOString(), // Current date
             },
           });

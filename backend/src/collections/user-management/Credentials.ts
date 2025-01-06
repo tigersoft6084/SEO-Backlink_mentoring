@@ -78,6 +78,7 @@ export const Credentials: CollectionConfig = {
           options: [
             { label: 'DataForSeo', value: 'DataForSeo' },
             { label: 'PaperClub', value: 'PaperClub' },
+            { label: 'Ereferer', value: 'Ereferer' },
             { label: 'Link.Builders', value: 'Link.Builders' },
             { label: 'Prensalink', value: 'Prensalink' },
             { label: 'Seo-Jungle', value: 'Seo-Jungle' },

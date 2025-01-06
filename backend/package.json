@@ -24,7 +24,6 @@
     "cross-env": "^7.0.3",
     "google-auth-library": "^9.15.0",
     "graphql": "^16.8.1",
-    "lodash": "^4.17.21",
     "next": "15.1.0",
     "next-auth": "^4.24.11",
     "node-fetch": "^3.3.2",
@@ -33,12 +32,10 @@
     "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0",
     "payload": "latest",
-    "puppeteer": "^23.10.4",
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "sharp": "0.32.6",
     "ts-node": "^10.9.2",
-    "whois": "^2.14.2",
     "whoiser": "^1.18.0"
   },
   "devDependencies": {

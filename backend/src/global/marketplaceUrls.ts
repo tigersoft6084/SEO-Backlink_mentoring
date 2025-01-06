@@ -14,6 +14,8 @@ export const PaperClub_API_URL = 'https://app.paper.club/api/authenticate';
 
 export const SeoJungle_API_URL = 'https://api.seo-jungle.com/auth/signin';
 
+export const Ereferer_API_URL = 'https://en.ereferer.com/login_check';
+
 
 // URLs for Backlinks
 export const GET_BACKLINK_FROM_BACKLINKED_URL = "https://app.backlinked.com/api/contentlinks";
