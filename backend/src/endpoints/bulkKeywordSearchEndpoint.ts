@@ -124,7 +124,19 @@ export const bulkKeywordSearchEndpoint: Endpoint = {
       const foundCount = `${foundDomains.length} / ${backlink_found}`;
       const minPrice = backlinks.reduce((total, backlink) => total + backlink.price, 0);
       const avgPrice = Math.floor(minPrice / foundDomains.length);
-      const aboutPrice = [foundCount, avgPrice, minPrice];
+      const maxPrice = backlinks
+                          .map((backlink) => {
+                            if (backlink.allSources.length > 1) {
+                              // Get the maximum price if there are multiple items
+                              return Math.max(...backlink.allSources.map((source) => source.price));
+                            } else {
+                              // Return the price directly if there is only one item
+                              return backlink.allSources[0]?.price || 0;
+                            }
+                          })
+                          .reduce((sum, price) => sum + price, 0); // Sum up the maximum prices
+
+      const aboutPrice = [foundCount, avgPrice, minPrice, maxPrice];
 
       // Respond with the processed data
       return new Response(
