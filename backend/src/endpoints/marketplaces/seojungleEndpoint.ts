@@ -1,4 +1,4 @@
-import { getSeoJungleData } from '@/services/getBacklinks/seo-jungle';
+import { getBacklinksDataFromSeojungle } from '@/services/getBacklinksFromMarketplaces/seo-jungle';
 import { Endpoint } from 'payload';
 
 // Helper function to process data in batches
@@ -72,7 +72,7 @@ export const fetchSeoJungleEndpoint: Endpoint = {
   handler: async ({ payload }) => {
     try {
       // Fetch the SeoJungleData
-      const SeoJungleData = await getSeoJungleData();
+      const SeoJungleData = await getBacklinksDataFromSeojungle();
 
       if (!Array.isArray(SeoJungleData) || SeoJungleData.length === 0) {
         return new Response(

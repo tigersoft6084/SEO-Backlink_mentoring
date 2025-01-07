@@ -1,7 +1,7 @@
 import axios from "axios";
 import pLimit from "p-limit";
 import axiosRetry from "axios-retry";
-import { getTokenForPrensalink } from "../getTokens/prensalink";
+import { getTokenForPrensalink } from "../getTokensOrCookiesFromMarketplaces/prensalink";
 import { GET_BACKLINK_FROM_PRENSALINK_URLS } from "@/global/marketplaceUrls";
 import { BackLinkData, PrensalinkResult } from "@/types/backlink";
 
@@ -46,7 +46,7 @@ function getDomain(url: string): string {
   
 
 // Function to process URLs in batches with p-limit
-export const getPrensalinkData = async () => {
+export const getBacklinksDataFromPrensalink = async () => {
   const Token = await getTokenForPrensalink();
 
   console.log("Receive token from Prenalink : ", Token)

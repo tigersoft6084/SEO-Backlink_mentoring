@@ -44,9 +44,12 @@ export const Backlinks: CollectionConfig = {
       required: true,
     },
     {
+      name: 'Language',
+      type: 'text', // Price
+    },
+    {
       name: 'Title',
       type: 'text', // Price
-      required: true,
     },
     {
       name: 'source',

@@ -16,6 +16,8 @@ export const SeoJungle_API_URL = 'https://api.seo-jungle.com/auth/signin';
 
 export const Ereferer_API_URL = 'https://en.ereferer.com/login_check';
 
+export const Mistergoodlink_API_URL = 'https://app.mistergoodlink.com/sign-in';
+
 
 // URLs for Backlinks
 export const GET_BACKLINK_FROM_BACKLINKED_URL = "https://app.backlinked.com/api/contentlinks";
@@ -97,3 +99,5 @@ export const GET_BACKLINK_FROM_PRENSALINK_URLS = [
 ];
 
 export const GET_BACKLINK_FROM_SeoJungle_URL = "https://api.seo-jungle.com/support/search";
+
+export const GET_BACKLINK_FROM_Ereferer_URL = "https://en.ereferer.com/bo/exchange-site-find";

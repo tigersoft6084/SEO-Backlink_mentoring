@@ -1,5 +1,5 @@
 
-import { getPrensalinkData } from '@/services/getBacklinks/prensalink';
+import { getBacklinksDataFromPrensalink } from '@/services/getBacklinksFromMarketplaces/prensalink';
 import { Endpoint } from 'payload';
 
 export const fetchprensalinkEndpoint: Endpoint = {
@@ -8,7 +8,7 @@ export const fetchprensalinkEndpoint: Endpoint = {
   handler: async ({ payload }) => {
     try {
       // Fetch the prensalinkData
-      const prensalinkData = await getPrensalinkData();
+      const prensalinkData = await getBacklinksDataFromPrensalink();
 
       if (!Array.isArray(prensalinkData) || prensalinkData.length === 0) {
         return new Response(

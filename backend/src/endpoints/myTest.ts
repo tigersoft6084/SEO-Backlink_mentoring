@@ -1,5 +1,9 @@
 import { Endpoint } from 'payload';
-import { getCookieForEreferer } from '@/services/getCookies/ereferer';
+import { getCookieFromEreferer } from '@/services/getTokensOrCookiesFromMarketplaces/ereferer';
+import { fetchDataFromEreferer } from '@/services/fetchDataFromMarketplaces/ereferer';
+import { getBacklinksDataFromEreferer } from '@/services/getBacklinksFromMarketplaces/ereferer';
+import { getBacklinksDataFromMistergoodlink } from '@/services/getBacklinksFromMarketplaces/mistergoodlink';
+import { fetchDataFromMistergoodlink } from '@/services/fetchDataFromMarketplaces/mistergoodlink';
 
 
 // Define the Payload endpoint
@@ -9,7 +13,7 @@ export const myTestEndpoint: Endpoint = {
   handler: async ({ payload }) => {
     try {
 
-      const result = await getCookieForEreferer();
+      const result = await fetchDataFromMistergoodlink("https://app.mistergoodlink.com/shop?page=537", "PHPSESSID=i5g93kpgq7da4it0o9nt4ca484;");
 
       // Return the collected results
       return new Response(

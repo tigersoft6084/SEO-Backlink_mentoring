@@ -72,7 +72,7 @@ const extractPHPSESSID = (cookieString: string): string | null => {
 };
 
 // Main function to fetch credentials and compare website target
-export const getCookieForEreferer = async (): Promise<string | null> => {
+export const getCookieFromEreferer = async (): Promise<string | null> => {
   const credentials = await getCredentialsForMarketplaces();
 
   // Iterate through the credentials and fetch cookie for Ereferer
