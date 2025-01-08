@@ -1,8 +1,41 @@
-import { LINKAVISTA_API_URL } from "@/global/marketplaceUrls";
+import { GET_BACKLINK_FROM_LINKAVISTA_URL, LINKAVISTA_API_URL } from "@/global/marketplaceUrls";
 import { getCredentialsForMarketplaces } from "../getCredentialsForMarketplaces";
 import * as cheerio from 'cheerio';
 
-export const getCookieFromLinkaVistaLogin = async () : Promise<string | null> => {
+// export const getCookieForSearchPage = async () : Promise<string | null> => {
+
+//     const cookieFromLogin = await getCookieFromLinkaVistaLogin() || '';
+
+//     console.log(cookieFromLogin);
+
+//     const response = await fetch(GET_BACKLINK_FROM_LINKAVISTA_URL, {
+//         method: 'GET',
+//         headers: {
+//             'Cookie' : cookieFromLogin,
+//         },
+//         redirect: 'manual',  // Prevent automatic redirects
+//     });
+
+//     const cookieOrigin = response.headers.get('set-cookie') || "";
+
+//     const xsrfTokenMatch = cookieOrigin.match(/XSRF-TOKEN=[^;]+;/);
+//         const sessionTokenMatch = cookieOrigin.match(/linkavista_session=[^;]+;/);
+//         const remember_webMatch = cookieOrigin.match(/remember_web_[^=]+=[^;]+;/);
+        
+//         if (xsrfTokenMatch && sessionTokenMatch && remember_webMatch) {
+//             const extractedCookie = `${xsrfTokenMatch[0]} ${sessionTokenMatch[0]} ${remember_webMatch[0]}`.trim();
+
+//             return extractedCookie;
+            
+//         } else {
+//             console.log("One or both tokens not found.");
+//         }
+
+//     return '';
+    
+// }
+
+export const getCookieFromLinkaVista = async () : Promise<string | null> => {
 
     try {
         const credentials = await getCredentialsForMarketplaces();

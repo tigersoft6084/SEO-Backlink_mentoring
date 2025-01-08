@@ -109,3 +109,5 @@ export const GET_BACKLINK_FROM_Ereferer_URL = "https://en.ereferer.com/bo/exchan
 export const GET_BACKLINK_FROM_MISTERGOODLINK_URL = "https://app.mistergoodlink.com/shop";
 
 export const GET_BACKLINK_FROM_BOOSTERLINK_URL = "https://pro.boosterlink.fr/comparateurs.aspx";
+
+export const GET_BACKLINK_FROM_LINKAVISTA_URL = "https://linkavista.com/marketlink";
