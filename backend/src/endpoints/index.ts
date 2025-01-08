@@ -7,6 +7,7 @@ import { fetchSeoJungleEndpoint } from './marketplaces/seojungleEndpoint';
 import { bulkKeywordSearchEndpoint } from './bulkKeywordSearchEndpoint';
 import { fetcherefererEndpoint } from './marketplaces/erefererEndpoint';
 import { fetchMistergoodlinkEndpoint } from './marketplaces/mistergoodlinkEndpoint';
+import { fetchBoosterlinkEndpoint } from './marketplaces/boosterlinkEndpoint';
 
 export const customEndpoints = [
     fetchSerpEndpoint,
@@ -17,5 +18,6 @@ export const customEndpoints = [
     fetchSeoJungleEndpoint,
     fetcherefererEndpoint,
     fetchMistergoodlinkEndpoint,
+    fetchBoosterlinkEndpoint,
     myTestEndpoint
 ];

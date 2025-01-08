@@ -105,3 +105,5 @@ export const GET_BACKLINK_FROM_SeoJungle_URL = "https://api.seo-jungle.com/suppo
 export const GET_BACKLINK_FROM_Ereferer_URL = "https://en.ereferer.com/bo/exchange-site-find";
 
 export const GET_BACKLINK_FROM_MISTERGOODLINK_URL = "https://app.mistergoodlink.com/shop";
+
+export const GET_BACKLINK_FROM_BOOSTERLINK_URL = "https://pro.boosterlink.fr/comparateurs.aspx";

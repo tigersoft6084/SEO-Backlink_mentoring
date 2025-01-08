@@ -1,10 +1,6 @@
 import { Endpoint } from 'payload';
-import { getCookieFromEreferer } from '@/services/getTokensOrCookiesFromMarketplaces/ereferer';
-import { fetchDataFromEreferer } from '@/services/fetchDataFromMarketplaces/ereferer';
-import { getBacklinksDataFromEreferer } from '@/services/getBacklinksFromMarketplaces/ereferer';
-import { getBacklinksDataFromMistergoodlink } from '@/services/getBacklinksFromMarketplaces/mistergoodlink';
-import { fetchDataFromMistergoodlink } from '@/services/fetchDataFromMarketplaces/mistergoodlink';
-import { getCookieFromBoosterlink } from '@/services/getTokensOrCookiesFromMarketplaces/boosterlink';
+import { fetchDataFromBoosterlink } from '@/services/fetchDataFromMarketplaces/boostlink';
+import { getBacklinksDataFromBoosterlink } from '@/services/getBacklinksFromMarketplaces/boosterlink';
 
 // Define the Payload endpoint
 export const myTestEndpoint: Endpoint = {
@@ -13,7 +9,7 @@ export const myTestEndpoint: Endpoint = {
   handler: async ({ payload }) => {
     try {
 
-      const result = await getCookieFromBoosterlink();
+      const result = await getBacklinksDataFromBoosterlink();
 
       // Return the collected results
       return new Response(
