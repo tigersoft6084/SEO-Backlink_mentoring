@@ -4,7 +4,7 @@ import { fetchDataFromEreferer } from '@/services/fetchDataFromMarketplaces/eref
 import { getBacklinksDataFromEreferer } from '@/services/getBacklinksFromMarketplaces/ereferer';
 import { getBacklinksDataFromMistergoodlink } from '@/services/getBacklinksFromMarketplaces/mistergoodlink';
 import { fetchDataFromMistergoodlink } from '@/services/fetchDataFromMarketplaces/mistergoodlink';
-
+import { getCookieFromBoosterlink } from '@/services/getTokensOrCookiesFromMarketplaces/boosterlink';
 
 // Define the Payload endpoint
 export const myTestEndpoint: Endpoint = {
@@ -13,7 +13,7 @@ export const myTestEndpoint: Endpoint = {
   handler: async ({ payload }) => {
     try {
 
-      const result = await getBacklinksDataFromMistergoodlink();
+      const result = await getCookieFromBoosterlink();
 
       // Return the collected results
       return new Response(

@@ -83,6 +83,7 @@ export const Credentials: CollectionConfig = {
             { label: 'Prensalink', value: 'Prensalink' },
             { label: 'Seo-Jungle', value: 'Seo-Jungle' },
             { label: 'Mistergoodlink', value: 'Mistergoodlink' },
+            { label: 'Boosterlink', value: 'Boosterlink' },
           ],
         },
       ],

@@ -112,7 +112,16 @@ export interface CredentialsForMarketplace {
   secretKey?: string | null;
   websiteTarget: {
     value?:
-      | ('DataForSeo' | 'PaperClub' | 'Ereferer' | 'Link.Builders' | 'Prensalink' | 'Seo-Jungle' | 'Mistergoodlink')
+      | (
+          | 'DataForSeo'
+          | 'PaperClub'
+          | 'Ereferer'
+          | 'Link.Builders'
+          | 'Prensalink'
+          | 'Seo-Jungle'
+          | 'Mistergoodlink'
+          | 'Boosterlink'
+        )
       | null;
     id?: string | null;
   }[];
