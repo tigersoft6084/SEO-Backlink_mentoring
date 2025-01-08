@@ -6,7 +6,7 @@ export const getBacklinksDataFromBoosterlink = async() => {
     try{
         const cookie = await getCookieFromBoosterlink();
 
-        console.log("Received Cookie from Mistergoodlink : ", cookie);
+        console.log("Received Cookie from Boosterlink : ", cookie);
 
         if(!cookie){
             throw new Error("API cookie is missing");
