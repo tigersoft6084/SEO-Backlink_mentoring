@@ -1,4 +1,4 @@
-import { getPaperclubData } from '@/services/getBacklinks/paperClub';
+import { getBacklinksDataFromPaperclub } from '@/services/getBacklinksFromMarketplaces/paperClub';
 import { Endpoint } from 'payload';
 
 export const fetchPaperclubEndpoint: Endpoint = {
@@ -7,7 +7,7 @@ export const fetchPaperclubEndpoint: Endpoint = {
   handler: async ({ payload }) => {
     try {
       // Fetch the paperclubData
-      const paperclubData = await getPaperclubData();
+      const paperclubData = await getBacklinksDataFromPaperclub();
 
       if (!Array.isArray(paperclubData) || paperclubData.length === 0) {
         return new Response(

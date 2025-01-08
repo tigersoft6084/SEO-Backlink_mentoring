@@ -3,7 +3,7 @@ import pLimit from "p-limit";
 import axiosRetry from "axios-retry";
 import { GET_BACKLINK_FROM_PAPERCLUB_URLS } from "@/global/marketplaceUrls";
 import { BackLinkData, PaperClubResult } from "@/types/backlink";
-import { getTokenForPaperClub } from "../getTokens/paperclub";
+import { getTokenForPaperClub } from "../getTokensOrCookiesFromMarketplaces/paperclub";
 
 // Setup retry mechanism with axios
 axiosRetry(axios, {
@@ -26,7 +26,7 @@ const fetchDataFromUrl = async (url : string, Token : string) => {
 };
 
 // Function to process URLs in batches with p-limit
-export const getPaperclubData = async () => {
+export const getBacklinksDataFromPaperclub = async () => {
 
   const Token = await getTokenForPaperClub();
 

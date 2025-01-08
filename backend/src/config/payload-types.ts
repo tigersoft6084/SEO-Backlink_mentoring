@@ -111,7 +111,9 @@ export interface CredentialsForMarketplace {
   password: string;
   secretKey?: string | null;
   websiteTarget: {
-    value?: ('DataForSeo' | 'PaperClub' | 'Ereferer' | 'Link.Builders' | 'Prensalink' | 'Seo-Jungle') | null;
+    value?:
+      | ('DataForSeo' | 'PaperClub' | 'Ereferer' | 'Link.Builders' | 'Prensalink' | 'Seo-Jungle' | 'Mistergoodlink')
+      | null;
     id?: string | null;
   }[];
   updatedAt: string;
@@ -128,9 +130,10 @@ export interface Backlink {
   TF: number;
   CF: number;
   price: number;
-  TTF: string;
-  Title: string;
-  source: 'Paperclub' | 'Ereferer' | 'Presswhizz' | 'Bulldoz' | 'Prensalink' | 'Seojungle';
+  TTF?: string | null;
+  Language?: string | null;
+  Title?: string | null;
+  source: 'Paperclub' | 'Ereferer' | 'Presswhizz' | 'Bulldoz' | 'Prensalink' | 'Seojungle' | 'Mistergoodlink';
   'expiry date'?: string | null;
   dateFetched: string;
   updatedAt: string;
@@ -266,6 +269,7 @@ export interface BacklinksSelect<T extends boolean = true> {
   CF?: T;
   price?: T;
   TTF?: T;
+  Language?: T;
   Title?: T;
   source?: T;
   'expiry date'?: T;

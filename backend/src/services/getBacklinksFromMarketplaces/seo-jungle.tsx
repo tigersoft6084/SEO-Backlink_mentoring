@@ -1,10 +1,11 @@
 import axios, { AxiosResponse } from "axios";
 import pLimit from "p-limit";
-import { getTokenForSeoJungle } from "../getTokens/seo-jungle";
+import { getTokenForSeoJungle } from "../getTokensOrCookiesFromMarketplaces/seo-jungle";
 import { BackLinkData, SeoJungleResult } from "@/types/backlink";
 import { log } from "console";
+import { GET_BACKLINK_FROM_SeoJungle_URL } from "@/global/marketplaceUrls";
 
-const GET_BACKLINK_FROM_SeoJungle_URL = "https://api.seo-jungle.com/support/search";
+
 const MAX_CONCURRENT_REQUESTS = 10;
 let cachedToken: string | null = null;
 const limit = pLimit(MAX_CONCURRENT_REQUESTS);
@@ -108,7 +109,7 @@ const fetchDataForThemes = async (themes: string[], totalPages: number): Promise
     return results;
 };
 
-export const getSeoJungleData = async (): Promise<BackLinkData[]> => {
+export const getBacklinksDataFromSeojungle = async (): Promise<BackLinkData[]> => {
     const themeSets = [
         { themes: ["Actu du web", "Actualités - Médias généraliste", "Adultes - Rencontre - Sexe", "Agriculture", "Animaux"], totalPages: 464 },
         { themes: ["Assurance - Mutuelle", "Auto - Moto", "B2B - Entrepreneurs - Marketing - Communication", "Banque - Finance - Economie", "Beauté"], totalPages: 564 },

@@ -1,18 +1,19 @@
-import { getDataFromLinkbuilders } from '@/services/getBacklinksFromMarketplaces/linkbuilders';
+
+import { getBacklinksDataFromMistergoodlink } from '@/services/getBacklinksFromMarketplaces/mistergoodlink';
 import { Endpoint } from 'payload';
 
-export const fetchLinkbuildersEndpoint: Endpoint = {
-  path: '/fetch-linkbuilders',
+export const fetchMistergoodlinkEndpoint: Endpoint = {
+  path: '/fetch-mistergoodlink',
   method: 'get',
   handler: async ({ payload }) => {
     try {
-      // Fetch the paperclubData
-      const paperclubData = await getDataFromLinkbuilders();
+      // Fetch the MistergoodlinkData
+      const mistergoodlinkData = await getBacklinksDataFromMistergoodlink();
 
-      if (!Array.isArray(paperclubData) || paperclubData.length === 0) {
+      if (!Array.isArray(mistergoodlinkData) || mistergoodlinkData.length === 0) {
         return new Response(
           JSON.stringify({
-            message: 'No paperclubData found.',
+            message: 'No MistergoodlinkData found.',
           }),
           {
             status: 404,
@@ -21,12 +22,13 @@ export const fetchLinkbuildersEndpoint: Endpoint = {
         );
       }
 
-      const savePromises = paperclubData.map(async (item) => {
+      const savePromises = mistergoodlinkData.map(async (item) => {
         // Ensure the numeric fields are properly parsed
         const RD = Number(item.rd);
         const TF = Number(item.tf);
         const CF = Number(item.cf);
         const price = Number(item.price);
+        const lang = String(item.language);
 
         // Validate that the conversion was successful
         if (isNaN(RD) || isNaN(TF) || isNaN(CF) || isNaN(price)) {
@@ -40,10 +42,10 @@ export const fetchLinkbuildersEndpoint: Endpoint = {
           collection: 'backlinks',
           where: {
             domain: {
-              equals: item.domain,
+              equals: item.url,
             },
             source: {
-              equals: 'paper_club', // Match the hardcoded source
+              equals: 'Mistergoodlink', // Match the hardcoded source
             },
           },
         });
@@ -59,6 +61,7 @@ export const fetchLinkbuildersEndpoint: Endpoint = {
               TF, // Update Trust Flow
               CF, // Update Citation Flow
               price, // Update price
+              Language : lang,
               dateFetched: new Date().toISOString(), // Update fetch date
             },
           });
@@ -67,12 +70,13 @@ export const fetchLinkbuildersEndpoint: Endpoint = {
           await payload.create({
             collection: 'backlinks',
             data: {
-              domain: item.domain,
+              domain : item.url,
               RD,
               TF,
               CF,
               price,
-              source: 'Paperclub', // Hardcoded source for Paper Club
+              Language : lang,
+              source: 'Mistergoodlink', // Hardcoded source for Paper Club
               dateFetched: new Date().toISOString(), // Current date
             },
           });
@@ -86,7 +90,7 @@ export const fetchLinkbuildersEndpoint: Endpoint = {
       return new Response(
         JSON.stringify({
           message: 'Fetch completed.',
-          results: paperclubData,
+          results: mistergoodlinkData,
         }),
         {
           status: 200,

@@ -1,7 +1,7 @@
 import axios from "axios";
 import axiosRetry from "axios-retry";
-import { getTokenForLinkBuilders } from "../getTokens/link-builders";
-import { getTokenForPrensalink } from "../getTokens/prensalink";
+import { getTokenForLinkBuilders } from "../getTokensOrCookiesFromMarketplaces/link-builders";
+import { getTokenForPrensalink } from "../getTokensOrCookiesFromMarketplaces/prensalink";
 import { GET_BACKLINK_FROM_LINKBUILDERS_URLS } from "@/global/marketplaceUrls";
 import { BackLinkData, LinkBuildersResult } from "@/types/backlink";
 

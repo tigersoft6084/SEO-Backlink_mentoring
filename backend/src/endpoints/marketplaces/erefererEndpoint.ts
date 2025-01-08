@@ -1,18 +1,19 @@
-import { getDataFromLinkbuilders } from '@/services/getBacklinksFromMarketplaces/linkbuilders';
-import { Endpoint } from 'payload';
 
-export const fetchLinkbuildersEndpoint: Endpoint = {
-  path: '/fetch-linkbuilders',
+import { Endpoint } from 'payload';
+import { getBacklinksDataFromEreferer } from '@/services/getBacklinksFromMarketplaces/ereferer';
+
+export const fetcherefererEndpoint: Endpoint = {
+  path: '/fetch-ereferer',
   method: 'get',
   handler: async ({ payload }) => {
     try {
-      // Fetch the paperclubData
-      const paperclubData = await getDataFromLinkbuilders();
+      // Fetch the erefererData
+      const erefererData = await getBacklinksDataFromEreferer();
 
-      if (!Array.isArray(paperclubData) || paperclubData.length === 0) {
+      if (!Array.isArray(erefererData) || erefererData.length === 0) {
         return new Response(
           JSON.stringify({
-            message: 'No paperclubData found.',
+            message: 'No erefererData found.',
           }),
           {
             status: 404,
@@ -21,12 +22,14 @@ export const fetchLinkbuildersEndpoint: Endpoint = {
         );
       }
 
-      const savePromises = paperclubData.map(async (item) => {
+      const savePromises = erefererData.map(async (item) => {
         // Ensure the numeric fields are properly parsed
         const RD = Number(item.rd);
         const TF = Number(item.tf);
         const CF = Number(item.cf);
+        const TTF = String(item.ttf);
         const price = Number(item.price);
+        const Language = String(item.language);
 
         // Validate that the conversion was successful
         if (isNaN(RD) || isNaN(TF) || isNaN(CF) || isNaN(price)) {
@@ -43,7 +46,7 @@ export const fetchLinkbuildersEndpoint: Endpoint = {
               equals: item.domain,
             },
             source: {
-              equals: 'paper_club', // Match the hardcoded source
+              equals: 'Ereferer', // Match the hardcoded source
             },
           },
         });
@@ -59,6 +62,8 @@ export const fetchLinkbuildersEndpoint: Endpoint = {
               TF, // Update Trust Flow
               CF, // Update Citation Flow
               price, // Update price
+              TTF,
+              Language,
               dateFetched: new Date().toISOString(), // Update fetch date
             },
           });
@@ -72,7 +77,9 @@ export const fetchLinkbuildersEndpoint: Endpoint = {
               TF,
               CF,
               price,
-              source: 'Paperclub', // Hardcoded source for Paper Club
+              TTF,
+              Language,
+              source: 'Ereferer', // Hardcoded source for Paper Club
               dateFetched: new Date().toISOString(), // Current date
             },
           });
@@ -86,7 +93,7 @@ export const fetchLinkbuildersEndpoint: Endpoint = {
       return new Response(
         JSON.stringify({
           message: 'Fetch completed.',
-          results: paperclubData,
+          results: erefererData,
         }),
         {
           status: 200,
