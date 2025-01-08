@@ -121,6 +121,7 @@ export interface CredentialsForMarketplace {
           | 'Seo-Jungle'
           | 'Mistergoodlink'
           | 'Boosterlink'
+          | 'Linkavista'
         )
       | null;
     id?: string | null;

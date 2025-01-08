@@ -20,6 +20,8 @@ export const Mistergoodlink_API_URL = 'https://app.mistergoodlink.com/sign-in';
 
 export const BOOSTERLINK_API_URL = 'https://pro.boosterlink.fr/';
 
+export const LINKAVISTA_API_URL = 'https://linkavista.com/login';
+
 
 // URLs for Backlinks
 export const GET_BACKLINK_FROM_BACKLINKED_URL = "https://app.backlinked.com/api/contentlinks";
