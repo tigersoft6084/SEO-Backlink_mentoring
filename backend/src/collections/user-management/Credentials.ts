@@ -84,6 +84,7 @@ export const Credentials: CollectionConfig = {
             { label: 'Seo-Jungle', value: 'Seo-Jungle' },
             { label: 'Mistergoodlink', value: 'Mistergoodlink' },
             { label: 'Boosterlink', value: 'Boosterlink' },
+            { label: 'Linkavista', value: 'Linkavista' },
           ],
         },
       ],

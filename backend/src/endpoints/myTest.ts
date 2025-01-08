@@ -1,6 +1,7 @@
 import { Endpoint } from 'payload';
 import { fetchDataFromBoosterlink } from '@/services/fetchDataFromMarketplaces/boostlink';
 import { getBacklinksDataFromBoosterlink } from '@/services/getBacklinksFromMarketplaces/boosterlink';
+import { getCookieFromLinkaVistaLogin } from '@/services/getTokensOrCookiesFromMarketplaces/linkavista';
 
 // Define the Payload endpoint
 export const myTestEndpoint: Endpoint = {
@@ -9,7 +10,7 @@ export const myTestEndpoint: Endpoint = {
   handler: async ({ payload }) => {
     try {
 
-      const result = await getBacklinksDataFromBoosterlink();
+      const result = await getCookieFromLinkaVistaLogin();
 
       // Return the collected results
       return new Response(
