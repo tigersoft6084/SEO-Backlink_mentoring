@@ -130,10 +130,10 @@ export interface Backlink {
   TF: number;
   CF: number;
   price: number;
-  TTF: string;
+  TTF?: string | null;
   Language?: string | null;
   Title?: string | null;
-  source: 'Paperclub' | 'Ereferer' | 'Presswhizz' | 'Bulldoz' | 'Prensalink' | 'Seojungle';
+  source: 'Paperclub' | 'Ereferer' | 'Presswhizz' | 'Bulldoz' | 'Prensalink' | 'Seojungle' | 'Mistergoodlink';
   'expiry date'?: string | null;
   dateFetched: string;
   updatedAt: string;

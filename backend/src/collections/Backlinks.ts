@@ -41,7 +41,6 @@ export const Backlinks: CollectionConfig = {
     {
       name: 'TTF',
       type: 'text', // Price
-      required: true,
     },
     {
       name: 'Language',
@@ -61,6 +60,7 @@ export const Backlinks: CollectionConfig = {
         { label: 'Bulldoz', value: 'Bulldoz' },
         { label: 'Prensalink', value: 'Prensalink' },
         { label: 'Seojungle', value: 'Seojungle' },
+        { label: 'Mistergoodlink', value: 'Mistergoodlink' },
         // Add more sources as needed
       ],
       required: true,

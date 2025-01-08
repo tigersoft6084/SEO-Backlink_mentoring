@@ -14,25 +14,23 @@ export const getFormDataFromMistergoodlink = async (response: any) => {
       return [];
     }
 
-    console.log('Table Found:', $('table tbody').length > 0);
-
     const result: Array<{
       url: string;
-      tf: string;
-      cf: string;
-      rd: string;
-      price : string;
+      tf: number;
+      cf: number;
+      rd: number;
+      price : number;
       language: string;
     }> = [];
 
     $('table tbody tr').each((index, row) => {
-      console.log(`Row ${index + 1} HTML:`, $(row).html()); // Log the HTML of each row
 
       const url = $(row).find("td.site_name a").attr("href") || ""; // Adjusted URL selector
-      const tf = $(row).find("td:nth-child(3)").text().trim();
-      const cf = $(row).find("td:nth-child(4)").text().trim();
-      const rd = $(row).find("td:nth-child(5)").text().trim();
-      const price = $(row).find("td.text-end.text-nowrap div").text().trim();
+      const tf = parseFloat($(row).find("td:nth-child(3)").text().trim()) || 0;
+      const cf = parseFloat($(row).find("td:nth-child(4)").text().trim()) || 0;
+      const rd = parseFloat($(row).find("td:nth-child(5)").text().trim()) || 0;      
+      const price_string = $(row).find("td.text-end.text-nowrap div").text().trim();
+      const price = parseFloat(price_string.replace(/[^\d.-]/g, '')) || 0;
 
       const language = $(row).find("td:nth-child(2) img").attr("title") || "";
 
@@ -43,7 +41,6 @@ export const getFormDataFromMistergoodlink = async (response: any) => {
       }
     });
 
-    console.log('Extracted result:', result);
     return result;
   } catch (error) {
     console.error('Error processing the page:', error);

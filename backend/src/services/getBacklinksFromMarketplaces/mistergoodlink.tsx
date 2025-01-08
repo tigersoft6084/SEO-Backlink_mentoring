@@ -1,3 +1,4 @@
+import { getAllDataFromMistergoodlink } from "../getAllDataFromMarketplaces/mistergoodlink";
 import { getCookieFromMistergoodlink } from "../getTokensOrCookiesFromMarketplaces/mistergoodlink"
 
 export const getBacklinksDataFromMistergoodlink = async() => {
@@ -9,7 +10,12 @@ export const getBacklinksDataFromMistergoodlink = async() => {
             throw new Error("API cookie is missing");
         }
 
-        return cookie;
+        //Fetch data from all pages
+        const allData = await getAllDataFromMistergoodlink(cookie);
+    
+        console.log('Total data receive : ', allData.length);
+
+        return allData;
 
     }catch(error){
         if (error instanceof Error) {

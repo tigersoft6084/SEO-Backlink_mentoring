@@ -13,7 +13,7 @@ export const myTestEndpoint: Endpoint = {
   handler: async ({ payload }) => {
     try {
 
-      const result = await fetchDataFromMistergoodlink("https://app.mistergoodlink.com/shop?page=2", "PHPSESSID=i5g93kpgq7da4it0o9nt4ca484;");
+      const result = await getBacklinksDataFromMistergoodlink();
 
       // Return the collected results
       return new Response(

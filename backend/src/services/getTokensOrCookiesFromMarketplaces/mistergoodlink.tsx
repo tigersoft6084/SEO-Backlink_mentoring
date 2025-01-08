@@ -24,7 +24,7 @@ const fetchCookieFromMistergoodlink = async (email: string, password: string): P
 
     // Extract cookies from the response headers
     const setCookieHeader = response.headers.get('set-cookie') || '';
-    console.log(setCookieHeader)
+
     if(setCookieHeader){
       const cookies = extractPHPSESSID(setCookieHeader);
       return cookies || '';
