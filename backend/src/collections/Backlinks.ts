@@ -21,17 +21,14 @@ export const Backlinks: CollectionConfig = {
     {
         name: 'RD',
         type: 'number', // Referring Domains
-        required: true,
       },
     {
       name: 'TF',
       type: 'number', // Trust Flow
-      required: true,
     },
     {
       name: 'CF',
       type: 'number', // Citation Flow
-      required: true,
     },
     {
       name: 'price',
@@ -61,6 +58,7 @@ export const Backlinks: CollectionConfig = {
         { label: 'Prensalink', value: 'Prensalink' },
         { label: 'Seojungle', value: 'Seojungle' },
         { label: 'Mistergoodlink', value: 'Mistergoodlink' },
+        { label: 'Boosterlink', value: 'Boosterlink' },
         // Add more sources as needed
       ],
       required: true,

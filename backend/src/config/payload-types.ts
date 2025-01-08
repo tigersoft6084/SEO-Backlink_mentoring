@@ -135,14 +135,22 @@ export interface CredentialsForMarketplace {
 export interface Backlink {
   id: string;
   domain: string;
-  RD: number;
-  TF: number;
-  CF: number;
+  RD?: number | null;
+  TF?: number | null;
+  CF?: number | null;
   price: number;
   TTF?: string | null;
   Language?: string | null;
   Title?: string | null;
-  source: 'Paperclub' | 'Ereferer' | 'Presswhizz' | 'Bulldoz' | 'Prensalink' | 'Seojungle' | 'Mistergoodlink';
+  source:
+    | 'Paperclub'
+    | 'Ereferer'
+    | 'Presswhizz'
+    | 'Bulldoz'
+    | 'Prensalink'
+    | 'Seojungle'
+    | 'Mistergoodlink'
+    | 'Boosterlink';
   'expiry date'?: string | null;
   dateFetched: string;
   updatedAt: string;
