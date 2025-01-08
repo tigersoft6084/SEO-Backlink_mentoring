@@ -18,6 +18,8 @@ export const Ereferer_API_URL = 'https://en.ereferer.com/login_check';
 
 export const Mistergoodlink_API_URL = 'https://app.mistergoodlink.com/sign-in';
 
+export const BOOSTERLINK_API_URL = 'https://pro.boosterlink.fr/';
+
 
 // URLs for Backlinks
 export const GET_BACKLINK_FROM_BACKLINKED_URL = "https://app.backlinked.com/api/contentlinks";
