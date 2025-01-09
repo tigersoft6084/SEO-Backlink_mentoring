@@ -27,7 +27,20 @@ export const getFormDataFromDevelink = async (response: any) => {
       const button = $(element);
 
       // Extract attributes
-      const domain = button.attr('data-url') || '';
+      const url = button.attr('data-url') || '';
+
+      let domain = "";
+
+      if (url) {
+          try {
+              // If the `url` contains a valid URL, extract the hostname
+              domain = new URL(url).hostname;
+          } catch {
+              // If the `url` is not a valid URL, assume it is a domain name
+              domain = url;
+          }
+      }
+
       const prices = button.attr('data-prices');
       const tf = parseInt(button.attr('data-majtf') || '0', 10);
       const cf = parseInt(button.attr('data-majcf') || '0', 10);
