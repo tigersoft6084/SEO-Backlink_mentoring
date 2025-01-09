@@ -10,6 +10,7 @@ import { fetchMistergoodlinkEndpoint } from './marketplaces/mistergoodlinkEndpoi
 import { fetchBoosterlinkEndpoint } from './marketplaces/boosterlinkEndpoint';
 import { fetchLinkavistarEndpoint } from './marketplaces/linkavistaEndpoint';
 import { fetchGetalinkEndpoint } from './marketplaces/getalinkEndpoint';
+import { fetchDevelinkEndpoint } from './marketplaces/develinkEndpoint';
 
 export const customEndpoints = [
     fetchSerpEndpoint,
@@ -23,5 +24,6 @@ export const customEndpoints = [
     fetchBoosterlinkEndpoint,
     fetchLinkavistarEndpoint,
     fetchGetalinkEndpoint,
+    fetchDevelinkEndpoint,
     myTestEndpoint
 ];

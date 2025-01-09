@@ -61,6 +61,7 @@ export const Backlinks: CollectionConfig = {
         { label: 'Boosterlink', value: 'Boosterlink' },
         { label: 'Linkavistar', value: 'Linkavistar' },
         { label: 'Getalink', value: 'Getalink' },
+        { label: 'Develink', value: 'Develink' },
         // Add more sources as needed
       ],
       required: true,

@@ -1,6 +1,7 @@
 import { GET_BACKLINK_FROM_DEVELINK_URL } from "@/global/marketplaceUrls";
 import { fetchDataFromDevelink } from "../fetchDataFromMarketplaces/develink";
 import { getCookieFromDevelink } from "../getTokensOrCookiesFromMarketplaces/develink";
+import { getAllDataFromDevelink } from "../getAllDataFromMarketplaces/develink";
 
 export const getBacklinksDataFromDevelink = async() => {
 
@@ -14,7 +15,7 @@ export const getBacklinksDataFromDevelink = async() => {
         }
     
         //Fetch data from all pages
-        const allData = await fetchDataFromDevelink(GET_BACKLINK_FROM_DEVELINK_URL, cookie);
+        const allData = await getAllDataFromDevelink(cookie);
     
         console.log('Total data receive : ', allData.length);
     

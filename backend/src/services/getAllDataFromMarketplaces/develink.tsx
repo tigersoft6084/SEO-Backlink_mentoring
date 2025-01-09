@@ -1,6 +1,6 @@
+import { GET_BACKLINK_FROM_DEVELINK_URL } from '@/global/marketplaceUrls';
 import PQueue from 'p-queue';
-import { fetchDataFromDevelink } from '../fetchDataFromMarketplaces/Develink';
-import { GET_BACKLINK_FROM_Develink_URL } from '@/global/marketplaceUrls';
+import { fetchDataFromDevelink } from '../fetchDataFromMarketplaces/develink';
 
 const TOTAL_PAGES = 1411;
 const CONCURRENCY_LIMIT = 50; // Number of concurrent requests
@@ -15,10 +15,10 @@ export const getAllDataFromDevelink = async (cookie: string) => {
   const results = new Set();
 
   const fetchPageData = async (page: number) => {
-    const url = `${GET_BACKLINK_FROM_Develink_URL}?page=${page}`;
+    const url = `${GET_BACKLINK_FROM_DEVELINK_URL}?page=${page}`;
     try {
       console.log(`Fetching page ${page}...`);
-      const data = await fetchDataFromDevelink(url, `${cookie}; _locale=en`);
+      const data = await fetchDataFromDevelink(url, cookie);
       if (data) {
         data.forEach((item: any) => results.add(JSON.stringify(item)));
       }
