@@ -59,6 +59,7 @@ export const Backlinks: CollectionConfig = {
         { label: 'Seojungle', value: 'Seojungle' },
         { label: 'Mistergoodlink', value: 'Mistergoodlink' },
         { label: 'Boosterlink', value: 'Boosterlink' },
+        { label: 'Linkavistar', value: 'Linkavistar' },
         // Add more sources as needed
       ],
       required: true,

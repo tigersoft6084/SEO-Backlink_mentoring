@@ -151,7 +151,8 @@ export interface Backlink {
     | 'Prensalink'
     | 'Seojungle'
     | 'Mistergoodlink'
-    | 'Boosterlink';
+    | 'Boosterlink'
+    | 'Linkavistar';
   'expiry date'?: string | null;
   dateFetched: string;
   updatedAt: string;
