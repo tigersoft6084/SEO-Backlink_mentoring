@@ -122,6 +122,7 @@ export interface CredentialsForMarketplace {
           | 'Mistergoodlink'
           | 'Boosterlink'
           | 'Linkavista'
+          | 'Getalink'
         )
       | null;
     id?: string | null;
@@ -151,7 +152,9 @@ export interface Backlink {
     | 'Prensalink'
     | 'Seojungle'
     | 'Mistergoodlink'
-    | 'Boosterlink';
+    | 'Boosterlink'
+    | 'Linkavistar'
+    | 'Getalink';
   'expiry date'?: string | null;
   dateFetched: string;
   updatedAt: string;

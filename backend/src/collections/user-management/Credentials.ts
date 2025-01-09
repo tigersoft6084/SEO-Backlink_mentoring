@@ -85,6 +85,7 @@ export const Credentials: CollectionConfig = {
             { label: 'Mistergoodlink', value: 'Mistergoodlink' },
             { label: 'Boosterlink', value: 'Boosterlink' },
             { label: 'Linkavista', value: 'Linkavista' },
+            { label: 'Getalink', value: 'Getalink' },
           ],
         },
       ],

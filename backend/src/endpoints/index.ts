@@ -8,6 +8,8 @@ import { bulkKeywordSearchEndpoint } from './bulkKeywordSearchEndpoint';
 import { fetcherefererEndpoint } from './marketplaces/erefererEndpoint';
 import { fetchMistergoodlinkEndpoint } from './marketplaces/mistergoodlinkEndpoint';
 import { fetchBoosterlinkEndpoint } from './marketplaces/boosterlinkEndpoint';
+import { fetchLinkavistarEndpoint } from './marketplaces/linkavistaEndpoint';
+import { fetchGetalinkEndpoint } from './marketplaces/getalinkEndpoint';
 
 export const customEndpoints = [
     fetchSerpEndpoint,
@@ -19,5 +21,7 @@ export const customEndpoints = [
     fetcherefererEndpoint,
     fetchMistergoodlinkEndpoint,
     fetchBoosterlinkEndpoint,
+    fetchLinkavistarEndpoint,
+    fetchGetalinkEndpoint,
     myTestEndpoint
 ];

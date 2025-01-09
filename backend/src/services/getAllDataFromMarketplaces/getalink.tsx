@@ -1,25 +1,24 @@
 import PQueue from 'p-queue';
-import { fetchDataFromLinkavistar } from '../fetchDataFromMarketplaces/linkavista';
-import { GET_BACKLINK_FROM_LINKAVISTA_URL } from '@/global/marketplaceUrls';
+import { fetchDataFromGetalink } from '../fetchDataFromMarketplaces/getalink';
+import { GET_BACKLINK_FROM_GETALINK_URL } from '@/global/marketplaceUrls';
 
-
-const TOTAL_PAGES = 950;
+const TOTAL_PAGES = 158;
 const CONCURRENCY_LIMIT = 10; // Number of concurrent requests
 const BATCH_SIZE = 200; // Limit the number of tasks enqueued at once
 
-export const getAllDataFromLinkavistar = async (cookie: string) => {
-  if (!cookie) {
-    throw new Error('API cookie is missing');
+export const getAllDataFromGetalink = async (token: string) => {
+  if (!token) {
+    throw new Error('API token is missing');
   }
 
   const queue = new PQueue({ concurrency: CONCURRENCY_LIMIT });
   const results = new Set();
 
   const fetchPageData = async (page: number) => {
-    const url = `${GET_BACKLINK_FROM_LINKAVISTA_URL}?page=${page}`;
+    const url = `${GET_BACKLINK_FROM_GETALINK_URL}?page=${page}&page_size=100&currency=EUR&filtersCount=0&type_link=&allowed_links=0&country=&language=&name=&category=&type=&pasa_por_portada=&type_price=Coste&cf=&da=&dr=&pa=&rd=&tf=&regions=&ur=&marca_patrocinado=&show_favorites=false&nuevos=false&usuario_id=0`;
     try {
       console.log(`Fetching page ${page}...`);
-      const data = await fetchDataFromLinkavistar(url, `${cookie}; _locale=en`);
+      const data = await fetchDataFromGetalink(url, token);
       if (data) {
         data.forEach((item: any) => results.add(JSON.stringify(item)));
       }
