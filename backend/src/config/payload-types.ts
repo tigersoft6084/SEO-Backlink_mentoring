@@ -123,6 +123,7 @@ export interface CredentialsForMarketplace {
           | 'Boosterlink'
           | 'Linkavista'
           | 'Getalink'
+          | 'Develink'
         )
       | null;
     id?: string | null;
@@ -154,7 +155,8 @@ export interface Backlink {
     | 'Mistergoodlink'
     | 'Boosterlink'
     | 'Linkavistar'
-    | 'Getalink';
+    | 'Getalink'
+    | 'Develink';
   'expiry date'?: string | null;
   dateFetched: string;
   updatedAt: string;
