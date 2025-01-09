@@ -123,6 +123,7 @@ export interface CredentialsForMarketplace {
           | 'Boosterlink'
           | 'Linkavista'
           | 'Getalink'
+          | 'Develink'
         )
       | null;
     id?: string | null;

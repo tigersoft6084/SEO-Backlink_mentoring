@@ -1,19 +1,15 @@
 import { Endpoint } from 'payload';
-import { fetchDataFromBoosterlink } from '@/services/fetchDataFromMarketplaces/boostlink';
-import { getBacklinksDataFromBoosterlink } from '@/services/getBacklinksFromMarketplaces/boosterlink';
-import { getCookieFromLinkaVista } from '@/services/getTokensOrCookiesFromMarketplaces/linkavista';
-import { getBacklinksDataFromLinkaVista } from '@/services/getBacklinksFromMarketplaces/linkavista';
-import { getTokenForGetalink } from '@/services/getTokensOrCookiesFromMarketplaces/getalink';
 import { getBacklinksDataFromGetalink } from '@/services/getBacklinksFromMarketplaces/getalink';
+import { getCookieFromDevelink } from '@/services/getTokensOrCookiesFromMarketplaces/develink';
 
 // Define the Payload endpoint
 export const myTestEndpoint: Endpoint = {
   path: '/test',
   method: 'get',
-  handler: async ({ payload }) => {
+  handler: async () => {
     try {
 
-      const result = await getBacklinksDataFromGetalink();
+      const result = await getCookieFromDevelink();
 
       // Return the collected results
       return new Response(
