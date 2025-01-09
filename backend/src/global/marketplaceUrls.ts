@@ -118,3 +118,5 @@ export const GET_BACKLINK_FROM_LINKAVISTA_URL = "https://linkavista.com/marketli
 
 export const GET_BACKLINK_FROM_GETALINK_URL = "https://api.getalink.com/marketplace";
 
+export const GET_BACKLINK_FROM_DEVELINK_URL = "https://app.develink.com/cataloguevip?page=1411";
+
