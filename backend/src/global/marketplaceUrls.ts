@@ -22,6 +22,8 @@ export const BOOSTERLINK_API_URL = 'https://pro.boosterlink.fr/';
 
 export const LINKAVISTA_API_URL = 'https://linkavista.com/login';
 
+export const GETALINK_API_URL = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyABCAfw4_higazYHOSlYNGpRi5MSP-I07M';
+
 
 // URLs for Backlinks
 export const GET_BACKLINK_FROM_BACKLINKED_URL = "https://app.backlinked.com/api/contentlinks";
@@ -111,3 +113,6 @@ export const GET_BACKLINK_FROM_MISTERGOODLINK_URL = "https://app.mistergoodlink.
 export const GET_BACKLINK_FROM_BOOSTERLINK_URL = "https://pro.boosterlink.fr/comparateurs.aspx";
 
 export const GET_BACKLINK_FROM_LINKAVISTA_URL = "https://linkavista.com/marketlink";
+
+export const GET_BACKLINK_FROM_GETALINK_URL = "https://api.getalink.com/marketplace";
+

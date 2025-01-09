@@ -3,6 +3,8 @@ import { fetchDataFromBoosterlink } from '@/services/fetchDataFromMarketplaces/b
 import { getBacklinksDataFromBoosterlink } from '@/services/getBacklinksFromMarketplaces/boosterlink';
 import { getCookieFromLinkaVista } from '@/services/getTokensOrCookiesFromMarketplaces/linkavista';
 import { getBacklinksDataFromLinkaVista } from '@/services/getBacklinksFromMarketplaces/linkavista';
+import { getTokenForGetalink } from '@/services/getTokensOrCookiesFromMarketplaces/getalink';
+import { getBacklinksDataFromGetalink } from '@/services/getBacklinksFromMarketplaces/getalink';
 
 // Define the Payload endpoint
 export const myTestEndpoint: Endpoint = {
@@ -11,7 +13,7 @@ export const myTestEndpoint: Endpoint = {
   handler: async ({ payload }) => {
     try {
 
-      const result = await getBacklinksDataFromLinkaVista();
+      const result = await getBacklinksDataFromGetalink();
 
       // Return the collected results
       return new Response(

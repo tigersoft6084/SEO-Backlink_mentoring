@@ -60,6 +60,7 @@ export const Backlinks: CollectionConfig = {
         { label: 'Mistergoodlink', value: 'Mistergoodlink' },
         { label: 'Boosterlink', value: 'Boosterlink' },
         { label: 'Linkavistar', value: 'Linkavistar' },
+        { label: 'Getalink', value: 'Getalink' },
         // Add more sources as needed
       ],
       required: true,
