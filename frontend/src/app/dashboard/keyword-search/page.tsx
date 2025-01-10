@@ -1,16 +1,16 @@
 "use client";
 
-import { useKeywordSearchView } from "../../../hooks/useKeywordSearchView";
+import { useSearchView } from "../../../hooks/useSearchView";
 import InputView from "./InputView";
 import ResultsView from "./ResultsView";
 
-export default function App() {
+export default function KeywordSearch() {
   const {
     currentView,
     responseData,
     switchToResults,
     switchToInput,
-  } = useKeywordSearchView();
+  } = useSearchView();
 
   return (
     <div className="flex-1 p-6 bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100">
