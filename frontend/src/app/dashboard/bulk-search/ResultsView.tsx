@@ -37,6 +37,7 @@ export default function ResultsView({ responseData, onBack }) {
         setSelectedRows={setSelectedRows}
         selectAll={selectAll}
         setSelectAll={setSelectAll}
+        pageName = {"bulkSearch"}
       />
     </div>
   );
