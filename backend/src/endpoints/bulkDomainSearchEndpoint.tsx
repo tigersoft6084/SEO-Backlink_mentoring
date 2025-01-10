@@ -103,6 +103,7 @@ export const bulkDomainSearchEndpoint: Endpoint = {
       // Respond with the processed data
       return new Response(
         JSON.stringify({
+          domains,
           aboutPrice,
           backlinks,
         }),
