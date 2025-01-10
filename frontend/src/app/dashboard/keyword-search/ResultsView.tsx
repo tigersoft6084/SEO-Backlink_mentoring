@@ -16,7 +16,7 @@ export default function ResultsView({ responseData, onBack }) {
     <div className="p-6 rounded-lg dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200 mx-auto">
 
       {/* Top section with keyword badges and button */}
-      <TopSection responseData={responseData.keywords} onBack={onBack} maxKeywordsToShow={maxKeywordsToShow} />
+      <TopSection responseData={responseData.keywords} onBack={onBack} maxKeysToShow={maxKeywordsToShow} />
 
       {/* Divider */}
       <hr className="border-gray-300 dark:border-gray-700" />

@@ -6,7 +6,7 @@ import TopSection from "../../../components/ui/Result_TopSection";
 import TableSection from "../../../components/ui/Result_Table";
 
 export default function ResultsView({ responseData, onBack }) {
-  const maxKeywordsToShow = 3;
+  const maxDomainsToShow = 3;
 
   // State to track the checkboxes
   const [selectedRows, setSelectedRows] = useState<Set<number>>(new Set());
@@ -16,7 +16,7 @@ export default function ResultsView({ responseData, onBack }) {
     <div className="p-6 rounded-lg dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200 mx-auto">
 
       {/* Top section with keyword badges and button */}
-      <TopSection responseData={responseData.keywords} onBack={onBack} maxKeywordsToShow={maxKeywordsToShow} />
+      <TopSection responseData={responseData.domains} onBack={onBack} maxKeysToShow={maxDomainsToShow} />
 
       {/* Divider */}
       <hr className="border-gray-300 dark:border-gray-700" />
