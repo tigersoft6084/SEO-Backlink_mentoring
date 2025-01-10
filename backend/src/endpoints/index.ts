@@ -11,10 +11,12 @@ import { fetchBoosterlinkEndpoint } from './marketplaces/boosterlinkEndpoint';
 import { fetchLinkavistarEndpoint } from './marketplaces/linkavistaEndpoint';
 import { fetchGetalinkEndpoint } from './marketplaces/getalinkEndpoint';
 import { fetchDevelinkEndpoint } from './marketplaces/develinkEndpoint';
+import { bulkDomainSearchEndpoint } from './bulkDomainSearchEndpoint';
 
 export const customEndpoints = [
     fetchSerpEndpoint,
     bulkKeywordSearchEndpoint,
+    bulkDomainSearchEndpoint,
     fetchPaperclubEndpoint,
     fetchLinkbuildersEndpoint,
     fetchprensalinkEndpoint,
