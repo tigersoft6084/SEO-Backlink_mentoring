@@ -27,7 +27,7 @@ export default function ResultsView({ responseData, onBack }) {
         <StatsSection responseData = {responseData.aboutPrice}/>
 
         {/* Action Buttons */}
-        <ActionButtons />
+        <ActionButtons responseData = {responseData}/>
       </div>
 
       {/* Table Section */}
