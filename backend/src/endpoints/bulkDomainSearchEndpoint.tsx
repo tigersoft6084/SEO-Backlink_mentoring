@@ -24,12 +24,18 @@ export const bulkDomainSearchEndpoint: Endpoint = {
       }
 
       const rawBody = await req.text();
-      const { domains } = JSON.parse(rawBody);
+      let { domains } = JSON.parse(rawBody);
 
-      if (!domains) {
+      // Handle case where domains are passed as a comma-separated string
+      if (typeof domains === 'string') {
+        // Split by commas and trim any spaces
+        domains = domains.split(',').map(domain => domain.trim());
+      }
+
+      if (!domains || domains.length === 0) {
         return new Response(
           JSON.stringify({
-            error: 'Missing required fields: domains, locationCode, languageCode',
+            error: 'Missing or invalid required field: domains',
           }),
           { status: 400, headers: { 'Content-Type': 'application/json' } }
         );
@@ -57,10 +63,10 @@ export const bulkDomainSearchEndpoint: Endpoint = {
               price: source.price,
             }));
 
-            otherSources.push({
-              source : doc.source,
-              price : doc.price,
-            })
+          otherSources.push({
+            source: doc.source,
+            price: doc.price,
+          });
 
           backlinksMap[doc.domain] = {
             domain: doc.domain,
@@ -81,16 +87,16 @@ export const bulkDomainSearchEndpoint: Endpoint = {
       const minPrice = backlinks.reduce((total, backlink) => total + backlink.price, 0);
       const avgPrice = Math.floor(minPrice / foundDomains.length);
       const maxPrice = backlinks
-                          .map((backlink) => {
-                            if (backlink.allSources.length > 1) {
-                              // Get the maximum price if there are multiple items
-                              return Math.max(...backlink.allSources.map((source) => source.price));
-                            } else {
-                              // Return the price directly if there is only one item
-                              return backlink.allSources[0]?.price || 0;
-                            }
-                          })
-                          .reduce((sum, price) => sum + price, 0); // Sum up the maximum prices
+        .map((backlink) => {
+          if (backlink.allSources.length > 1) {
+            // Get the maximum price if there are multiple items
+            return Math.max(...backlink.allSources.map((source) => source.price));
+          } else {
+            // Return the price directly if there is only one item
+            return backlink.allSources[0]?.price || 0;
+          }
+        })
+        .reduce((sum, price) => sum + price, 0); // Sum up the maximum prices
 
       const aboutPrice = [foundCount, avgPrice, minPrice, maxPrice];
 
