@@ -1,6 +1,4 @@
 import { Endpoint } from 'payload';
-import { getBacklinksDataFromGetalink } from '@/services/getBacklinksFromMarketplaces/getalink';
-import { getCookieFromDevelink } from '@/services/getTokensOrCookiesFromMarketplaces/develink';
 import { getBacklinksDataFromDevelink } from '@/services/getBacklinksFromMarketplaces/develink';
 
 // Define the Payload endpoint
