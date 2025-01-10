@@ -3,24 +3,24 @@ import { FaSearch } from "react-icons/fa";
 interface TopSectionProps {
   responseData: string[];
   onBack: () => void;
-  maxKeywordsToShow: number;
+  maxKeysToShow: number;
 }
 
-export default function TopSection({ responseData, onBack, maxKeywordsToShow }: TopSectionProps) {
+export default function TopSection({ responseData, onBack, maxKeysToShow }: TopSectionProps) {
   return (
     <div className="flex justify-between items-center mb-4">
       <div className="flex gap-2 flex-wrap">
-        {responseData.slice(0, maxKeywordsToShow).map((keyword, index) => (
+        {responseData.slice(0, maxKeysToShow).map((key, index) => (
           <span
             key={index}
             className="px-3 py-1 bg-gray-300 text-gray-800 rounded-full dark:bg-gray-700 dark:text-gray-300"
           >
-            {keyword}
+            {key}
           </span>
         ))}
-        {responseData.length > maxKeywordsToShow && (
+        {responseData.length > maxKeysToShow && (
           <span className="px-3 py-1 text-blue-600 dark:text-blue-300">
-            and {responseData.length - maxKeywordsToShow} more
+            and {responseData.length - maxKeysToShow} more
           </span>
         )}
       </div>
