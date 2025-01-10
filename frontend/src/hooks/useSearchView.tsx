@@ -1,17 +1,17 @@
 import { useState } from "react";
 
-export function useKeywordSearchView() {
+export function useSearchView() {
   const [currentView, setCurrentView] = useState("input");
-  const [responseData, setKeywords] = useState([]);
+  const [responseData, setKeys] = useState([]);
 
   const switchToResults = (newResponseData) => {
-    setKeywords(newResponseData);
+    setKeys(newResponseData);
     setCurrentView("results");
   };
 
   const switchToInput = () => {
     setCurrentView("input");
-    setKeywords([]);
+    setKeys([]);
   };
 
   return {
