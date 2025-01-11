@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { TiShoppingCart } from "react-icons/ti";
 import { MdFilterList } from "react-icons/md";
 import { FaList } from "react-icons/fa";
-import FilterDropdown from "./Result_Table_FilterDropdown";
-import RightSidebar from "./Result_Table_RightSidebar";
+import FilterDropdown from "./ResultsView_Table_FilterDropdown";
+import RightSidebar from "./ResultsView_Table_RightSidebar";
 import MarketPlacesLinks from "./MarketPlacesLinks";
 import DynamicPrice from "./ShopingCartAndPrice";
 
@@ -201,7 +201,7 @@ const TableSection: React.FC<TableSectionProps> = ({
                 </div>
               </th>
 
-              {pageName === "keywordSearch" && (
+              {pageName === "KeywordSearch" && (
                 <th
                   className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400"
                   onClick={() => handleSort("keyword")}
@@ -273,7 +273,7 @@ const TableSection: React.FC<TableSectionProps> = ({
                   />
                 </td>
 
-                {pageName === "keywordSearch" && (
+                {pageName === "KeywordSearch" && (
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">
                     {row.keyword}
                   </td>

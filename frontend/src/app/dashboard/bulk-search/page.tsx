@@ -2,15 +2,17 @@
 
 import InputView from "./InputView";
 import { useSearchView } from "../../../hooks/useSearchView";
-import ResultsView from "./ResultsView";
+import ResultsView from "../../../components/ui/ResultsView";
 
 export default function BulkSearch() {
-    const {
-      currentView,
-      responseData,
-      switchToResults,
-      switchToInput,
-    } = useSearchView();
+  const {
+    currentView,
+    responseData,
+    switchToResults,
+    switchToInput,
+  } = useSearchView();
+
+  const pageName = "BulkSearch"
 
   return (
     <div className="flex-1 p-6 bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100">
@@ -20,7 +22,7 @@ export default function BulkSearch() {
           onSearch={switchToResults}
         />
       ) : (
-        <ResultsView responseData={responseData} onBack={switchToInput} />
+        <ResultsView responseData={responseData} onBack={switchToInput} pageName={pageName} />
       )}
     </div>
   );

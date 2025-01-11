@@ -1,8 +1,9 @@
 "use client";
 
+import ResultsView from "../../../components/ui/ResultsView";
 import { useSearchView } from "../../../hooks/useSearchView";
 import InputView from "./InputView";
-import ResultsView from "./ResultsView";
+
 
 export default function KeywordSearch() {
   const {
@@ -12,6 +13,8 @@ export default function KeywordSearch() {
     switchToInput,
   } = useSearchView();
 
+  const pageName = "KeywordSearch"; // Define the pageName here
+
   return (
     <div className="flex-1 p-6 bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100">
       {currentView === "input" ? (
@@ -20,7 +23,7 @@ export default function KeywordSearch() {
           onSearch={switchToResults}
         />
       ) : (
-        <ResultsView responseData={responseData} onBack={switchToInput} />
+        <ResultsView responseData={responseData} onBack={switchToInput} pageName = {pageName}/>
       )}
     </div>
   );

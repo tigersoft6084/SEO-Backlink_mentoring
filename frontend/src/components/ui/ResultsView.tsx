@@ -1,12 +1,12 @@
 // ResultsView.tsx
 import { useState, useEffect } from "react";
-import StatsSection from "../../../components/ui/Result_StatsSection";
-import ActionButtons from "../../../components/ui/ActionButtons";
-import TopSection from "../../../components/ui/Result_TopSection";
-import TableSection from "../../../components/ui/Result_Table";
+import TopSection from "./ResultsView_TopSection";
+import StatsSection from "./ResultsView_StatsSection";
+import ActionButtons from "./ActionButtons";
+import TableSection from "./ResultsView_Table";
 
-export default function ResultsView({ responseData, onBack }) {
-  const maxDomainsToShow = 3;
+export default function ResultsView({ responseData, onBack, pageName }) {
+  const maxKeywordsToShow = 3;
 
   // State to track the checkboxes
   const [selectedRows, setSelectedRows] = useState<Set<number>>(new Set());
@@ -16,7 +16,7 @@ export default function ResultsView({ responseData, onBack }) {
     <div className="p-6 rounded-lg dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200 mx-auto">
 
       {/* Top section with keyword badges and button */}
-      <TopSection responseData={responseData.domains} onBack={onBack} maxKeysToShow={maxDomainsToShow} />
+      <TopSection responseData={responseData.keys} onBack={onBack} maxKeysToShow={maxKeywordsToShow} />
 
       {/* Divider */}
       <hr className="border-gray-300 dark:border-gray-700" />
@@ -37,7 +37,7 @@ export default function ResultsView({ responseData, onBack }) {
         setSelectedRows={setSelectedRows}
         selectAll={selectAll}
         setSelectAll={setSelectAll}
-        pageName = {"bulkSearch"}
+        pageName = {pageName}
       />
     </div>
   );

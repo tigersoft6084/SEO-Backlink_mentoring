@@ -141,7 +141,7 @@ export const bulkKeywordSearchEndpoint: Endpoint = {
       // Respond with the processed data
       return new Response(
         JSON.stringify({
-          keywords,
+          keys : keywords,
           aboutPrice,
           backlinks,
         }),
