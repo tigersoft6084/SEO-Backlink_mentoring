@@ -28,10 +28,10 @@ const DynamicPrice: React.FC<DynamicPriceProps> = ({
             {price}
           </a>
         );
-      case "seoJungle":
+      case "Seojungle":
         return (
           <a
-            href={`https://app.seo-jungle.com/search?searchField=${domain}&priceMax=110.6`}
+            href={`https://app.Seojungle.com/search?searchField=${domain}&priceMax=110.6`}
             target="_blank"
             rel="noopener noreferrer"
           >

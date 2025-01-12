@@ -42,7 +42,7 @@ export interface PrensalinkResult {
     }>;
 }
 
-export interface SeoJungleResult {
+export interface FormattedSeojungleData {
   url?: string;
   trustFlow?: number;
   citationFlow?: number;

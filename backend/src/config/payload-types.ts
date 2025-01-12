@@ -118,7 +118,7 @@ export interface CredentialsForMarketplace {
           | 'Ereferer'
           | 'Link.Builders'
           | 'Prensalink'
-          | 'Seo-Jungle'
+          | 'Seojungle'
           | 'Mistergoodlink'
           | 'Boosterlink'
           | 'Linkavista'

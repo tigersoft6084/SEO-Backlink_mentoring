@@ -81,7 +81,7 @@ export const Credentials: CollectionConfig = {
             { label: 'Ereferer', value: 'Ereferer' },
             { label: 'Link.Builders', value: 'Link.Builders' },
             { label: 'Prensalink', value: 'Prensalink' },
-            { label: 'Seo-Jungle', value: 'Seo-Jungle' },
+            { label: 'Seojungle', value: 'Seojungle' },
             { label: 'Mistergoodlink', value: 'Mistergoodlink' },
             { label: 'Boosterlink', value: 'Boosterlink' },
             { label: 'Linkavista', value: 'Linkavista' },
