@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import FormInput from "./FormInput";
+import FormInput from "./SigninInput";
 import { BiLogInCircle } from "react-icons/bi";
 import { useRouter } from "next/navigation"; // Import the useRouter hook
 import GoogleAuthButton from "../ui/GoogleSigninButton";

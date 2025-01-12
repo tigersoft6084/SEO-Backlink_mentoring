@@ -4,7 +4,7 @@ import { useState } from "react";
 import { BiSearch } from "react-icons/bi";
 import { useRouter } from "next/navigation";
 import { useUser } from "../../context/UserContext"; // Import the User context
-import FormInput from "./FormInput";
+import FormInput from "./SigninInput";
 import GoogleAuthButton from "../ui/GoogleSigninButton";
 import Link from "next/link";
 

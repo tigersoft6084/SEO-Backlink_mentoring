@@ -3,6 +3,10 @@
 import { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import { MdCloudUpload } from "react-icons/md";
+import LocationHeader from "../../../components/forms/LocationHeader";
+import TextArea from "../../../components/forms/TextArea";
+import UploadButton from "../../../components/forms/UploadButton";
+import SearchButton from "../../../components/forms/SearchButton";
 
 export default function InputView({ placeholder, onSearch }) {
   const [domain, setDomain] = useState("");
@@ -96,68 +100,11 @@ export default function InputView({ placeholder, onSearch }) {
 
   return (
     <div className="flex flex-col flex-1 p-10 border rounded-lg shadow-md bg-white dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200">
-      {/* Location header */}
-      <div className="flex items-center text-blue-500 font-medium mb-4">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="w-5 h-5 mr-2"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M12 2c4.418 0 8 3.582 8 8 0 5.25-8 12-8 12S4 15.25 4 10c0-4.418 3.582-8 8-8z"
-          />
-          <circle cx="12" cy="10" r="3" stroke="currentColor" strokeWidth="2" />
-        </svg>
-        United States
-      </div>
-
-      {/* Textarea */}
-      <textarea
-        className="w-full p-4 border border-gray-300 rounded-lg dark:bg-gray-800 dark:border-gray-400 dark:text-gray-200"
-        placeholder={placeholder}
-        rows={10}
-        value={domain}
-        onChange={(e) => setDomain(e.target.value)}
-      />
-
-      {/* Button Row */}
+      <LocationHeader location="United States" />
+      <TextArea value={domain} onChange={(e) => setDomain(e.target.value)} placeholder={placeholder} />
       <div className="flex items-center justify-between mt-4">
-        {/* Upload CSV Button */}
-        <label className="px-4 py-2 text-blue-600 dark:text-blue-300 flex space-x-2 items-center cursor-pointer">
-          <MdCloudUpload />
-          <span>Upload a CSV</span>
-          <input
-            type="file"
-            accept=".csv"
-            className="hidden"
-            onChange={handleUpload}
-          />
-        </label>
-
-        {/* Search Button */}
-        <button
-          className={`px-6 py-2 bg-gradient-to-r text-white font-medium rounded-lg flex items-center space-x-2 self-end ${
-            domain && !loading
-              ? "from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 dark:bg-blue-700 dark:hover:bg-blue-800"
-              : "from-blue-300 to-purple-300 cursor-not-allowed"
-          }`}
-          disabled={!domain || loading}
-          onClick={handleSearch}
-        >
-          {loading ? (
-            <span>Loading...</span>
-          ) : (
-            <>
-              <FaSearch />
-              <span>Find Links</span>
-            </>
-          )}
-        </button>
+        <UploadButton onUpload={handleUpload} />
+        <SearchButton loading={loading} disabled={!domain || loading} onClick={handleSearch} />
       </div>
     </div>
   );
