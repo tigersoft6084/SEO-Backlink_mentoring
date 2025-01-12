@@ -18,7 +18,7 @@ const DynamicPrice: React.FC<DynamicPriceProps> = ({
 }) => {
   const getDynamicPrice = (source: string, price: number, domain: string) => {
     switch (source) {
-      case "paper_club":
+      case "Paperclub":
         return (
           <a
             href={`https://app.paper.club/annonceur/resultats?type=simple&term=${domain}`}

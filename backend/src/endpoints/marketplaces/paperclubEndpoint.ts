@@ -1,4 +1,5 @@
-import { getBacklinksDataFromPaperclub } from '@/services/getBacklinksFromMarketplaces/paperClub';
+
+import { getBacklinksDataFromPaperclub } from '@/services/getBacklinksFromMarketplaces/paperclub';
 import { Endpoint } from 'payload';
 
 export const fetchPaperclubEndpoint: Endpoint = {
@@ -21,72 +22,93 @@ export const fetchPaperclubEndpoint: Endpoint = {
         );
       }
 
-      const savePromises = paperclubData.map(async (item) => {
-        // Ensure the numeric fields are properly parsed
-        const RD = Number(item.rd);
-        const TF = Number(item.tf);
-        const CF = Number(item.cf);
-        const price = Number(item.price);
+      // Flatten the nested array (if necessary)
+      const flattenedData = paperclubData.flat();
+      const totalItems = flattenedData.length;
+      let processedItems = 0;
 
-        // Validate that the conversion was successful
-        if (isNaN(RD) || isNaN(TF) || isNaN(CF) || isNaN(price)) {
-          throw new Error(
-            `Invalid data received: RD=${item.rd}, TF=${item.tf}, CF=${item.cf}, price=${item.price}`
-          );
-        }
+      console.log(`Starting upload of ${totalItems} items...`);
 
-        // Check if the domain with the same source already exists
-        const existingEntry = await payload.find({
-          collection: 'backlinks',
-          where: {
-            domain: {
-              equals: item.domain,
-            },
-            source: {
-              equals: 'paper_club', // Match the hardcoded source
-            },
-          },
-        });
+      // Batch the save operations to avoid overloading
+      const batchSize = 100; // Adjust batch size based on system capacity
+      const batches = [];
 
-        if (existingEntry && existingEntry.totalDocs > 0) {
-          // Update the existing entry
-          const entryToUpdate = existingEntry.docs[0];
-          await payload.update({
-            collection: 'backlinks',
-            id: entryToUpdate.id,
-            data: {
-              RD, // Update Referring Domains
-              TF, // Update Trust Flow
-              CF, // Update Citation Flow
-              price, // Update price
-              dateFetched: new Date().toISOString(), // Update fetch date
-            },
-          });
-        } else {
-          // Create a new entry
-          await payload.create({
-            collection: 'backlinks',
-            data: {
-              domain: item.domain,
-              RD,
-              TF,
-              CF,
-              price,
-              source: 'Paperclub', // Hardcoded source for Paper Club
-              dateFetched: new Date().toISOString(), // Current date
-            },
-          });
-        }
-      });
+      for (let i = 0; i < totalItems; i += batchSize) {
+        batches.push(flattenedData.slice(i, i + batchSize));
+      }
 
-      // Wait for all save operations to complete
-      await Promise.all(savePromises);
+      for (const batch of batches) {
+        await Promise.all(
+          batch.map(async (item: any) => {
+            if (!item) {
+              throw new Error('Received null or undefined item.');
+            }
 
-      // Return the collected results
+            const RD = Number(item.rd);
+            const TF = Number(item.tf);
+            const CF = Number(item.cf);
+            const price = Number(item.price);
+
+            if (isNaN(RD) || isNaN(TF) || isNaN(CF) || isNaN(price)) {
+              throw new Error(
+                `Invalid data received: RD=${item.rd}, TF=${item.tf}, CF=${item.cf}, price=${item.price}`
+              );
+            }
+
+            const existingEntry = await payload.find({
+              collection: 'backlinks',
+              where: {
+                domain: {
+                  equals: item.domain,
+                },
+                source: {
+                  equals: 'Paperclub',
+                },
+              },
+            });
+
+            if (existingEntry && existingEntry.totalDocs > 0) {
+              const entryToUpdate = existingEntry.docs[0];
+              await payload.update({
+                collection: 'backlinks',
+                id: entryToUpdate.id,
+                data: {
+                  RD,
+                  TF,
+                  CF,
+                  price,
+                  dateFetched: new Date().toISOString(),
+                },
+              });
+            } else {
+              await payload.create({
+                collection: 'backlinks',
+                data: {
+                  domain: item.domain,
+                  RD,
+                  TF,
+                  CF,
+                  price,
+                  source: 'Paperclub',
+                  dateFetched: new Date().toISOString(),
+                },
+              });
+            }
+
+            processedItems++;
+            const progressPercentage = ((processedItems / totalItems) * 100).toFixed(2);
+            console.log(
+              `Database Progress: ${progressPercentage}% (${processedItems}/${totalItems})`
+            );
+          })
+        );
+      }
+
       return new Response(
         JSON.stringify({
-          message: 'Fetch completed.',
-          results: paperclubData,
+          message: 'Fetch completed successfully.',
+          processed: processedItems,
+          total: totalItems,
         }),
         {
           status: 200,
@@ -109,3 +131,4 @@ export const fetchPaperclubEndpoint: Endpoint = {
     }
   },
 };
+

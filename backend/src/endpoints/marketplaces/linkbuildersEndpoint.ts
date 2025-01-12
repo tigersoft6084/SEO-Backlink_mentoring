@@ -43,7 +43,7 @@ export const fetchLinkbuildersEndpoint: Endpoint = {
               equals: item.domain,
             },
             source: {
-              equals: 'paper_club', // Match the hardcoded source
+              equals: 'Linkbuilders', // Match the hardcoded source
             },
           },
         });

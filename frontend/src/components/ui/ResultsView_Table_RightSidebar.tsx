@@ -27,7 +27,7 @@ interface RightSidebarProps {
 
 const validSellers = [
   "Ereferer",
-  "paper_club",
+  "Paperclub",
   "Bulldoz",
   "prensalink",
   "Linkatomic",

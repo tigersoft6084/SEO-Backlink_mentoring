@@ -6,7 +6,7 @@ export interface BackLinkData {
     price: string | number;
 }
 
-export interface PaperClubResult {
+export interface FormattedPaperclubData {
     name?: string;
     kpi?: {
       trustFlow?: number;

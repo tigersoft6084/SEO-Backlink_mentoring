@@ -14,7 +14,7 @@ declare module 'payload/types' {
     TF: number;   // Trust Flow
     CF: number;   // Citation Flow
     price: number;
-    source: 'paper_club' | 'press_whizz' | 'bulldoz';
+    source: 'Paperclub' | 'press_whizz' | 'bulldoz';
     dateFetched: string;
   }
 }
