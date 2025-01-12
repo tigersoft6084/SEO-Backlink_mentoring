@@ -1,4 +1,3 @@
-
 import { getBacklinksDataFromPrensalink } from '@/services/getBacklinksFromMarketplaces/prensalink';
 import { Endpoint } from 'payload';
 
@@ -22,7 +21,23 @@ export const fetchprensalinkEndpoint: Endpoint = {
         );
       }
 
+      // Initialize a progress variable
+      let progress = 0;
+      const totalItems = prensalinkData.length;
+
+      // A function to calculate and log progress
+      const updateProgress = () => {
+        progress += 1;
+        const percentage = ((progress / totalItems) * 100).toFixed(2);
+        console.log(`Progress: ${percentage}%`);
+      };
+
       const savePromises = prensalinkData.map(async (item) => {
+        // Ensure the item is not null
+        if (!item) {
+          throw new Error('Received null item');
+        }
+
         // Ensure the numeric fields are properly parsed
         const RD = Number(item.rd);
         const TF = Number(item.tf);
@@ -78,6 +93,9 @@ export const fetchprensalinkEndpoint: Endpoint = {
             },
           });
         }
+
+        // Update the progress after each item is processed
+        updateProgress();
       });
 
       // Wait for all save operations to complete
@@ -88,6 +106,7 @@ export const fetchprensalinkEndpoint: Endpoint = {
         JSON.stringify({
           message: 'Fetch completed.',
           results: prensalinkData,
+          progress: `${((progress / totalItems) * 100).toFixed(2)}%`, // Send the progress as part of the response
         }),
         {
           status: 200,

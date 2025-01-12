@@ -1,5 +1,4 @@
-import { getTokenForSeojungle } from '@/services/getTokensOrCookiesFromMarketplaces/seojungle';
-import { startWhoisProcessing } from '@/services/whoiserService';
+import { getBacklinksDataFromPrensalink } from '@/services/getBacklinksFromMarketplaces/prensalink';
 import { Endpoint } from 'payload';
 
 // Define the Payload endpoint
@@ -9,7 +8,7 @@ export const myTestEndpoint: Endpoint = {
   handler: async () => {
     try {
 
-      const result = await getTokenForSeojungle();
+      const result = await getBacklinksDataFromPrensalink();
 
       // Return the collected results
       return new Response(

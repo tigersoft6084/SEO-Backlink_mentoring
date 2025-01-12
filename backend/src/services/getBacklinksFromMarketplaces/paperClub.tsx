@@ -10,19 +10,19 @@ export const getBacklinksDataFromPaperclub = async () => {
     if (!Token) {
       throw new Error("API token is missing");
     }
-  
+
     const allData = await getAllDataFromPaperclub(Token);
-  
+
     return allData;
-    
+
   }catch(error){
     if (error instanceof Error) {
       console.error('Error fetching data:', error.message);
-  } else {
-      console.error('Error fetching data:', error);
-  }
-  
-  return "";
+    } else {
+        console.error('Error fetching data:', error);
+    }
+
+    return "";
   }
 
 };

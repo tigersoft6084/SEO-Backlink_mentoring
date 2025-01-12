@@ -30,7 +30,7 @@ export interface LinkBuildersResult {
     }[];
 }
   
-export interface PrensalinkResult {
+export interface FormattedPrensalinkData {
     price?: number; // Price outside the newspapers array
     newspapers?: Array<{
         url?: string; // URL of the newspaper
