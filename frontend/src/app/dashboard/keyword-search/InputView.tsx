@@ -34,6 +34,7 @@ export default function InputView({ placeholder, onSearch }) {
             keywords: keywordsArray,
             locationCode: 2840, // Example location code
             languageCode: "en", // Example language code
+            depth : 100
           }),
         });
 

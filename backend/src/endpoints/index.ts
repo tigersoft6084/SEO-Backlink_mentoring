@@ -1,10 +1,9 @@
-import { fetchSerpEndpoint } from './fetchSerpEndpoint';
+import { bulkKeywordSearchEndpoint } from './bulkKeywordSearchEndpoint';
 import { fetchPaperclubEndpoint } from './marketplaces/paperclubEndpoint';
 import { fetchLinkbuildersEndpoint } from './marketplaces/linkbuildersEndpoint';
 import { fetchprensalinkEndpoint } from './marketplaces/prensalinkEndpoint';
 import { myTestEndpoint } from './myTest';
 import { fetchSeoJungleEndpoint } from './marketplaces/seojungleEndpoint';
-import { bulkKeywordSearchEndpoint } from './bulkKeywordSearchEndpoint';
 import { fetcherefererEndpoint } from './marketplaces/erefererEndpoint';
 import { fetchMistergoodlinkEndpoint } from './marketplaces/mistergoodlinkEndpoint';
 import { fetchBoosterlinkEndpoint } from './marketplaces/boosterlinkEndpoint';
@@ -14,7 +13,6 @@ import { fetchDevelinkEndpoint } from './marketplaces/develinkEndpoint';
 import { bulkDomainSearchEndpoint } from './bulkDomainSearchEndpoint';
 
 export const customEndpoints = [
-    fetchSerpEndpoint,
     bulkKeywordSearchEndpoint,
     bulkDomainSearchEndpoint,
     fetchPaperclubEndpoint,
