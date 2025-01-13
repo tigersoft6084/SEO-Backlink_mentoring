@@ -1,8 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    appDir: true, // Enable app directory routing if using the `app` directory
-  },
   async rewrites() {
     return [
       {
