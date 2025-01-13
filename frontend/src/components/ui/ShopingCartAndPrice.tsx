@@ -38,7 +38,7 @@ const DynamicPrice: React.FC<DynamicPriceProps> = ({
             {price}
           </a>
         );
-      case "prensalink":
+      case "Prensalink":
         return (
           <a
             href={`https://shop.prensalink.com/products/medias`}

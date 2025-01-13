@@ -1,4 +1,3 @@
-
 import { getBacklinksDataFromGetalink } from '@/services/getBacklinksFromMarketplaces/getalink';
 import { Endpoint } from 'payload';
 
@@ -21,6 +20,9 @@ export const fetchGetalinkEndpoint: Endpoint = {
           }
         );
       }
+
+      const totalRecords = getalinkData.length;
+      let processedRecords = 0;
 
       const savePromises = getalinkData.map(async (item) => {
         // Ensure the numeric fields are properly parsed
@@ -73,11 +75,16 @@ export const fetchGetalinkEndpoint: Endpoint = {
               TF,
               CF,
               price,
-              source: 'Getalink', // Hardcoded source for Paper Club
+              source: 'Getalink', // Hardcoded source for Getalink
               dateFetched: new Date().toISOString(), // Current date
             },
           });
         }
+
+        // Update progress
+        processedRecords += 1;
+        const progressPercentage = ((processedRecords / totalRecords) * 100).toFixed(2);
+        console.log(`Upload progress: ${progressPercentage}%`);
       });
 
       // Wait for all save operations to complete

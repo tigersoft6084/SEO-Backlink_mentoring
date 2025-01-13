@@ -21,6 +21,9 @@ export const fetchBoosterlinkEndpoint: Endpoint = {
         );
       }
 
+      const totalItems = BoosterlinkData.length;
+      let processedItems = 0; // Track the number of processed items
+
       const savePromises = BoosterlinkData.map(async (item) => {
         // Ensure the numeric fields are properly parsed
         const title = String(item.title);
@@ -54,8 +57,8 @@ export const fetchBoosterlinkEndpoint: Endpoint = {
             collection: 'backlinks',
             id: entryToUpdate.id,
             data: {
-              TF : TF, // Update Trust Flow
-              price : price, // Update price
+              TF, // Update Trust Flow
+              price, // Update price
               dateFetched: new Date().toISOString(), // Update fetch date
             },
           });
@@ -65,14 +68,24 @@ export const fetchBoosterlinkEndpoint: Endpoint = {
             collection: 'backlinks',
             data: {
               domain: item.domain,
-              TF : TF,
-              price : price,
-              Title : title,
-              source: 'Boosterlink', // Hardcoded source for Paper Club
+              TF,
+              price,
+              Title: title,
+              source: 'Boosterlink', // Hardcoded source for Boosterlink
               dateFetched: new Date().toISOString(), // Current date
             },
           });
         }
+
+        // Increment the processed items count
+        processedItems += 1;
+
+        // Calculate the progress percentage
+        const progress = Math.round((processedItems / totalItems) * 100);
+
+        // Log progress to the console (or send it to the client if needed)
+        console.log(`Progress: ${progress}%`);
+        // You can implement additional logic to send the progress back to the client (e.g., through a WebSocket or in a custom API response)
       });
 
       // Wait for all save operations to complete

@@ -1,4 +1,3 @@
-
 import { getBacklinksDataFromDevelink } from '@/services/getBacklinksFromMarketplaces/develink';
 import { Endpoint } from 'payload';
 
@@ -21,6 +20,9 @@ export const fetchDevelinkEndpoint: Endpoint = {
           }
         );
       }
+
+      const totalItems = develinkData.length;
+      let processedItems = 0; // Track the number of processed items
 
       const savePromises = develinkData.map(async (item) => {
         // Ensure the numeric fields are properly parsed
@@ -78,6 +80,16 @@ export const fetchDevelinkEndpoint: Endpoint = {
             },
           });
         }
+
+        // Increment the processed items count
+        processedItems += 1;
+
+        // Calculate the progress percentage
+        const progress = Math.round((processedItems / totalItems) * 100);
+
+        // Send progress updates (You can implement a different way to report this progress to the client if needed)
+        console.log(`Progress: ${progress}%`);
+
       });
 
       // Wait for all save operations to complete

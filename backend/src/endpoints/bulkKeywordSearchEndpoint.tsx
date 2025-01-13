@@ -94,51 +94,53 @@ export const bulkKeywordSearchEndpoint: Endpoint = {
         where: {
           domain: { in: normalizedDomains },
         },
+        limit: 1000,  // Adjust this limit as needed or implement pagination
       });
 
       // Process backlinks and filter unique domains with the lowest price
       const backlinksMap: Record<string, BacklinkData> = {};
       let totalBacklinks = 0;
 
+      // Create a map of normalized domains for faster lookup
+      const domainMap = new Set(normalizedDomains);
+
       backlinksData.docs.forEach((doc: any) => {
-        // Normalize domain from the database and compare with the normalized domains from SERP results
         const normalizedDocDomain = normalizeDomain(doc.domain);
-      
+
         // Check if the normalized domain matches any of the domains from SERP results
-        const matchingDomain = orderedLinks.find(
-          (link: any) => normalizeDomain(link.domain) === normalizedDocDomain
-        );
-      
-        if (matchingDomain) {
-          const keyword = matchingDomain.keyword;
-          const existingBacklink = backlinksMap[doc.domain]; // Use the database domain here
-      
-          if (!existingBacklink || doc.price < existingBacklink.price) {
-            const otherSources = backlinksData.docs
-              .filter((source: any) => normalizeDomain(source.domain) === normalizedDocDomain && source.source !== doc.source)
-              .map((source: any) => ({ source: source.source, price: source.price }));
-      
-            otherSources.push({ source: doc.source, price: doc.price });
-      
-            // Map the backlink data, use doc.domain (the database domain) instead of matchingDomain.domain
-            backlinksMap[doc.domain] = {
-              domain: doc.domain, // Return the database domain
-              keyword,
-              RD: doc.RD > 1000 ? `${(doc.RD / 1000).toFixed(1)}k` : doc.RD,
-              TF: doc.TF,
-              CF: doc.CF,
-              price: doc.price,
-              source: doc.source,
-              allSources: otherSources,
-            };
-      
-            if (!existingBacklink) {
-              totalBacklinks++;
+        if (domainMap.has(normalizedDocDomain)) {
+          const matchingDomain = orderedLinks.find((link: any) => normalizeDomain(link.domain) === normalizedDocDomain);
+
+          if (matchingDomain) {
+            const keyword = matchingDomain.keyword;
+            const existingBacklink = backlinksMap[doc.domain]; // Use the database domain here
+
+            if (!existingBacklink || doc.price < existingBacklink.price) {
+              const otherSources = backlinksData.docs
+                .filter((source: any) => normalizeDomain(source.domain) === normalizedDocDomain && source.source !== doc.source)
+                .map((source: any) => ({ source: source.source, price: source.price }));
+
+              otherSources.push({ source: doc.source, price: doc.price });
+
+              // Map the backlink data, use doc.domain (the database domain) instead of matchingDomain.domain
+              backlinksMap[doc.domain] = {
+                domain: doc.domain, // Return the database domain
+                keyword,
+                RD: doc.RD > 1000 ? `${(doc.RD / 1000).toFixed(1)}k` : doc.RD,
+                TF: doc.TF,
+                CF: doc.CF,
+                price: doc.price,
+                source: doc.source,
+                allSources: otherSources,
+              };
+
+              if (!existingBacklink) {
+                totalBacklinks++;
+              }
             }
           }
         }
       });
-      
 
       const backlinks = Object.values(backlinksMap);
 

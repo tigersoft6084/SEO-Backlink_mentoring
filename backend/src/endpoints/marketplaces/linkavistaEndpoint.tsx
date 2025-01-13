@@ -1,7 +1,5 @@
-
 import { Endpoint } from 'payload';
 import { getBacklinksDataFromLinkaVista } from '../../services/getBacklinksFromMarketplaces/linkavista';
-
 
 export const fetchLinkavistarEndpoint: Endpoint = {
   path: '/fetch-linkavistar',
@@ -22,6 +20,9 @@ export const fetchLinkavistarEndpoint: Endpoint = {
           }
         );
       }
+
+      const totalRecords = linkavistar.length;
+      let processedRecords = 0;
 
       const savePromises = linkavistar.map(async (item) => {
         // Ensure the numeric fields are properly parsed
@@ -77,11 +78,16 @@ export const fetchLinkavistarEndpoint: Endpoint = {
               CF,
               price,
               TTF,
-              source: 'Linkavistar', // Hardcoded source for Paper Club
+              source: 'Linkavistar', // Hardcoded source for Linkavistar
               dateFetched: new Date().toISOString(), // Current date
             },
           });
         }
+
+        // Update progress
+        processedRecords += 1;
+        const progressPercentage = ((processedRecords / totalRecords) * 100).toFixed(2);
+        console.log(`Upload progress: ${progressPercentage}%`);
       });
 
       // Wait for all save operations to complete

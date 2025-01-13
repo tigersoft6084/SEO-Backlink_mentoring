@@ -11,12 +11,12 @@ export const getBacklinksDataFromEreferer = async() => {
         if(!cookie){
             throw new Error("API cookie is missing");
         }
-    
+
         //Fetch data from all pages
         const allData = await getAllDataFromEreferer(cookie);
-    
+
         console.log('Total data receive : ', allData.length);
-    
+
         return allData;
     }catch(error){
         if (error instanceof Error) {
@@ -24,9 +24,8 @@ export const getBacklinksDataFromEreferer = async() => {
         } else {
             console.error('Error fetching data:', error);
         }
-        
+
         return "";
     }
 
-    
 }

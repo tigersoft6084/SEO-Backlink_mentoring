@@ -108,7 +108,7 @@ const TableSection: React.FC<TableSectionProps> = ({
 
   return (
     <div className="p-6 bg-white shadow-md rounded-lg dark:bg-gray-700">
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto max-h-[calc(100vh-330px)] overflow-y-auto">
         <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-500">
           <thead className="bg-white dark:bg-gray-700">
             <tr>
@@ -224,7 +224,7 @@ const TableSection: React.FC<TableSectionProps> = ({
             {sortedRows.map((row, idx) => (
               <tr
                 key={idx}
-                className="hover:bg-blue-100 hover:rounded-3xl hover:scale-y-60 transition-all duration-100"
+                className="hover:bg-blue-100 hover:rounded-3xl hover:scale-y-60n dark:hover:bg-gray-500 transition-all duration-100"
                 onClick={() => handleRowCheckboxChange(idx)}
               >
                 <td className="px-6 whitespace-nowrap text-center" onClick={(e) => e.stopPropagation()}>

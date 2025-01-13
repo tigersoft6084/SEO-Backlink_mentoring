@@ -43,8 +43,13 @@ export const getFormDataFromEreferer = async (response: any) => {
         { category: "", value: 0 }
       );
 
+      const formattedDomain = domain
+      .replace(/^(https?:\/\/)?(www\.)?/, "") // Remove protocol and "www."
+      .replace(/\/$/, ""); // Remove trailing slash
+
+
       return {
-        domain : domain || "unknown", // Use domain instead of URL
+        domain : formattedDomain || "unknown", // Use domain instead of URL
         tf: item.metrics.majestic.trustFlow || 0,
         cf: item.metrics.majestic.citation || 0,
         rd: item.metrics.majestic.refDomains || 0,

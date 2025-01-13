@@ -31,8 +31,8 @@ export default function Sidebar({ menuItems, quotaUsed }: SidebarProps) {
   };
 
   return (
-    <aside className="bg-gray-100 dark:bg-gray-800 w-72 p-4 flex flex-col justify-between h-screen">
-      
+    <aside className="bg-gray-100 dark:bg-gray-800 w-72 p-4 flex flex-col justify-between h-screen" style={{resize : "none"}}>
+
       {/* Top Menu */}
       <div>
         <ul className="space-y-2">

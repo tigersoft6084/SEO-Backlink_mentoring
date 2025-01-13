@@ -35,8 +35,12 @@ export const getFormDataFromGetalink = async (response: any): Promise<FormattedG
                 }
             }
 
+            const formattedDomain = domain
+                .replace(/^(https?:\/\/)?(www\.)?/, "") // Remove protocol and "www."
+                .replace(/\/$/, ""); // Remove trailing slash
+
             return {
-                domain : domain || "unknown", // Use the processed domain or extracted hostname
+                domain : formattedDomain || "unknown", // Use the processed domain or extracted hostname
                 tf: item.tf || 0, // Default to 0 if tf is missing
                 cf: item.cf || 0, // Default to 0 if cf is missing
                 rd: item.rd || 0, // Default to 0 if rd is missing

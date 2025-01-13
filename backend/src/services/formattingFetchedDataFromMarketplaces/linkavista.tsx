@@ -21,7 +21,7 @@ export const getFormDataFromLinkavistar = async (response: any): Promise<Linkavi
 
         // Find the script block containing websitesData
         let websitesData: any[] | null = null as any[] | null;
-        
+
         $('script').each((index, element) => {
             const scriptContent = $(element).html() || '';
             if (scriptContent.includes('let websitesData =')) {
@@ -53,9 +53,13 @@ export const getFormDataFromLinkavistar = async (response: any): Promise<Linkavi
                 { name: "Unknown", value: 0 }
             );
 
+            const rawDomain = website.domain || "Unknown";
+            const formattedDomain = rawDomain
+                .replace(/^(https?:\/\/)?(www\.)?/, "") // Remove protocol and "www."
+
             // Return the formatted result
             return {
-                domain: website.domain || "Unknown",
+                domain: formattedDomain,
                 tf: website.tf || 0,
                 cf: website.cf || 0,
                 rd: website.rd || 0,

@@ -1,4 +1,3 @@
-
 import { getBacklinksDataFromMistergoodlink } from '@/services/getBacklinksFromMarketplaces/mistergoodlink';
 import { Endpoint } from 'payload';
 
@@ -21,6 +20,16 @@ export const fetchMistergoodlinkEndpoint: Endpoint = {
           }
         );
       }
+
+      const totalItems = mistergoodlinkData.length;
+      let processedCount = 0;
+
+      // A function to calculate and log the progress
+      const updateProgress = () => {
+        processedCount += 1;
+        const progressPercentage = ((processedCount / totalItems) * 100).toFixed(2);
+        console.log(`Mistergoodlink database upload Progress: ${progressPercentage}%`);
+      };
 
       const savePromises = mistergoodlinkData.map(async (item) => {
         // Ensure the numeric fields are properly parsed
@@ -61,7 +70,7 @@ export const fetchMistergoodlinkEndpoint: Endpoint = {
               TF, // Update Trust Flow
               CF, // Update Citation Flow
               price, // Update price
-              Language : lang,
+              Language: lang,
               dateFetched: new Date().toISOString(), // Update fetch date
             },
           });
@@ -70,17 +79,20 @@ export const fetchMistergoodlinkEndpoint: Endpoint = {
           await payload.create({
             collection: 'backlinks',
             data: {
-              domain : item.url,
+              domain: item.url,
               RD,
               TF,
               CF,
               price,
-              Language : lang,
-              source: 'Mistergoodlink', // Hardcoded source for Paper Club
+              Language: lang,
+              source: 'Mistergoodlink', // Hardcoded source for Mistergoodlink
               dateFetched: new Date().toISOString(), // Current date
             },
           });
         }
+
+        // Update progress after processing each item
+        updateProgress();
       });
 
       // Wait for all save operations to complete

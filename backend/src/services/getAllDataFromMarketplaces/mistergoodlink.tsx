@@ -13,11 +13,11 @@ export const getAllDataFromMistergoodlink = async (cookie: string) => {
 
   const queue = new PQueue({ concurrency: CONCURRENCY_LIMIT });
   const results = new Set();
+  let processedPages = 0;
 
   const fetchPageData = async (page: number) => {
     const url = `${GET_BACKLINK_FROM_MISTERGOODLINK_URL}?page=${page}`;
     try {
-      console.log(`Fetching page ${page}...`);
       const data = await fetchDataFromMistergoodlink(url, cookie);
       if (data) {
         data.forEach((item: any) => results.add(JSON.stringify(item)));
@@ -28,6 +28,11 @@ export const getAllDataFromMistergoodlink = async (cookie: string) => {
         error instanceof Error ? error.message : error
       );
     }
+
+    // Update progress after processing each page
+    processedPages += 1;
+    const progressPercentage = ((processedPages / TOTAL_PAGES) * 100).toFixed(2);
+    console.log(`Fetching page from Mistergoodlink Progress: ${progressPercentage}%`);
   };
 
   // Process in batches

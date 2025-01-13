@@ -33,3 +33,7 @@ html.dark {
   font-weight: 400; /* Regular Italic */
   font-style: italic;
 }
+
+.sidebar {
+  resize: none;
+}

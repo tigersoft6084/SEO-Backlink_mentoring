@@ -70,8 +70,12 @@ export const getFormDataFromDevelink = async (response: any) => {
         }
       }
 
+      const formattedDomain = domain
+        .replace(/^(https?:\/\/)?(www\.)?/, "") // Remove protocol and "www."
+        .replace(/\/$/, ""); // Remove trailing slash
+
       // Add extracted data to the results array
-      result.push({ domain, price, tf, cf, rd });
+      result.push({ domain : formattedDomain, price, tf, cf, rd });
 
       // Mark this domain as processed
       processedDomains.add(domain);

@@ -28,14 +28,19 @@ export const getFormDataFromMistergoodlink = async (response: any) => {
       const url = $(row).find("td.site_name a").attr("href") || ""; // Adjusted URL selector
       const tf = parseFloat($(row).find("td:nth-child(3)").text().trim()) || 0;
       const cf = parseFloat($(row).find("td:nth-child(4)").text().trim()) || 0;
-      const rd = parseFloat($(row).find("td:nth-child(5)").text().trim()) || 0;      
+      const rd = parseFloat($(row).find("td:nth-child(5)").text().trim()) || 0;
       const price_string = $(row).find("td.text-end.text-nowrap div").text().trim();
       const price = parseFloat(price_string.replace(/[^\d.-]/g, '')) || 0;
 
       const language = $(row).find("td:nth-child(2) img").attr("title") || "";
 
       if (url) {
-        result.push({ url, tf, cf, rd, price, language });
+
+        const formattedDomain = url
+            .replace(/^(https?:\/\/)?(www\.)?/, "") // Remove protocol and "www."
+            .replace(/\/$/, ""); // Remove trailing slash
+
+        result.push({ url : formattedDomain, tf, cf, rd, price, language });
       } else {
         console.warn(`Skipping row ${index + 1} due to missing URL.`);
       }

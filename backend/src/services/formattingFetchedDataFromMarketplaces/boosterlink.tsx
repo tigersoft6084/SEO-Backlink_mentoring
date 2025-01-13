@@ -26,7 +26,10 @@ export const getFormDataFromBoosterlink = async (response: string): Promise<Form
 
       // Get the URL from the second column
       const url = $(row).find('.col-md-2 a').attr('href') || '';
-      const domain = new URL(url).hostname || '';
+      const domain = url
+      .replace(/^(https?:\/\/)?(www\.)?/, "") // Remove protocol and "www."
+      .replace(/\/$/, ""); // Remove trailing slash
+
 
       // Get the Trust Flow (TF) value from the class "bulle-tf bulle-tf20"
       const tf = parseFloat($(row).find('.col-md-2 .bulle-tf.bulle-tf20').text().trim()) || 0;
