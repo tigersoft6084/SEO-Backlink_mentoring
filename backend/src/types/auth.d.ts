@@ -1,22 +1,13 @@
-interface DataForCreate_CredentialsForMarketplaces {
-  email: string;
-  password: string;
-  secretKey?: string;
-  websiteTarget?: [];
-}
+// interface DataForCreate_CredentialsForMarketplaces {
+//   email: string;
+//   password: string;
+//   secretKey?: string;
+//   websiteTarget?: [];
+// }
 
-interface DataForFetch_CredentialsForMarketplaces {
-  email: string;
-  password: string;
-  secretKey: string;
-  websiteTarget: Array<{ value: string; id: string }>; // Assuming websiteTarget is an array of strings
-}
 
-interface UserCredential {
-  email: string;
-  password: string | null; // Password can be null if not decryptable
-  websiteTarget: Array<{ value: string; id: string }>; // Adding the websiteTarget field
-}
+
+
 
 interface AuthResponse_Link_Builders {
   token: string;

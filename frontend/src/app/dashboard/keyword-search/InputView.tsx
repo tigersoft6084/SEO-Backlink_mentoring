@@ -6,7 +6,12 @@ import LocationHeader from "../../../components/forms/LocationHeader";
 import TextArea from "../../../components/forms/TextArea";
 import SearchButton from "../../../components/forms/SearchButton";
 
-export default function InputView({ placeholder, onSearch }) {
+interface InputViewProps {
+  placeholder: string;
+  onSearch: (data: any) => void;
+}
+
+export default function InputView({ placeholder, onSearch }: InputViewProps) {
   const [keyword, setKeyword] = useState("");
   const [loading, setLoading] = useState(false);
 

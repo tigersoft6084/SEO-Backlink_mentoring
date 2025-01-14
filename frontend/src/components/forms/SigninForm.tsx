@@ -54,7 +54,11 @@ export default function SigninForm() {
       router.push("/dashboard");
     } catch (err) {
       console.error(err);
-      setError(err.message || "An unexpected error occurred.");
+      if (err instanceof Error) {
+        setError(err.message || "An unexpected error occurred.");
+      } else {
+        setError("An unexpected error occurred.");
+      }
     }
   };
 

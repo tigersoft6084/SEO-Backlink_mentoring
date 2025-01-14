@@ -43,17 +43,17 @@ export default function Home() {
   const renderContent = () => {
     switch (selectedMenuItem) {
       case "Bulk Search":
-        return <BulkSearch placeholder="Enter up to 30000 domains or URLs (1 per line) to see if they are available on the marketplaces" />;
+        return <BulkSearch />;
       case "Keyword Search":
         return <KeywordSearch/>;
       case "Competitive Analysis":
-        return <CompetitiveAnalysis placeholder="Enter up to 15 competitor domain (1 per line) names to analyze their backlinks" />;
+        return <CompetitiveAnalysis />;
       case "Projects":
         return <Projects/>;
       case "Expired Domains":
         return <ExpiredDomains/>;
       case "Serp Scanner":
-        return <SerpScanner placeholder="Enter a keyword to scan the backlinks of the top 10 search results" />;
+        return <SerpScanner />;
       case "Support":
         return <div/>;
       case "Account Settings":

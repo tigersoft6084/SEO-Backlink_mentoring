@@ -27,7 +27,7 @@ interface ActionButtonsProps {
 
 export default function ActionButtons({ responseData }: ActionButtonsProps) {
 
-  const responseBacklinkArray = responseData ? responseData["backlinks"] : [];
+  const responseBacklinkArray = responseData || [];
 
   const handleCSVDownload = () => {
     try {
@@ -53,7 +53,7 @@ export default function ActionButtons({ responseData }: ActionButtonsProps) {
 
         // Add the required sources to the backlink data
         requiredSources.forEach((source) => {
-          const foundSource = backlink.allSources.find((item) => item.source === source);
+          const foundSource = backlink.allSources.find((item: { source: string; price: number }) => item.source === source);
           backlinkData[source] = foundSource ? foundSource.price : -2;
         });
 
@@ -76,7 +76,11 @@ export default function ActionButtons({ responseData }: ActionButtonsProps) {
     } catch (error) {
       // Log the error and display an alert to the user
       console.error("Error generating CSV:", error);
-      alert(`Error generating CSV: ${error.message}`);
+      if (error instanceof Error) {
+        alert(`Error generating CSV: ${error.message}`);
+      } else {
+        alert("Error generating CSV: An unknown error occurred.");
+      }
     }
   };
 

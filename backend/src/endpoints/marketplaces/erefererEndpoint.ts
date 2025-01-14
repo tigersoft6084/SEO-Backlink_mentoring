@@ -1,6 +1,7 @@
 
+import { getBacklinksDataFromEreferer } from '@/services/marketPlacesService/getBacklinksFromMarketplaces/ereferer.ts';
 import { Endpoint } from 'payload';
-import { getBacklinksDataFromEreferer } from '@/services/getBacklinksFromMarketplaces/ereferer';
+
 
 export const fetcherefererEndpoint: Endpoint = {
   path: '/fetch-ereferer',

@@ -1,5 +1,6 @@
 
-import { getBacklinksDataFromPaperclub } from '@/services/getBacklinksFromMarketplaces/paperclub';
+
+import { getBacklinksDataFromPaperclub } from '@/services/marketPlacesService/getBacklinksFromMarketplaces/paperclub.ts';
 import { Endpoint } from 'payload';
 
 export const fetchPaperclubEndpoint: Endpoint = {

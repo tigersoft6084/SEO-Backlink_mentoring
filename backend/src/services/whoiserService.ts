@@ -1,7 +1,9 @@
 import payload from 'payload';
 import whoiser from 'whoiser';
 import pLimit from 'p-limit';
-import { sleep } from '../utils/sleep';
+import { sleep } from '@/utils/sleep.ts';
+import { BASE_URL } from '@/config/apiConfig.ts';
+
 
 const cache: Map<string, any> = new Map();
 const rateLimitPerSecond = 50;  // Rate limit set to 50 requests per second
@@ -22,7 +24,7 @@ const getDomainsFromDatabase = async (): Promise<string[]> => {
     const pageSize = 1000;
 
     while (true) {
-      const response = await fetch(`http://localhost:2024/api/backlinks?page=${page}&limit=${pageSize}`);
+      const response = await fetch(`${BASE_URL}/api/backlinks?page=${page}&limit=${pageSize}`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }

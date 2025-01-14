@@ -1,4 +1,5 @@
-import { getBacklinksDataFromSeojungle } from '@/services/getBacklinksFromMarketplaces/seojungle';
+
+import { getBacklinksDataFromSeojungle } from '@/services/marketPlacesService/getBacklinksFromMarketplaces/seojungle.ts';
 import { Endpoint } from 'payload';
 
 // Helper function to process data in batches and track progress

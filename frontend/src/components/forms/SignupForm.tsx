@@ -63,7 +63,11 @@ export default function SignupForm() {
       router.push("/auth/signin"); // Redirect to the sign-in page
     } catch (err) {
       console.error(err);
-      setError(err.message || "An unexpected error occurred.");
+      if (err instanceof Error) {
+        setError(err.message || "An unexpected error occurred.");
+      } else {
+        setError("An unexpected error occurred.");
+      }
     }
   };
 

@@ -1,9 +1,14 @@
+import { BASE_URL } from "@/config/apiConfig.ts";
+
+
 // URL for DataForSeo
-export const DATA_FOR_SEO_API_URL = 'https://data.dataforseo.com/api/explorer/serp/google/organic/live/advanced';
-export const BULK_KEYWORD_SEARCH_URL = 'https://data.dataforseo.com/api/explorer/datalabs/google/serp_competitors';
+export const BULK_KEYWORD_SEARCH_URL = 'https://data.dataforseo.com/api/explorer/serp/google/organic/live/advanced';
+
+export const COMPETITIVE_ANALYSIS_SEARCH_URL = 'https://data.dataforseo.com/api/explorer/datalabs/google/competitors_domain';
+
 
 //URLs for fetch local Database
-export const FETCH_DATABASE = 'http://localhost:2024/backlinks';
+export const FETCH_DATABASE = `${BASE_URL}/api/backlinks`;
 
 // URLs for Login API
 export const LINK_BUILDERS_API_URL = 'https://app.link.builders/api/auth/login';

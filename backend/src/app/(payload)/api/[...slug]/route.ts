@@ -1,6 +1,6 @@
 /* THIS FILE WAS GENERATED AUTOMATICALLY BY PAYLOAD. */
 /* DO NOT MODIFY IT BECAUSE IT COULD BE REWRITTEN AT ANY TIME. */
-import config from '@/config/payload.config'
+import config from '@/config/payload.config.ts'
 import '@payloadcms/next/css'
 import {
   REST_DELETE,

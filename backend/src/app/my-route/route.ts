@@ -1,5 +1,5 @@
-import configPromise from '@/config/payload.config'
 import { getPayload } from 'payload'
+import configPromise from '../../config/payload.config.ts';
 
 export const GET = async () => {
   const payload = await getPayload({

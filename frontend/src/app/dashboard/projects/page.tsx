@@ -1,3 +1,5 @@
+"use client"
+
 import React, { useState } from "react";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { FiEdit, FiTrash2 } from "react-icons/fi";

@@ -4,7 +4,7 @@ export function useSearchView() {
   const [currentView, setCurrentView] = useState("input");
   const [responseData, setKeys] = useState([]);
 
-  const switchToResults = (newResponseData) => {
+  const switchToResults = (newResponseData: any) => {
     setKeys(newResponseData);
     setCurrentView("results");
   };

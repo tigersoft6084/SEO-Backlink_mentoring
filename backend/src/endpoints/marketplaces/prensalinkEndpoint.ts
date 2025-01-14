@@ -1,4 +1,5 @@
-import { getBacklinksDataFromPrensalink } from '@/services/getBacklinksFromMarketplaces/prensalink';
+
+import { getBacklinksDataFromPrensalink } from '@/services/marketPlacesService/getBacklinksFromMarketplaces/prensalink.ts';
 import { Endpoint } from 'payload';
 
 export const fetchprensalinkEndpoint: Endpoint = {

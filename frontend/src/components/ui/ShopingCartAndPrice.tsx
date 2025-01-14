@@ -18,6 +18,66 @@ const DynamicPrice: React.FC<DynamicPriceProps> = ({
 }) => {
   const getDynamicPrice = (source: string, price: number, domain: string) => {
     switch (source) {
+      case "Boosterlink":
+        return (
+          <a
+            href={`https://www.boosterlink.fr/inscription/parrain/blp26425`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {price}
+          </a>
+        );
+      case "Develink":
+        return (
+          <a
+            href={`https://app.develink.com/cataloguevip?search_type=search_url&search_domain=${domain}&code=JGADANHO`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {price}
+          </a>
+        );
+      case "Ereferer":
+        return (
+          <a
+            href={`https://fr.ereferer.com/bo/exchange-site-find?search=${domain}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {price}
+          </a>
+        );
+      case "Getalink":
+        return (
+          <a
+            href={`https://www.getalink.com/sistema/cliente/medio/?nombre=${domain}&tipo_enlace..............`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {price}
+          </a>
+        );
+      case "Linkavistar":
+        return (
+          <a
+            href={`https://linkavista.com/linkfinder/?domain=${domain}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {price}
+          </a>
+        );
+      case "<Mistergoodlink>":
+        return (
+          <a
+            href={`https://app.mistergoodlink.com/shop?ref=${domain}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {price}
+          </a>
+        );
       case "Paperclub":
         return (
           <a
@@ -31,13 +91,14 @@ const DynamicPrice: React.FC<DynamicPriceProps> = ({
       case "Seojungle":
         return (
           <a
-            href={`https://app.Seojungle.com/search?searchField=${domain}&priceMax=110.6`}
+            href={`https://app.seo-jungle.com/search?searchField=${domain}&priceMax=110.6`}
             target="_blank"
             rel="noopener noreferrer"
           >
             {price}
           </a>
         );
+
       case "Prensalink":
         return (
           <a

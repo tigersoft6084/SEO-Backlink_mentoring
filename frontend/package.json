@@ -3,14 +3,21 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "set PORT=1212 && next dev --turbopack",
+    "dev": "set PORT=1212 && next dev --turbo",
+    "dev:hot": "nodemon --watch . --exec 'npm run dev'",
     "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "start": "cross-env PORT=1212 NODE_ENV=production next start",
+    "lint": "next lint",
+    "lint:fix": "next lint --fix",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "clean": "rm -rf .next node_modules && npm install"
   },
   "dependencies": {
     "@react-oauth/google": "^0.12.1",
     "axios": "^1.7.9",
+    "cross-env": "^7.0.3",
     "json2csv": "^6.0.0-alpha.2",
     "next": "15.1.0",
     "next-auth": "^4.24.11",
@@ -20,6 +27,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@types/json2csv": "^5.0.7",
     "@types/node": "22.10.2",
     "@types/react": "19.0.2",
     "eslint": "^9",

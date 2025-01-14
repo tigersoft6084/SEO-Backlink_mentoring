@@ -1,6 +1,6 @@
 import { CollectionConfig } from 'payload';
-import { generateKey, encrypt } from '../../utils/encryption';
-import { DataForCreate_CredentialsForMarketplaces } from '@/types/auth';
+import { generateKey, encrypt } from '../../utils/encryption.ts';
+// import { DataForCreate_CredentialsForMarketplaces } from '@/types/auth.ts';
 
 // Regular expression for validating email format
 const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
@@ -20,7 +20,7 @@ export const Credentials: CollectionConfig = {
   hooks: {
     beforeChange: [
       async ({ data, operation, originalDoc, req }) => {
-        const credentialData = data as DataForCreate_CredentialsForMarketplaces;
+        const credentialData = data;
 
         // Email validation
         if (credentialData.email && !emailRegex.test(credentialData.email)) {

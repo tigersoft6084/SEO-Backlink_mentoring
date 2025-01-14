@@ -1,4 +1,5 @@
-import { getDataFromLinkbuilders } from '@/services/getBacklinksFromMarketplaces/linkbuilders';
+
+import { getDataFromLinkbuilders } from '@/services/marketPlacesService/getBacklinksFromMarketplaces/linkbuilders.ts';
 import { Endpoint } from 'payload';
 
 export const fetchLinkbuildersEndpoint: Endpoint = {

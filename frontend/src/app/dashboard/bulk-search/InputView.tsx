@@ -1,14 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import { FaSearch } from "react-icons/fa";
-import { MdCloudUpload } from "react-icons/md";
 import LocationHeader from "../../../components/forms/LocationHeader";
 import TextArea from "../../../components/forms/TextArea";
 import UploadButton from "../../../components/forms/UploadButton";
 import SearchButton from "../../../components/forms/SearchButton";
 
-export default function InputView({ placeholder, onSearch }) {
+interface InputViewProps {
+  placeholder: string;
+  onSearch: (data: any) => void;
+}
+
+export default function InputView({ placeholder, onSearch }: InputViewProps) {
   const [domain, setDomain] = useState("");
   const [loading, setLoading] = useState(false);
   const [file, setFile] = useState(null); // State to track uploaded file
@@ -66,7 +69,7 @@ export default function InputView({ placeholder, onSearch }) {
     }
   };
 
-  const handleUpload = (e) => {
+  const handleUpload = (e : any) => {
     const uploadedFile = e.target.files[0];
     if (uploadedFile && uploadedFile.type === "text/csv") {
       setFile(uploadedFile);

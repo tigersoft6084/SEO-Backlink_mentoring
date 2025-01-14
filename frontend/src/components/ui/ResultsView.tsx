@@ -5,7 +5,7 @@ import StatsSection from "./ResultsView_StatsSection";
 import ActionButtons from "./ActionButtons";
 import TableSection from "./ResultsView_Table";
 
-export default function ResultsView({ responseData, onBack, pageName }) {
+export default function ResultsView({ responseData, onBack, pageName } : any) {
   const maxKeywordsToShow = 3;
 
   // State to track the checkboxes
@@ -27,7 +27,7 @@ export default function ResultsView({ responseData, onBack, pageName }) {
         <StatsSection responseData = {responseData.aboutPrice}/>
 
         {/* Action Buttons */}
-        <ActionButtons responseData = {responseData}/>
+        <ActionButtons responseData = {responseData.backlinks}/>
       </div>
 
       {/* Table Section */}
