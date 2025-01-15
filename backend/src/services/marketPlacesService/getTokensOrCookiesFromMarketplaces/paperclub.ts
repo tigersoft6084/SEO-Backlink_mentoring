@@ -11,10 +11,10 @@ const fetchTokenFromPaperClub = async (email: string, password: string): Promise
         email: email,
         password: password,
       });
-  
+
       // Extract the token from the response
       const token = response.data.token;
-  
+
       return token;
 
     } catch (error: any) {
@@ -30,7 +30,7 @@ const fetchTokenFromPaperClub = async (email: string, password: string): Promise
       throw new Error('Failed to fetch token from PaperClub.');
     }
 };
-  
+
 // Main function to fetch credentials and compare website target
 export const getTokenForPaperClub = async (): Promise<string | null> => {
     const credentials = await getCredentialsForMarketplaces();
@@ -40,10 +40,10 @@ export const getTokenForPaperClub = async (): Promise<string | null> => {
 
         // Check if any value in websiteTarget array is 'PaperClub'
         const hasPaperClubTarget = credential.websiteTarget.some((target: { value: string }) => target.value === 'PaperClub');
-        
+
         if (hasPaperClubTarget) {
             console.log(`Found PaperClub credentials for ${credential.email}`);
-            
+
             // Fetch token from PaperClub API
             if (credential.password) {
                 const token = await fetchTokenFromPaperClub(credential.email, credential.password);

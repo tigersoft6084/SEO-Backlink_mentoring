@@ -29,7 +29,7 @@ export interface LinkBuildersResult {
       price?: number;
     }[];
 }
-  
+
 export interface FormattedPrensalinkData {
     price?: number; // Price outside the newspapers array
     newspapers?: Array<{
@@ -50,4 +50,15 @@ export interface FormattedSeojungleData {
   products? : Array<{
     margedPrice?: number;
   }>
+}
+
+export interface WhoisResult {
+  domain: string;
+  expiry_date?: string; // Optional if expiry_date might be absent
+  [key: string]: any;  // To account for other potential fields from WHOIS
+}
+
+export interface DomainRecord {
+  domain: string;
+  expiry_date: string;
 }

@@ -1,5 +1,5 @@
 
-import { getBacklinksDataFromPrensalink } from '@/services/marketPlacesService/getBacklinksFromMarketplaces/prensalink.ts';
+import { processDomains } from '@/services/whoiserService.ts';
 import { Endpoint } from 'payload';
 
 // Define the Payload endpoint
@@ -9,7 +9,7 @@ export const myTestEndpoint: Endpoint = {
   handler: async () => {
     try {
 
-      const result = await getBacklinksDataFromPrensalink();
+      const result = await processDomains();
 
       // Return the collected results
       return new Response(

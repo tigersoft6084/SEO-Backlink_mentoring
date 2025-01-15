@@ -8,7 +8,7 @@ export const COMPETITIVE_ANALYSIS_SEARCH_URL = 'https://data.dataforseo.com/api/
 
 
 //URLs for fetch local Database
-export const FETCH_DATABASE = `${BASE_URL}/api/backlinks`;
+export const FETCH_DATABASE = `${BASE_URL}/backlinks`;
 
 // URLs for Login API
 export const LINK_BUILDERS_API_URL = 'https://app.link.builders/api/auth/login';

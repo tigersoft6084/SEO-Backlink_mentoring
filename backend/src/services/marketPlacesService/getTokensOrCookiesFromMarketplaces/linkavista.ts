@@ -1,62 +1,27 @@
-
 import * as cheerio from 'cheerio';
 import { getCredentialsForMarketplaces } from '../getCredentialsForMarketplaces.ts';
 import { LINKAVISTA_API_URL } from '@/global/marketplaceUrls.ts';
-
-// export const getCookieForSearchPage = async () : Promise<string | null> => {
-
-//     const cookieFromLogin = await getCookieFromLinkaVistaLogin() || '';
-
-//     console.log(cookieFromLogin);
-
-//     const response = await fetch(GET_BACKLINK_FROM_LINKAVISTA_URL, {
-//         method: 'GET',
-//         headers: {
-//             'Cookie' : cookieFromLogin,
-//         },
-//         redirect: 'manual',  // Prevent automatic redirects
-//     });
-
-//     const cookieOrigin = response.headers.get('set-cookie') || "";
-
-//     const xsrfTokenMatch = cookieOrigin.match(/XSRF-TOKEN=[^;]+;/);
-//         const sessionTokenMatch = cookieOrigin.match(/linkavista_session=[^;]+;/);
-//         const remember_webMatch = cookieOrigin.match(/remember_web_[^=]+=[^;]+;/);
-
-//         if (xsrfTokenMatch && sessionTokenMatch && remember_webMatch) {
-//             const extractedCookie = `${xsrfTokenMatch[0]} ${sessionTokenMatch[0]} ${remember_webMatch[0]}`.trim();
-
-//             return extractedCookie;
-
-//         } else {
-//             console.log("One or both tokens not found.");
-//         }
-
-//     return '';
-
-// }
 
 export const getCookieFromLinkaVista = async () : Promise<string | null> => {
 
     try {
         const credentials = await getCredentialsForMarketplaces();
-    
+
         // Iterate through the credentials and fetch cookie for Linkavista
         for (const credential of credentials) {
             const hasLinkavistaTarget = credential.websiteTarget.some((target: { value: string }) => target.value === 'Linkavista');
-    
+
             if (hasLinkavistaTarget) {
                 console.log(`Found Linkavista credentials for ${credential.email}`);
-    
+
                 // Fetch cookie from Linkavista API
                 if (credential.password) {
                     const cookie = await fetch_Cookie_FromPostLogin(credential.email, credential.password);
-    
+
                     return cookie;
                 }
             }
         }
-    
         return null; // Return null if no Linkavista credentials found
     } catch (error) {
         if (error instanceof Error) {
@@ -99,12 +64,12 @@ const fetch_Cookie_FromPostLogin = async (email: string, password: string): Prom
         const xsrfTokenMatch = setCookieHeader.match(/XSRF-TOKEN=[^;]+;/);
         const sessionTokenMatch = setCookieHeader.match(/linkavista_session=[^;]+;/);
         const remember_webMatch = setCookieHeader.match(/remember_web_[^=]+=[^;]+;/);
-        
+
         if (xsrfTokenMatch && sessionTokenMatch && remember_webMatch) {
             const extractedCookie = `${xsrfTokenMatch[0]} ${sessionTokenMatch[0]} ${remember_webMatch[0]}`.trim();
 
             return extractedCookie;
-            
+
         } else {
             console.log("One or both tokens not found.");
         }
@@ -137,7 +102,7 @@ const fetch_CSRF_TOKEN_AndCookieFrom_GET_Login = async (): Promise<any> => {
 
         const xsrfTokenMatch = cookieOrigin.match(/XSRF-TOKEN=[^;]+;/);
         const sessionTokenMatch = cookieOrigin.match(/linkavista_session=[^;]+;/);
-        
+
         if (xsrfTokenMatch && sessionTokenMatch) {
             const extractedCookie = `${xsrfTokenMatch[0]} ${sessionTokenMatch[0]}`.trim();
 
@@ -145,7 +110,7 @@ const fetch_CSRF_TOKEN_AndCookieFrom_GET_Login = async (): Promise<any> => {
                 CSRF_TOKEN: csrfToken,
                 COOKIE : extractedCookie
             };
-            
+
         } else {
             console.log("One or both tokens not found.");
         }

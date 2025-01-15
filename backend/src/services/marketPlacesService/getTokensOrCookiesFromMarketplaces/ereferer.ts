@@ -58,7 +58,7 @@ const extractPHPSESSID = (cookieString: string): string | null => {
     const trimmedCookie = cookie.trim(); // Trim any whitespace
     if(trimmedCookie.startsWith('httponly')){
       const cookieParts = trimmedCookie.split(',');
-      
+
       for(const part of cookieParts){
         const trimmedCookiePart = part.trim();
         if (trimmedCookiePart.startsWith('PHPSESSID=')) {
@@ -67,7 +67,7 @@ const extractPHPSESSID = (cookieString: string): string | null => {
       }
     }
   }
-  
+
   // Return null if PHPSESSID is not found
   return null;
 };

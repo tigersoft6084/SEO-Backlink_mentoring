@@ -1,7 +1,7 @@
 import { API_KEY, BASE_URL } from '@/config/apiConfig.ts';
+import { decrypt } from '@/utils/encryption.ts';
 // import { DataForFetch_CredentialsForMarketplaces, UserCredential } from '@/types/auth.ts';
 import axios from 'axios';
-import { decrypt } from 'node_modules/payload/dist/auth/crypto.js';
 
 interface DataForFetch_CredentialsForMarketplaces {
   email: string;
@@ -32,8 +32,8 @@ export const getCredentialsForMarketplaces = async (): Promise<UserCredential[]>
 
     // Decrypt password and include websiteTarget if available
     const userCredentials: UserCredential[] = credentials.map((credential) => {
-      const decryptedPassword = credential.password
-        ? decrypt(credential.password)
+      const decryptedPassword = credential.password && credential.secretKey
+        ? decrypt(credential.password, credential.secretKey)
         : null;
 
       return {

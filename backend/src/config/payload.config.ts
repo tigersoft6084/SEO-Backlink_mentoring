@@ -29,7 +29,7 @@ export default buildConfig({
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
   db: mongooseAdapter({
-    url: process.env.DATABASE_URI || 'mongodb://localhost:27017/your-database-name',
+    url: process.env.DATABASE_URI || 'mongodb://localhost:27017/BackLinkingDB',
   }),
   sharp,
   plugins: [

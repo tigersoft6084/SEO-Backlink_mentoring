@@ -12,10 +12,10 @@ const fetchTokenFromLinkBuilders = async (email: string, password: string): Prom
         email: email,
         password: password,
       });
-  
+
       // Extract the token from the response
       const token = response.data.token;
-  
+
       return token;
     } catch (error: any) {
       if (axios.isAxiosError(error)) {
@@ -30,7 +30,7 @@ const fetchTokenFromLinkBuilders = async (email: string, password: string): Prom
       throw new Error('Failed to fetch token from Link.Builders.');
     }
 };
-  
+
 // Main function to fetch credentials and compare website target
 export const getTokenForLinkBuilders = async (): Promise<string | null> => {
     const credentials = await getCredentialsForMarketplaces();
@@ -40,10 +40,10 @@ export const getTokenForLinkBuilders = async (): Promise<string | null> => {
 
         // Check if any value in websiteTarget array is 'Link.Builders'
         const hasLinkBuildersTarget = credential.websiteTarget.some((target: { value: string }) => target.value === 'Link.Builders');
-        
+
         if (hasLinkBuildersTarget) {
             console.log(`Found Link.Builders credentials for ${credential.email}`);
-            
+
             // Fetch token from Link.Builders API
             if (credential.password) {
                 const token = await fetchTokenFromLinkBuilders(credential.email, credential.password);

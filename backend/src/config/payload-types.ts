@@ -157,7 +157,7 @@ export interface Backlink {
     | 'Linkavistar'
     | 'Getalink'
     | 'Develink';
-  'expiry date'?: string | null;
+  expiry_date?: string | null;
   dateFetched: string;
   updatedAt: string;
   createdAt: string;
@@ -295,7 +295,7 @@ export interface BacklinksSelect<T extends boolean = true> {
   Language?: T;
   Title?: T;
   source?: T;
-  'expiry date'?: T;
+  expiry_date?: T;
   dateFetched?: T;
   updatedAt?: T;
   createdAt?: T;

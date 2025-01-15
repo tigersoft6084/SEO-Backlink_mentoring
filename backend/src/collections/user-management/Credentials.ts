@@ -19,7 +19,7 @@ export const Credentials: CollectionConfig = {
   },
   hooks: {
     beforeChange: [
-      async ({ data, operation, originalDoc, req }) => {
+      async ({ data, operation, originalDoc }) => {
         const credentialData = data;
 
         // Email validation
@@ -39,10 +39,10 @@ export const Credentials: CollectionConfig = {
     ],
   },
   fields: [
-    { 
-      name: 'email', 
-      type: 'text', 
-      required: true, 
+    {
+      name: 'email',
+      type: 'text',
+      required: true,
       unique: true,
       validate: (value: string | string[] | null | undefined) => {
         if (typeof value === 'string' && !emailRegex.test(value)) {

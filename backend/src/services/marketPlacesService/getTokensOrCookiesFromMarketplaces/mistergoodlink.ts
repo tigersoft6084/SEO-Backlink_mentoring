@@ -49,13 +49,12 @@ const extractPHPSESSID = (cookieString: string): string | null => {
   for (const cookie of cookies) {
 
     const trimmedCookie = cookie.trim(); // Trim any whitespace
-    
+
     if(trimmedCookie.startsWith('PHPSESSID=')){
-      
       return trimmedCookie;
     }
   }
-  
+
   // Return null if PHPSESSID is not found
   return null;
 };

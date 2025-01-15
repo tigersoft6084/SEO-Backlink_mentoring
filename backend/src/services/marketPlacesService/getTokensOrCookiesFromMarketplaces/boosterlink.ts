@@ -5,23 +5,23 @@ import { BOOSTERLINK_API_URL } from '@/global/marketplaceUrls.ts';
 export const getCookieFromBoosterlink = async (): Promise<string | null> => {
     try {
         const credentials = await getCredentialsForMarketplaces();
-    
+
         // Iterate through the credentials and fetch cookie for Boosterlink
         for (const credential of credentials) {
             const hasBoosterlinkTarget = credential.websiteTarget.some((target: { value: string }) => target.value === 'Boosterlink');
-    
+
             if (hasBoosterlinkTarget) {
                 console.log(`Found Boosterlink credentials for ${credential.email}`);
-    
+
                 // Fetch cookie from Boosterlink API
                 if (credential.password) {
                     const cookie = await fetchCookieFromBoosterlink(credential.email, credential.password);
-    
+
                     return cookie;
                 }
             }
         }
-    
+
         return null; // Return null if no Boosterlink credentials found
     } catch (error) {
         if (error instanceof Error) {
@@ -61,11 +61,11 @@ const fetchCookieFromBoosterlink = async (email: string, password: string): Prom
 
         // Extract cookies from the response headers
         const setCookieHeader = response.headers.get('set-cookie') || '';
-        
+
         if(setCookieHeader){
             const cookies = extractCookie(setCookieHeader);
             return cookies || '';
-          }
+        }
 
         return ''; // Return an empty string if no cookies are found
 
@@ -80,7 +80,7 @@ const extractCookie = (cookieString: string): string | null => {
     const regex = /(ASP\.NET_SessionId=[^;]+).*?(ClientUserName=[^;]+)/;
 
     const match = cookieString.match(regex);
-    
+
     if (match) {
         // Join the captured cookies together, excluding any extra metadata
         const extractedCookie = `${match[1].trim()}; ${match[2].trim()}`;
