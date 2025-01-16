@@ -68,7 +68,7 @@ export const Backlinks: CollectionConfig = {
     },
     {
       name: 'expiry_date',
-      type: 'text',
+      type: "text"
     },
     {
       name: 'dateFetched',
