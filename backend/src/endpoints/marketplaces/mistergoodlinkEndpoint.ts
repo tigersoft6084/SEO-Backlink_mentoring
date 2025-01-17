@@ -70,9 +70,9 @@ export const fetchMistergoodlinkEndpoint: Endpoint = {
               RD, // Update Referring Domains
               TF, // Update Trust Flow
               CF, // Update Citation Flow
-              price, // Update price
+              Price, // Update price
               Language: lang,
-              dateFetched: new Date().toISOString(), // Update fetch date
+              Date_Fetched: new Date().toISOString(), // Update fetch date
             },
           });
         } else {
@@ -80,11 +80,11 @@ export const fetchMistergoodlinkEndpoint: Endpoint = {
           await payload.create({
             collection: 'backlinks',
             data: {
-              domain: item.url,
+              Domain: item.url,
               RD,
               TF,
               CF,
-              price,
+              Price,
               Language: lang,
               source: 'Mistergoodlink', // Hardcoded source for Mistergoodlink
               dateFetched: new Date().toISOString(), // Current date
