@@ -62,3 +62,8 @@ export interface DomainRecord {
   domain: string;
   expiry_date: string;
 }
+
+export interface Marketplace {
+  Marketplace_Source: string;
+  Price: number;
+}

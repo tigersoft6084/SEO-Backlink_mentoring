@@ -1,20 +1,24 @@
 import * as cheerio from 'cheerio';
 import { getCredentialsForMarketplaces } from "../getCredentialsForMarketplaces.ts";
 import { BOOSTERLINK_API_URL } from '@/global/marketplaceUrls.ts';
+import { ErrorHandler } from '@/handlers/errorHandler.ts';
+import { MARKETPLACE_NAME_BOOSTERLINK } from '@/global/strings.ts';
 
 export const getCookieFromBoosterlink = async (): Promise<string | null> => {
+
     try {
         const credentials = await getCredentialsForMarketplaces();
 
         // Iterate through the credentials and fetch cookie for Boosterlink
         for (const credential of credentials) {
-            const hasBoosterlinkTarget = credential.websiteTarget.some((target: { value: string }) => target.value === 'Boosterlink');
+            const hasBoosterlinkTarget = credential.websiteTarget.some((target: { value: string }) => target.value === MARKETPLACE_NAME_BOOSTERLINK);
 
             if (hasBoosterlinkTarget) {
-                console.log(`Found Boosterlink credentials for ${credential.email}`);
+                console.log(`Found "Boosterlink" credentials for ${credential.email}`);
 
                 // Fetch cookie from Boosterlink API
                 if (credential.password) {
+
                     const cookie = await fetchCookieFromBoosterlink(credential.email, credential.password);
 
                     return cookie;
@@ -24,16 +28,16 @@ export const getCookieFromBoosterlink = async (): Promise<string | null> => {
 
         return null; // Return null if no Boosterlink credentials found
     } catch (error) {
-        if (error instanceof Error) {
-            console.error('Error in getCookieFromBoosterlink:', error.message);
-        } else {
-            console.error('Error in getCookieFromBoosterlink:', error);
-        }
+
+        const { errorDetails, status } = ErrorHandler.handle(error, "Not Found Cookie From Boosterlink : ");
+        console.log(errorDetails, status);
+
         return null;
     }
 };
 
 const fetchCookieFromBoosterlink = async (email: string, password: string): Promise<string> => {
+
     try {
         const getValidationData = await getValidationDataForPostLogin();
 
@@ -69,9 +73,12 @@ const fetchCookieFromBoosterlink = async (email: string, password: string): Prom
 
         return ''; // Return an empty string if no cookies are found
 
-    } catch (error: any) {
-        console.error('Error fetching cookie from Boosterlink:', error.message);
-        throw new Error('Failed to fetch cookie from Boosterlink.');
+    } catch (error) {
+
+        const { errorDetails, status } = ErrorHandler.handle(error, 'Error fetching cookie from Boosterlink:');
+        console.log(errorDetails, status);
+        return errorDetails.type;
+
     }
 };
 
@@ -90,6 +97,7 @@ const extractCookie = (cookieString: string): string | null => {
 };
 
 const getValidationDataForPostLogin = async (): Promise<any> => {
+
     try {
         const response = await fetch(BOOSTERLINK_API_URL, { method: 'GET' });
 
@@ -111,8 +119,12 @@ const getValidationDataForPostLogin = async (): Promise<any> => {
             __VIEWSTATEGENERATOR: viewStateGenerator
         };
 
-    } catch (error: any) {
-        console.error('Error fetching validation data:', error.message);
-        throw new Error('Failed to fetch validation data');
+    } catch (error) {
+
+        const { errorDetails, status } = ErrorHandler.handle(error, "Error fetching validation data for Boosterlink : ");
+        console.log(errorDetails, status);
+
+        return null;
+
     }
 };

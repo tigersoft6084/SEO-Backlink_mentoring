@@ -17,6 +17,7 @@ interface UserCredential {
 
 // Fetch Credentials
 export const getCredentialsForMarketplaces = async (): Promise<UserCredential[]> => {
+
   if (!API_KEY || !BASE_URL) {
     throw new Error('API_KEY or BASE_URL is missing in environment variables.');
   }

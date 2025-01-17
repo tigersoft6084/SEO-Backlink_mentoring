@@ -1,3 +1,4 @@
+import { ErrorHandler } from "@/handlers/errorHandler.ts";
 import * as cheerio from "cheerio";
 
 interface FormatedBoosterlinkData {
@@ -7,7 +8,7 @@ interface FormatedBoosterlinkData {
   price: number;
 }
 
-export const getFormDataFromBoosterlink = async (response: string): Promise<FormatedBoosterlinkData[] | null> => {
+export const getFormDataFromBoosterlink = async (response: string): Promise<FormatedBoosterlinkData[] | Response> => {
   try {
     // Ensure response is valid and contains HTML
     if (!response || typeof response !== "string") {
@@ -50,7 +51,12 @@ export const getFormDataFromBoosterlink = async (response: string): Promise<Form
     return formatedBoosterlinkDatas;
 
   } catch (error) {
-    console.error("Error processing the page:", error);
-    return null; // Return null in case of an error
+
+    const { errorDetails, status } = ErrorHandler.handle(error, "Error processing the page.");
+
+    return new Response(JSON.stringify(errorDetails), {
+        status,
+        headers: { "Content-Type": "application/json" },
+    });
   }
 };
