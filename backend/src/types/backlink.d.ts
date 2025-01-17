@@ -1,45 +1,57 @@
-export interface BackLinkData {
-    domain: string;
-    tf: string | number;
-    cf: string | number;
-    rd: string | number;
-    price: string | number;
+export interface FetchedBackLinkDataFromMarketplace {
+  domain: string;
+  tf: number | 0;
+  cf: number | 0;
+  rd: number | 0;
+  price: number;
 }
 
 export interface FormattedPaperclubData {
-    name?: string;
-    kpi?: {
-      trustFlow?: number;
-      citationFlow?: number;
-      refDomain?: number;
+  name?: string;
+  kpi?: {
+    trustFlow?: number;
+    citationFlow?: number;
+    refDomain?: number;
+  };
+  articles?: {
+    price?: number;
+  }[];
+}
+
+export interface FormattedErefererData{
+  url: string;
+  metrics: {
+    majestic: {
+      trustFlow : number | 0;
+      citation : number | 0;
+      refDomains: number | 0;
     };
-    articles?: {
-      price?: number;
-    }[];
+  };
+  price: number | 0;
 }
 
 export interface LinkBuildersResult {
-    name?: string;
-    kpi?: {
-      trustFlow?: number;
-      citationFlow?: number;
-      refDomain?: number;
-    };
-    articles?: {
-      price?: number;
-    }[];
+  name?: string;
+  kpi?: {
+    trustFlow?: number;
+    citationFlow?: number;
+    refDomain?: number;
+  };
+  articles?: {
+    price?: number;
+  }[];
 }
 
 export interface FormattedPrensalinkData {
-    price?: number; // Price outside the newspapers array
-    newspapers?: Array<{
-        url?: string; // URL of the newspaper
-        metrics?: {
-        tf?: number; // Trust flow
-        cf?: number; // Citation flow
-        rd?: number; // Referring domains
-        };
-    }>;
+  price?: number; // Price outside the newspapers array
+  newspapers?: Array<{
+    url?: string; // URL of the newspaper
+    metrics?: {
+    tf?: number; // Trust flow
+    cf?: number; // Citation flow
+    rd?: number; // Referring domains
+    };
+  }>;
 }
 
 export interface FormattedSeojungleData {

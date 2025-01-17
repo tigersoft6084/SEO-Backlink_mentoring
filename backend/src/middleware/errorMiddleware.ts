@@ -7,7 +7,8 @@ import { ErrorHandler } from "@/handlers/errorHandler.ts";
 import { PayloadRequest } from "payload";
 
 export const withErrorHandling = (
-    handler : ( req: PayloadRequest) => Promise<Response> ) : ( (req: PayloadRequest) => Promise<Response> ) => {
+    handler : ( req: PayloadRequest) => Promise<Response>
+) : ( (req: PayloadRequest) => Promise<Response> ) => {
         return async (req: PayloadRequest): Promise<Response> => {
             try {
                 // Execute the original handler

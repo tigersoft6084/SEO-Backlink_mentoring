@@ -17,7 +17,7 @@ export const getBacklinksDataFromBoosterlink = async() => {
         return allData;
 
     }catch(error){
-        const { errorDetails, status } = ErrorHandler.handle(error, "Not received Cookie : ");
+        const { errorDetails, status } = ErrorHandler.handle(error, "Error occured from getting backlinks from Boosterlink");
         return new Response(JSON.stringify(errorDetails), {
             status,
             headers: { "Content-Type": "application/json" },

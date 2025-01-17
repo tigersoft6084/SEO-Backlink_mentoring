@@ -52,13 +52,13 @@ const processBatch = async (collection: any, batch: any[], currentDateString: st
     batch.map((doc) =>
       limit(async () => {
         try {
-          if (!doc.domain) {
+          if (!doc.Domain) {
             console.warn(`Skipping invalid document: ${JSON.stringify(doc)}`);
             return;
           }
 
-          const domain = doc.domain.trim().toLowerCase();
-          const dbExpiryDate = doc.expiry_date ? new Date(doc.expiry_date) : null;
+          const domain = doc.Domain.trim().toLowerCase();
+          const dbExpiryDate = doc.Expiry_Date ? new Date(doc.Expiry_Date) : null;
 
           // If expired or missing expiry_date, process the domain
           if (!dbExpiryDate || dbExpiryDate < new Date(currentDateString)) {
@@ -69,13 +69,13 @@ const processBatch = async (collection: any, batch: any[], currentDateString: st
                 updateOne: {
                   filter: { _id: doc._id },
                   update: {
-                    $set: { expiry_date: newExpiryDate, lastChecked: currentDateString, retryCount: 0 },
+                    $set: { Expiry_Date: newExpiryDate, lastChecked: currentDateString, retryCount: 0 },
                     $unset: { processing: "" },
                   },
                 },
               });
               console.log(
-                `Updated ${domain}: new expiry_date ${newExpiryDate} (was ${doc.expiry_date || "none"})`
+                `Updated ${domain}: new expiry_date ${newExpiryDate} (was ${doc.Expiry_Date || "none"})`
               );
             } else {
               const currentRetryCount = doc.retryCount || 0;
@@ -105,12 +105,12 @@ const processBatch = async (collection: any, batch: any[], currentDateString: st
             }
           } else {
             console.log(
-              `Skipped ${domain}: expiry_date ${doc.expiry_date} is not expired.`
+              `Skipped ${domain}: expiry_date ${doc.Expiry_Date} is not expired.`
             );
           }
         } catch (error) {
           console.error(
-            `Error processing domain ${doc.domain}:`,
+            `Error processing domain ${doc.Domain}:`,
             error instanceof Error ? error.message : error
           );
         }
@@ -150,9 +150,9 @@ export const processDomains = async () => {
               $and: [
                 {
                   $or: [
-                    { expiry_date: { $lt: currentDateString } }, // Expired domains
-                    { expiry_date: null, lastChecked: { $lt: currentDateString } }, // Missing expiry_date, not checked today
-                    { expiry_date: null, lastChecked: { $exists: false } }, // Missing expiry_date and lastChecked
+                    { Expiry_Date: { $lt: currentDateString } }, // Expired domains
+                    { Expiry_Date: null, lastChecked: { $lt: currentDateString } }, // Missing expiry_date, not checked today
+                    { Expiry_Date: null, lastChecked: { $exists: false } }, // Missing expiry_date and lastChecked
                   ],
                 },
                 { status: { $ne: "unprocessible" } }, // Exclude unprocessable domains
@@ -160,7 +160,7 @@ export const processDomains = async () => {
             })
             .skip(offset)
             .limit(batchSize)
-            .project({ _id: 1, domain: 1, expiry_date: 1, lastChecked: 1, retryCount: 1 }) // Fetch only required fields
+            .project({ _id: 1, Domain: 1, Expiry_Date: 1, lastChecked: 1, retryCount: 1 }) // Fetch only required fields
             .toArray()
         )
       );

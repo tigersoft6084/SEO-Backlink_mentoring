@@ -1,6 +1,6 @@
-import axios from 'axios';
 import { axiosInstance } from '@/utils/axiosInstance.ts';
 import { getFormDataFromEreferer } from '../formattingFetchedDataFromMarketplaces/ereferer.ts';
+import { ErrorHandler } from '@/handlers/errorHandler.ts';
 
 export const fetchDataFromEreferer = async (url: string, cookie: string) => {
   try {
@@ -13,11 +13,10 @@ export const fetchDataFromEreferer = async (url: string, cookie: string) => {
     const script = getFormDataFromEreferer(response.data);
     return script;
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      console.error('Failed to fetch URL:', error.message);
-    } else {
-      console.error('Failed to fetch URL:', error);
-    }
-    return []; // Return empty array in case of failure
+    const { errorDetails, status } = ErrorHandler.handle(error, `No Ereferer data received.`);
+    return new Response(JSON.stringify(errorDetails), {
+        status,
+        headers: { "Content-Type": "application/json" },
+    });
   }
 };

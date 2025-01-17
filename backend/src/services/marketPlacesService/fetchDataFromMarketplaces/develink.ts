@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { axiosInstance } from '@/utils/axiosInstance.ts';
 import { getFormDataFromDevelink } from '../formattingFetchedDataFromMarketplaces/develink.ts';
+import { ErrorHandler } from '@/handlers/errorHandler.ts';
 
 export const fetchDataFromDevelink = async (url: string, cookie: string) => {
   try {
@@ -12,11 +13,10 @@ export const fetchDataFromDevelink = async (url: string, cookie: string) => {
     const formattedData = getFormDataFromDevelink(response.data);
     return formattedData;
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      console.error('Failed to fetch URL:', error.message);
-    } else {
-      console.error('Failed to fetch URL:', error);
-    }
-    return []; // Return empty array in case of failure
+    const { errorDetails, status } = ErrorHandler.handle(error, `No Develink data received.`);
+    return new Response(JSON.stringify(errorDetails), {
+        status,
+        headers: { "Content-Type": "application/json" },
+    });
   }
 };

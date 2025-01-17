@@ -1,3 +1,4 @@
+import { ErrorHandler } from "@/handlers/errorHandler.ts";
 import { getAllDataFromEreferer } from "../getAllDataFromMarketplaces/ereferer.ts";
 import { getCookieFromEreferer } from "../getTokensOrCookiesFromMarketplaces/ereferer.ts";
 
@@ -6,8 +7,6 @@ export const getBacklinksDataFromEreferer = async() => {
 
     try{
         const cookie = await getCookieFromEreferer();
-
-        console.log("Received Cookie from Ereferer : ", cookie);
 
         if(!cookie){
             throw new Error("API cookie is missing");
@@ -20,13 +19,11 @@ export const getBacklinksDataFromEreferer = async() => {
 
         return allData;
     }catch(error){
-        if (error instanceof Error) {
-            console.error('Error fetching data:', error.message);
-        } else {
-            console.error('Error fetching data:', error);
-        }
-
-        return "";
+        const { errorDetails, status } = ErrorHandler.handle(error, "Error occured from getting backlinks from Develink");
+        return new Response(JSON.stringify(errorDetails), {
+            status,
+            headers: { "Content-Type": "application/json" },
+        });
     }
 
 }

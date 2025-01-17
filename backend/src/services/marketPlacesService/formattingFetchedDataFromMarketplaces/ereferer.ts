@@ -1,9 +1,10 @@
+import { FetchedBackLinkDataFromMarketplace, FormattedErefererData } from "@/types/backlink.ts";
 import * as cheerio from "cheerio";
 
-export const getFormDataFromEreferer = async (response: any) => {
+export const getFormDataFromEreferer = async (response: string): Promise<FetchedBackLinkDataFromMarketplace[] | null> => {
   try {
     // Ensure response is valid and contains HTML
-    if (!response || typeof response !== "string") {
+    if (typeof response !== "string") {
       throw new Error("Invalid response data. Expected a string.");
     }
 
@@ -21,47 +22,32 @@ export const getFormDataFromEreferer = async (response: any) => {
     }
 
     // Extract the JSON part from the script content
-    const jsonMatch = (scriptContentToReturn as string).match(/responseGlobalItems\s*=\s*(\{.*\});/);
+    const jsonMatch = scriptContentToReturn.match(/responseGlobalItems\s*=\s*(\{.*\});/);
     if (!jsonMatch || jsonMatch.length < 2) {
       throw new Error("Failed to extract JSON content.");
     }
 
-    const jsonData = JSON.parse(jsonMatch[1]);
+    const jsonData : { [key: string]: FormattedErefererData } = JSON.parse(jsonMatch[1]);
 
     // Process the data and extract the required information
-    const result = Object.values(jsonData).map((item: any) => {
+    const result = Object.values(jsonData).map((item) => {
       // Extract domain from URL
       const domain = new URL(item.url).hostname;
 
-      // Parse categories to find the highest value category
-      const categoriesString = item.metrics?.majestic?.categories || "";
-      const categories = [...categoriesString.matchAll(/(.*?):\s*(\d+):/g)]
-        .map((match) => ({ category: match[1].trim(), value: parseInt(match[2], 10) }));
-
-      const highestCategory = categories.reduce(
-        (max, cat) => (cat.value > max.value ? cat : max),
-        { category: "", value: 0 }
-      );
-
       const formattedDomain = domain
-      .replace(/^(https?:\/\/)?(www\.)?/, "") // Remove protocol and "www."
-      .replace(/\/$/, ""); // Remove trailing slash
-
+        .replace(/^(https?:\/\/)?(www\.)?/, "") // Remove protocol and "www."
+        .replace(/\/$/, ""); // Remove trailing slash
 
       return {
-        domain : formattedDomain || "unknown", // Use domain instead of URL
-        tf: item.metrics.majestic.trustFlow || 0,
-        cf: item.metrics.majestic.citation || 0,
-        rd: item.metrics.majestic.refDomains || 0,
-        price: item.price || 0,
-        ttf: highestCategory.category || "",
-        language: item.language || "",
-        gov: item.metrics.majestic.govBacklinks || 0,
-        edu: item.metrics.majestic.eduBacklinks || 0,
+        domain: formattedDomain,
+        tf: Number(item.metrics.majestic.trustFlow) || 0,
+        cf: Number(item.metrics.majestic.citation) || 0,
+        rd : Number(item.metrics.majestic.refDomains) || 0,
+        price: Number(item.price) || 0,
       };
     });
 
-    return result;
+    return result; // Return the processed result
   } catch (error) {
     console.error("Error processing the page:", error);
     return null; // Return null in case of an error
