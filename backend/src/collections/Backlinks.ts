@@ -1,79 +1,117 @@
-
 import { CollectionConfig } from 'payload';
 
 export const Backlinks: CollectionConfig = {
+
   slug: 'backlinks',
+
   admin: {
-    useAsTitle: 'domain', // Use the email field as the title in the admin panel
+    useAsTitle: 'Domain',                                                 // Use the email field as the title in the admin panel
   },
+
   access: {
     read: () => true,
-    create: () => true,  // Allow creation for all
-    update: () => true, // Allow only admins to update
+    create: ({ req }) => req.user?.role === 'admin',                      // Allow only admins to update
+    update: ({ req }) => req.user?.role === 'admin',                      // Allow only admins to update
+    delete: ({ req }) => req.user?.role === 'admin',                      // Allow only admins to update
   },
+
   fields: [
+
     {
-      name: 'domain',
-      type: 'text',
+      name: 'Domain',
+      type: 'text',                                                       //Domain Name
       index: true,
       required: true,
     },
+
+    {
+      name: 'Marketplaces',
+      type: 'array',                                                      // Use an array to allow multiple marketplace-price pairs
+      required: true,
+      fields: [
+
+        {
+          name: 'Marketplace_Source',                                     // Marketplace for domain
+          type: 'text',
+          required: true,
+        },
+
+        {
+          name: 'Price',                                                  // Marketplace's price for domain
+          type: 'number',
+          required: true,
+        },
+
+      ],
+
+    },
+
     {
         name: 'RD',
-        type: 'number', // Referring Domains
-      },
+        type: 'number',                                                     // Referring Domains
+    },
+
     {
       name: 'TF',
-      type: 'number', // Trust Flow
+      type: 'number',                                                       // Trust Flow
     },
+
     {
       name: 'CF',
-      type: 'number', // Citation Flow
+      type: 'number',                                                       // Citation Flow
     },
-    {
-      name: 'price',
-      type: 'number', // Price
-      required: true,
-    },
+
     {
       name: 'TTF',
-      type: 'text', // Price
+      type: 'text',                                                         // Topical Trust Flow
     },
-    {
-      name: 'Language',
-      type: 'text', // Price
-    },
+
     {
       name: 'Title',
-      type: 'text', // Price
+      type: 'text',                                                         // Title for Domain
     },
+
     {
-      name: 'source',
-      type: 'select', // Source of the backlink (Paper Club, Press Whizz, etc.)
-      options: [
-        { label: 'Paperclub', value: 'Paperclub' },
-        { label: 'Ereferer', value: 'Ereferer' },
-        { label: 'Presswhizz', value: 'Presswhizz' },
-        { label: 'Bulldoz', value: 'Bulldoz' },
-        { label: 'Prensalink', value: 'Prensalink' },
-        { label: 'Seojungle', value: 'Seojungle' },
-        { label: 'Mistergoodlink', value: 'Mistergoodlink' },
-        { label: 'Boosterlink', value: 'Boosterlink' },
-        { label: 'Linkavistar', value: 'Linkavistar' },
-        { label: 'Getalink', value: 'Getalink' },
-        { label: 'Develink', value: 'Develink' },
-        // Add more sources as needed
-      ],
+      name: 'Backlinks',
+      type: 'text',                                                         // Number of backlinks for Domain
+    },
+
+    {
+      name: 'Ref_Ips',
+      type: 'text',                                                         // Referring Ips
+    },
+
+    {
+      name: 'Ref_Edu',
+      type: 'text',                                                         // Referring Edu
+    },
+
+    {
+      name: 'Ref_Gov',
+      type: 'text',                                                         // Referring Government
+    },
+
+    {
+      name: 'Language',
+      type: 'text',                                                         // Lanugage
+    },
+
+    {
+      name: 'Ref_Lang',
+      type: 'text',                                                         // Referring Languages
+    },
+
+    {
+      name: 'Expiry_Date',
+      type: "text"                                                            // Expiration Date
+    },
+
+    {
+      name: 'Date_Fetched',
+      type: 'date',                                                           // Date Fetched
       required: true,
     },
-    {
-      name: 'expiry_date',
-      type: "text"
-    },
-    {
-      name: 'dateFetched',
-      type: 'date',
-      required: true,
-    },
+
   ],
+
 };

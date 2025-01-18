@@ -137,28 +137,25 @@ export interface CredentialsForMarketplace {
  */
 export interface Backlink {
   id: string;
-  domain: string;
+  Domain: string;
+  Marketplaces: {
+    Marketplace_Source: string;
+    Price: number;
+    id?: string | null;
+  }[];
   RD?: number | null;
   TF?: number | null;
   CF?: number | null;
-  price: number;
   TTF?: string | null;
-  Language?: string | null;
   Title?: string | null;
-  source:
-    | 'Paperclub'
-    | 'Ereferer'
-    | 'Presswhizz'
-    | 'Bulldoz'
-    | 'Prensalink'
-    | 'Seojungle'
-    | 'Mistergoodlink'
-    | 'Boosterlink'
-    | 'Linkavistar'
-    | 'Getalink'
-    | 'Develink';
-  expiry_date?: string | null;
-  dateFetched: string;
+  Backlinks?: string | null;
+  Ref_Ips?: string | null;
+  Ref_Edu?: string | null;
+  Ref_Gov?: string | null;
+  Language?: string | null;
+  Ref_Lang?: string | null;
+  Expiry_Date?: string | null;
+  Date_Fetched: string;
   updatedAt: string;
   createdAt: string;
 }
@@ -286,17 +283,27 @@ export interface CredentialsForMarketplacesSelect<T extends boolean = true> {
  * via the `definition` "backlinks_select".
  */
 export interface BacklinksSelect<T extends boolean = true> {
-  domain?: T;
+  Domain?: T;
+  Marketplaces?:
+    | T
+    | {
+        Marketplace_Source?: T;
+        Price?: T;
+        id?: T;
+      };
   RD?: T;
   TF?: T;
   CF?: T;
-  price?: T;
   TTF?: T;
-  Language?: T;
   Title?: T;
-  source?: T;
-  expiry_date?: T;
-  dateFetched?: T;
+  Backlinks?: T;
+  Ref_Ips?: T;
+  Ref_Edu?: T;
+  Ref_Gov?: T;
+  Language?: T;
+  Ref_Lang?: T;
+  Expiry_Date?: T;
+  Date_Fetched?: T;
   updatedAt?: T;
   createdAt?: T;
 }

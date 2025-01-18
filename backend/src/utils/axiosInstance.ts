@@ -2,7 +2,7 @@ import axios from 'axios';
 import axiosRetry from 'axios-retry';
 
 export const axiosInstance = axios.create({
-  timeout: 50000,
+  timeout: 60000,
 });
 
 // Apply retry logic

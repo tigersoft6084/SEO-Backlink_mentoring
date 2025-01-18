@@ -11,21 +11,20 @@ export const getBacklinksDataFromLinkaVista = async() => {
         if(!cookie){
             throw new Error("API cookie is missing");
         }
-    
+
         //Fetch data from all pages
         const allData = await fetchDataFromLinkavistar(GET_BACKLINK_FROM_LINKAVISTA_URL, cookie);
-    
+
         return allData;
-        
+
     }catch(error){
         if (error instanceof Error) {
             console.error('Error fetching data:', error.message);
         } else {
             console.error('Error fetching data:', error);
         }
-        
+
         return "";
     }
 
-    
 }

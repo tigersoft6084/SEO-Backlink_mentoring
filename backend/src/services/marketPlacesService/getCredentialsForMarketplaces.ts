@@ -1,6 +1,5 @@
 import { API_KEY, BASE_URL } from '@/config/apiConfig.ts';
 import { decrypt } from '@/utils/encryption.ts';
-// import { DataForFetch_CredentialsForMarketplaces, UserCredential } from '@/types/auth.ts';
 import axios from 'axios';
 
 interface DataForFetch_CredentialsForMarketplaces {
@@ -18,6 +17,7 @@ interface UserCredential {
 
 // Fetch Credentials
 export const getCredentialsForMarketplaces = async (): Promise<UserCredential[]> => {
+
   if (!API_KEY || !BASE_URL) {
     throw new Error('API_KEY or BASE_URL is missing in environment variables.');
   }
@@ -45,7 +45,7 @@ export const getCredentialsForMarketplaces = async (): Promise<UserCredential[]>
 
     return userCredentials; // Return the array of user credentials (email, decrypted password, and websiteTarget)
 
-  } catch (error: any) {
+  } catch (error) {
     if (axios.isAxiosError(error)) {
       console.error(
         'Axios Error:',
@@ -53,7 +53,10 @@ export const getCredentialsForMarketplaces = async (): Promise<UserCredential[]>
         error.response?.data || error.message
       );
     } else {
-      console.error('Error fetching credentials:', error.message);
+      console.error(
+        'Error fetching credentials : ',
+        error instanceof Error ? error.message : error
+      );
     }
     throw new Error('Failed to fetch credentials from the server.');
   }

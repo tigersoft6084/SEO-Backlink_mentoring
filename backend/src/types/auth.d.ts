@@ -1,14 +1,3 @@
-// interface DataForCreate_CredentialsForMarketplaces {
-//   email: string;
-//   password: string;
-//   secretKey?: string;
-//   websiteTarget?: [];
-// }
-
-
-
-
-
 interface AuthResponse_Link_Builders {
   token: string;
 }

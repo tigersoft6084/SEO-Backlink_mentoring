@@ -1,6 +1,8 @@
+import { ErrorHandler } from "@/handlers/errorHandler.ts";
+import { FetchedBackLinkDataFromMarketplace } from "@/types/backlink.js";
 import * as cheerio from "cheerio";
 
-export const getFormDataFromDevelink = async (response: any) => {
+export const getFormDataFromDevelink = async (response : string) : Promise<FetchedBackLinkDataFromMarketplace[]> => {
   try {
     // Ensure response is valid and contains HTML
     if (!response || typeof response !== "string") {
@@ -11,13 +13,7 @@ export const getFormDataFromDevelink = async (response: any) => {
     const $ = cheerio.load(response);
 
     // Initialize an array to hold the extracted data
-    const result: {
-      domain: string;
-      price: number;
-      tf: number;
-      cf: number;
-      rd: number;
-    }[] = [];
+    const result: FetchedBackLinkDataFromMarketplace[] = [];
 
     // Track processed domains to avoid duplicates
     const processedDomains = new Set<string>();
@@ -75,7 +71,7 @@ export const getFormDataFromDevelink = async (response: any) => {
         .replace(/\/$/, ""); // Remove trailing slash
 
       // Add extracted data to the results array
-      result.push({ domain : formattedDomain, price, tf, cf, rd });
+      result.push({ domain : formattedDomain, price : price, tf : tf, cf : cf, rd : rd });
 
       // Mark this domain as processed
       processedDomains.add(domain);
@@ -83,7 +79,8 @@ export const getFormDataFromDevelink = async (response: any) => {
 
     return result;
   } catch (error) {
-    console.error("Error processing the page:", error);
-    return null; // Return null in case of an error
+    const { errorDetails, status } = ErrorHandler.handle(error, "Error processing the page : Develink");
+    console.log(errorDetails, status);
+    return [];
   }
 };
