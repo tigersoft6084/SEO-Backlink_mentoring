@@ -1,12 +1,11 @@
 import whoiser from "whoiser";
 import { MongoClient } from "mongodb";
 import pLimit from "p-limit";
-import { parseISO } from 'date-fns';
+import { parseISO, isValid } from 'date-fns';
 import { ErrorHandler } from "@/handlers/errorHandler.ts";
+import { BASE_DB_URL, DATABASE_NAME } from "@/config/apiConfig.ts";
 
 // MongoDB connection URI and database details
-const MONGO_URI = "mongodb://localhost:27017";
-const DATABASE_NAME = "BackLinkingDB";
 const COLLECTION_NAME = "backlinks";
 
 // Limit concurrency for WHOIS requests
@@ -22,44 +21,34 @@ const possibleExpiryFields = [
 ];
 
 // Fetch expiry date from WHOIS data
-const fetchExpiryDate = async (domain: string): Promise<Date | Response> => {
+const fetchExpiryDate = async (domain: string): Promise<Date | null> => {
   try {
     const whoisData = await whoiser(domain, { follow: 1 });
 
-    for (const [_, details] of Object.entries(whoisData)) {
-      if (details && typeof details === "object" && !Array.isArray(details)) {
+    for (const details of Object.values(whoisData)) {
+      if (Array.isArray(details)) {
+        continue;
+      }
+
+      if (details && typeof details === "object") {
         for (const field of possibleExpiryFields) {
-          if (field in details && typeof details[field] === "string") {
-            try {
-              const parsedDate = parseISO(details[field]);
-              return parsedDate; // Return Date object
-            } catch (error) {
-              // Use the error handler to generate the response
-              const { errorDetails, status } = ErrorHandler.handle(error, "Error fetching expiry date from WHOIS server");
-              return new Response(JSON.stringify(errorDetails), {
-                  status,
-                  headers: { "Content-Type": "application/json" },
-              });
-            }
+          if (details[field] && typeof details[field] === "string") {
+            const parsedDate = parseISO(details[field]);
+            if (isValid(parsedDate)) return parsedDate;
+            throw new Error(`Invalid date format for field: ${field}`);
           }
         }
       }
     }
-
-    return new Response(JSON.stringify("No expiry date found from WHOIS server")); // No expiry date found
-
+    return null; // No expiry date found
   } catch (error) {
-      // Use the error handler to generate the response
-      const { errorDetails, status } = ErrorHandler.handle(error, "Error fetching expired domains");
-      return new Response(JSON.stringify(errorDetails), {
-          status,
-          headers: { "Content-Type": "application/json" },
-      });
+    const { errorDetails } = ErrorHandler.handle(error, "Error fetching expiry date from WHOIS server");
+    throw errorDetails;
   }
 };
 
 // Process a batch of domains
-const processBatch = async (collection: any, batch: any[], currentDateString: string) => {
+const processBatch = async (collection: any, batch: any[], currentDate: Date) => {
   const operations: any[] = [];
 
   await Promise.all(
@@ -75,7 +64,7 @@ const processBatch = async (collection: any, batch: any[], currentDateString: st
           const dbExpiryDate = doc.Expiry_Date ? new Date(doc.Expiry_Date) : null;
 
           // If expired or missing expiry_date, process the domain
-          if (!dbExpiryDate || dbExpiryDate < new Date(currentDateString)) {
+          if (!dbExpiryDate || dbExpiryDate < currentDate) {
             const newExpiryDate = await fetchExpiryDate(domain);
 
             if (newExpiryDate) {
@@ -83,7 +72,7 @@ const processBatch = async (collection: any, batch: any[], currentDateString: st
                 updateOne: {
                   filter: { _id: doc._id },
                   update: {
-                    $set: { Expiry_Date: newExpiryDate, lastChecked: currentDateString, retryCount: 0 },
+                    $set: { Expiry_Date: newExpiryDate, lastChecked: currentDate, retryCount: 0 },
                     $unset: { processing: "" },
                   },
                 },
@@ -99,7 +88,7 @@ const processBatch = async (collection: any, batch: any[], currentDateString: st
                   updateOne: {
                     filter: { _id: doc._id },
                     update: {
-                      $set: { lastChecked: currentDateString, status: "unprocessible" },
+                      $set: { lastChecked: currentDate, status: "unprocessible" },
                       $unset: { processing: "" },
                     },
                   },
@@ -109,7 +98,7 @@ const processBatch = async (collection: any, batch: any[], currentDateString: st
                   updateOne: {
                     filter: { _id: doc._id },
                     update: {
-                      $set: { lastChecked: currentDateString, retryCount: currentRetryCount + 1 },
+                      $set: { lastChecked: currentDate, retryCount: currentRetryCount + 1 },
                       $unset: { processing: "" },
                     },
                   },
@@ -141,7 +130,7 @@ const processBatch = async (collection: any, batch: any[], currentDateString: st
 
 // Main domain processing function
 export const processDomains = async () => {
-  const client = new MongoClient(MONGO_URI, { maxPoolSize: 10 }); // Connection pooling
+  const client = new MongoClient(BASE_DB_URL, { maxPoolSize: 10 }); // Connection pooling
   try {
     await client.connect();
     const db = client.db(DATABASE_NAME);
@@ -152,7 +141,6 @@ export const processDomains = async () => {
     const batchSize = 200; // Manageable batch size for smooth processing
     const parallelBatches = 5; // Number of parallel batches
     const currentDate = new Date();
-    const currentDateString = currentDate.toISOString().split("T")[0]; // Precomputed date string
 
     while (true) {
       // Fetch batches in parallel
@@ -164,8 +152,8 @@ export const processDomains = async () => {
               $and: [
                 {
                   $or: [
-                    { Expiry_Date: { $lt: currentDateString } }, // Expired domains
-                    { Expiry_Date: null, lastChecked: { $lt: currentDateString } }, // Missing expiry_date, not checked today
+                    { Expiry_Date: { $lt: currentDate } }, // Expired domains
+                    { Expiry_Date: null, lastChecked: { $lt: currentDate } }, // Missing expiry_date, not checked today
                     { Expiry_Date: null, lastChecked: { $exists: false } }, // Missing expiry_date and lastChecked
                   ],
                 },
@@ -191,7 +179,7 @@ export const processDomains = async () => {
 
       // Process each batch
       await Promise.all(
-        allBatches.map((batch) => processBatch(collection, batch, currentDateString))
+        allBatches.map((batch) => processBatch(collection, batch, currentDate))
       );
     }
 

@@ -104,12 +104,12 @@ export const Backlinks: CollectionConfig = {
 
     {
       name: 'Expiry_Date',
-      type: "text"                                                            // Expiration Date
+      type: "date"                                                          // Expiration Date
     },
 
     {
       name: 'Date_Fetched',
-      type: 'date',                                                           // Date Fetched
+      type: 'date',                                                         // Date Fetched
       required: true,
     },
 

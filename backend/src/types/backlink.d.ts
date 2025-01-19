@@ -81,6 +81,24 @@ export interface Marketplace {
   Price: number;
 }
 
+// Define types for the domain document structure
+export interface DomainDocument extends Document {
+  _id: ObjectId | string;
+  Domain: string;
+  Expiry_Date: Date | null;
+  lastChecked: string;
+  retryCount: number;
+  status: string;
+}
+
+export interface BulkWriteOperation {
+  updateOne: {
+    filter: object;
+    update: object;
+    upsert?: boolean;
+  };
+}
+
 export interface ExpiredDomainData {
   Domain : string;
   TF : number | 0;
