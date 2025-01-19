@@ -1,6 +1,8 @@
 import whoiser from "whoiser";
 import { MongoClient } from "mongodb";
 import pLimit from "p-limit";
+import { parseISO } from 'date-fns';
+import { ErrorHandler } from "@/handlers/errorHandler.ts";
 
 // MongoDB connection URI and database details
 const MONGO_URI = "mongodb://localhost:27017";
@@ -20,27 +22,39 @@ const possibleExpiryFields = [
 ];
 
 // Fetch expiry date from WHOIS data
-const fetchExpiryDate = async (domain: string): Promise<string | null> => {
+const fetchExpiryDate = async (domain: string): Promise<Date | Response> => {
   try {
-    const whoisData = await whoiser(domain, { follow: 1 }); // Reduced follow depth for efficiency
+    const whoisData = await whoiser(domain, { follow: 1 });
 
     for (const [_, details] of Object.entries(whoisData)) {
       if (details && typeof details === "object" && !Array.isArray(details)) {
         for (const field of possibleExpiryFields) {
           if (field in details && typeof details[field] === "string") {
-            return details[field].split("T")[0]; // Return formatted date
+            try {
+              const parsedDate = parseISO(details[field]);
+              return parsedDate; // Return Date object
+            } catch (error) {
+              // Use the error handler to generate the response
+              const { errorDetails, status } = ErrorHandler.handle(error, "Error fetching expiry date from WHOIS server");
+              return new Response(JSON.stringify(errorDetails), {
+                  status,
+                  headers: { "Content-Type": "application/json" },
+              });
+            }
           }
         }
       }
     }
 
-    return null; // No expiry date found
+    return new Response(JSON.stringify("No expiry date found from WHOIS server")); // No expiry date found
+
   } catch (error) {
-    console.error(
-      `Error fetching WHOIS data for ${domain}:`,
-      error instanceof Error ? error.message : error
-    );
-    return null;
+      // Use the error handler to generate the response
+      const { errorDetails, status } = ErrorHandler.handle(error, "Error fetching expired domains");
+      return new Response(JSON.stringify(errorDetails), {
+          status,
+          headers: { "Content-Type": "application/json" },
+      });
   }
 };
 

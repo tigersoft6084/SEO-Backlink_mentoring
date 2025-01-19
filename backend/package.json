@@ -8,17 +8,13 @@
     "dev": "cross-env PORT=2024 NODE_OPTIONS=--no-deprecation next dev",
     "dev:clean": "rm -rf .next && cross-env PORT=2024 NODE_OPTIONS=--no-deprecation next dev",
     "dev:hot": "nodemon --watch . --exec 'npm run dev'",
-
     "build": "cross-env PORT=2024 NODE_OPTIONS=--no-deprecation next build",
     "start": "cross-env PORT=2024 NODE_ENV=production NODE_OPTIONS=--no-deprecation next start",
-
     "cms:importmap": "payload generate:importmap",
     "cms:types": "payload generate:types",
     "cms:run": "payload",
-
     "lint": "next lint",
     "lint:fix": "next lint --fix",
-
     "clean": "rm -rf .next node_modules && npm install",
     "reset": "rm -rf .next node_modules .payload && npm install"
   },
@@ -31,6 +27,7 @@
     "cheerio": "^1.0.0",
     "cookie": "^1.0.2",
     "cross-env": "^7.0.3",
+    "date-fns": "^4.1.0",
     "google-auth-library": "^9.15.0",
     "graphql": "^16.8.1",
     "next": "15.1.0",

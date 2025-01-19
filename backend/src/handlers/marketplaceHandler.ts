@@ -23,6 +23,7 @@ export const marketplaceHandler = async (
 
         const totalItems = marketplaceData.length;
         let processedItems = 0;
+        let lastProgressLogged = 0;
 
         const savePromises = marketplaceData.map(async (item) => {
             const domain = item.domain.toLowerCase().trim();
@@ -31,15 +32,14 @@ export const marketplaceHandler = async (
             const rd = Number(item.rd);
             const price = Number(item.price);
 
-            if (!domain || isNaN(tf) || isNaN(price)) {
-                throw new Error(`Invalid data received for domain: ${domain}, TF=${tf}, price=${price}`);
+            if (!domain || isNaN(price)) {
+                throw new Error(`Invalid data received for domain: Price=${price}`);
             }
 
             const existingEntry = await payload.find({
                 collection: COLLECTION_NAME_BACKLINK,
                 where: {
-                    Domain: { equals: domain },
-                    "Marketplaces.Marketplace_Source": { equals: marketplaceName },
+                    Domain: { equals: domain }
                 },
                 limit: 1,
             });
@@ -99,7 +99,10 @@ export const marketplaceHandler = async (
 
             processedItems += 1;
             const progress = Math.round((processedItems / totalItems) * 100);
-            console.log(`${marketplaceName} database uploading progress: ${progress}%`);
+            if (progress >= lastProgressLogged + 5) {
+                console.log(`${marketplaceName} database uploading progress: ${progress}%`);
+                lastProgressLogged = progress;
+            }
         });
 
         await Promise.all(savePromises);

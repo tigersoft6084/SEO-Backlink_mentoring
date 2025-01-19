@@ -1,5 +1,5 @@
 
-import { processDomains } from '@/services/whoiserService.ts';
+import { processDomains } from '@/services/expiredDomains/whoiserService.ts';
 import { Endpoint } from 'payload';
 
 // Define the Payload endpoint

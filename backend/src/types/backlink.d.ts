@@ -1,3 +1,4 @@
+import { ExpiredDomainData } from '@/types/expiredDomain.ts';
 export interface FetchedBackLinkDataFromMarketplace {
   domain: string;
   tf: number | 0;
@@ -78,4 +79,16 @@ export interface DomainRecord {
 export interface Marketplace {
   Marketplace_Source: string;
   Price: number;
+}
+
+export interface ExpiredDomainData {
+  Domain : string;
+  TF : number | 0;
+  CF : number | 0;
+  RD : number | 0;
+  TTF : string | null;
+  Ref_Ips : string | 0;
+  Ref_Edu : string | 0;
+  Ref_Gov : string | 0;
+  Language : string | null;
 }

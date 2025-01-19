@@ -1,6 +1,7 @@
 import { bulkCompetitiveAnalysisEndpoint } from "./bulkCompetitorsDomainEndpoint.ts";
 import { bulkDomainSearchEndpoint } from "./bulkDomainSearchEndpoint.ts";
 import { bulkKeywordSearchEndpoint } from "./bulkKeywordSearchEndpoint.ts";
+import { expiredDomainEndpoint } from "./expiredDomainEndpoint.ts";
 import { fetchBoosterlinkEndpoint } from "./marketplaces/boosterlinkEndpoint.ts";
 import { fetchDevelinkEndpoint } from "./marketplaces/develinkEndpoint.ts";
 import { fetchErefererEndpoint } from "./marketplaces/erefererEndpoint.ts";
@@ -19,6 +20,7 @@ export const customEndpoints = [
     bulkDomainSearchEndpoint,
     fetchPaperclubEndpoint,
     bulkCompetitiveAnalysisEndpoint,
+    expiredDomainEndpoint,
     fetchLinkbuildersEndpoint,
     fetchprensalinkEndpoint,
     fetchSeoJungleEndpoint,

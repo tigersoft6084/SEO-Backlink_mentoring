@@ -3,7 +3,7 @@ import { Endpoint } from 'payload';
 
 
 interface BacklinkData {
-  domain: string;
+  Domain: string;
   keyword: string;
   RD: string;
   TF: number;
@@ -13,20 +13,20 @@ interface BacklinkData {
   allSources: { source: string; price: number }[];
 }
 
-// Function to normalize domain by removing 'www.' (if present)
-// Check if domain is defined before calling 'startsWith'
-function normalizeDomain(domain: string): string {
-  if (!domain) {
+// Function to normalize Domain by removing 'www.' (if present)
+// Check if Domain is defined before calling 'startsWith'
+function normalizeDomain(Domain: string): string {
+  if (!Domain) {
     return '';  // Return an empty string or handle the error case as needed
   }
-  return domain.startsWith('www.') ? domain.slice(4) : domain;
+  return Domain.startsWith('www.') ? Domain.slice(4) : Domain;
 }
 
-// Function to extract links from SERP results (without domain uniqueness logic)
+// Function to extract links from SERP results (without Domain uniqueness logic)
 function extractLinks(serpResults: any, keyword: string) {
   return serpResults.result[0].items.map((item: any) => ({
     url: item.url,
-    domain: item.domain,
+    Domain: item.Domain,
     keyword,
   }));
 }
@@ -57,7 +57,7 @@ export const bulkKeywordSearchEndpoint: Endpoint = {
       const uniqueKeywords = [...new Set(keywords)];
 
       const allLinksByKeyword: { [key: string]: any[] } = {}; // Store links by keyword
-      const seenDomains = new Set<string>(); // Global set to track domains across all keywords
+      const seenDomains = new Set<string>(); // Global set to track Domains across all keywords
 
       // Function to fetch and process each keyword
       const fetchAndProcessKeyword = async (keyword: string) => {
@@ -67,8 +67,8 @@ export const bulkKeywordSearchEndpoint: Endpoint = {
 
           // Filter and store unique links across all keywords
           allLinksByKeyword[keyword] = links.filter((link: any) => {
-            if (link.domain && !seenDomains.has(link.domain)) {
-              seenDomains.add(link.domain);
+            if (link.Domain && !seenDomains.has(link.Domain)) {
+              seenDomains.add(link.Domain);
               return true;
             }
             return false;
@@ -84,48 +84,48 @@ export const bulkKeywordSearchEndpoint: Endpoint = {
       // Collect and preserve the order of links across all keywords
       const orderedLinks = uniqueKeywords.flatMap(keyword => allLinksByKeyword[keyword] || []);
 
-      const domains = orderedLinks.map((item: any) => item.domain);
+      const Domains = orderedLinks.map((item: any) => item.Domain);
 
-      // Normalize domains by removing the 'www.' prefix (if present) and use them for querying
-      const normalizedDomains = [...new Set(domains.map((domain: string) => normalizeDomain(domain)))];
+      // Normalize Domains by removing the 'www.' prefix (if present) and use them for querying
+      const normalizedDomains = [...new Set(Domains.map((Domain: string) => normalizeDomain(Domain)))];
 
-      // Fetch backlinks from the database for both 'www' and non-'www' domains
+      // Fetch backlinks from the database for both 'www' and non-'www' Domains
       const backlinksData = await Request.payload.find({
         collection: 'backlinks',
         where: {
-          domain: { in: normalizedDomains },
+          Domain: { in: normalizedDomains },
         },
         limit: 1000,  // Adjust this limit as needed or implement pagination
       });
 
-      // Process backlinks and filter unique domains with the lowest price
+      // Process backlinks and filter unique Domains with the lowest price
       const backlinksMap: Record<string, BacklinkData> = {};
       let totalBacklinks = 0;
 
-      // Create a map of normalized domains for faster lookup
-      const domainMap = new Set(normalizedDomains);
+      // Create a map of normalized Domains for faster lookup
+      const DomainMap = new Set(normalizedDomains);
 
       backlinksData.docs.forEach((doc: any) => {
-        const normalizedDocDomain = normalizeDomain(doc.domain);
+        const normalizedDocDomain = normalizeDomain(doc.Domain);
 
-        // Check if the normalized domain matches any of the domains from SERP results
-        if (domainMap.has(normalizedDocDomain)) {
-          const matchingDomain = orderedLinks.find((link: any) => normalizeDomain(link.domain) === normalizedDocDomain);
+        // Check if the normalized Domain matches any of the Domains from SERP results
+        if (DomainMap.has(normalizedDocDomain)) {
+          const matchingDomain = orderedLinks.find((link: any) => normalizeDomain(link.Domain) === normalizedDocDomain);
 
           if (matchingDomain) {
             const keyword = matchingDomain.keyword;
-            const existingBacklink = backlinksMap[doc.domain]; // Use the database domain here
+            const existingBacklink = backlinksMap[doc.Domain]; // Use the database Domain here
 
             if (!existingBacklink || doc.price < existingBacklink.price) {
               const otherSources = backlinksData.docs
-                .filter((source: any) => normalizeDomain(source.domain) === normalizedDocDomain && source.source !== doc.source)
+                .filter((source: any) => normalizeDomain(source.Domain) === normalizedDocDomain && source.source !== doc.source)
                 .map((source: any) => ({ source: source.source, price: source.price }));
 
               otherSources.push({ source: doc.source, price: doc.price });
 
-              // Map the backlink data, use doc.domain (the database domain) instead of matchingDomain.domain
-              backlinksMap[doc.domain] = {
-                domain: doc.domain, // Return the database domain
+              // Map the backlink data, use doc.Domain (the database Domain) instead of matchingDomain.Domain
+              backlinksMap[doc.Domain] = {
+                Domain: doc.Domain, // Return the database Domain
                 keyword,
                 RD: doc.RD > 1000 ? `${(doc.RD / 1000).toFixed(1)}k` : doc.RD,
                 TF: doc.TF,
@@ -146,7 +146,7 @@ export const bulkKeywordSearchEndpoint: Endpoint = {
       const backlinks = Object.values(backlinksMap);
 
       // Calculating pricing info
-      const foundDomains = backlinks.map((backlink) => backlink.domain);
+      const foundDomains = backlinks.map((backlink) => backlink.Domain);
       const minPrice = backlinks.reduce((total, backlink) => total + backlink.price, 0);
       const avgPrice = Math.floor(minPrice / foundDomains.length);
       const maxPrice = backlinks

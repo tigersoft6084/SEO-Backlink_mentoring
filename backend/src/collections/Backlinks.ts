@@ -1,11 +1,12 @@
 import { CollectionConfig } from 'payload';
 
+
 export const Backlinks: CollectionConfig = {
 
   slug: 'backlinks',
 
   admin: {
-    useAsTitle: 'Domain',                                                 // Use the email field as the title in the admin panel
+    useAsTitle: 'Domain',                                                 // Use the domain field as the title in the admin panel
   },
 
   access: {
@@ -47,8 +48,8 @@ export const Backlinks: CollectionConfig = {
     },
 
     {
-        name: 'RD',
-        type: 'number',                                                     // Referring Domains
+      name: 'RD',
+      type: 'number',                                                       // Referring Domains
     },
 
     {
