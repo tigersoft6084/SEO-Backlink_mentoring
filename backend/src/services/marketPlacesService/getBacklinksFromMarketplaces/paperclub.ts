@@ -1,3 +1,4 @@
+import { ErrorHandler } from "@/handlers/errorHandler.ts";
 import { getAllDataFromPaperclub } from "../getAllDataFromMarketplaces/paperclub.ts";
 import { getTokenForPaperClub } from "../getTokensOrCookiesFromMarketplaces/paperclub.ts";
 
@@ -17,13 +18,12 @@ export const getBacklinksDataFromPaperclub = async () => {
     return allData;
 
   }catch(error){
-    if (error instanceof Error) {
-      console.error('Error fetching data:', error.message);
-    } else {
-        console.error('Error fetching data:', error);
-    }
+    const { errorDetails, status } = ErrorHandler.handle(error, "Error occured from getting backlinks from Paperclub");
 
-    return "";
+    return new Response(JSON.stringify(errorDetails), {
+        status,
+        headers: { "Content-Type": "application/json" },
+    });
   }
 
 };

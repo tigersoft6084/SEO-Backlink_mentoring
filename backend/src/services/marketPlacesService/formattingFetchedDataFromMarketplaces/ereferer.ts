@@ -1,7 +1,8 @@
+import { ErrorHandler } from "@/handlers/errorHandler.ts";
 import { FetchedBackLinkDataFromMarketplace, FormattedErefererData } from "@/types/backlink.ts";
 import * as cheerio from "cheerio";
 
-export const getFormDataFromEreferer = async (response: string): Promise<FetchedBackLinkDataFromMarketplace[] | null> => {
+export const getFormDataFromEreferer = async (response: string): Promise<FetchedBackLinkDataFromMarketplace[] | Response> => {
   try {
     // Ensure response is valid and contains HTML
     if (typeof response !== "string") {
@@ -49,7 +50,10 @@ export const getFormDataFromEreferer = async (response: string): Promise<Fetched
 
     return result; // Return the processed result
   } catch (error) {
-    console.error("Error processing the page:", error);
-    return null; // Return null in case of an error
+    const { errorDetails, status } = ErrorHandler.handle(error, "Error Formatting Data For Ereferer");
+    return new Response(JSON.stringify(errorDetails), {
+      status,
+      headers: { "Content-Type": "application/json" },
+    });
   }
 };

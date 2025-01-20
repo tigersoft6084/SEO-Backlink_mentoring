@@ -86,9 +86,24 @@ export const DomainsForBackgroundProcess: CollectionConfig = {
         },
 
         {
-            name: 'Date_Fetched',
-            type: 'date',                                                       // Date Fetched
+            name: "Status",
+            type: "select",
+            options: ["pending", "processing"],
+            defaultValue: "pending",
             required: true,
+        },
+
+        {
+            name: "Created_At",
+            type: "date",
+            required: true,
+            defaultValue: () => new Date().toISOString(),
+        },
+
+        {
+            name: "Updated_At",
+            type: "date",
+            defaultValue: () => new Date().toISOString(),
         },
 
     ],

@@ -47,7 +47,7 @@ export const getFormDataFromBoosterlink = async (response: string): Promise<Fetc
 
   } catch (error) {
 
-    const { errorDetails, status } = ErrorHandler.handle(error, "Error processing the page : Boosterlink");
+    const { errorDetails, status } = ErrorHandler.handle(error, "Error Formatting Data For Boosterlink");
 
     return new Response(JSON.stringify(errorDetails), {
         status,

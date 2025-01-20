@@ -1,5 +1,5 @@
 import { GET_BACKLINK_FROM_BOOSTERLINK_URL } from "@/global/marketplaceUrls.ts";
-import { fetchDataFromBoosterlink } from "../fetchDataFromMarketplaces/boostlink.ts";
+import { fetchDataFromBoosterlink } from "../fetchDataFromMarketplaces/boosterlink.ts";
 import { getCookieFromBoosterlink } from "../getTokensOrCookiesFromMarketplaces/boosterlink.ts";
 import { ErrorHandler } from "@/handlers/errorHandler.ts";
 export const getBacklinksDataFromBoosterlink = async() => {

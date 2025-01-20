@@ -1,32 +1,28 @@
-import { BackLinkData } from "@/types/backlink.ts";
+import { ErrorHandler } from "@/handlers/errorHandler.ts";
+import { FetchedBackLinkDataFromMarketplace } from "@/types/backlink.js";
 
-interface NewspaperMetrics {
-    tf: number;
-    cf: number;
-    dr: number;
-}
-
-interface Newspaper {
-    url?: string;
-    metrics?: NewspaperMetrics;
-}
-
-interface PrensalinkItem {
-    newspapers?: Newspaper[];
+interface PrensalinkResponse {
+    newspapers?: {
+        url?: string;
+        metrics?: {
+            tf: number;
+            cf: number;
+            dr: number;
+        };
+    }[];
     price?: number;
 }
 
-export const getFormDataFromPrensalink = (response: any[]): BackLinkData[] | null => {
+export const getFormDataFromPrensalink = (response: PrensalinkResponse[]): FetchedBackLinkDataFromMarketplace[] | Response => {
     try {
         if (!response) {
         console.error("Invalid response data:",);
         throw new Error("Invalid response data. Expected an array within the first item.");
         }
 
-        const dataArray: PrensalinkItem[] = response;
-        const allData: BackLinkData[] = [];
+        const allData: FetchedBackLinkDataFromMarketplace[] = [];
 
-        dataArray.forEach((item) => {
+        response.forEach((item) => {
             if (item.newspapers && Array.isArray(item.newspapers) && item.newspapers.length > 0) {
                 const newspaper = item.newspapers[0];
                 const rawDomain = newspaper.url || "Unknown";
@@ -46,10 +42,14 @@ export const getFormDataFromPrensalink = (response: any[]): BackLinkData[] | nul
             }
         });
 
-        return allData.length > 0 ? allData : null;
+        return allData;
 
     } catch (error) {
-        console.error("Error processing the response:", error);
-        return null;
+        const { errorDetails, status } = ErrorHandler.handle(error, "Error Formatting Data For Paperclub");
+
+        return new Response(JSON.stringify(errorDetails), {
+            status,
+            headers: { "Content-Type": "application/json" },
+        });
     }
 };

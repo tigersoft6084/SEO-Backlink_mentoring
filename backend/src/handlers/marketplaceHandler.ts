@@ -2,7 +2,7 @@ import { PayloadRequest } from "payload";
 import { handleNoDataResponse, handleSuccessResponse } from "@/utils/responseUtils.ts";
 import { ErrorHandler } from "./errorHandler.ts";
 import { FetchedBackLinkDataFromMarketplace, Marketplace } from "@/types/backlink.ts";
-import { COLLECTION_NAME_BACKLINK } from "@/global/strings.ts";
+import { COLLECTION_NAME_BACKLINK, COLLECTION_NAME_DOMAINS_BACKGROUND_PROCESS } from "@/global/strings.ts";
 
 /**
  * Optimized handler to process and save marketplace backlink data.
@@ -12,9 +12,11 @@ export const marketplaceHandler = async (
     fetchData: () => Promise<FetchedBackLinkDataFromMarketplace[]>,
     marketplaceName: string,
 ): Promise<Response> => {
+
     const { payload } = req;
 
     try {
+
         const marketplaceData = await fetchData();
 
         if (!Array.isArray(marketplaceData) || marketplaceData.length === 0) {
@@ -54,7 +56,7 @@ export const marketplaceHandler = async (
             }
 
             // Fetch the existing entry for the domain only once
-            const existingEntry = await payload.find({
+            const existingEntry_backlinkCollection = await payload.find({
                 collection: COLLECTION_NAME_BACKLINK,
                 where: {
                     Domain: { equals: domain },
@@ -62,9 +64,28 @@ export const marketplaceHandler = async (
                 limit: 1,
             });
 
+            const existingEntry_domainCollection = await payload.find({
+                collection : COLLECTION_NAME_DOMAINS_BACKGROUND_PROCESS,
+                where : {
+                    Domain : {equals : domain},
+                },
+                limit : 1,
+            })
+
+            if(existingEntry_domainCollection.docs.length == 0){
+                await payload.create({
+                    collection : COLLECTION_NAME_DOMAINS_BACKGROUND_PROCESS,
+                    data : {
+                        Domain : domain,
+                        Status : "pending",
+                        Created_At: new Date().toISOString(),
+                    }
+                });
+            }
+
             // If entry exists, update it; otherwise, create a new one
-            if (existingEntry.docs.length > 0) {
-                const entryToUpdate = existingEntry.docs[0];
+            if (existingEntry_backlinkCollection.docs.length > 0) {
+                const entryToUpdate = existingEntry_backlinkCollection.docs[0];
 
                 // Find the marketplace with the same source
                 const existingMarketplace = entryToUpdate.Marketplaces.find(
@@ -108,6 +129,7 @@ export const marketplaceHandler = async (
                     });
                 }
             } else {
+
                 // Create a new entry if it doesn't exist
                 await payload.create({
                     collection: COLLECTION_NAME_BACKLINK,

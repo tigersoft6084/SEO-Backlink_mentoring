@@ -1,8 +1,11 @@
 import { GET_BACKLINK_FROM_PRENSALINK_URLS } from "@/global/marketplaceUrls.ts";
 import pLimit from "p-limit";
 import { fetchDataFromPrensalink } from "../fetchDataFromMarketplaces/prensalink.ts";
+import { FetchedBackLinkDataFromMarketplace } from "@/types/backlink.js";
 
-export const getAllDataFromPrensalink = async (token: string) => {
+export const getAllDataFromPrensalink = async (
+    token: string
+    ): Promise<FetchedBackLinkDataFromMarketplace[]> => {
     if (!token) {
         throw new Error("API token is missing");
     }
@@ -10,29 +13,39 @@ export const getAllDataFromPrensalink = async (token: string) => {
     const limit = pLimit(5); // Limit concurrent requests to 5
     const batchSize = 10; // Process 10 URLs in a batch
     const totalUrls = GET_BACKLINK_FROM_PRENSALINK_URLS.length;
-    const allData = [];
+    const allData: FetchedBackLinkDataFromMarketplace[] = []; // Explicitly type allData
     let processedUrls = 0;
 
     for (let i = 0; i < totalUrls; i += batchSize) {
         const batchUrls = GET_BACKLINK_FROM_PRENSALINK_URLS.slice(i, i + batchSize);
 
-        // Fetch data for the current batch of URLs
-        const batchResults = await Promise.all(
+        console.log(`Processing batch from index ${i} to ${i + batchUrls.length}`);
+
+        // Use Promise.allSettled to handle partial failures
+        const batchResults = await Promise.allSettled(
         batchUrls.map((url) => limit(() => fetchDataFromPrensalink(url, token)))
         );
 
-        // Flatten the batch results and push to allData
-        allData.push(...batchResults.flat());
+        batchResults.forEach((result, index) => {
+        if (result.status === "fulfilled") {
+            const data = result.value;
+
+            // Ensure the data is valid before adding to allData
+            if (Array.isArray(data)) {
+            allData.push(...data);
+            } else {
+            console.error(`Invalid data format for URL: ${batchUrls[index]}`);
+            }
+        } else {
+            console.error(`Failed to fetch data for URL: ${batchUrls[index]}`);
+            console.error(result.reason); // Log the error reason
+        }
+        });
 
         // Update progress
         processedUrls += batchUrls.length;
         const progressPercentage = ((processedUrls / totalUrls) * 100).toFixed(2);
-
-        // Log progress to the console (or handle as needed)
         console.log(`Progress: ${progressPercentage}%`);
-
-        // Optionally, you can return progress in a callback or store it elsewhere
-        // (for example, sending it to a front-end via WebSockets or periodic requests)
     }
 
     return allData;

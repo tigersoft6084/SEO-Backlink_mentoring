@@ -1,15 +1,15 @@
-
+import { backgroundMarketplaceProcessHandler } from '@/handlers/backgroundMarketplaceProcessHandler.ts';
 import { processDomains } from '@/services/expiredDomains/whoiserService.ts';
-import { Endpoint } from 'payload';
+import { Endpoint, PayloadRequest } from 'payload';
 
 // Define the Payload endpoint
 export const myTestEndpoint: Endpoint = {
   path: '/test',
   method: 'get',
-  handler: async () => {
+  handler: async (req : PayloadRequest) => {
     try {
 
-      const result = await processDomains();
+      const result = await backgroundMarketplaceProcessHandler(req);
 
       // Return the collected results
       return new Response(

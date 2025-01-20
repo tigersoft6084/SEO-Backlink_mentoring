@@ -1,6 +1,7 @@
 import * as cheerio from 'cheerio';
 import { getCredentialsForMarketplaces } from '../getCredentialsForMarketplaces.ts';
 import { LINKAVISTA_API_URL } from '@/global/marketplaceUrls.ts';
+import { ErrorHandler } from '@/handlers/errorHandler.ts';
 
 export const getCookieFromLinkaVista = async () : Promise<string | null> => {
 
@@ -36,6 +37,10 @@ export const getCookieFromLinkaVista = async () : Promise<string | null> => {
 const fetch_Cookie_FromPostLogin = async (email: string, password: string): Promise<string> => {
     try {
         const getValidationData = await fetch_CSRF_TOKEN_AndCookieFrom_GET_Login();
+
+        if (!getValidationData) {
+            throw new Error('Failed to fetch CSRF token or initial cookies from Linkavista');
+        }
 
         const formData = new URLSearchParams();
         formData.append('_token', getValidationData.CSRF_TOKEN);
@@ -76,14 +81,14 @@ const fetch_Cookie_FromPostLogin = async (email: string, password: string): Prom
 
         return '';
 
-    } catch (error: any) {
-        console.error('Error fetching cookie from Linkavista:', error.message);
-        throw new Error('Failed to fetch cookie from Linkavista.');
+    } catch (error) {
+        const { errorDetails } = ErrorHandler.handle(error, "Error fetching validation data for Linkbuilders : ");
+        return errorDetails.context;
     }
 };
 
 
-const fetch_CSRF_TOKEN_AndCookieFrom_GET_Login = async (): Promise<any> => {
+const fetch_CSRF_TOKEN_AndCookieFrom_GET_Login = async (): Promise<{CSRF_TOKEN : string; COOKIE : string} | null> => {
     try {
         const response = await fetch(LINKAVISTA_API_URL, { method: 'GET' });
 
@@ -97,6 +102,9 @@ const fetch_CSRF_TOKEN_AndCookieFrom_GET_Login = async (): Promise<any> => {
 
         // Select the meta tag with the name "csrf-token" and get its content attribute
         const csrfToken = $('meta[name="csrf-token"]').attr('content');
+        if (!csrfToken) {
+            throw new Error('CSRF token not found in the HTML response');
+        }
 
         const cookieOrigin = response.headers.get('set-cookie') || "";
 
@@ -111,12 +119,14 @@ const fetch_CSRF_TOKEN_AndCookieFrom_GET_Login = async (): Promise<any> => {
                 COOKIE : extractedCookie
             };
 
-        } else {
-            console.log("One or both tokens not found.");
         }
 
-    } catch (error: any) {
-        console.error('Error fetching validation data:', error.message);
-        throw new Error('Failed to fetch validation data');
+        console.warn('One or more required cookies not found in the response headers');
+        return null;
+
+    } catch (error) {
+        const { errorDetails, status } = ErrorHandler.handle(error, "Error fetching validation data for Linkbuilders : ");
+        console.log(errorDetails, status)
+        return null;
     }
 };

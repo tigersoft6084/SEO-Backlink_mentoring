@@ -2,6 +2,7 @@
     Collection names :
 */
 export const COLLECTION_NAME_BACKLINK = "backlinks";
+export const COLLECTION_NAME_DOMAINS_BACKGROUND_PROCESS = "domainsForBackgroundProcess";
 
 /*
     MarketPlace names :

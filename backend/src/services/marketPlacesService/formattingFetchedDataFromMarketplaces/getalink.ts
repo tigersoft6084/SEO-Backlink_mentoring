@@ -1,12 +1,16 @@
-interface FormattedGetalinkData {
-    domain: string;
-    tf: number;
-    cf: number;
-    rd: number;
-    price: number;
+import { ErrorHandler } from "@/handlers/errorHandler.ts";
+import { FetchedBackLinkDataFromMarketplace } from "@/types/backlink.ts";
+interface ParsedResponse {
+    data: {
+        url: string;
+        tf: number;
+        cf: number;
+        rd: number;
+        price: { precio_usuario: number };
+    }[];
 }
 
-export const getFormDataFromGetalink = async (response: any): Promise<FormattedGetalinkData[] | null> => {
+export const getFormDataFromGetalink = async (response: string): Promise<FetchedBackLinkDataFromMarketplace[] | Response> => {
     // Ensure response is valid
     if (!response) {
         throw new Error("No response data");
@@ -14,7 +18,7 @@ export const getFormDataFromGetalink = async (response: any): Promise<FormattedG
 
     try {
         // If `response` is a string, parse it
-        const parsedResponse = typeof response === "string" ? JSON.parse(response) : response;
+        const parsedResponse : ParsedResponse = typeof response === "string" ? JSON.parse(response) : response;
 
         // Validate that the parsed response has a `data` property
         if (!parsedResponse.data || !Array.isArray(parsedResponse.data)) {
@@ -22,7 +26,7 @@ export const getFormDataFromGetalink = async (response: any): Promise<FormattedG
         }
 
         // Extract relevant data
-        const extractedData: FormattedGetalinkData[] = parsedResponse.data.map((item: any) => {
+        const extractedData: FetchedBackLinkDataFromMarketplace[] = parsedResponse.data.map((item) => {
             let domain = "";
 
             if (item.url) {
@@ -44,13 +48,17 @@ export const getFormDataFromGetalink = async (response: any): Promise<FormattedG
                 tf: item.tf || 0, // Default to 0 if tf is missing
                 cf: item.cf || 0, // Default to 0 if cf is missing
                 rd: item.rd || 0, // Default to 0 if rd is missing
-                price: item.precio_usuario || 0, // Default to 0 if price is missing
+                price: item.price?.precio_usuario || 0, // Default to 0 if price is missing
             };
         });
 
         return extractedData;
     } catch (error) {
-        console.error("Error processing response:", error);
-        return null;
+        const { errorDetails, status } = ErrorHandler.handle(error, "Error Formatting Data For Getalink");
+
+        return new Response(JSON.stringify(errorDetails), {
+            status,
+            headers: { "Content-Type": "application/json" },
+        });
     }
 };

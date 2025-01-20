@@ -180,7 +180,9 @@ export interface DomainsForBackgroundProcess {
   Language?: string | null;
   Ref_Lang?: string | null;
   Expiry_Date?: string | null;
-  Date_Fetched: string;
+  Status: 'pending' | 'processing';
+  Created_At: string;
+  Updated_At?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -354,7 +356,9 @@ export interface DomainsForBackgroundProcessSelect<T extends boolean = true> {
   Language?: T;
   Ref_Lang?: T;
   Expiry_Date?: T;
-  Date_Fetched?: T;
+  Status?: T;
+  Created_At?: T;
+  Updated_At?: T;
   updatedAt?: T;
   createdAt?: T;
 }

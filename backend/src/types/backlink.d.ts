@@ -7,16 +7,34 @@ export interface FetchedBackLinkDataFromMarketplace {
   price: number;
 }
 
-export interface FormattedPaperclubData {
-  name?: string;
-  kpi?: {
-    trustFlow?: number;
-    citationFlow?: number;
-    refDomain?: number;
-  };
-  articles?: {
-    price?: number;
-  }[];
+export interface ResultBacklinkDataForSEO{
+  Domain : string;
+  keyword : string;
+  RD : number;
+  TF : number;
+  CF : number;
+  Price : number;
+  allSource : { source : string; Price : number}[];
+  TTF : string;
+  Title : string;
+  Backlinks : number;
+  Ref_Ips : string;
+  Ref_Edu : string;
+  Ref_Gov : string;
+  Language : string;
+  Ref_Lang : string;
+}
+
+export interface ExpiredDomainData {
+  Domain : string;
+  TF : number | 0;
+  CF : number | 0;
+  RD : number | 0;
+  TTF : string | null;
+  Ref_Ips : string | 0;
+  Ref_Edu : string | 0;
+  Ref_Gov : string | 0;
+  Language : string | null;
 }
 
 export interface FormattedErefererData{
@@ -42,71 +60,7 @@ export interface LinkBuildersResult {
     price?: number;
   }[];
 }
-
-export interface FormattedPrensalinkData {
-  price?: number; // Price outside the newspapers array
-  newspapers?: Array<{
-    url?: string; // URL of the newspaper
-    metrics?: {
-    tf?: number; // Trust flow
-    cf?: number; // Citation flow
-    rd?: number; // Referring domains
-    };
-  }>;
-}
-
-export interface FormattedSeojungleData {
-  url?: string;
-  trustFlow?: number;
-  citationFlow?: number;
-  referringDomains?: number;
-  products? : Array<{
-    margedPrice?: number;
-  }>
-}
-
-export interface WhoisResult {
-  domain: string;
-  expiry_date?: string; // Optional if expiry_date might be absent
-  [key: string]: any;  // To account for other potential fields from WHOIS
-}
-
-export interface DomainRecord {
-  domain: string;
-  expiry_date: string;
-}
-
 export interface Marketplace {
   Marketplace_Source: string;
   Price: number;
-}
-
-// Define types for the domain document structure
-export interface DomainDocument extends Document {
-  _id: ObjectId | string;
-  Domain: string;
-  Expiry_Date: Date | null;
-  lastChecked: string;
-  retryCount: number;
-  status: string;
-}
-
-export interface BulkWriteOperation {
-  updateOne: {
-    filter: object;
-    update: object;
-    upsert?: boolean;
-  };
-}
-
-export interface ExpiredDomainData {
-  Domain : string;
-  TF : number | 0;
-  CF : number | 0;
-  RD : number | 0;
-  TTF : string | null;
-  Ref_Ips : string | 0;
-  Ref_Edu : string | 0;
-  Ref_Gov : string | 0;
-  Language : string | null;
 }

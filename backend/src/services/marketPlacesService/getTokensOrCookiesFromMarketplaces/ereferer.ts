@@ -1,6 +1,6 @@
 import { Ereferer_API_URL } from "@/global/marketplaceUrls.ts";
 import { getCredentialsForMarketplaces } from "../getCredentialsForMarketplaces.ts";
-
+import { ErrorHandler } from "@/handlers/errorHandler.ts";
 
 // Function to fetch cookie from Ereferer API using fetch
 const fetchCookieFromEreferer = async (email: string, password: string): Promise<string> => {
@@ -19,7 +19,7 @@ const fetchCookieFromEreferer = async (email: string, password: string): Promise
         'Content-Type': 'application/x-www-form-urlencoded',
         'Referer': 'https://en.ereferer.com/login',
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.82 Safari/537.36',
-        'Cookie': '_locale=en',  // Initial cookies if needed
+        'Cookie': '_locale=en',
       },
       body: formData.toString(),
       redirect: 'manual',  // Prevent automatic redirects
@@ -40,9 +40,10 @@ const fetchCookieFromEreferer = async (email: string, password: string): Promise
 
     return '';
 
-  } catch (error: any) {
-    console.error('Error fetching cookie from Ereferer:', error.message);
-    throw new Error('Failed to fetch cookie from Ereferer.');
+  } catch (error) {
+
+    const { errorDetails } = ErrorHandler.handle(error, "Error fetching validation data for Ereferer : ");
+    return errorDetails.context;
   }
 
 };

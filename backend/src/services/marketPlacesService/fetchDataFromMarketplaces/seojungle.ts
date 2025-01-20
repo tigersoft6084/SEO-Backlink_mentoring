@@ -1,7 +1,7 @@
-import axios from 'axios';
 import { axiosInstance } from '@/utils/axiosInstance.ts';
 import { getFormDataFromSeojungle } from '../formattingFetchedDataFromMarketplaces/seojungle.ts';
 import { GET_BACKLINK_FROM_SeoJungle_URL } from '@/global/marketplaceUrls.ts';
+import { ErrorHandler } from '@/handlers/errorHandler.ts';
 
 export const fetchDataFromSeojungle = async (token: string, page: number, themes: string[]) => {
 
@@ -36,29 +36,24 @@ export const fetchDataFromSeojungle = async (token: string, page: number, themes
 
     try {
         const response = await axiosInstance.post(GET_BACKLINK_FROM_SeoJungle_URL, body, {
-        headers: {
-            Accept: "application/json, text/plain, */*",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-            "X-Organization-Id": "2f26d1f1-c44e-4b92-b03e-7121b018ae91",
-            Referer: "https://app.Seojungle.com/"
-        },
+            headers: {
+                Accept: "application/json, text/plain, */*",
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+                "X-Organization-Id": "2f26d1f1-c44e-4b92-b03e-7121b018ae91",
+                Referer: "https://app.Seojungle.com/"
+            },
         });
 
         const formattedData = getFormDataFromSeojungle(response);
 
         return formattedData;
 
-    } catch (error : unknown) {
-        if (axios.isAxiosError(error)) {
-            console.error(`Error fetching page ${page}:`, error.response?.data || error.message);
-        } else {
-            console.error(`Error fetching page ${page}:`, error);
-        }
-        if (error instanceof Error) {
-            throw new Error(`Failed to fetch page ${page}: ${error.message}`);
-        } else {
-            throw new Error(`Failed to fetch page ${page}: ${String(error)}`);
-        }
+    } catch (error) {
+        const { errorDetails, status } = ErrorHandler.handle(error, "No Seojungle data received.");
+        return new Response(JSON.stringify(errorDetails), {
+            status,
+            headers: { "Content-Type": "application/json" },
+        });
     }
 };

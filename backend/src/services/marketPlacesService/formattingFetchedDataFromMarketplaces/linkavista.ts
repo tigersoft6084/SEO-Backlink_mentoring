@@ -1,15 +1,16 @@
+import { ErrorHandler } from "@/handlers/errorHandler.ts";
+import { FetchedBackLinkDataFromMarketplace } from "@/types/backlink.js";
 import * as cheerio from "cheerio";
 
-interface LinkavistarResult {
+interface WebsiteData {
     domain: string;
     tf: number;
     cf: number;
     rd: number;
-    ttf: string;
-    price: number;
+    credit: number;
 }
 
-export const getFormDataFromLinkavistar = async (response: any): Promise<LinkavistarResult[] | null> => {
+export const getFormDataFromLinkavistar = async (response: string): Promise<FetchedBackLinkDataFromMarketplace[] | Response> => {
     try {
         // Ensure response is valid and contains HTML
         if (!response || typeof response !== "string") {
@@ -20,38 +21,31 @@ export const getFormDataFromLinkavistar = async (response: any): Promise<Linkavi
         const $ = cheerio.load(response);
 
         // Find the script block containing websitesData
-        let websitesData: any[] | null = null as any[] | null;
+        let websitesData: WebsiteData[] = [];
 
         $('script').each((index, element) => {
             const scriptContent = $(element).html() || '';
             if (scriptContent.includes('let websitesData =')) {
-                // Extract the JSON part of websitesData
-                const match = scriptContent.match(/let websitesData\s*=\s*(\[[\s\S]*?\]);/);
-                if (match && match[1]) {
-                    websitesData = JSON.parse(match[1]); // Parse JSON
+                try{
+                    // Extract the JSON part of websitesData
+                    const match = scriptContent.match(/let websitesData\s*=\s*(\[[\s\S]*?\]);/);
+                    if (match && match[1]) {
+                        websitesData = JSON.parse(match[1]) as WebsiteData[];
+                    }
+                }catch(error){
+                    const { errorDetails } = ErrorHandler.handle(error, "Failed to parse websitesData JSON from Linkavistar.");
+                    throw errorDetails.context;
                 }
+                return false;
             }
         });
 
-        if (!websitesData) {
-            throw new Error("No websitesData found in the response.");
+        if (websitesData.length === 0) {
+            throw new Error("No websitesData found in the response For Linkavistar.");
         }
 
         // Process and format the extracted data
-        const formattedResult: LinkavistarResult[] = websitesData.map((website : any) => {
-            // Dynamically find the TTF with the highest value
-            const ttfs = Object.keys(website)
-                .filter((key) => key.startsWith("ttf") && !key.endsWith("_value"))
-                .map((ttfKey) => ({
-                    name: website[ttfKey],
-                    value: website[`${ttfKey}_value`] || 0,
-                }))
-                .filter((ttf) => ttf.name && ttf.value > 0);
-
-            const highestTtf = ttfs.reduce(
-                (prev, curr) => (curr.value > prev.value ? curr : prev),
-                { name: "Unknown", value: 0 }
-            );
+        const formattedResult: FetchedBackLinkDataFromMarketplace[] = websitesData.map((website) => {
 
             const rawDomain = website.domain || "Unknown";
             const formattedDomain = rawDomain
@@ -63,7 +57,6 @@ export const getFormDataFromLinkavistar = async (response: any): Promise<Linkavi
                 tf: website.tf || 0,
                 cf: website.cf || 0,
                 rd: website.rd || 0,
-                ttf: highestTtf.name,
                 price: (website.credit || 0) / 100,
             };
         });
@@ -71,7 +64,11 @@ export const getFormDataFromLinkavistar = async (response: any): Promise<Linkavi
         // Return the formatted results
         return formattedResult;
     } catch (error) {
-        console.error("Error processing the page:", error);
-        return null; // Return null in case of an error
+        const { errorDetails, status } = ErrorHandler.handle(error, "Error Formatting Data For Linkavistar");
+
+        return new Response(JSON.stringify(errorDetails), {
+            status,
+            headers: { "Content-Type": "application/json" },
+        });
     }
 };
