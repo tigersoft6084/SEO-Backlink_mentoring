@@ -1,6 +1,6 @@
+import { PayloadRequest } from "payload";
 import { fetchExpiredDomainsService } from "@/services/expiredDomains/expiredDomainsService.ts";
 import { ErrorHandler } from "./errorHandler.ts";
-import { PayloadRequest } from "payload";
 
 /**
  * Handles requests to fetch expired domains.
@@ -29,7 +29,7 @@ export const expiredDomainsHandler = async (req: PayloadRequest): Promise<Respon
         // CORS headers
         const corsHeaders = {
             "Access-Control-Allow-Origin": "*", // You can replace '*' with specific domains for security reasons
-            "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+            "Access-Control-Allow-Methods": "GET",
             "Access-Control-Allow-Headers": "Content-Type, Authorization",
         };
 
@@ -48,7 +48,7 @@ export const expiredDomainsHandler = async (req: PayloadRequest): Promise<Respon
                 // CORS headers
         const corsHeaders = {
             "Access-Control-Allow-Origin": "*", // You can replace '*' with specific domains for security reasons
-            "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+            "Access-Control-Allow-Methods": "GET",
             "Access-Control-Allow-Headers": "Content-Type, Authorization",
         };
 

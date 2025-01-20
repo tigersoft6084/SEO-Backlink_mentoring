@@ -56,20 +56,36 @@ const parseCustomDate = (dateStr: string): Date | null => {
 
   return null; // Return null if no format matches
 };
+const validDomainRegex = /^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
+const isValidDomain = (domain: string): boolean => {
+  // Check if the domain matches the regex
+  if (!validDomainRegex.test(domain)) {
+    return false;
+  }
+
+  // Extract the TLD (last part of the domain)
+  const tld = domain.split('.').pop();
+
+  // If the TLD is undefined or invalid, return false
+  if (!tld) {
+    console.error(`Invalid domain: ${domain}`);
+    return false;
+  }
+
+  return true;
+};
 
 // Fetch expiry date from WHOIS data
 export const fetchExpiryDate = async (domain: string): Promise<Date | null> => {
 
-  const validDomainRegex = /^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  // Validate domain format
+  if (!isValidDomain(domain)) {
+    console.error(`Invalid domain format: ${domain}`);
+    return null;
+  }
 
   try {
-
-    // Validate domain format
-    if (!validDomainRegex.test(domain)) {
-      console.error(`Invalid domain format: ${domain}`);
-      return null;
-    }
 
     const whoisData = await whoiser(domain, { follow: 1 });
 
