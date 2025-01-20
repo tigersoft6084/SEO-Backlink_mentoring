@@ -46,7 +46,9 @@ const Filters: React.FC<FiltersProps> = ({ filters, updateFilters, onFilter }) =
         const { name, value } = e.target;
         if (
             name.startsWith("min") ||
-            name.startsWith("max") && !isNaN(Number(value)) // Ensure numeric input
+            name.startsWith("max") ||
+            (name === "Domain" && value) ||  // Ensure it handles search value properly
+            !isNaN(Number(value)) // Ensure numeric input
         ) {
             updateFilters(name as keyof FilterType, value);
         }

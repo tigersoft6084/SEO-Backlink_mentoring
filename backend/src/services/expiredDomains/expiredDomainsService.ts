@@ -2,6 +2,7 @@ import { Payload, Where, WhereField } from "payload";
 import { COLLECTION_NAME_BACKLINK } from "@/global/strings.ts";
 import { ErrorHandler } from "@/handlers/errorHandler.ts";
 import { ExpiredDomainData } from "@/types/backlink.ts";
+import { domain } from "whoiser";
 
 export const fetchExpiredDomainsService = async (
     payload: Payload,
@@ -127,7 +128,8 @@ export const fetchExpiredDomainsService = async (
             Language: item.Language ?? null,
         }));
 
-        return { totalExpiredDomains, expiredDomains };
+        // const filteredDomains = expiredDomains.filter((domain) => domain.CF !== 0);
+        return { totalExpiredDomains, expiredDomains};
     } catch (error) {
         const { errorDetails, status } = ErrorHandler.handle(error, "Error fetching expired domains");
         return new Response(JSON.stringify(errorDetails), {

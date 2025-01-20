@@ -1,10 +1,8 @@
 "use client";
 
 import Filters from "../../../components/ui/Expired_Filters";
-// import ExpiredDomainsTable from "../../../components/ui/Expired_Table";
+import ExpiredDomainsTable from "../../../components/ui/Expired_Table";
 import useExpiredFilterView from "../../../hooks/useExpiredFilterView";
-
-// import DomainsTable from "./DomainsTable";
 
 export default function ExpiredDomains() {
     const { filters, expiredDomainsData, loading, error, updateFilters, fetchDomains } = useExpiredFilterView();
@@ -18,7 +16,7 @@ export default function ExpiredDomains() {
             />
             {loading && <p className="text-center">Loading...</p>}
             {error && <p className="text-center text-red-500">{error}</p>}
-            {/* <ExpiredDomainsTable rows={expiredDomainsData} /> */}
+            <ExpiredDomainsTable rows={expiredDomainsData} />
         </div>
     );
 }

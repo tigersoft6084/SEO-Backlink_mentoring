@@ -61,7 +61,7 @@ export default function useExpiredFilterView() {
                 throw new Error("Failed to fetch domains");
             }
             const data = await response.json();
-            setExpiredDomainsData(data);
+            setExpiredDomainsData(data.expiredDomains);
         } catch (err: unknown) {
             // Handle the unknown error
             if (err instanceof Error) {

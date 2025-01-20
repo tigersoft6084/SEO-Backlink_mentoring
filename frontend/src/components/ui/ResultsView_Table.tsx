@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { TiShoppingCart } from "react-icons/ti";
 import { MdFilterList } from "react-icons/md";
 import { FaList } from "react-icons/fa";
 import FilterDropdown from "./ResultsView_Table_FilterDropdown";
