@@ -31,9 +31,9 @@ export interface ExpiredDomainData {
   CF : number | 0;
   RD : number | 0;
   TTF : string | null;
-  Ref_Ips : string | 0;
-  Ref_Edu : string | 0;
-  Ref_Gov : string | 0;
+  Ref_Ips : number | 0;
+  Ref_Edu : number | 0;
+  Ref_Gov : number | 0;
   Language : string | null;
 }
 

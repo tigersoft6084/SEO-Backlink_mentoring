@@ -74,22 +74,22 @@ export const Backlinks: CollectionConfig = {
 
     {
       name: 'Backlinks',
-      type: 'text',                                                         // Number of backlinks for Domain
+      type: 'number',                                                         // Number of backlinks for Domain
     },
 
     {
       name: 'Ref_Ips',
-      type: 'text',                                                         // Referring Ips
+      type: 'number',                                                         // Referring Ips
     },
 
     {
       name: 'Ref_Edu',
-      type: 'text',                                                         // Referring Edu
+      type: 'number',                                                         // Referring Edu
     },
 
     {
       name: 'Ref_Gov',
-      type: 'text',                                                         // Referring Government
+      type: 'number',                                                         // Referring Government
     },
 
     {

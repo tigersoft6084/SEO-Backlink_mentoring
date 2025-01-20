@@ -150,10 +150,10 @@ export interface Backlink {
   CF?: number | null;
   TTF?: string | null;
   Title?: string | null;
-  Backlinks?: string | null;
-  Ref_Ips?: string | null;
-  Ref_Edu?: string | null;
-  Ref_Gov?: string | null;
+  Backlinks?: number | null;
+  Ref_Ips?: number | null;
+  Ref_Edu?: number | null;
+  Ref_Gov?: number | null;
   Language?: string | null;
   Ref_Lang?: string | null;
   Expiry_Date?: string | null;
