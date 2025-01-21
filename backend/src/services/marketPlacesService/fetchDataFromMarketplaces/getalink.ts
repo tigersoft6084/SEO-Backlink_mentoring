@@ -1,6 +1,6 @@
-import axios from 'axios';
 import { axiosInstance } from '@/utils/axiosInstance.ts';
 import { getFormDataFromGetalink } from '../formattingFetchedDataFromMarketplaces/getalink.ts';
+import { ErrorHandler } from '@/handlers/errorHandler.ts';
 
 export const fetchDataFromGetalink = async (url: string, token: string) => {
   try {
@@ -12,11 +12,10 @@ export const fetchDataFromGetalink = async (url: string, token: string) => {
     const fomatedData = getFormDataFromGetalink(response.data);
     return fomatedData;
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      console.error('Failed to fetch URL:', error.message);
-    } else {
-      console.error('Failed to fetch URL:', error);
-    }
-    return []; // Return empty array in case of failure
+    const { errorDetails, status } = ErrorHandler.handle(error, "No Getalink data received.");
+    return new Response(JSON.stringify(errorDetails), {
+        status,
+        headers: { "Content-Type": "application/json" },
+    });
   }
 };

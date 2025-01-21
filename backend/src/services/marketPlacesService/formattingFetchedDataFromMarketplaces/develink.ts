@@ -2,7 +2,7 @@ import { ErrorHandler } from "@/handlers/errorHandler.ts";
 import { FetchedBackLinkDataFromMarketplace } from "@/types/backlink.js";
 import * as cheerio from "cheerio";
 
-export const getFormDataFromDevelink = async (response : string) : Promise<FetchedBackLinkDataFromMarketplace[]> => {
+export const getFormDataFromDevelink = async (response : string) : Promise<FetchedBackLinkDataFromMarketplace[] | Response> => {
   try {
     // Ensure response is valid and contains HTML
     if (!response || typeof response !== "string") {
@@ -79,8 +79,10 @@ export const getFormDataFromDevelink = async (response : string) : Promise<Fetch
 
     return result;
   } catch (error) {
-    const { errorDetails, status } = ErrorHandler.handle(error, "Error processing the page : Develink");
-    console.log(errorDetails, status);
-    return [];
+    const { errorDetails, status } = ErrorHandler.handle(error, "Error Formatting Data For Develink");
+    return new Response(JSON.stringify(errorDetails), {
+      status,
+      headers: { "Content-Type": "application/json" },
+    });
   }
 };

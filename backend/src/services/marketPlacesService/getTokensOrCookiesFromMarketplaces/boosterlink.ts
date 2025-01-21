@@ -41,6 +41,10 @@ const fetchCookieFromBoosterlink = async (email: string, password: string): Prom
     try {
         const getValidationData = await getValidationDataForPostLogin();
 
+        if (!getValidationData) {
+            throw new Error('Validation data could not be fetched');
+        }
+
         const formData = new URLSearchParams();
         formData.append('Button_Valider', "Login");
         formData.append('TextBox_email', email);
@@ -77,7 +81,7 @@ const fetchCookieFromBoosterlink = async (email: string, password: string): Prom
 
         const { errorDetails, status } = ErrorHandler.handle(error, 'Error fetching cookie from Boosterlink:');
         console.log(errorDetails, status);
-        return errorDetails.type;
+        return errorDetails.context;
 
     }
 };
@@ -96,7 +100,12 @@ const extractCookie = (cookieString: string): string | null => {
     return null;
 };
 
-const getValidationDataForPostLogin = async (): Promise<any> => {
+const getValidationDataForPostLogin = async (): Promise<
+    {
+        __EVENTVALIDATION: string;
+        __VIEWSTATE: string;
+        __VIEWSTATEGENERATOR: string;
+    } | null> => {
 
     try {
         const response = await fetch(BOOSTERLINK_API_URL, { method: 'GET' });
@@ -109,16 +118,19 @@ const getValidationDataForPostLogin = async (): Promise<any> => {
         const responseBody = await response.text();
         const $ = cheerio.load(responseBody);
 
-        const viewState = $("input[name='__VIEWSTATE']").val();
-        const viewStateGenerator = $("input[name='__VIEWSTATEGENERATOR']").val();
-        const eventValidation = $("input[name='__EVENTVALIDATION']").val();
+        const viewState = $("input[name='__VIEWSTATE']").val() as string || '';
+        const viewStateGenerator = $("input[name='__VIEWSTATEGENERATOR']").val() as string || '';
+        const eventValidation = $("input[name='__EVENTVALIDATION']").val() as string || '';
 
-        return {
-            __EVENTVALIDATION: eventValidation,
-            __VIEWSTATE: viewState,
-            __VIEWSTATEGENERATOR: viewStateGenerator
-        };
+        if (viewState && viewStateGenerator && eventValidation) {
+            return {
+                __EVENTVALIDATION: eventValidation,
+                __VIEWSTATE: viewState,
+                __VIEWSTATEGENERATOR: viewStateGenerator,
+            };
+        }
 
+        throw new Error('Validation data missing in response');
     } catch (error) {
 
         const { errorDetails, status } = ErrorHandler.handle(error, "Error fetching validation data for Boosterlink : ");

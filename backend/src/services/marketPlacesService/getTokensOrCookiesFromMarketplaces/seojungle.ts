@@ -1,6 +1,7 @@
 import { Seojungle_API_URL } from '@/global/marketplaceUrls.ts';
 import axios from 'axios';
 import { getCredentialsForMarketplaces } from '../getCredentialsForMarketplaces.ts';
+import { ErrorHandler } from '@/handlers/errorHandler.ts';
 
 
 // Function to fetch token from Seojungle API
@@ -17,17 +18,9 @@ const fetchTokenFromSeojungle = async (email: string, password: string): Promise
 
     return token;
 
-  } catch (error: any) {
-    if (axios.isAxiosError(error)) {
-      console.error(
-        'Axios Error while fetching token:',
-        error.response?.status,
-        error.response?.data || error.message
-      );
-    } else {
-      console.error('Error fetching token:', error.message);
-    }
-    throw new Error('Failed to fetch token from Seojungle.');
+  } catch (error) {
+      const { errorDetails } = ErrorHandler.handle(error, "Error fetching validation data for Seojungle");
+      return errorDetails.context;
   }
 };
 

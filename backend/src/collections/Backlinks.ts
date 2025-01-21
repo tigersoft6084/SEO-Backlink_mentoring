@@ -1,11 +1,12 @@
 import { CollectionConfig } from 'payload';
 
+
 export const Backlinks: CollectionConfig = {
 
   slug: 'backlinks',
 
   admin: {
-    useAsTitle: 'Domain',                                                 // Use the email field as the title in the admin panel
+    useAsTitle: 'domain',                                                 // Use the domain field as the title in the admin panel
   },
 
   access: {
@@ -18,26 +19,26 @@ export const Backlinks: CollectionConfig = {
   fields: [
 
     {
-      name: 'Domain',
+      name: 'domain',
       type: 'text',                                                       //Domain Name
       index: true,
       required: true,
     },
 
     {
-      name: 'Marketplaces',
+      name: 'marketplaces',
       type: 'array',                                                      // Use an array to allow multiple marketplace-price pairs
       required: true,
       fields: [
 
         {
-          name: 'Marketplace_Source',                                     // Marketplace for domain
+          name: 'marketplace_source',                                     // Marketplace for domain
           type: 'text',
           required: true,
         },
 
         {
-          name: 'Price',                                                  // Marketplace's price for domain
+          name: 'price',                                                  // Marketplace's price for domain
           type: 'number',
           required: true,
         },
@@ -47,69 +48,70 @@ export const Backlinks: CollectionConfig = {
     },
 
     {
-        name: 'RD',
-        type: 'number',                                                     // Referring Domains
+      name: 'rd',
+      type: 'number',                                                       // Referring Domains
     },
 
     {
-      name: 'TF',
+      name: 'tf',
       type: 'number',                                                       // Trust Flow
     },
 
     {
-      name: 'CF',
+      name: 'cf',
       type: 'number',                                                       // Citation Flow
     },
 
     {
-      name: 'TTF',
+      name: 'ttf',
       type: 'text',                                                         // Topical Trust Flow
     },
 
     {
-      name: 'Title',
+      name: 'title',
       type: 'text',                                                         // Title for Domain
     },
 
     {
-      name: 'Backlinks',
-      type: 'text',                                                         // Number of backlinks for Domain
+      name: 'backlinks',
+    type: 'number',                                                         // Number of backlinks for Domain
     },
 
     {
-      name: 'Ref_Ips',
-      type: 'text',                                                         // Referring Ips
+      name: 'ref_ips',
+    type: 'number',                                                         // Referring Ips
     },
 
     {
-      name: 'Ref_Edu',
-      type: 'text',                                                         // Referring Edu
+      name: 'ref_edu',
+    type: 'number',                                                         // Referring Edu
     },
 
     {
-      name: 'Ref_Gov',
-      type: 'text',                                                         // Referring Government
+      name: 'ref_gov',
+    type: 'number',                                                         // Referring Government
     },
 
     {
-      name: 'Language',
+      name: 'language',
       type: 'text',                                                         // Lanugage
     },
 
     {
-      name: 'Ref_Lang',
+      name: 'ref_lang',
       type: 'text',                                                         // Referring Languages
     },
 
     {
-      name: 'Expiry_Date',
-      type: "text"                                                            // Expiration Date
+      name: 'expiry_date',
+      type: "date"                                                          // Expiration Date
     },
 
     {
-      name: 'Date_Fetched',
-      type: 'date',                                                           // Date Fetched
+      name: 'date_fetched',
+      type: 'date',                                                         // Date Fetched
       required: true,
+      defaultValue: () => new Date().toISOString(),
     },
 
   ],

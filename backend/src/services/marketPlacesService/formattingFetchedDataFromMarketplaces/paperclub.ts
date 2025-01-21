@@ -1,39 +1,54 @@
-import { FormattedPaperclubData } from "@/types/backlink.ts";
+import { ErrorHandler } from "@/handlers/errorHandler.ts";
+import { FetchedBackLinkDataFromMarketplace } from "@/types/backlink.ts";
+
+// Define the type for the response structure
+interface PaperclubResponse {
+  currentPageResults: {
+    name?: string; // The domain name
+    kpi?: {
+      trustFlow?: number;
+      citationFlow?: number;
+      refDomain?: number;
+    };
+    articles?: {
+      price?: number;
+    }[];
+  }[];
+}
 
 
-export const getFormDataFromPaperclub = async (response: any): Promise<any> => {
+export const getFormDataFromPaperclub = async (response: PaperclubResponse): Promise<FetchedBackLinkDataFromMarketplace[] | Response> => {
   try {
     // Ensure response is valid and contains currentPageResults array
     if (!response || !Array.isArray(response.currentPageResults)) {
       throw new Error("Invalid response data. Expected an array in 'currentPageResults'.");
     }
 
-    const formattedPaperclubData: FormattedPaperclubData[] = [];
+    const formattedPaperclubData: FetchedBackLinkDataFromMarketplace[] = response.currentPageResults.map((result) => {
+      const kpi = result.kpi || {};
+      const article = result.articles?.[0] || {}; // Assuming there's at least one article in the array
 
-    // Process each result in currentPageResults
-    formattedPaperclubData.push(
-      ...response.currentPageResults.map((result: FormattedPaperclubData) => {
-        const kpi = result.kpi || {};
-        const article = result.articles?.[0] || {}; // Assuming there's at least one article in articles array
+      // Process domain to remove "www." and "https://"
+      const rawDomain = result.name || "Unknown";
+      const formattedDomain = rawDomain.replace(/^(https?:\/\/)?(www\.)?/, ""); // Remove "http://", "https://", and "www."
 
-        // Process domain to remove "www." and "https://"
-        const rawDomain = result.name || "Unknown";
-        const formattedDomain = rawDomain.replace(/^(https?:\/\/)?(www\.)?/, ""); // Remove "http://", "https://", and "www."
-
-        return {
-          domain: formattedDomain, // Use formatted domain
-          tf: kpi.trustFlow || 0, // Get trustFlow, or default to 0 if not available
-          cf: kpi.citationFlow || 0, // Get citationFlow, or default to 0 if not available
-          rd: kpi.refDomain || 0, // Get refDomain, or default to 0 if not available
-          price: article.price || 0, // Get price from the article or default to 0
-        };
-      })
-    );
+      return {
+        domain: formattedDomain, // Use formatted domain
+        tf: kpi.trustFlow || 0, // Get trustFlow, or default to 0 if not available
+        cf: kpi.citationFlow || 0, // Get citationFlow, or default to 0 if not available
+        rd: kpi.refDomain || 0, // Get refDomain, or default to 0 if not available
+        price: article.price || 0, // Get price from the article or default to 0
+      };
+    });
 
     return formattedPaperclubData;
 
   } catch (error) {
-    console.error("Error processing the page:", error);
-    return null; // Return null in case of an error
+    const { errorDetails, status } = ErrorHandler.handle(error, "Error Formatting Data For Paperclub");
+
+    return new Response(JSON.stringify(errorDetails), {
+        status,
+        headers: { "Content-Type": "application/json" },
+    });
   }
 };

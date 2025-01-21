@@ -15,6 +15,7 @@ export interface Config {
     media: Media;
     CredentialsForMarketplaces: CredentialsForMarketplace;
     backlinks: Backlink;
+    domainsForBackgroundProcess: DomainsForBackgroundProcess;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -25,6 +26,7 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     CredentialsForMarketplaces: CredentialsForMarketplacesSelect<false> | CredentialsForMarketplacesSelect<true>;
     backlinks: BacklinksSelect<false> | BacklinksSelect<true>;
+    domainsForBackgroundProcess: DomainsForBackgroundProcessSelect<false> | DomainsForBackgroundProcessSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -137,25 +139,50 @@ export interface CredentialsForMarketplace {
  */
 export interface Backlink {
   id: string;
-  Domain: string;
-  Marketplaces: {
-    Marketplace_Source: string;
-    Price: number;
+  domain: string;
+  marketplaces: {
+    marketplace_source: string;
+    price: number;
     id?: string | null;
   }[];
-  RD?: number | null;
-  TF?: number | null;
-  CF?: number | null;
-  TTF?: string | null;
-  Title?: string | null;
-  Backlinks?: string | null;
-  Ref_Ips?: string | null;
-  Ref_Edu?: string | null;
-  Ref_Gov?: string | null;
-  Language?: string | null;
-  Ref_Lang?: string | null;
-  Expiry_Date?: string | null;
-  Date_Fetched: string;
+  rd?: number | null;
+  tf?: number | null;
+  cf?: number | null;
+  ttf?: string | null;
+  title?: string | null;
+  backlinks?: number | null;
+  ref_ips?: number | null;
+  ref_edu?: number | null;
+  ref_gov?: number | null;
+  language?: string | null;
+  ref_lang?: string | null;
+  expiry_date?: string | null;
+  date_fetched: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "domainsForBackgroundProcess".
+ */
+export interface DomainsForBackgroundProcess {
+  id: string;
+  domain: string;
+  rd?: number | null;
+  tf?: number | null;
+  cf?: number | null;
+  ttf?: string | null;
+  title?: string | null;
+  backlinks?: string | null;
+  ref_ips?: string | null;
+  ref_edu?: string | null;
+  ref_gov?: string | null;
+  language?: string | null;
+  ref_lang?: string | null;
+  expiry_date?: string | null;
+  status: 'pending' | 'processing' | 'processed';
+  created_at: string;
+  updated_at?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -181,6 +208,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'backlinks';
         value: string | Backlink;
+      } | null)
+    | ({
+        relationTo: 'domainsForBackgroundProcess';
+        value: string | DomainsForBackgroundProcess;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -283,27 +314,51 @@ export interface CredentialsForMarketplacesSelect<T extends boolean = true> {
  * via the `definition` "backlinks_select".
  */
 export interface BacklinksSelect<T extends boolean = true> {
-  Domain?: T;
-  Marketplaces?:
+  domain?: T;
+  marketplaces?:
     | T
     | {
-        Marketplace_Source?: T;
-        Price?: T;
+        marketplace_source?: T;
+        price?: T;
         id?: T;
       };
-  RD?: T;
-  TF?: T;
-  CF?: T;
-  TTF?: T;
-  Title?: T;
-  Backlinks?: T;
-  Ref_Ips?: T;
-  Ref_Edu?: T;
-  Ref_Gov?: T;
-  Language?: T;
-  Ref_Lang?: T;
-  Expiry_Date?: T;
-  Date_Fetched?: T;
+  rd?: T;
+  tf?: T;
+  cf?: T;
+  ttf?: T;
+  title?: T;
+  backlinks?: T;
+  ref_ips?: T;
+  ref_edu?: T;
+  ref_gov?: T;
+  language?: T;
+  ref_lang?: T;
+  expiry_date?: T;
+  date_fetched?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "domainsForBackgroundProcess_select".
+ */
+export interface DomainsForBackgroundProcessSelect<T extends boolean = true> {
+  domain?: T;
+  rd?: T;
+  tf?: T;
+  cf?: T;
+  ttf?: T;
+  title?: T;
+  backlinks?: T;
+  ref_ips?: T;
+  ref_edu?: T;
+  ref_gov?: T;
+  language?: T;
+  ref_lang?: T;
+  expiry_date?: T;
+  status?: T;
+  created_at?: T;
+  updated_at?: T;
   updatedAt?: T;
   createdAt?: T;
 }

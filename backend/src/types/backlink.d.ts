@@ -6,16 +6,34 @@ export interface FetchedBackLinkDataFromMarketplace {
   price: number;
 }
 
-export interface FormattedPaperclubData {
-  name?: string;
-  kpi?: {
-    trustFlow?: number;
-    citationFlow?: number;
-    refDomain?: number;
-  };
-  articles?: {
-    price?: number;
-  }[];
+export interface ResultBacklinkDataForSEO{
+  Domain : string;
+  keyword : string;
+  RD : number;
+  TF : number;
+  CF : number;
+  Price : number;
+  allSource : { source : string; Price : number}[];
+  TTF : string;
+  Title : string;
+  Backlinks : number;
+  Ref_Ips : string;
+  Ref_Edu : string;
+  Ref_Gov : string;
+  Language : string;
+  Ref_Lang : string;
+}
+
+export interface ExpiredDomainData {
+  domain : string;
+  tf : number | 0;
+  cf : number | 0;
+  rd : number | 0;
+  ttf : string | null;
+  ref_ips : number | 0;
+  ref_edu : number | 0;
+  ref_gov : number | 0;
+  language : string | null;
 }
 
 export interface FormattedErefererData{
@@ -42,40 +60,7 @@ export interface LinkBuildersResult {
   }[];
 }
 
-export interface FormattedPrensalinkData {
-  price?: number; // Price outside the newspapers array
-  newspapers?: Array<{
-    url?: string; // URL of the newspaper
-    metrics?: {
-    tf?: number; // Trust flow
-    cf?: number; // Citation flow
-    rd?: number; // Referring domains
-    };
-  }>;
-}
-
-export interface FormattedSeojungleData {
-  url?: string;
-  trustFlow?: number;
-  citationFlow?: number;
-  referringDomains?: number;
-  products? : Array<{
-    margedPrice?: number;
-  }>
-}
-
-export interface WhoisResult {
-  domain: string;
-  expiry_date?: string; // Optional if expiry_date might be absent
-  [key: string]: any;  // To account for other potential fields from WHOIS
-}
-
-export interface DomainRecord {
-  domain: string;
-  expiry_date: string;
-}
-
 export interface Marketplace {
-  Marketplace_Source: string;
-  Price: number;
+  marketplace_source: string;
+  price: number;
 }

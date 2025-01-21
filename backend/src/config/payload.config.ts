@@ -12,6 +12,8 @@ import { Backlinks } from '@/collections/Backlinks.ts';
 
 import { Media } from '@/collections/user-management/Media.ts';
 import { customEndpoints } from '@/endpoints/index.ts';
+import { FRONTEND_URL } from './apiConfig.ts';
+import { DomainsForBackgroundProcess } from '@/collections/DomainsForBackgroundProcess.ts';
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -20,8 +22,8 @@ export default buildConfig({
   admin: {
     user: Users.slug,
   },
-  collections: [Users, Media, Credentials, Backlinks],
-  cors: ['http://localhost:1212'], // Allow requests from your frontend
+  collections: [Users, Media, Credentials, Backlinks, DomainsForBackgroundProcess],
+  cors: [FRONTEND_URL], // Allow requests from your frontend
 
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || 'your-secret-key', // Ensure this is defined

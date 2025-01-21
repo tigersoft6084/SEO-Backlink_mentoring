@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { axiosInstance } from '@/utils/axiosInstance.ts';
 import { getFormDataFromDevelink } from '../formattingFetchedDataFromMarketplaces/develink.ts';
 import { ErrorHandler } from '@/handlers/errorHandler.ts';

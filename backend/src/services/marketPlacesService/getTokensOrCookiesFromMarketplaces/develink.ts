@@ -1,7 +1,6 @@
 import { DEVELINK_API_URL } from "@/global/marketplaceUrls.ts";
 import { getCredentialsForMarketplaces } from "../getCredentialsForMarketplaces.ts";
-
-
+import { ErrorHandler } from "@/handlers/errorHandler.ts";
 
 // Function to fetch cookie from Develink API using fetch
 const fetchCookieFromDevelink = async (email: string, password: string): Promise<string> => {
@@ -37,9 +36,11 @@ const fetchCookieFromDevelink = async (email: string, password: string): Promise
       return '';
     }
 
-  } catch (error: any) {
-    console.error('Error fetching cookie from Develink:', error.message);
-    throw new Error('Failed to fetch cookie from Develink.');
+  } catch (error) {
+
+    const { errorDetails } = ErrorHandler.handle(error, "Error fetching validation data for Develink : ");
+    return errorDetails.context;
+
   }
 
 };

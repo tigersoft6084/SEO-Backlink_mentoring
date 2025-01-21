@@ -1,9 +1,9 @@
-import { BackLinkData } from "@/types/backlink.ts";
+import { FetchedBackLinkDataFromMarketplace } from "@/types/backlink.ts";
 import { getTokenForSeojungle } from "../getTokensOrCookiesFromMarketplaces/seojungle.ts";
 import { getAllDataFromSeojungle } from "../getAllDataFromMarketplaces/seojungle.ts";
 
 
-export const getBacklinksDataFromSeojungle = async (): Promise<BackLinkData[]> => {
+export const getBacklinksDataFromSeojungle = async (): Promise<FetchedBackLinkDataFromMarketplace[]> => {
 
     const themeSets = [
         { themes: ["Actu du web", "Actualités - Médias généraliste", "Adultes - Rencontre - Sexe", "Agriculture", "Animaux"], totalPages: 464 },
@@ -29,7 +29,7 @@ export const getBacklinksDataFromSeojungle = async (): Promise<BackLinkData[]> =
         throw new Error("API token is missing");
     }
 
-    const allResults: BackLinkData[] = [];
+    const allResults: FetchedBackLinkDataFromMarketplace[] = [];
 
     for (const { themes, totalPages } of themeSets) {
         const results = await getAllDataFromSeojungle(token, themes, totalPages);

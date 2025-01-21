@@ -1,7 +1,7 @@
-import { GETALINK_API_URL } from '@/global/marketplaceUrls.ts';
 import axios from 'axios';
+import { GETALINK_API_URL } from '@/global/marketplaceUrls.ts';
 import { getCredentialsForMarketplaces } from '../getCredentialsForMarketplaces.ts';
-
+import { ErrorHandler } from '@/handlers/errorHandler.ts';
 
 // Function to fetch token from Getalink API
 const fetchTokenFromGetalink = async (email: string, password: string): Promise<string> => {
@@ -19,17 +19,10 @@ const fetchTokenFromGetalink = async (email: string, password: string): Promise<
 
       return token;
 
-    } catch (error: any) {
-      if (axios.isAxiosError(error)) {
-        console.error(
-          'Axios Error while fetching token:',
-          error.response?.status,
-          error.response?.data || error.message
-        );
-      } else {
-        console.error('Error fetching token:', error.message);
-      }
-      throw new Error('Failed to fetch token from Getalink.');
+    } catch (error) {
+
+      const { errorDetails } = ErrorHandler.handle(error, "Error fetching validation data for Getalink : ");
+      return errorDetails.context;
     }
 };
 

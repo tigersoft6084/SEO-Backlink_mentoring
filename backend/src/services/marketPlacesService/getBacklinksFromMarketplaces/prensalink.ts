@@ -1,3 +1,4 @@
+import { ErrorHandler } from "@/handlers/errorHandler.ts";
 import { getAllDataFromPrensalink } from "../getAllDataFromMarketplaces/prensalink.ts";
 import { getTokenForPrensalink } from "../getTokensOrCookiesFromMarketplaces/prensalink.ts";
 
@@ -18,13 +19,12 @@ export const getBacklinksDataFromPrensalink = async () => {
 
     }catch(error){
 
-      if (error instanceof Error) {
-        console.error('Error fetching data:', error.message);
-      } else {
-          console.error('Error fetching data:', error);
-      }
+      const { errorDetails, status } = ErrorHandler.handle(error, "Error occured from getting backlinks from Prensalink");
 
-      return "";
+      return new Response(JSON.stringify(errorDetails), {
+          status,
+          headers: { "Content-Type": "application/json" },
+      });
     }
 
 };

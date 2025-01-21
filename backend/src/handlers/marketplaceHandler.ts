@@ -2,19 +2,21 @@ import { PayloadRequest } from "payload";
 import { handleNoDataResponse, handleSuccessResponse } from "@/utils/responseUtils.ts";
 import { ErrorHandler } from "./errorHandler.ts";
 import { FetchedBackLinkDataFromMarketplace, Marketplace } from "@/types/backlink.ts";
-import { COLLECTION_NAME_BACKLINK } from "@/global/strings.ts";
+import { COLLECTION_NAME_BACKLINK, COLLECTION_NAME_DOMAINS_BACKGROUND_PROCESS } from "@/global/strings.ts";
 
 /**
- * Generic handler to process and save marketplace backlink data.
+ * Optimized handler to process and save marketplace backlink data.
  */
 export const marketplaceHandler = async (
     req: PayloadRequest,
     fetchData: () => Promise<FetchedBackLinkDataFromMarketplace[]>,
     marketplaceName: string,
 ): Promise<Response> => {
+
     const { payload } = req;
 
     try {
+
         const marketplaceData = await fetchData();
 
         if (!Array.isArray(marketplaceData) || marketplaceData.length === 0) {
@@ -23,83 +25,133 @@ export const marketplaceHandler = async (
 
         const totalItems = marketplaceData.length;
         let processedItems = 0;
+        let lastProgressLogged = 0;
 
-        const savePromises = marketplaceData.map(async (item) => {
+        // Group by domain (only once) to minimize redundant processing
+        const domainMap: { [key: string]: FetchedBackLinkDataFromMarketplace[] } = marketplaceData.reduce((acc, item) => {
             const domain = item.domain.toLowerCase().trim();
-            const tf = Number(item.tf);
-            const cf = Number(item.cf);
-            const rd = Number(item.rd);
-            const price = Number(item.price);
+            if (!acc[domain]) acc[domain] = [];
+            acc[domain].push(item);
+            return acc;
+        }, {} as { [key: string]: FetchedBackLinkDataFromMarketplace[] });
 
-            if (!domain || isNaN(tf) || isNaN(price)) {
-                throw new Error(`Invalid data received for domain: ${domain}, TF=${tf}, price=${price}`);
+        // Process each unique domain once
+        const savePromises = Object.keys(domainMap).map(async (domain) => {
+            const itemsForDomain = domainMap[domain];
+            const firstItem = itemsForDomain[0];  // Use the first item for domain info
+
+            const tf = Number(firstItem.tf);
+            const cf = Number(firstItem.cf);
+            const rd = Number(firstItem.rd);
+
+            // Use unique prices for the domain
+            const uniquePrices = Array.from(new Set(itemsForDomain.map(item => Number(item.price))));
+            if (uniquePrices.length > 1) {
+                console.warn(`Multiple prices found for domain: ${domain}. Using the first one.`);
+            }
+            const price = uniquePrices[0];
+
+            if (!domain || isNaN(price)) {
+                throw new Error(`Invalid data received for domain: ${domain}, Price=${price}`);
             }
 
-            const existingEntry = await payload.find({
+            // Fetch the existing entry for the domain only once
+            const existingEntry_backlinkCollection = await payload.find({
                 collection: COLLECTION_NAME_BACKLINK,
                 where: {
-                    Domain: { equals: domain },
-                    "Marketplaces.Marketplace_Source": { equals: marketplaceName },
+                    domain: { equals: domain },
                 },
                 limit: 1,
             });
 
-            if (existingEntry.docs.length > 0) {
-                // If domain and marketplace are both the same, do nothing
-                const entryToUpdate = existingEntry.docs[0];
-                const existingMarketplace = entryToUpdate.Marketplaces.find(
-                    (marketplace: Marketplace) => marketplace.Marketplace_Source === marketplaceName
+            const existingEntry_domainCollection = await payload.find({
+                collection : COLLECTION_NAME_DOMAINS_BACKGROUND_PROCESS,
+                where : {
+                    domain : {equals : domain},
+                },
+                limit : 1,
+            })
+
+            if(existingEntry_domainCollection.docs.length == 0){
+                await payload.create({
+                    collection : COLLECTION_NAME_DOMAINS_BACKGROUND_PROCESS,
+                    data : {
+                        domain : domain,
+                        status : "pending",
+                        created_at: new Date().toISOString(),
+                    }
+                });
+            }
+
+            // If entry exists, update it; otherwise, create a new one
+            if (existingEntry_backlinkCollection.docs.length > 0) {
+                const entryToUpdate = existingEntry_backlinkCollection.docs[0];
+
+                // Find the marketplace with the same source
+                const existingMarketplace = entryToUpdate.marketplaces.find(
+                    (marketplace: Marketplace) => marketplace.marketplace_source === marketplaceName
                 );
 
                 if (existingMarketplace) {
-                    // Marketplace already exists, don't update
-                    return;
+                    // If the price is different, update it
+                    if (existingMarketplace.price !== price) {
+                        existingMarketplace.price = price;
+
+                        await payload.update({
+                            collection: COLLECTION_NAME_BACKLINK,
+                            id: entryToUpdate.id,
+                            data: {
+                                tf: tf,
+                                cf: cf,
+                                rd: rd,
+                                marketplaces: entryToUpdate.marketplaces, // Existing marketplaces with updated price
+                                date_fetched: new Date().toISOString(),
+                            },
+                        });
+                    }
+                } else {
+                    // If the marketplace doesn't exist, add it (with the new price)
+                    entryToUpdate.marketplaces.push({
+                        marketplace_source: marketplaceName,
+                        price: price,
+                    });
+
+                    await payload.update({
+                        collection: COLLECTION_NAME_BACKLINK,
+                        id: entryToUpdate.id,
+                        data: {
+                            tf: tf,
+                            cf: cf,
+                            rd: rd,
+                            marketplaces: entryToUpdate.marketplaces,
+                            date_fetched: new Date().toISOString(),
+                        },
+                    });
                 }
-
-                // If the domain exists but the marketplace is different, add the new marketplace
-                const marketplaces: Marketplace[] = [
-                    ...entryToUpdate.Marketplaces,
-                    {
-                        Marketplace_Source: marketplaceName,
-                        Price: price,
-                    },
-                ];
-
-                await payload.update({
-                    collection: COLLECTION_NAME_BACKLINK,
-                    id: entryToUpdate.id,
-                    data: {
-                        TF: tf,
-                        CF: cf,
-                        RD: rd,
-                        Marketplaces: marketplaces,
-                        Date_Fetched: new Date().toISOString(),
-                    },
-                });
-
             } else {
-                // If no entry exists, create a new one
+
+                // Create a new entry if it doesn't exist
                 await payload.create({
                     collection: COLLECTION_NAME_BACKLINK,
                     data: {
-                        Domain: domain,
-                        TF: tf,
-                        CF: cf,
-                        RD: rd,
-                        Marketplaces: [
-                            {
-                                Marketplace_Source: marketplaceName,
-                                Price: price,
-                            },
+                        domain: domain,
+                        tf: tf,
+                        cf: cf,
+                        rd: rd,
+                        marketplaces: [
+                            { marketplace_source: marketplaceName, price: price },
                         ],
-                        Date_Fetched: new Date().toISOString(),
+                        date_fetched: new Date().toISOString(),
                     },
                 });
             }
 
             processedItems += 1;
             const progress = Math.round((processedItems / totalItems) * 100);
-            console.log(`${marketplaceName} database uploading progress: ${progress}%`);
+            if (progress >= lastProgressLogged + 5) {
+                console.log(`${marketplaceName} database uploading progress: ${progress}%`);
+                lastProgressLogged = progress;
+            }
         });
 
         await Promise.all(savePromises);

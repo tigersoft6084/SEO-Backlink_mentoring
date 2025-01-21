@@ -1,5 +1,6 @@
 import { Mistergoodlink_API_URL } from "@/global/marketplaceUrls.ts";
 import { getCredentialsForMarketplaces } from "../getCredentialsForMarketplaces.ts";
+import { ErrorHandler } from "@/handlers/errorHandler.ts";
 
 
 // Function to fetch cookie from Mistergoodlink API using fetch
@@ -33,9 +34,9 @@ const fetchCookieFromMistergoodlink = async (email: string, password: string): P
 
     return '';
 
-  } catch (error: any) {
-    console.error('Error fetching cookie from Mistergoodlink:', error.message);
-    throw new Error('Failed to fetch cookie from Mistergoodlink.');
+  } catch (error) {
+      const { errorDetails } = ErrorHandler.handle(error, "Error fetching validation data for Mistergoodlink");
+      return errorDetails.context;
   }
 
 };
