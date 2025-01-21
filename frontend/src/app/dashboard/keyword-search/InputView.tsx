@@ -45,6 +45,7 @@ export default function InputView({ placeholder, onSearch }: InputViewProps) {
 
         if (response.ok) {
           const responseJSON = await response.json();
+          console.log(responseJSON)
           onSearch(responseJSON);
         } else {
           const errorData = await response.json();

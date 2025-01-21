@@ -1,6 +1,6 @@
 import { ErrorHandler } from "@/handlers/errorHandler.ts";
 import { FetchedBackLinkDataFromMarketplace } from "@/types/backlink.ts";
-interface ParsedResponse {
+interface GetalinkResponse {
     data: {
         url: string;
         tf: number;
@@ -18,15 +18,15 @@ export const getFormDataFromGetalink = async (response: string): Promise<Fetched
 
     try {
         // If `response` is a string, parse it
-        const parsedResponse : ParsedResponse = typeof response === "string" ? JSON.parse(response) : response;
+        const GetalinkResponse : GetalinkResponse = typeof response === "string" ? JSON.parse(response) : response;
 
         // Validate that the parsed response has a `data` property
-        if (!parsedResponse.data || !Array.isArray(parsedResponse.data)) {
+        if (!GetalinkResponse.data || !Array.isArray(GetalinkResponse.data)) {
             throw new Error("Invalid response format: missing 'data' array");
         }
 
         // Extract relevant data
-        const extractedData: FetchedBackLinkDataFromMarketplace[] = parsedResponse.data.map((item) => {
+        const extractedData: FetchedBackLinkDataFromMarketplace[] = GetalinkResponse.data.map((item) => {
             let domain = "";
 
             if (item.url) {

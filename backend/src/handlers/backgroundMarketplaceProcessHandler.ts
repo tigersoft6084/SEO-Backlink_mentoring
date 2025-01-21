@@ -14,12 +14,12 @@ export const backgroundMarketplaceProcessHandler = async (req : PayloadRequest) 
             const domainTask = await payload.find({
                 collection : COLLECTION_NAME_DOMAINS_BACKGROUND_PROCESS,
                 where : {
-                    Status : {
+                    status : {
                         equals : "pending"
                     }
                 },
                 limit : 1,
-                sort : "Created_At"
+                sort : "created_at"
             })
 
             if(domainTask.docs.length === 0){
@@ -29,7 +29,7 @@ export const backgroundMarketplaceProcessHandler = async (req : PayloadRequest) 
             }
 
             const domainDoc = domainTask.docs[0];
-            const domain = domainDoc.Domain;
+            const domain = domainDoc.domain;
 
             console.log(`Processing Domain : ${domain}`);
 
@@ -38,8 +38,8 @@ export const backgroundMarketplaceProcessHandler = async (req : PayloadRequest) 
                 collection : COLLECTION_NAME_DOMAINS_BACKGROUND_PROCESS,
                 id : domainDoc.id,
                 data : {
-                    Status : "processing",
-                    Updated_At : new Date().toISOString()
+                    status : "processing",
+                    updated_at : new Date().toISOString()
                 }
             });
 
@@ -56,12 +56,12 @@ export const backgroundMarketplaceProcessHandler = async (req : PayloadRequest) 
             await payload.update({
                 collection : COLLECTION_NAME_BACKLINK,
                 where : {
-                    Domain : {
+                    domain : {
                         equals : domain
                     }
                 },
                 data : {
-                    Expiry_Date : expiryDate ? expiryDate.toISOString() : null
+                    expiry_date : expiryDate ? expiryDate.toISOString() : null
                 }
             });
 

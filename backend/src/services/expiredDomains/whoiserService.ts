@@ -1,16 +1,16 @@
 import whoiser from "whoiser";
-import { MongoClient } from "mongodb";
-import pLimit from "p-limit";
+// import { MongoClient } from "mongodb";
+// import pLimit from "p-limit";
 import { parseISO, isValid, parse } from 'date-fns';
 import { ErrorHandler } from "@/handlers/errorHandler.ts";
-import { BASE_DB_URL, DATABASE_NAME } from "@/config/apiConfig.ts";
+// import { BASE_DB_URL, DATABASE_NAME } from "@/config/apiConfig.ts";
 
 
 // MongoDB connection URI and database details
-const COLLECTION_NAME = "backlinks";
+// const COLLECTION_NAME = "backlinks";
 
 // Limit concurrency for WHOIS requests
-const limit = pLimit(5); // Adjust based on system capacity
+// const limit = pLimit(5); // Adjust based on system capacity
 
 // List of possible expiry fields in WHOIS data
 const possibleExpiryFields = [

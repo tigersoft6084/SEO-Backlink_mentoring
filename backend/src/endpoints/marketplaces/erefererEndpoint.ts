@@ -6,7 +6,7 @@ import { marketplaceHandler } from '@/handlers/marketplaceHandler.ts';
 import { getBacklinksDataFromEreferer } from '@/services/marketPlacesService/getBacklinksFromMarketplaces/ereferer.ts';
 
 /**
- * Fetch Boosterlink data and process it using the marketplaceHandler
+ * Fetch Ereferer data and process it using the marketplaceHandler
  */
 export const fetchErefererEndpoint: Endpoint = {
 

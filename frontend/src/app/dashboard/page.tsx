@@ -64,8 +64,8 @@ export default function Home() {
     };
 
   return (
-    <div className="h-screen flex flex-col">
-      <div className="flex flex-1">
+    <div className="flex flex-col">
+      <div className="h-fit flex flex-1">
         {/* Sidebar with dynamic icons and descriptions */}
         <Sidebar menuItems={menuItems} quotaUsed={quotaUsed} />
         {renderContent()}

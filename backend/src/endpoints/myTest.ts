@@ -1,5 +1,4 @@
 import { backgroundMarketplaceProcessHandler } from '@/handlers/backgroundMarketplaceProcessHandler.ts';
-import { processDomains } from '@/services/expiredDomains/whoiserService.ts';
 import { Endpoint, PayloadRequest } from 'payload';
 
 // Define the Payload endpoint

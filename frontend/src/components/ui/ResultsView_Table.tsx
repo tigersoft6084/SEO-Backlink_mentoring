@@ -9,9 +9,9 @@ import DynamicPrice from "./ShopingCartAndPrice";
 interface Row {
   domain: string;
   keyword: string;
-  RD: number;
-  TF: number;
-  CF: number;
+  rd: number;
+  tf: number;
+  cf: number;
   price: number;
   source: string;
   allSources: any;
@@ -139,7 +139,7 @@ const TableSection: React.FC<TableSectionProps> = ({
 
               <th
                 className="px-6 py-3 text-left text-xs font-medium text-gray-500 tracking-wider dark:text-gray-400 relative"
-                onClick={() => handleSort("RD")}
+                onClick={() => handleSort("rd")}
               >
                 <div className="flex items-center gap-2">
                   <span className="group relative cursor-pointer">
@@ -154,7 +154,7 @@ const TableSection: React.FC<TableSectionProps> = ({
                     </div>
                   </span>
 
-                  {sortConfig?.key === "RD" && (sortConfig.direction === "asc" ? "▲" : "▼")}
+                  {sortConfig?.key === "rd" && (sortConfig.direction === "asc" ? "▲" : "▼")}
 
                   <FilterDropdown onFilterChange={handleFilterChange} />
                 </div>
@@ -162,22 +162,22 @@ const TableSection: React.FC<TableSectionProps> = ({
 
               <th
                 className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400"
-                onClick={() => handleSort("TF")}
+                onClick={() => handleSort("tf")}
               >
                 <div className="flex items-center gap-2">
                   <span className="cursor-pointer">TF</span>
-                  {sortConfig?.key === "TF" && (sortConfig.direction === "asc" ? "▲" : "▼")}
+                  {sortConfig?.key === "tf" && (sortConfig.direction === "asc" ? "▲" : "▼")}
                   <FilterDropdown onFilterChange={handleFilterChange} />
                 </div>
               </th>
 
               <th
                 className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400"
-                onClick={() => handleSort("CF")}
+                onClick={() => handleSort("cf")}
               >
                 <div className="flex items-center gap-2">
                   <span className="cursor-pointer">CF</span>
-                  {sortConfig?.key === "CF" && (sortConfig.direction === "asc" ? "▲" : "▼")}
+                  {sortConfig?.key === "cf" && (sortConfig.direction === "asc" ? "▲" : "▼")}
                   <FilterDropdown onFilterChange={handleFilterChange} />
                 </div>
               </th>
@@ -255,11 +255,11 @@ const TableSection: React.FC<TableSectionProps> = ({
                   <MarketPlacesLinks domain={row.domain} />
                 </td>
 
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{row.RD}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{row.rd}</td>
 
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{row.TF}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{row.tf}</td>
 
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{row.CF}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{row.cf}</td>
 
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">Society/Adult</td>
 

@@ -2,7 +2,6 @@ import { Payload, Where, WhereField } from "payload";
 import { COLLECTION_NAME_BACKLINK } from "@/global/strings.ts";
 import { ErrorHandler } from "@/handlers/errorHandler.ts";
 import { ExpiredDomainData } from "@/types/backlink.ts";
-import { domain } from "whoiser";
 
 export const fetchExpiredDomainsService = async (
     payload: Payload,
@@ -35,7 +34,7 @@ export const fetchExpiredDomainsService = async (
     // Initialize the `where` condition
     const where: Where = {
         and: [
-            { Expiry_Date: { less_than: currentTime } }, // Only expired domains
+            { expiry_date: { less_than: currentTime } }, // Only expired domains
         ],
     };
 
@@ -46,7 +45,7 @@ export const fetchExpiredDomainsService = async (
         const maxTF = req.query.maxTF;
         if (minTF !== undefined) tfCondition.greater_than_equal = minTF;
         if (maxTF !== undefined) tfCondition.less_than_equal = maxTF;
-        where.and?.push({ TF: tfCondition });
+        where.and?.push({ tf: tfCondition });
     }
 
 
@@ -54,14 +53,14 @@ export const fetchExpiredDomainsService = async (
         const cfCondition: WhereField = {};
         if (req.query.minCF) cfCondition.greater_than_equal = req.query.minCF;
         if (req.query.maxCF) cfCondition.less_than_equal = req.query.maxCF;
-        where.and?.push({ CF: cfCondition });
+        where.and?.push({ cf: cfCondition });
     }
 
     if (req.query.minRD || req.query.maxRD) {
         const rdCondition: WhereField = {};
         if (req.query.minRD) rdCondition.greater_than_equal = req.query.minRD;
         if (req.query.maxRD) rdCondition.less_than_equal = req.query.maxRD;
-        where.and?.push({ RD: rdCondition });
+        where.and?.push({ rd: rdCondition });
     }
 
     // Add numeric filters for Ref_Ips, Ref_Edu, Ref_Gov
@@ -69,27 +68,27 @@ export const fetchExpiredDomainsService = async (
         const refIpsCondition: WhereField = {};
         if (req.query.minRefIps) refIpsCondition.greater_than_equal = req.query.minRefIps;
         if (req.query.maxRefIps) refIpsCondition.less_than_equal = req.query.maxRefIps;
-        where.and?.push({ Ref_Ips: refIpsCondition });
+        where.and?.push({ ref_ips: refIpsCondition });
     }
 
     if (req.query.minRefEdu || req.query.maxRefEdu) {
         const refEduCondition: WhereField = {};
         if (req.query.minRefEdu) refEduCondition.greater_than_equal = req.query.minRefEdu;
         if (req.query.maxRefEdu) refEduCondition.less_than_equal = req.query.maxRefEdu;
-        where.and?.push({ Ref_Edu: refEduCondition });
+        where.and?.push({ ref_edu: refEduCondition });
     }
 
     if (req.query.minRefGov || req.query.maxRefGov) {
         const refGovCondition: WhereField = {};
         if (req.query.minRefGov) refGovCondition.greater_than_equal = req.query.minRefGov;
         if (req.query.maxRefGov) refGovCondition.less_than_equal = req.query.maxRefGov;
-        where.and?.push({ Ref_Gov: refGovCondition });
+        where.and?.push({ ref_gov: refGovCondition });
     }
 
     // Add exact match filters
-    if (req.query.TTF) where.and?.push({ TTF: { equals: req.query.TTF } });
-    if (req.query.Domain) where.and?.push({ Domain: { equals: req.query.Domain } });
-    if (req.query.Language) where.and?.push({ Language: { equals: req.query.Language } });
+    if (req.query.TTF) where.and?.push({ ttf: { equals: req.query.TTF } });
+    if (req.query.Domain) where.and?.push({ domain: { equals: req.query.Domain } });
+    if (req.query.Language) where.and?.push({ language: { equals: req.query.Language } });
 
     try {
         console.log("Constructed Where Clause:", JSON.stringify(where, null, 2)); // Debugging
@@ -99,7 +98,7 @@ export const fetchExpiredDomainsService = async (
             collection: COLLECTION_NAME_BACKLINK,
             where: {
                 and: [
-                    { Expiry_Date: { less_than: currentTime } }, // Only expired domains
+                    { expiry_date: { less_than: currentTime } }, // Only expired domains
                 ],
             },
         });
@@ -117,15 +116,15 @@ export const fetchExpiredDomainsService = async (
 
         // Map the results to match the expected format
         const expiredDomains = result.docs.map((item) => ({
-            Domain: item.Domain,
-            TF: item.TF ?? 0,
-            CF: item.CF ?? 0,
-            RD: item.RD ?? 0,
-            TTF: item.TTF ?? null,
-            Ref_Ips: item.Ref_Ips ?? 0,
-            Ref_Edu: item.Ref_Edu ?? 0,
-            Ref_Gov: item.Ref_Gov ?? 0,
-            Language: item.Language ?? null,
+            domain: item.domain,
+            tf: item.tf ?? 0,
+            cf: item.cf ?? 0,
+            rd: item.rd ?? 0,
+            ttf: item.ttf ?? null,
+            ref_ips: item.ref_ips ?? 0,
+            ref_edu: item.ref_edu ?? 0,
+            ref_gov: item.ref_gov ?? 0,
+            language: item.language ?? null,
         }));
 
         // const filteredDomains = expiredDomains.filter((domain) => domain.CF !== 0);

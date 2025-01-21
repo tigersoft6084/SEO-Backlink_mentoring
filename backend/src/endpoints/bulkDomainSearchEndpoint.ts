@@ -1,13 +1,14 @@
 import { Endpoint } from 'payload';
-
+import { ErrorHandler } from '@/handlers/errorHandler.ts';
+import { normalizeDomain } from '@/utils/normalizeDomain.ts';
 interface BacklinkData {
   domain: string;
-  RD: string;
-  TF: number;
-  CF: number;
+  rd: number;
+  tf: number;
+  cf: number;
   price: number;
   source: string;
-  allSources: { source: string; price: number }[];
+  allSources: { marketplace_source: string; price: number }[];
 }
 
 export const bulkDomainSearchEndpoint: Endpoint = {
@@ -26,8 +27,6 @@ export const bulkDomainSearchEndpoint: Endpoint = {
       const rawBody = await req.text();
       let { domains } = JSON.parse(rawBody);
 
-      console.log('Received domains:', domains);
-
       // Handle case where domains are passed as a comma-separated string
       if (typeof domains === 'string') {
         domains = domains.split(',').map((domain) => domain.trim());
@@ -44,11 +43,23 @@ export const bulkDomainSearchEndpoint: Endpoint = {
 
       // Normalize domains
       domains = domains.map((domain: string) =>
-        domain.toLowerCase().replace(/^www\./, '')
+        normalizeDomain(domain)
       );
 
       const batchSize = 100; // Adjust batch size as needed
-      const backlinksData: { docs: BacklinkData[] } = { docs: [] };
+      const backlinksData: { docs: {
+        domain : string;
+        marketplaces : [
+          {
+            marketplace_source : string;
+            price : number;
+          }
+        ]
+        keyword : string;
+        rd : number;
+        tf : number;
+        cf : number;
+      }[] } = { docs: [] };
 
       // Batch process the domains to avoid query size limits
       for (let i = 0; i < domains.length; i += batchSize) {
@@ -56,12 +67,17 @@ export const bulkDomainSearchEndpoint: Endpoint = {
         const result = await req.payload.find({
           collection: 'backlinks',
           where: { domain: { in: batch } },
-          limit: batchSize, // Ensure the limit is set
+          limit: batchSize,
         });
+
         const mappedDocs = result.docs.map((doc: any) => ({
           ...doc,
-          allSources: [{ source: doc.source, price: doc.price }],
+          allSources: doc.marketplaces.map((marketplace: {marketplace_source : string; price : number}) => ({
+            marketplace_source: marketplace.marketplace_source,
+            price: marketplace.price,
+          })),
         }));
+
         backlinksData.docs.push(...mappedDocs);
       }
 
@@ -70,35 +86,34 @@ export const bulkDomainSearchEndpoint: Endpoint = {
       // Filter to get unique domains with the smallest price
       const backlinksMap: Record<string, BacklinkData> = {};
 
-      backlinksData.docs.forEach((doc: any) => {
-        const existingBacklink = backlinksMap[doc.domain];
-        if (!existingBacklink || doc.price < existingBacklink.price) {
-          const otherSources = backlinksData.docs
-            .filter(
-              (source: any) =>
-                source.domain === doc.domain && source.source !== doc.source
-            )
-            .map((source: any) => ({
-              source: source.source,
-              price: source.price,
-            }));
+      const backlinkPromises = backlinksData.docs.map((doc) => {
+        const normalizedDocDomain = normalizeDomain(doc.domain);
 
-          otherSources.push({
-            source: doc.source,
-            price: doc.price,
-          });
+        if (normalizedDocDomain) {
+          const existingBacklink = backlinksMap[doc.domain];
 
-          backlinksMap[doc.domain] = {
-            domain: doc.domain,
-            RD: doc.RD > 1000 ? `${(doc.RD / 1000).toFixed(1)}k` : `${doc.RD}`,
-            TF: doc.TF,
-            CF: doc.CF,
-            price: doc.price,
-            source: doc.source,
-            allSources: otherSources,
-          };
+            const minMarketplace = doc.marketplaces.reduce((min, current) =>
+              current.price < min.price ? current : min
+            );
+
+            if (!existingBacklink || minMarketplace.price < existingBacklink.price) {
+              backlinksMap[doc.domain] = {
+                domain: doc.domain,
+                rd: doc.rd || 0,
+                tf: doc.tf || 0,
+                cf: doc.cf || 0,
+                price: minMarketplace.price,
+                source: minMarketplace.marketplace_source,
+                allSources: doc.marketplaces.map((marketplace) => ({
+                  marketplace_source: marketplace.marketplace_source,
+                  price: marketplace.price,
+                })),
+              };
+            }
         }
       });
+
+      await Promise.all(backlinkPromises);
 
       const backlinks = Object.values(backlinksMap);
 
@@ -110,16 +125,8 @@ export const bulkDomainSearchEndpoint: Endpoint = {
       );
       const avgPrice = Math.floor(minPrice / foundDomains.length);
       const maxPrice = backlinks
-        .map((backlink) => {
-          if (backlink.allSources.length > 1) {
-            // Get the maximum price if there are multiple items
-            return Math.max(...backlink.allSources.map((source) => source.price));
-          } else {
-            // Return the price directly if there is only one item
-            return backlink.allSources[0]?.price || 0;
-          }
-        })
-        .reduce((sum, price) => sum + price, 0); // Sum up the maximum prices
+        .map((backlink) => Math.max(...backlink.allSources.map((source) => source.price)))
+        .reduce((sum, price) => sum + price, 0);
 
       const aboutPrice = [foundCount, avgPrice, minPrice, maxPrice];
 
@@ -132,15 +139,12 @@ export const bulkDomainSearchEndpoint: Endpoint = {
         }),
         { status: 200, headers: { 'Content-Type': 'application/json' } }
       );
-    } catch (error: any) {
-      console.error('Error fetching SERP data:', error);
-
-      return new Response(
-        JSON.stringify({
-          error: error.message || 'An unknown error occurred.',
-        }),
-        { status: 500, headers: { 'Content-Type': 'application/json' } }
-      );
+    } catch (error) {
+        const { errorDetails, status } = ErrorHandler.handle(error, "");
+        return new Response(JSON.stringify(errorDetails), {
+            status,
+            headers: { "Content-Type": "application/json" },
+        });
     }
   },
 };

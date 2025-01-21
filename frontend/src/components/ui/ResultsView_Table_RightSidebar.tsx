@@ -5,16 +5,16 @@ import DynamicPrice from "./ShopingCartAndPrice";
 
 interface Row {
   domain: string;
-  RD: number;
-  TF: number;
-  CF: number;
+  rd: number;
+  tf: number;
+  cf: number;
   price: number;
   source: string;
   keyword: string;
 }
 
 interface Seller {
-  source: string;
+  marketplace_source: string;
   price: number;
 }
 
@@ -87,15 +87,15 @@ const RightSidebar: React.FC<RightSidebarProps> = ({ visible, data, sellers, onC
         <div className="flex items-center space-x-6">
           <div className="flex flex-col items-center">
             <span className="text-sm text-gray-600 font-bold">RD</span>
-            <span className="text-sm font-bold">{data.RD}</span>
+            <span className="text-sm font-bold">{data.rd}</span>
           </div>
           <div className="flex flex-col items-center">
             <span className="text-sm text-gray-600 font-bold">TF</span>
-            <span className="text-sm font-bold">{data.TF}</span>
+            <span className="text-sm font-bold">{data.tf}</span>
           </div>
           <div className="flex flex-col items-center">
             <span className="text-sm text-gray-600 font-bold">CF</span>
-            <span className="text-sm font-bold">{data.CF}</span>
+            <span className="text-sm font-bold">{data.cf}</span>
           </div>
         </div>
         <div style={{ marginBottom: "-20px" }}>
@@ -122,7 +122,7 @@ const RightSidebar: React.FC<RightSidebarProps> = ({ visible, data, sellers, onC
           <tbody>
             {validSellers.map((validSeller) => {
               const matchingSeller = sellers.find(
-                (seller) => seller.source === validSeller
+                (seller) => seller.marketplace_source === validSeller
               );
               return (
                 <tr key={validSeller} className="dark:border-gray-600">
@@ -135,7 +135,7 @@ const RightSidebar: React.FC<RightSidebarProps> = ({ visible, data, sellers, onC
                   <td className="py-2 px-6 text-gray-800 dark:text-gray-200 text-center flex justify-center items-center">
                     {matchingSeller ? (
                       <DynamicPrice
-                        source={matchingSeller.source}
+                        source={matchingSeller.marketplace_source}
                         price={matchingSeller.price}
                         domain={data.domain}
                         onClick={(e) => e.stopPropagation()}

@@ -6,7 +6,7 @@ export const DomainsForBackgroundProcess: CollectionConfig = {
     slug: 'domainsForBackgroundProcess',
 
     admin: {
-        useAsTitle: 'Domain',                                                   // Use the domain field as the title in the admin panel
+        useAsTitle: 'domain',                                                   // Use the domain field as the title in the admin panel
     },
 
     access: {
@@ -19,89 +19,89 @@ export const DomainsForBackgroundProcess: CollectionConfig = {
     fields: [
 
         {
-            name: 'Domain',
+            name: 'domain',
             type: 'text',                                                       //Domain Name
             index: true,
             required: true,
         },
 
         {
-            name: 'RD',
+            name: 'rd',
             type: 'number',                                                     // Referring Domains
         },
 
         {
-            name: 'TF',
+            name: 'tf',
             type: 'number',                                                     // Trust Flow
         },
 
         {
-            name: 'CF',
+            name: 'cf',
             type: 'number',                                                     // Citation Flow
         },
 
         {
-            name: 'TTF',
+            name: 'ttf',
             type: 'text',                                                       // Topical Trust Flow
         },
 
         {
-            name: 'Title',
+            name: 'title',
             type: 'text',                                                       // Title for Domain
         },
 
         {
-            name: 'Backlinks',
+            name: 'backlinks',
             type: 'text',                                                       // Number of backlinks for Domain
         },
 
         {
-            name: 'Ref_Ips',
+            name: 'ref_ips',
             type: 'text',                                                       // Referring Ips
         },
 
         {
-            name: 'Ref_Edu',
+            name: 'ref_edu',
             type: 'text',                                                       // Referring Edu
         },
 
         {
-            name: 'Ref_Gov',
+            name: 'ref_gov',
             type: 'text',                                                       // Referring Government
         },
 
         {
-            name: 'Language',
+            name: 'language',
             type: 'text',                                                       // Lanugage
         },
 
         {
-            name: 'Ref_Lang',
+            name: 'ref_lang',
             type: 'text',                                                       // Referring Languages
         },
 
         {
-            name: 'Expiry_Date',
+            name: 'expiry_date',
             type: "date"                                                        // Expiration Date
         },
 
         {
-            name: "Status",
+            name: "status",
             type: "select",
-            options: ["pending", "processing"],
+            options: ["pending", "processing", "processed"],
             defaultValue: "pending",
             required: true,
         },
 
         {
-            name: "Created_At",
+            name: "created_at",
             type: "date",
             required: true,
             defaultValue: () => new Date().toISOString(),
         },
 
         {
-            name: "Updated_At",
+            name: "updated_at",
             type: "date",
             defaultValue: () => new Date().toISOString(),
         },

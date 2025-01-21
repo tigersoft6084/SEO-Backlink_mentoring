@@ -1,4 +1,3 @@
-import { ExpiredDomainData } from '@/types/expiredDomain.ts';
 export interface FetchedBackLinkDataFromMarketplace {
   domain: string;
   tf: number | 0;
@@ -26,15 +25,15 @@ export interface ResultBacklinkDataForSEO{
 }
 
 export interface ExpiredDomainData {
-  Domain : string;
-  TF : number | 0;
-  CF : number | 0;
-  RD : number | 0;
-  TTF : string | null;
-  Ref_Ips : number | 0;
-  Ref_Edu : number | 0;
-  Ref_Gov : number | 0;
-  Language : string | null;
+  domain : string;
+  tf : number | 0;
+  cf : number | 0;
+  rd : number | 0;
+  ttf : string | null;
+  ref_ips : number | 0;
+  ref_edu : number | 0;
+  ref_gov : number | 0;
+  language : string | null;
 }
 
 export interface FormattedErefererData{
@@ -60,7 +59,8 @@ export interface LinkBuildersResult {
     price?: number;
   }[];
 }
+
 export interface Marketplace {
-  Marketplace_Source: string;
-  Price: number;
+  marketplace_source: string;
+  price: number;
 }

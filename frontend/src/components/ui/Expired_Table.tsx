@@ -3,16 +3,16 @@ import { MdFilterList } from "react-icons/md";
 import { FaList } from "react-icons/fa";
 import MarketPlacesLinks from "./MarketPlacesLinks";
 interface Row {
-    Domain: string;
-    TF: number;
-    CF: number;
-    RD: number;
-    Ref_Ips: number;
-    Ref_Edu: number;
-    Ref_Gov: number;
-    TTF: string;
-    Language : string;
-    Expiry_Date : string;
+    domain: string;
+    tf: number;
+    cf: number;
+    rd: number;
+    ref_ips: number;
+    ref_edu: number;
+    ref_gov: number;
+    ttf: string;
+    language : string;
+    expiry_date : string;
 }
 
 interface ExpiredDomainsTableProps{
@@ -60,11 +60,11 @@ const ExpiredDomainsTable : React.FC<ExpiredDomainsTableProps> = ({
                         <tr>
                             <th
                                 className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400 cursor-pointer"
-                                onClick={() => handleSort("Domain")}
+                                onClick={() => handleSort("domain")}
                             >
                                 <div className="flex items-center gap-2">
                                     <span>Domain</span>
-                                    {sortConfig?.key === "Domain" && (sortConfig.direction === "asc" ? "▲" : "▼")}
+                                    {sortConfig?.key === "domain" && (sortConfig.direction === "asc" ? "▲" : "▼")}
                                     <MdFilterList />
                                 </div>
                             </th>
@@ -74,7 +74,7 @@ const ExpiredDomainsTable : React.FC<ExpiredDomainsTableProps> = ({
 
                             <th
                                 className="px-6 py-3 text-left text-xs font-medium text-gray-500 tracking-wider dark:text-gray-400 relative"
-                                onClick={() => handleSort("RD")}
+                                onClick={() => handleSort("rd")}
                             >
                                 <div className="flex items-center gap-2">
                                     <span className="group relative cursor-pointer">
@@ -89,80 +89,80 @@ const ExpiredDomainsTable : React.FC<ExpiredDomainsTableProps> = ({
                                         </div>
                                     </span>
 
-                                    {sortConfig?.key === "RD" && (sortConfig.direction === "asc" ? "▲" : "▼")}
+                                    {sortConfig?.key === "rd" && (sortConfig.direction === "asc" ? "▲" : "▼")}
 
                                 </div>
                             </th>
 
                             <th
                                 className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400"
-                                onClick={() => handleSort("TF")}
+                                onClick={() => handleSort("tf")}
                             >
                                 <div className="flex items-center gap-2">
                                     <span className="cursor-pointer">TF</span>
-                                    {sortConfig?.key === "TF" && (sortConfig.direction === "asc" ? "▲" : "▼")}
+                                    {sortConfig?.key === "tf" && (sortConfig.direction === "asc" ? "▲" : "▼")}
                                 </div>
                             </th>
 
                             <th
                                 className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400"
-                                onClick={() => handleSort("CF")}
+                                onClick={() => handleSort("cf")}
                             >
                                 <div className="flex items-center gap-2">
                                     <span className="cursor-pointer">CF</span>
-                                    {sortConfig?.key === "CF" && (sortConfig.direction === "asc" ? "▲" : "▼")}
+                                    {sortConfig?.key === "cf" && (sortConfig.direction === "asc" ? "▲" : "▼")}
                                 </div>
                             </th>
 
                             <th
                                 className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400"
-                                onClick={() => handleSort("Ref_Ips")}
+                                onClick={() => handleSort("ref_ips")}
                             >
                                 <div className="flex items-center gap-2">
                                     <span className="cursor-pointer">Ref.Ips</span>
-                                    {sortConfig?.key === "Ref_Ips" && (sortConfig.direction === "asc" ? "▲" : "▼")}
+                                    {sortConfig?.key === "ref_ips" && (sortConfig.direction === "asc" ? "▲" : "▼")}
                                 </div>
                             </th>
 
                             <th
                                 className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400"
-                                onClick={() => handleSort("Ref_Edu")}
+                                onClick={() => handleSort("ref_edu")}
                                 >
                                 <div className="flex items-center gap-2">
                                     <span className="cursor-pointer">Ref.Edu</span>
-                                    {sortConfig?.key === "Ref_Edu" && (sortConfig.direction === "asc" ? "▲" : "▼")}
+                                    {sortConfig?.key === "ref_edu" && (sortConfig.direction === "asc" ? "▲" : "▼")}
                                 </div>
                             </th>
 
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400"
-                                onClick={() => handleSort("Ref_Gov")}>
+                                onClick={() => handleSort("ref_gov")}>
                                 <div className="flex items-center gap-2">
                                     <span className="cursor-pointer">Ref.Gov</span>
-                                    {sortConfig?.key === "Ref_Gov" && (sortConfig.direction === "asc" ? "▲" : "▼")}
+                                    {sortConfig?.key === "ref_gov" && (sortConfig.direction === "asc" ? "▲" : "▼")}
                                 </div>
                             </th>
 
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400"
-                                onClick={() => handleSort("TTF")}>
+                                onClick={() => handleSort("ttf")}>
                                 <div className="flex items-center gap-2">
                                     <span className="cursor-pointer">TTF</span>
-                                    {sortConfig?.key === "TTF" && (sortConfig.direction === "asc" ? "▲" : "▼")}
+                                    {sortConfig?.key === "ttf" && (sortConfig.direction === "asc" ? "▲" : "▼")}
                                 </div>
                             </th>
 
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400"
-                                onClick={() => handleSort("Language")}>
+                                onClick={() => handleSort("language")}>
                                 <div className="flex items-center gap-2">
                                     <span className="cursor-pointer">Language</span>
-                                    {sortConfig?.key === "Language" && (sortConfig.direction === "asc" ? "▲" : "▼")}
+                                    {sortConfig?.key === "language" && (sortConfig.direction === "asc" ? "▲" : "▼")}
                                 </div>
                             </th>
 
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400"
-                                onClick={() => handleSort("Expiry_Date")}>
+                                onClick={() => handleSort("expiry_date")}>
                                 <div className="flex items-center gap-2">
                                     <span className="cursor-pointer">Expiry_Date</span>
-                                    {sortConfig?.key === "Expiry_Date" && (sortConfig.direction === "asc" ? "▲" : "▼")}
+                                    {sortConfig?.key === "expiry_date" && (sortConfig.direction === "asc" ? "▲" : "▼")}
                                 </div>
                             </th>
 
@@ -180,30 +180,30 @@ const ExpiredDomainsTable : React.FC<ExpiredDomainsTableProps> = ({
                                     onClick={(e) => e.stopPropagation()}
                                 >
                                     <a
-                                        href={`https://${row.Domain}`}
+                                        href={`https://${row.domain}`}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className="hover:underline"
                                     >
-                                        {row.Domain}
+                                        {row.domain}
                                     </a>
                                 </td>
 
                                 <td className="py-4" onClick={(e) => e.stopPropagation()}>
-                                    <MarketPlacesLinks domain={row.Domain} />
+                                    <MarketPlacesLinks domain={row.domain} />
                                 </td>
 
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{row.RD}</td>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{row.rd}</td>
 
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{row.TF}</td>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{row.tf}</td>
 
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{row.CF}</td>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{row.cf}</td>
 
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{row.Ref_Ips}</td>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{row.ref_ips}</td>
 
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{row.Ref_Edu}</td>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{row.ref_edu}</td>
 
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{row.Ref_Gov}</td>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{row.ref_gov}</td>
 
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">Society/Adult</td>
 

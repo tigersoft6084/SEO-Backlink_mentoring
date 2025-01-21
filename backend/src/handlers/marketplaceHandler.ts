@@ -59,7 +59,7 @@ export const marketplaceHandler = async (
             const existingEntry_backlinkCollection = await payload.find({
                 collection: COLLECTION_NAME_BACKLINK,
                 where: {
-                    Domain: { equals: domain },
+                    domain: { equals: domain },
                 },
                 limit: 1,
             });
@@ -67,7 +67,7 @@ export const marketplaceHandler = async (
             const existingEntry_domainCollection = await payload.find({
                 collection : COLLECTION_NAME_DOMAINS_BACKGROUND_PROCESS,
                 where : {
-                    Domain : {equals : domain},
+                    domain : {equals : domain},
                 },
                 limit : 1,
             })
@@ -76,9 +76,9 @@ export const marketplaceHandler = async (
                 await payload.create({
                     collection : COLLECTION_NAME_DOMAINS_BACKGROUND_PROCESS,
                     data : {
-                        Domain : domain,
-                        Status : "pending",
-                        Created_At: new Date().toISOString(),
+                        domain : domain,
+                        status : "pending",
+                        created_at: new Date().toISOString(),
                     }
                 });
             }
@@ -88,43 +88,43 @@ export const marketplaceHandler = async (
                 const entryToUpdate = existingEntry_backlinkCollection.docs[0];
 
                 // Find the marketplace with the same source
-                const existingMarketplace = entryToUpdate.Marketplaces.find(
-                    (marketplace: Marketplace) => marketplace.Marketplace_Source === marketplaceName
+                const existingMarketplace = entryToUpdate.marketplaces.find(
+                    (marketplace: Marketplace) => marketplace.marketplace_source === marketplaceName
                 );
 
                 if (existingMarketplace) {
                     // If the price is different, update it
-                    if (existingMarketplace.Price !== price) {
-                        existingMarketplace.Price = price;
+                    if (existingMarketplace.price !== price) {
+                        existingMarketplace.price = price;
 
                         await payload.update({
                             collection: COLLECTION_NAME_BACKLINK,
                             id: entryToUpdate.id,
                             data: {
-                                TF: tf,
-                                CF: cf,
-                                RD: rd,
-                                Marketplaces: entryToUpdate.Marketplaces, // Existing marketplaces with updated price
-                                Date_Fetched: new Date().toISOString(),
+                                tf: tf,
+                                cf: cf,
+                                rd: rd,
+                                marketplaces: entryToUpdate.marketplaces, // Existing marketplaces with updated price
+                                date_fetched: new Date().toISOString(),
                             },
                         });
                     }
                 } else {
                     // If the marketplace doesn't exist, add it (with the new price)
-                    entryToUpdate.Marketplaces.push({
-                        Marketplace_Source: marketplaceName,
-                        Price: price,
+                    entryToUpdate.marketplaces.push({
+                        marketplace_source: marketplaceName,
+                        price: price,
                     });
 
                     await payload.update({
                         collection: COLLECTION_NAME_BACKLINK,
                         id: entryToUpdate.id,
                         data: {
-                            TF: tf,
-                            CF: cf,
-                            RD: rd,
-                            Marketplaces: entryToUpdate.Marketplaces,
-                            Date_Fetched: new Date().toISOString(),
+                            tf: tf,
+                            cf: cf,
+                            rd: rd,
+                            marketplaces: entryToUpdate.marketplaces,
+                            date_fetched: new Date().toISOString(),
                         },
                     });
                 }
@@ -134,14 +134,14 @@ export const marketplaceHandler = async (
                 await payload.create({
                     collection: COLLECTION_NAME_BACKLINK,
                     data: {
-                        Domain: domain,
-                        TF: tf,
-                        CF: cf,
-                        RD: rd,
-                        Marketplaces: [
-                            { Marketplace_Source: marketplaceName, Price: price },
+                        domain: domain,
+                        tf: tf,
+                        cf: cf,
+                        rd: rd,
+                        marketplaces: [
+                            { marketplace_source: marketplaceName, price: price },
                         ],
-                        Date_Fetched: new Date().toISOString(),
+                        date_fetched: new Date().toISOString(),
                     },
                 });
             }
