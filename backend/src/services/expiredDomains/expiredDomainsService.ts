@@ -1,5 +1,5 @@
 import { Payload, Where, WhereField } from "payload";
-import { COLLECTION_NAME_BACKLINK } from "@/global/strings.ts";
+import { COLLECTION_NAME_BACKLINK } from "@/globals/strings.ts";
 import { ErrorHandler } from "@/handlers/errorHandler.ts";
 import { ExpiredDomainData } from "@/types/backlink.ts";
 

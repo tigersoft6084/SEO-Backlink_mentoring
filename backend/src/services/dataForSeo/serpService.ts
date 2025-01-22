@@ -1,6 +1,6 @@
 // services/serpService.ts
 
-import { BULK_KEYWORD_SEARCH_URL } from '@/global/marketplaceUrls.ts';
+import { BULK_KEYWORD_SEARCH_URL } from '@/globals/marketplaceUrls.ts';
 import axios from 'axios';
 
 export const fetchSerpData = async (keyword: string, locationCode: number, languageCode: string, depth: number) => {

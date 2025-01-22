@@ -5,7 +5,7 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "dev": "cross-env PORT=2024 NODE_OPTIONS=--no-deprecation next dev",
+    "dev": "cross-env PORT=2024 NODE_OPTIONS=--no-deprecation next dev & payload dev",
     "dev:clean": "rm -rf .next && cross-env PORT=2024 NODE_OPTIONS=--no-deprecation next dev",
     "dev:hot": "nodemon --watch . --exec 'npm run dev'",
     "build": "cross-env PORT=2024 NODE_OPTIONS=--no-deprecation next build",
@@ -23,6 +23,7 @@
     "@payloadcms/next": "latest",
     "@payloadcms/payload-cloud": "latest",
     "@payloadcms/richtext-lexical": "latest",
+    "@types/node-cron": "^3.0.11",
     "axios-retry": "^4.5.0",
     "cheerio": "^1.0.0",
     "cookie": "^1.0.2",

@@ -3,7 +3,7 @@ import { withErrorHandling } from '@/middleware/errorMiddleware.ts';
 import { getBacklinksDataFromBoosterlink } from '@/services/marketPlacesService/getBacklinksFromMarketplaces/boosterlink.ts';
 import { marketplaceHandler } from '@/handlers/marketplaceHandler.ts';
 import { FetchedBackLinkDataFromMarketplace } from '@/types/backlink.js';
-import { MARKETPLACE_NAME_BOOSTERLINK } from '@/global/strings.ts';
+import { MARKETPLACE_NAME_BOOSTERLINK } from '@/globals/strings.ts';
 
 /**
  * Fetch Boosterlink data and process it using the marketplaceHandler

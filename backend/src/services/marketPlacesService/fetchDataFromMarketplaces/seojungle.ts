@@ -1,6 +1,6 @@
 import { axiosInstance } from '@/utils/axiosInstance.ts';
 import { getFormDataFromSeojungle } from '../formattingFetchedDataFromMarketplaces/seojungle.ts';
-import { GET_BACKLINK_FROM_SeoJungle_URL } from '@/global/marketplaceUrls.ts';
+import { GET_BACKLINK_FROM_SeoJungle_URL } from '@/globals/marketplaceUrls.ts';
 import { ErrorHandler } from '@/handlers/errorHandler.ts';
 
 export const fetchDataFromSeojungle = async (token: string, page: number, themes: string[]) => {

@@ -1,3 +1,4 @@
+import { number } from 'node_modules/payload/dist/fields/validations.js';
 import { CollectionConfig } from 'payload';
 
 
@@ -74,22 +75,27 @@ export const Backlinks: CollectionConfig = {
 
     {
       name: 'backlinks',
-    type: 'number',                                                         // Number of backlinks for Domain
+      type: 'number',                                                       // Number of backlinks for Domain
     },
 
     {
       name: 'ref_ips',
-    type: 'number',                                                         // Referring Ips
+      type: 'number',                                                       // RefIPs
+    },
+
+    {
+      name : 'ref_subnets',
+      type : 'number'                                                       // RefSubNets
     },
 
     {
       name: 'ref_edu',
-    type: 'number',                                                         // Referring Edu
+      type: 'number',                                                       // RefDomainsEDU
     },
 
     {
       name: 'ref_gov',
-    type: 'number',                                                         // Referring Government
+      type: 'number',                                                       // RefDomainsGOV
     },
 
     {
@@ -99,7 +105,7 @@ export const Backlinks: CollectionConfig = {
 
     {
       name: 'ref_lang',
-      type: 'text',                                                         // Referring Languages
+      type: 'text',                                                         // RefLanguage
     },
 
     {

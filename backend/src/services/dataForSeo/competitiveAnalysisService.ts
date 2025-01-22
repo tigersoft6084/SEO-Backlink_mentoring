@@ -1,5 +1,5 @@
 
-import { COMPETITIVE_ANALYSIS_SEARCH_URL } from '@/global/marketplaceUrls.ts';
+import { COMPETITIVE_ANALYSIS_SEARCH_URL } from '@/globals/marketplaceUrls.ts';
 import axios from 'axios';
 
 // Helper function to validate domain

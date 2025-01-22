@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { LINK_BUILDERS_API_URL } from '@/global/marketplaceUrls.ts';
+import { LINK_BUILDERS_API_URL } from '@/globals/marketplaceUrls.ts';
 import { getCredentialsForMarketplaces } from '../getCredentialsForMarketplaces.ts';
 import { ErrorHandler } from '@/handlers/errorHandler.ts';
 

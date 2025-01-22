@@ -128,7 +128,7 @@ import { Endpoint, PayloadRequest } from 'payload';
 import { withErrorHandling } from '@/middleware/errorMiddleware.ts';
 import { marketplaceHandler } from '@/handlers/marketplaceHandler.ts';
 import { FetchedBackLinkDataFromMarketplace } from '@/types/backlink.js';
-import { MARKETPLACE_NAME_SEOJUNGLE } from '@/global/strings.ts';
+import { MARKETPLACE_NAME_SEOJUNGLE } from '@/globals/strings.ts';
 import { getBacklinksDataFromSeojungle } from '@/services/marketPlacesService/getBacklinksFromMarketplaces/seojungle.ts';
 
 /**

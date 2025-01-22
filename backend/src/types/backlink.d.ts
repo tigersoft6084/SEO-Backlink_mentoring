@@ -1,9 +1,18 @@
 export interface FetchedBackLinkDataFromMarketplace {
   domain: string;
-  tf: number | 0;
-  cf: number | 0;
-  rd: number | 0;
+  tf?: number | 0;
+  cf?: number | 0;
+  rd?: number | 0;
+  ttf?: string | "";
+  title? : string | "";
+  backlinks? : number | "";
+  ref_ips? : number | 0;
+  ref_subnets? : number | 0;
+  ref_edu ? : number | 0;
+  ref_gov ? : number | 0;
   price: number;
+  language : string | "";
+  ref_lang : string | "";
 }
 
 export interface ResultBacklinkDataForSEO{
@@ -38,11 +47,13 @@ export interface ExpiredDomainData {
 
 export interface FormattedErefererData{
   url: string;
+  language : string;
   metrics: {
     majestic: {
       trustFlow : number | 0;
       citation : number | 0;
       refDomains: number | 0;
+      categories : string | "";
     };
   };
   price: number | 0;
