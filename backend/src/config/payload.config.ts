@@ -16,6 +16,7 @@ import { FRONTEND_URL } from './apiConfig.ts';
 import { DomainsForBackgroundProcess } from '@/collections/DomainsForBackgroundProcess.ts';
 import { SiteSettings } from '@/globals/sideSettings.ts';
 import { startCronJob } from '@/services/cronJob.ts';
+import { SubscriptionPlans } from '@/collections/Billing.ts';
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -24,7 +25,7 @@ export default buildConfig({
   admin: {
     user: Users.slug,
   },
-  collections: [Users, Media, Credentials, Backlinks, DomainsForBackgroundProcess],
+  collections: [Users, Media, Credentials, Backlinks, DomainsForBackgroundProcess, SubscriptionPlans],
   globals : [SiteSettings],
   cors: [FRONTEND_URL], // Allow requests from your frontend
 

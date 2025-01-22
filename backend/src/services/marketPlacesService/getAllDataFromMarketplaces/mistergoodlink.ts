@@ -1,27 +1,42 @@
 import { GET_BACKLINK_FROM_MISTERGOODLINK_URL } from '@/globals/marketplaceUrls.ts';
 import PQueue from 'p-queue';
 import { fetchDataFromMistergoodlink } from '../fetchDataFromMarketplaces/mistergoodlink.ts';
+import { MARKETPLACE_NAME_MISTERGOODLINK } from '@/globals/strings.ts';
+import { uploadToDatabase } from '../uploadDatabase.ts';
+import { Payload } from 'payload';
 
-const TOTAL_PAGES = 537;
-const CONCURRENCY_LIMIT = 10; // Number of concurrent requests
-const BATCH_SIZE = 100; // Limit the number of tasks enqueued at once
+const TOTAL_PAGES = 550;
+const CONCURRENCY_LIMIT = 100; // Number of concurrent requests
+const BATCH_SIZE = 300; // Limit the number of tasks enqueued at once
 
-export const getAllDataFromMistergoodlink = async (cookie: string) => {
+export const getAllDataFromMistergoodlink = async (cookie: string, payload : Payload) => {
   if (!cookie) {
     throw new Error('API cookie is missing');
   }
 
   const queue = new PQueue({ concurrency: CONCURRENCY_LIMIT });
-  const results = new Set();
-  let processedPages = 0;
+  const seenDomains = new Set<string>(); // Track processed domains to avoid duplicates
 
   const fetchPageData = async (page: number) => {
     const url = `${GET_BACKLINK_FROM_MISTERGOODLINK_URL}?page=${page}`;
+    console.log(`Fetching ${MARKETPLACE_NAME_MISTERGOODLINK} page ${page}...`);
+
     try {
       const data = await fetchDataFromMistergoodlink(url, cookie);
-      if (data) {
-        data.forEach((item: any) => results.add(JSON.stringify(item)));
+
+      if(Array.isArray(data) && data.length > 0){
+        for(const item of data){
+          if(!seenDomains.has(item.domain)){
+            seenDomains.add(item.domain);
+            await uploadToDatabase(payload, item, MARKETPLACE_NAME_MISTERGOODLINK)
+          }
+        }
+
+        console.log(`Processed page ${page}, items: ${data.length}`);
+      }else{
+        console.warn(`No data found on page ${page}.`);
       }
+
     } catch (error) {
       console.error(
         `Failed to fetch data for page ${page}:`,
@@ -29,10 +44,6 @@ export const getAllDataFromMistergoodlink = async (cookie: string) => {
       );
     }
 
-    // Update progress after processing each page
-    processedPages += 1;
-    const progressPercentage = ((processedPages / TOTAL_PAGES) * 100).toFixed(2);
-    console.log(`Fetching page from Mistergoodlink Progress: ${progressPercentage}%`);
   };
 
   // Process in batches
@@ -45,15 +56,15 @@ export const getAllDataFromMistergoodlink = async (cookie: string) => {
       tasks.push(queue.add(() => fetchPageData(page)));
     }
 
-    // Wait for the current batch to finish
-    await Promise.all(tasks);
+    try {
+      // Wait for the current batch of tasks to complete
+      await Promise.all(tasks);
+      console.log(`Batch from page ${start} to ${Math.min(start + BATCH_SIZE - 1, TOTAL_PAGES)} completed.`);
+    } catch (error) {
+      console.error(`Error processing batch starting at page ${start}:`, error);
+    }
+
   }
 
-  // Convert Set back to an array and parse serialized items
-  const deduplicatedResults = Array.from(results).map((item) =>
-    JSON.parse(item as string)
-  );
-
-  console.log(`Fetched data from ${deduplicatedResults.length} unique entries.`);
-  return deduplicatedResults;
+  console.log('All pages processed.');
 };

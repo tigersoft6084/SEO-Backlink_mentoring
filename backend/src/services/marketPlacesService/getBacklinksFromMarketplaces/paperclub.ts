@@ -1,10 +1,11 @@
 import { ErrorHandler } from "@/handlers/errorHandler.ts";
 import { getAllDataFromPaperclub } from "../getAllDataFromMarketplaces/paperclub.ts";
 import { getTokenForPaperClub } from "../getTokensOrCookiesFromMarketplaces/paperclub.ts";
+import { Payload } from "payload";
 
 
 // Function to process URLs in batches with p-limit
-export const getBacklinksDataFromPaperclub = async () => {
+export const getBacklinksDataFromPaperclub = async (payload : Payload) => {
 
   try{
     const Token = await getTokenForPaperClub();
@@ -13,7 +14,7 @@ export const getBacklinksDataFromPaperclub = async () => {
       throw new Error("API token is missing");
     }
 
-    const allData = await getAllDataFromPaperclub(Token);
+    const allData = await getAllDataFromPaperclub(Token, payload);
 
     return allData;
 

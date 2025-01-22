@@ -54,6 +54,7 @@ export const getAllDataFromEreferer = async (cookie: string, payload: Payload): 
     } catch (error) {
       console.error(`Error processing batch starting at page ${start}:`, error);
     }
+
   }
 
   console.log('All pages processed.');

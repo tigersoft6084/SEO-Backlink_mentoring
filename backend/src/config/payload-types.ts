@@ -16,6 +16,7 @@ export interface Config {
     CredentialsForMarketplaces: CredentialsForMarketplace;
     backlinks: Backlink;
     domainsForBackgroundProcess: DomainsForBackgroundProcess;
+    plans: Plan;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -27,6 +28,7 @@ export interface Config {
     CredentialsForMarketplaces: CredentialsForMarketplacesSelect<false> | CredentialsForMarketplacesSelect<true>;
     backlinks: BacklinksSelect<false> | BacklinksSelect<true>;
     domainsForBackgroundProcess: DomainsForBackgroundProcessSelect<false> | DomainsForBackgroundProcessSelect<true>;
+    plans: PlansSelect<false> | PlansSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -193,6 +195,26 @@ export interface DomainsForBackgroundProcess {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "plans".
+ */
+export interface Plan {
+  id: string;
+  name: string;
+  price: number;
+  currency?: string | null;
+  features?:
+    | {
+        feature?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  planType: 'monthly' | 'yearly';
+  paypalPlanId: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -217,6 +239,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'domainsForBackgroundProcess';
         value: string | DomainsForBackgroundProcess;
+      } | null)
+    | ({
+        relationTo: 'plans';
+        value: string | Plan;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -365,6 +391,25 @@ export interface DomainsForBackgroundProcessSelect<T extends boolean = true> {
   status?: T;
   created_at?: T;
   updated_at?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "plans_select".
+ */
+export interface PlansSelect<T extends boolean = true> {
+  name?: T;
+  price?: T;
+  currency?: T;
+  features?:
+    | T
+    | {
+        feature?: T;
+        id?: T;
+      };
+  planType?: T;
+  paypalPlanId?: T;
   updatedAt?: T;
   createdAt?: T;
 }
