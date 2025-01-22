@@ -1,5 +1,5 @@
-import { getBacklinksDataFromGetalink } from '@/services/marketPlacesService/getBacklinksFromMarketplaces/getalink.ts';
 import { Endpoint, PayloadRequest } from 'payload';
+import { getBacklinksDataFromLinkaVista } from '../services/marketPlacesService/getBacklinksFromMarketplaces/linkavista.ts';
 
 // Define the Payload endpoint
 export const myTestEndpoint: Endpoint = {
@@ -8,13 +8,14 @@ export const myTestEndpoint: Endpoint = {
   handler: async (req : PayloadRequest) => {
     try {
 
-      await getBacklinksDataFromGetalink(req.payload);
+      // await getBacklinksDataFromGetalink(req.payload);
+      const result = await getBacklinksDataFromLinkaVista(req.payload);
 
       // Return the collected results
       return new Response(
         JSON.stringify({
           message: 'Fetch completed.',
-          // Results: largestExtraCategory.category.name,
+          Results: result,
         }),
         {
           status: 200,

@@ -1,9 +1,10 @@
 import { GET_BACKLINK_FROM_LINKAVISTA_URL } from "@/globals/marketplaceUrls.ts";
 import { fetchDataFromLinkavistar } from "../fetchDataFromMarketplaces/linkavista.ts";
 import { getCookieFromLinkaVista } from "../getTokensOrCookiesFromMarketplaces/linkavista.ts";
+import { Payload } from "payload";
 
 
-export const getBacklinksDataFromLinkaVista = async() => {
+export const getBacklinksDataFromLinkaVista = async(payload : Payload) => {
 
     try{
         const cookie = await getCookieFromLinkaVista();
@@ -13,7 +14,7 @@ export const getBacklinksDataFromLinkaVista = async() => {
         }
 
         //Fetch data from all pages
-        const allData = await fetchDataFromLinkavistar(GET_BACKLINK_FROM_LINKAVISTA_URL, cookie);
+        const allData = await fetchDataFromLinkavistar(GET_BACKLINK_FROM_LINKAVISTA_URL, cookie, payload);
 
         return allData;
 
