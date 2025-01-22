@@ -1,4 +1,4 @@
-import { GET_BACKLINK_FROM_PRENSALINK_URLS } from "@/global/marketplaceUrls.ts";
+import { GET_BACKLINK_FROM_PRENSALINK_URLS } from "@/globals/marketplaceUrls.ts";
 import pLimit from "p-limit";
 import { fetchDataFromPrensalink } from "../fetchDataFromMarketplaces/prensalink.ts";
 import { FetchedBackLinkDataFromMarketplace } from "@/types/backlink.js";

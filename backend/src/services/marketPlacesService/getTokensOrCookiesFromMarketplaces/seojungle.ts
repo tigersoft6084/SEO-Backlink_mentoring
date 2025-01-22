@@ -1,4 +1,4 @@
-import { Seojungle_API_URL } from '@/global/marketplaceUrls.ts';
+import { Seojungle_API_URL } from '@/globals/marketplaceUrls.ts';
 import axios from 'axios';
 import { getCredentialsForMarketplaces } from '../getCredentialsForMarketplaces.ts';
 import { ErrorHandler } from '@/handlers/errorHandler.ts';

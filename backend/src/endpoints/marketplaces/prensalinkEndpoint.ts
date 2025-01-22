@@ -2,7 +2,7 @@ import { Endpoint, PayloadRequest } from 'payload';
 import { withErrorHandling } from '@/middleware/errorMiddleware.ts';
 import { marketplaceHandler } from '@/handlers/marketplaceHandler.ts';
 import { FetchedBackLinkDataFromMarketplace } from '@/types/backlink.js';
-import { MARKETPLACE_NAME_PRENSALINK } from '@/global/strings.ts';
+import { MARKETPLACE_NAME_PRENSALINK } from '@/globals/strings.ts';
 import { getBacklinksDataFromPrensalink } from '@/services/marketPlacesService/getBacklinksFromMarketplaces/prensalink.ts';
 
 /**

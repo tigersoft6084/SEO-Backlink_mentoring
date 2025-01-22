@@ -1,6 +1,6 @@
 import PQueue from 'p-queue';
 import { fetchDataFromGetalink } from '../fetchDataFromMarketplaces/getalink.ts';
-import { GET_BACKLINK_FROM_GETALINK_URL } from '@/global/marketplaceUrls.ts';
+import { GET_BACKLINK_FROM_GETALINK_URL } from '@/globals/marketplaceUrls.ts';
 
 const TOTAL_PAGES = 158;
 const CONCURRENCY_LIMIT = 10; // Number of concurrent requests

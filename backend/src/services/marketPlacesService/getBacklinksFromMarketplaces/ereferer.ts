@@ -1,9 +1,10 @@
 import { ErrorHandler } from "@/handlers/errorHandler.ts";
 import { getAllDataFromEreferer } from "../getAllDataFromMarketplaces/ereferer.ts";
 import { getCookieFromEreferer } from "../getTokensOrCookiesFromMarketplaces/ereferer.ts";
+import { Payload } from "payload";
 
 
-export const getBacklinksDataFromEreferer = async() => {
+export const getBacklinksDataFromEreferer = async(payload : Payload) => {
 
     try{
         const cookie = await getCookieFromEreferer();
@@ -13,11 +14,8 @@ export const getBacklinksDataFromEreferer = async() => {
         }
 
         //Fetch data from all pages
-        const allData = await getAllDataFromEreferer(cookie);
+        await getAllDataFromEreferer(cookie, payload);
 
-        console.log('Total data receive : ', allData.length);
-
-        return allData;
     }catch(error){
         const { errorDetails, status } = ErrorHandler.handle(error, "Error occured from getting backlinks from Develink");
         return new Response(JSON.stringify(errorDetails), {

@@ -116,7 +116,7 @@ import { withErrorHandling } from '@/middleware/errorMiddleware.ts';
 import { getBacklinksDataFromBoosterlink } from '@/services/marketPlacesService/getBacklinksFromMarketplaces/boosterlink.ts';
 import { marketplaceHandler } from '@/handlers/marketplaceHandler.ts';
 import { FetchedBackLinkDataFromMarketplace } from '@/types/backlink.js';
-import { MARKETPLACE_NAME_BOOSTERLINK, MARKETPLACE_NAME_LINKBUILDERS } from '@/global/strings.ts';
+import { MARKETPLACE_NAME_BOOSTERLINK, MARKETPLACE_NAME_LINKBUILDERS } from '@/globals/strings.ts';
 
 /**
  * Fetch Linkbuilders data and process it using the marketplaceHandler

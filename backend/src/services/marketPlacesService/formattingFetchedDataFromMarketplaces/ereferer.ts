@@ -39,12 +39,18 @@ export const getFormDataFromEreferer = async (response: string): Promise<Fetched
         .replace(/^(https?:\/\/)?(www\.)?/, "") // Remove protocol and "www."
         .replace(/\/$/, ""); // Remove trailing slash
 
+        const categories = item.metrics.majestic.categories || "";
+        const ttf = categories.length > 0 ? categories.split(":")[0] : "";
+
       return {
         domain: formattedDomain,
         tf: Number(item.metrics.majestic.trustFlow) || 0,
         cf: Number(item.metrics.majestic.citation) || 0,
         rd : Number(item.metrics.majestic.refDomains) || 0,
         price: Number(item.price) || 0,
+        ttf : ttf,
+        language: item.language || "", // Provide a default value for language
+        ref_lang: "",
       };
     });
 

@@ -14,6 +14,8 @@ import { Media } from '@/collections/user-management/Media.ts';
 import { customEndpoints } from '@/endpoints/index.ts';
 import { FRONTEND_URL } from './apiConfig.ts';
 import { DomainsForBackgroundProcess } from '@/collections/DomainsForBackgroundProcess.ts';
+import { SiteSettings } from '@/globals/sideSettings.ts';
+import { startCronJob } from '@/services/cronJob.ts';
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -23,6 +25,7 @@ export default buildConfig({
     user: Users.slug,
   },
   collections: [Users, Media, Credentials, Backlinks, DomainsForBackgroundProcess],
+  globals : [SiteSettings],
   cors: [FRONTEND_URL], // Allow requests from your frontend
 
   editor: lexicalEditor(),
@@ -40,4 +43,8 @@ export default buildConfig({
   endpoints: [
     ...(customEndpoints || []), // Ensure customEndpoints is defined
   ],
+  onInit : async(payload) => {
+    console.log('Payload is initialized.');
+    startCronJob(payload);
+  }
 });

@@ -1,8 +1,8 @@
 import * as cheerio from 'cheerio';
 import { getCredentialsForMarketplaces } from "../getCredentialsForMarketplaces.ts";
-import { BOOSTERLINK_API_URL } from '@/global/marketplaceUrls.ts';
+import { BOOSTERLINK_API_URL } from '@/globals/marketplaceUrls.ts';
 import { ErrorHandler } from '@/handlers/errorHandler.ts';
-import { MARKETPLACE_NAME_BOOSTERLINK } from '@/global/strings.ts';
+import { MARKETPLACE_NAME_BOOSTERLINK } from '@/globals/strings.ts';
 
 export const getCookieFromBoosterlink = async (): Promise<string | null> => {
 

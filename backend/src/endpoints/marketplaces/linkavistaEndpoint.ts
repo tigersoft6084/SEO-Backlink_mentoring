@@ -127,7 +127,7 @@ import { Endpoint, PayloadRequest } from 'payload';
 import { withErrorHandling } from '@/middleware/errorMiddleware.ts';
 import { marketplaceHandler } from '@/handlers/marketplaceHandler.ts';
 import { FetchedBackLinkDataFromMarketplace } from '@/types/backlink.js';
-import { MARKETPLACE_NAME_LINKAVISTAR } from '@/global/strings.ts';
+import { MARKETPLACE_NAME_LINKAVISTAR } from '@/globals/strings.ts';
 import { getBacklinksDataFromLinkaVista } from '@/services/marketPlacesService/getBacklinksFromMarketplaces/linkavista.ts';
 
 /**

@@ -1,50 +1,59 @@
 import PQueue from 'p-queue';
+import { Payload } from 'payload';
 import { fetchDataFromEreferer } from '../fetchDataFromMarketplaces/ereferer.ts';
-import { GET_BACKLINK_FROM_Ereferer_URL } from '@/global/marketplaceUrls.ts';
-import { FetchedBackLinkDataFromMarketplace } from '@/types/backlink.js';
+import { GET_BACKLINK_FROM_Ereferer_URL } from '@/globals/marketplaceUrls.ts';
+import { uploadToDatabase } from '../uploadDatabase.ts';
 
-const CONCURRENCY_LIMIT = 10; // Increase concurrency for faster processing
-const BATCH_SIZE = 30; // Larger batch size for better throughput
-const MAX_PAGES = 950; // Set a reasonable upper limit for pages
+const CONCURRENCY_LIMIT = 100 ; // Number of concurrent requests
+const BATCH_SIZE = 200 ; // Tasks enqueued at once
+const MAX_PAGES = 950; // Upper limit for total pages
 
-export const getAllDataFromEreferer = async (cookie: string): Promise<FetchedBackLinkDataFromMarketplace[]> => {
+export const getAllDataFromEreferer = async (cookie: string, payload: Payload): Promise<void> => {
   if (!cookie) {
     throw new Error('API cookie is missing');
   }
 
   const queue = new PQueue({ concurrency: CONCURRENCY_LIMIT });
-  const results = new Set<FetchedBackLinkDataFromMarketplace>(); // Directly store objects in Set
+  const seenDomains = new Set<string>(); // Track processed domains to avoid duplicates
 
-  const fetchPageData = async (page: number) => {
+  const fetchPageData = async (page: number): Promise<void> => {
     const url = `${GET_BACKLINK_FROM_Ereferer_URL}?page=${page}`;
+    console.log(`Fetching Ereferer page ${page}...`);
+
     try {
-      console.log(`Fetching Ereferer page ${page}...`);
       const data = await fetchDataFromEreferer(url, `${cookie}; _locale=en`);
-      if (Array.isArray(data)) {
-        data.forEach((item: FetchedBackLinkDataFromMarketplace) => results.add(item)); // Add objects directly
+
+      if (Array.isArray(data) && data.length > 0) {
+        for (const item of data) {
+          if (!seenDomains.has(item.domain)) {
+            seenDomains.add(item.domain); // Mark domain as processed
+            await uploadToDatabase(payload, item, "Ereferer");
+          }
+        }
+        console.log(`Processed page ${page}, items: ${data.length}`);
+      } else {
+        console.warn(`No data found on page ${page}.`);
       }
     } catch (error) {
-      console.error(`Failed to fetch data for page ${page}:`, error instanceof Error ? error.message : error);
+      console.error(`Error fetching data for page ${page}:`, error instanceof Error ? error.message : error);
     }
   };
 
-  // Fetch pages in batches
-  const pagePromises: Promise<void>[] = [];
+  // Process pages in batches
   for (let start = 1; start <= MAX_PAGES; start += BATCH_SIZE) {
-    const end = Math.min(start + BATCH_SIZE - 1, MAX_PAGES);
+    const tasks = [];
+    for (let page = start; page < Math.min(start + BATCH_SIZE, MAX_PAGES + 1); page++) {
+      tasks.push(queue.add(() => fetchPageData(page)));
+    }
 
-    // Add tasks for the current batch
-    for (let page = start; page <= end; page++) {
-      pagePromises.push(queue.add(() => fetchPageData(page)));
+    try {
+      // Wait for the current batch of tasks to complete
+      await Promise.all(tasks);
+      console.log(`Batch from page ${start} to ${Math.min(start + BATCH_SIZE - 1, MAX_PAGES)} completed.`);
+    } catch (error) {
+      console.error(`Error processing batch starting at page ${start}:`, error);
     }
   }
 
-  // Wait for all pages to be processed
-  await Promise.all(pagePromises);
-
-  // Convert Set to an array for return
-  const deduplicatedResults = Array.from(results);
-
-  console.log(`Fetched data from ${deduplicatedResults.length} unique entries.`);
-  return deduplicatedResults;
+  console.log('All pages processed.');
 };

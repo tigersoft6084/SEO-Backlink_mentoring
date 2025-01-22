@@ -1,4 +1,4 @@
-import { PRENSALINK_API_URL } from '@/global/marketplaceUrls.ts';
+import { PRENSALINK_API_URL } from '@/globals/marketplaceUrls.ts';
 import axios from 'axios';
 import { getCredentialsForMarketplaces } from '../getCredentialsForMarketplaces.ts';
 
