@@ -41,5 +41,5 @@ export const startCronJob = async(payload : Payload): Promise<void> => {
         log("Backlink data update job completed.");
     });
 
-    log("Cron job scheduled.");
+    log("<<<<<<<<<<<<<<<<<<<<<<<<..........................Cron job scheduled..............................>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 };

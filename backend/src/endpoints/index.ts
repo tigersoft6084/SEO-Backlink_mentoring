@@ -3,7 +3,6 @@ import { bulkDomainSearchEndpoint } from "./bulkDomainSearchEndpoint.ts";
 import { bulkKeywordSearchEndpoint } from "./bulkKeywordSearchEndpoint.ts";
 import { expiredDomainEndpoint } from "./expiredDomainEndpoint.ts";
 import { fetchBoosterlinkEndpoint } from "./marketplaces/boosterlinkEndpoint.ts";
-import { fetchGetalinkEndpoint } from "./marketplaces/getalinkEndpoint.ts";
 import { fetchLinkavistarEndpoint } from "./marketplaces/linkavistaEndpoint.ts";
 import { fetchLinkbuildersEndpoint } from "./marketplaces/linkbuildersEndpoint.ts";
 import { fetchMistergoodlinkEndpoint } from "./marketplaces/mistergoodlinkEndpoint.ts";
@@ -25,6 +24,5 @@ export const customEndpoints = [
     fetchMistergoodlinkEndpoint,
     fetchBoosterlinkEndpoint,
     fetchLinkavistarEndpoint,
-    fetchGetalinkEndpoint,
     myTestEndpoint
 ];

@@ -3,6 +3,7 @@ import { Payload } from 'payload';
 import { fetchDataFromEreferer } from '../fetchDataFromMarketplaces/ereferer.ts';
 import { GET_BACKLINK_FROM_Ereferer_URL } from '@/globals/marketplaceUrls.ts';
 import { uploadToDatabase } from '../uploadDatabase.ts';
+import { MARKETPLACE_NAME_EREFERER } from '@/globals/strings.ts';
 
 const CONCURRENCY_LIMIT = 100 ; // Number of concurrent requests
 const BATCH_SIZE = 200 ; // Tasks enqueued at once
@@ -27,7 +28,7 @@ export const getAllDataFromEreferer = async (cookie: string, payload: Payload): 
         for (const item of data) {
           if (!seenDomains.has(item.domain)) {
             seenDomains.add(item.domain); // Mark domain as processed
-            await uploadToDatabase(payload, item, "Ereferer");
+            await uploadToDatabase(payload, item, MARKETPLACE_NAME_EREFERER);
           }
         }
         console.log(`Processed page ${page}, items: ${data.length}`);
