@@ -1,7 +1,6 @@
-import { backgroundMarketplaceProcessHandler } from '@/handlers/backgroundMarketplaceProcessHandler.ts';
-import { getBacklinksDataFromDevelink } from '@/services/marketPlacesService/getBacklinksFromMarketplaces/develink.ts';
-import { getBacklinksDataFromEreferer } from '@/services/marketPlacesService/getBacklinksFromMarketplaces/ereferer.ts';
 import { Endpoint, PayloadRequest } from 'payload';
+import { getBacklinksDataFromMistergoodlink } from '@/services/marketPlacesService/getBacklinksFromMarketplaces/mistergoodlink.ts';
+import { getBacklinksDataFromPaperclub } from '@/services/marketPlacesService/getBacklinksFromMarketplaces/paperclub.ts';
 
 // Define the Payload endpoint
 export const myTestEndpoint: Endpoint = {
@@ -10,13 +9,14 @@ export const myTestEndpoint: Endpoint = {
   handler: async (req : PayloadRequest) => {
     try {
 
-      await getBacklinksDataFromEreferer(req.payload);
+      // await getBacklinksDataFromGetalink(req.payload);
+      await getBacklinksDataFromPaperclub(req.payload);
 
       // Return the collected results
       return new Response(
         JSON.stringify({
           message: 'Fetch completed.',
-          // Results: bb,
+          // Results: result,
         }),
         {
           status: 200,

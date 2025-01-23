@@ -11,8 +11,8 @@ export interface FetchedBackLinkDataFromMarketplace {
   ref_edu ? : number | 0;
   ref_gov ? : number | 0;
   price: number;
-  language : string | "";
-  ref_lang : string | "";
+  language? : string | "";
+  ref_lang? : string | "";
 }
 
 export interface ResultBacklinkDataForSEO{

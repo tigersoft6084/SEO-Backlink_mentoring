@@ -9,6 +9,8 @@ interface PaperclubResponse {
       trustFlow?: number;
       citationFlow?: number;
       refDomain?: number;
+      backLinks? : number;
+      maxTopicalTrustFlow? : string | '';
     };
     articles?: {
       price?: number;
@@ -37,6 +39,8 @@ export const getFormDataFromPaperclub = async (response: PaperclubResponse): Pro
         tf: kpi.trustFlow || 0, // Get trustFlow, or default to 0 if not available
         cf: kpi.citationFlow || 0, // Get citationFlow, or default to 0 if not available
         rd: kpi.refDomain || 0, // Get refDomain, or default to 0 if not available
+        backlinks : kpi.backLinks || 0,
+        ttf : kpi.maxTopicalTrustFlow ? kpi.maxTopicalTrustFlow.split("-")[1] || kpi.maxTopicalTrustFlow : '',
         price: article.price || 0, // Get price from the article or default to 0
       };
     });

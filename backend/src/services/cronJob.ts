@@ -2,6 +2,8 @@ import cron from "node-cron";
 import { getBacklinksDataFromEreferer } from "./marketPlacesService/getBacklinksFromMarketplaces/ereferer.ts";
 import { getBacklinksDataFromDevelink } from "./marketPlacesService/getBacklinksFromMarketplaces/develink.ts";
 import { Payload } from "payload";
+import { getBacklinksDataFromGetalink } from "./marketPlacesService/getBacklinksFromMarketplaces/getalink.ts";
+import { getBacklinksDataFromLinkaVista } from "./marketPlacesService/getBacklinksFromMarketplaces/linkavista.ts";
 
 /**
  * Logs messages to the console or a log file
@@ -17,29 +19,41 @@ export const startCronJob = async(payload : Payload): Promise<void> => {
 
     cron.schedule(schedule, async () => {
 
-        log("Starting backlink data update...");
+        log("<<<<<<<<<<<<<<<<<<<<<<<<<<...................Starting backlink data update.....................>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 
         try {
             // Call the first function
-            log("Fetching data from Ereferer...");
+            log("<<<<<<<<<<<<<<<<<<<<<<<....................Fetching data from Ereferer........................>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 
             await getBacklinksDataFromEreferer(payload); // Pass the payload object
 
-            log("Completed fetching data from Ereferer.");
+            log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~Completed fetching data from Ereferer.~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 
             // Call the second function
-            log("Fetching data from Develink...");
+            log("<<<<<<<<<<<<<<<<<<<<<<.....................Fetching data from Develink.........................>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 
             await getBacklinksDataFromDevelink(payload); // Pass the payload object
 
-            log("Completed fetching data from Develink.");
+            log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~Completed fetching data from Develink.~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+
+            log("<<<<<<<<<<<<<<<<<<<<<<.....................Fetching data from Getalink..........................>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+
+            await getBacklinksDataFromGetalink(payload);
+
+            log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~Completed fetching data from Getalink.~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+
+            log("<<<<<<<<<<<<<<<<<<<<<<.....................Fetching data from LinkaVista..........................>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+
+            await getBacklinksDataFromLinkaVista(payload);
+
+            log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~Completed fetching data from LinkaVista.~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
         } catch (error) {
             log(`Error occurred: ${(error as Error).message}`);
         }
 
-        log("Backlink data update job completed.");
+        log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Backlink data update job completed.~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
     });
 
-    log("Cron job scheduled.");
+    log("<<<<<<<<<<<<<<<<<<<<<<<<..........................Cron job scheduled..............................>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 };

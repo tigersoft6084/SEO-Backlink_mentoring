@@ -1,21 +1,23 @@
 import { GET_BACKLINK_FROM_PAPERCLUB_URLS } from "@/globals/marketplaceUrls.ts";
-import pLimit from "p-limit";
+import PQueue from "p-queue";
 import { fetchDataFromPaperclub } from "../fetchDataFromMarketplaces/paperclub.ts";
-import { FetchedBackLinkDataFromMarketplace } from "@/types/backlink.js";
+import { uploadToDatabase } from "../uploadDatabase.ts";
+import { MARKETPLACE_NAME_PAPERCLUB } from "@/globals/strings.ts";
+import { Payload } from "payload";
 
 export const getAllDataFromPaperclub = async (
-  token: string
-): Promise<FetchedBackLinkDataFromMarketplace[]> => {
+  token: string,
+  payload : Payload
+): Promise<void> => {
   if (!token) {
     throw new Error("API token is missing");
   }
 
-  const limit = pLimit(2); // Limit concurrent requests to 2
-  const batchSize = 10; // Process 10 URLs in a batch
+  const queue = new PQueue({ concurrency: 50 }); // Limit concurrent requests to 2
+  const batchSize = 100; // Process 10 URLs in a batch
   const totalURLs = GET_BACKLINK_FROM_PAPERCLUB_URLS.length; // Total URLs
-  let processedURLs = 0; // Track processed URLs
 
-  const allData: FetchedBackLinkDataFromMarketplace[] = [];
+  const seenDomains = new Set<string>();
 
   // Process URLs in batches
   for (let i = 0; i < totalURLs; i += batchSize) {
@@ -23,49 +25,42 @@ export const getAllDataFromPaperclub = async (
 
     console.log(`Processing batch from index ${i} to ${i + batchUrls.length}`);
 
-    const batchResults = await Promise.allSettled(
-      batchUrls.map((url) => limit(() => fetchDataFromPaperclub(url, token)))
+    await Promise.allSettled(
+
+      batchUrls.map((url) =>
+
+        queue.add(async () => {
+
+          try{
+
+            const data = await fetchDataFromPaperclub(url, token);
+
+            if(Array.isArray(data) && data.length > 0){
+
+              for(const item of data){
+
+                if(!seenDomains.has(item.domain)){
+
+                  seenDomains.add(item.domain);
+
+                  await uploadToDatabase(payload, item, MARKETPLACE_NAME_PAPERCLUB);
+
+                }
+              }
+
+              console.log(`Processed page Paperclub, items : ${data.length}`);
+            }else{
+
+              console.warn(`No data found on page for ${url}`);
+            }
+
+          }catch(error){
+            console.error(`Error fetching data for url : ${url} : `, error instanceof Error ? error.message : error);
+          }
+
+        })
+      )
     );
+  };
+}
 
-    // Handle results
-    batchResults.forEach((result, index) => {
-      if (result.status === "fulfilled") {
-        const data = result.value;
-
-        // Narrow the type to check if it's an array or Response
-        if (Array.isArray(data)) {
-          allData.push(...data);
-        } else if (isResponse(data)) {
-          console.error(`Unexpected Response object for URL: ${batchUrls[index]}`);
-          console.error(`Response status: ${data.status}`);
-        } else {
-          console.error(`Unexpected data format for URL: ${batchUrls[index]}`);
-        }
-      } else {
-        console.error(`Failed to fetch data for URL: ${batchUrls[index]}`);
-        console.error(result.reason); // Log the error reason
-      }
-    });
-
-    // Track progress
-    processedURLs += batchUrls.length;
-    console.log(
-      `Fetching Backlinks from Paperclub: ${(
-        (processedURLs / totalURLs) *
-        100
-      ).toFixed(2)}%`
-    );
-  }
-
-  return allData;
-};
-
-// Helper function to check if a value is a Response object
-const isResponse = (value: unknown): value is Response => {
-  return (
-    typeof value === "object" &&
-    value !== null &&
-    "status" in value &&
-    typeof (value as Response).status === "number"
-  );
-};
