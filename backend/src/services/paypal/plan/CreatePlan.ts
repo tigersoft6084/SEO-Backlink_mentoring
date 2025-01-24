@@ -5,7 +5,6 @@ import { listActivePlans } from "./ListPlan.ts";
 import { getProductAndPlanIdFromDB } from "../catalogProducts/getProductsFromDB.ts";
 import { Plan, ProductFromDB } from "@/types/paypal.ts";
 import { PayloadRequest } from "payload";
-import { deactivePlan } from "./DeactivePlan.ts";
 
 interface PlanPayload {
     name: string;

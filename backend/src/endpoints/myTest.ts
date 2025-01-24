@@ -16,8 +16,8 @@ export const myTestEndpoint: Endpoint = {
 
       // await getBacklinksDataFromGetalink(req.payload);
       //await backgroundMarketplaceProcessHandler(req);
-      // const result = await createPlansAndGetID(req);
-      const result = await listActivePlans();
+      const result = await createPlansAndGetID(req);
+      // const result = await listActivePlans();
 
       // Return the collected results
       return new Response(

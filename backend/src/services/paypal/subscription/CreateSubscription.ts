@@ -14,20 +14,28 @@ interface PayPalResponse {
 
 export const createSubscription = async(planID : string) => {
 
+    if (!planID) {
+        throw new Error("Invalid plan ID provided");
+    }
+
     try{
 
-        const accessToken = getAccessToken();
+        const accessToken = await getAccessToken();
 
         const subscriptionPayload = {
-            "plan_id" : planID,
-            "application_context" : {
-                "brand_name": "Link Finder",
-                "return_url": "http://localhost:1212/returnUrl",
-                "cancel_url": "https://localhost:1212/cancelUrl"
-            }
-        }
+            "plan_id": planID, // Required: The ID of the plan you want to subscribe to
+            "start_time": new Date(new Date().getTime() + 60000).toISOString(), // Required: ISO 8601 format start time
+            "quantity": 1, // Required: Quantity of the subscription
+            "application_context": {
+                "brand_name": "Link Finder", // Optional but good for display purposes
+                "locale": "en-US", // Optional: Locale for user interface
+                "user_action": "SUBSCRIBE_NOW", // Optional: Sets user action
+                "return_url": "http://localhost:1212/returnUrl", // Required: Where the user is redirected after approval
+                "cancel_url": "http://localhost:1212/cancelUrl", // Required: Where the user is redirected after cancelation
+            },
+        };
 
-        const response = await fetch(`${PAYPAL_API}//v1/billing/subscriptions`, {
+        const response = await fetch(`${PAYPAL_API}/v1/billing/subscriptions`, {
             method : 'POST',
             headers : {
                 Authorization: `Bearer ${accessToken}`,
@@ -56,7 +64,7 @@ export const createSubscription = async(planID : string) => {
 
     }catch(error){
 
-        const { errorDetails } = ErrorHandler.handle(error, "Error fetching validation data for Paperclub");
+        const { errorDetails } = ErrorHandler.handle(error, "Error fetching subscription creation");
         return errorDetails.context;
 
     }
