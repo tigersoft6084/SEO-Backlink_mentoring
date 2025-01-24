@@ -4,10 +4,10 @@ import { FetchedBackLinkDataFromMarketplace } from "@/types/backlink.js";
 interface PrensalinkResponse {
     newspapers?: {
         url?: string;
+        languages : string[];
         metrics?: {
             tf: number;
             cf: number;
-            dr: number;
         };
     }[];
     price?: number;
@@ -34,8 +34,8 @@ export const getFormDataFromPrensalink = (response: PrensalinkResponse[]): Fetch
                     domain: formattedDomain,
                     tf: newspaper.metrics?.tf || 0,
                     cf: newspaper.metrics?.cf || 0,
-                    rd: newspaper.metrics?.dr || 0,
                     price: item.price || 0,
+                    language : newspaper.languages[0] || ''
                 });
             } else {
                 console.warn("No newspapers found in item:", item);

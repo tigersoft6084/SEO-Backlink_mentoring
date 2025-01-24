@@ -12,6 +12,7 @@ interface Row {
   rd: number;
   tf: number;
   cf: number;
+  ttf : string;
   price: number;
   source: string;
   allSources: any;
@@ -261,7 +262,7 @@ const TableSection: React.FC<TableSectionProps> = ({
 
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{row.cf}</td>
 
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">Society/Adult</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{row.ttf}</td>
 
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">
                   <DynamicPrice

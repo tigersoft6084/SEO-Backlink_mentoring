@@ -24,6 +24,9 @@ interface BacklinkData {
   rd: number;
   tf: number;
   cf: number;
+  ttf : string;
+  language : string;
+  backlinks : number;
   price: number;
   source: string;
   allSources: { marketplace_source: string; price: number }[];
@@ -117,6 +120,9 @@ export const bulkKeywordSearchEndpoint: Endpoint = {
                 rd: doc.rd || 0,
                 tf: doc.tf || 0,
                 cf: doc.cf || 0,
+                ttf : doc.ttf ? doc.ttf : "",
+                language : doc.language ? doc.language : '',
+                backlinks : doc.backlinks ? doc.backlinks : 0,
                 price: minMarketplace.price,
                 source: minMarketplace.marketplace_source,
                 allSources: doc.marketplaces.map((marketplace) => ({

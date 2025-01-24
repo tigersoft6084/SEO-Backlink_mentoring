@@ -1,7 +1,7 @@
 import { Payload } from 'payload';
 import PQueue from 'p-queue';
 import { fetchDataFromGetalink } from '../fetchDataFromMarketplaces/getalink.ts';
-import { GET_BACKLINK_FROM_GETALINK_URL } from '@/globals/marketplaceUrls.ts';
+import { GET_BACKLINK_FROM_GETALINK_URL } from '@/globals/globalURLs.ts';
 import { uploadToDatabase } from '../uploadDatabase.ts';
 import { MARKETPLACE_NAME_GETALINK } from '@/globals/strings.ts';
 

@@ -4,6 +4,8 @@ import { getBacklinksDataFromDevelink } from "./marketPlacesService/getBacklinks
 import { Payload } from "payload";
 import { getBacklinksDataFromGetalink } from "./marketPlacesService/getBacklinksFromMarketplaces/getalink.ts";
 import { getBacklinksDataFromLinkaVista } from "./marketPlacesService/getBacklinksFromMarketplaces/linkavista.ts";
+import { getBacklinksDataFromPaperclub } from "./marketPlacesService/getBacklinksFromMarketplaces/paperclub.ts";
+import { getBacklinksDataFromMistergoodlink } from "./marketPlacesService/getBacklinksFromMarketplaces/mistergoodlink.ts";
 
 /**
  * Logs messages to the console or a log file
@@ -47,6 +49,18 @@ export const startCronJob = async(payload : Payload): Promise<void> => {
             await getBacklinksDataFromLinkaVista(payload);
 
             log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~Completed fetching data from LinkaVista.~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+
+            log("<<<<<<<<<<<<<<<<<<<<<<.....................Fetching data from Paperclub..........................>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+
+            await getBacklinksDataFromPaperclub(payload);
+
+            log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~Completed fetching data from Paperclub.~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+
+            log("<<<<<<<<<<<<<<<<<<<<<<.....................Fetching data from Mistergoodlink..........................>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+
+            await getBacklinksDataFromMistergoodlink(payload);
+
+            log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~Completed fetching data from Mistergoodlink.~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
         } catch (error) {
             log(`Error occurred: ${(error as Error).message}`);

@@ -1,4 +1,4 @@
-import { GET_BACKLINK_FROM_LINKAVISTA_URL } from "@/globals/marketplaceUrls.ts";
+import { GET_BACKLINK_FROM_LINKAVISTA_URL } from "@/globals/globalURLs.ts";
 import { fetchDataFromLinkavistar } from "../fetchDataFromMarketplaces/linkavista.ts";
 import { getCookieFromLinkaVista } from "../getTokensOrCookiesFromMarketplaces/linkavista.ts";
 import { Payload } from "payload";

@@ -16,7 +16,7 @@ export interface Config {
     CredentialsForMarketplaces: CredentialsForMarketplace;
     backlinks: Backlink;
     domainsForBackgroundProcess: DomainsForBackgroundProcess;
-    plans: Plan;
+    'paypal-plans': PaypalPlan;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -28,7 +28,7 @@ export interface Config {
     CredentialsForMarketplaces: CredentialsForMarketplacesSelect<false> | CredentialsForMarketplacesSelect<true>;
     backlinks: BacklinksSelect<false> | BacklinksSelect<true>;
     domainsForBackgroundProcess: DomainsForBackgroundProcessSelect<false> | DomainsForBackgroundProcessSelect<true>;
-    plans: PlansSelect<false> | PlansSelect<true>;
+    'paypal-plans': PaypalPlansSelect<false> | PaypalPlansSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -195,21 +195,21 @@ export interface DomainsForBackgroundProcess {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "plans".
+ * via the `definition` "paypal-plans".
  */
-export interface Plan {
+export interface PaypalPlan {
   id: string;
-  name: string;
-  price: number;
-  currency?: string | null;
-  features?:
+  product_id: string;
+  plans?:
     | {
-        feature?: string | null;
+        plan_name?: string | null;
+        plan_id?: string | null;
+        description?: string | null;
+        price?: number | null;
+        currency?: string | null;
         id?: string | null;
       }[]
     | null;
-  planType: 'monthly' | 'yearly';
-  paypalPlanId: string;
   updatedAt: string;
   createdAt: string;
 }
@@ -241,8 +241,8 @@ export interface PayloadLockedDocument {
         value: string | DomainsForBackgroundProcess;
       } | null)
     | ({
-        relationTo: 'plans';
-        value: string | Plan;
+        relationTo: 'paypal-plans';
+        value: string | PaypalPlan;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -396,20 +396,20 @@ export interface DomainsForBackgroundProcessSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "plans_select".
+ * via the `definition` "paypal-plans_select".
  */
-export interface PlansSelect<T extends boolean = true> {
-  name?: T;
-  price?: T;
-  currency?: T;
-  features?:
+export interface PaypalPlansSelect<T extends boolean = true> {
+  product_id?: T;
+  plans?:
     | T
     | {
-        feature?: T;
+        plan_name?: T;
+        plan_id?: T;
+        description?: T;
+        price?: T;
+        currency?: T;
         id?: T;
       };
-  planType?: T;
-  paypalPlanId?: T;
   updatedAt?: T;
   createdAt?: T;
 }

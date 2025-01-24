@@ -1,6 +1,6 @@
 import axios from "axios";
 import { getTokenForLinkBuilders } from "../getTokensOrCookiesFromMarketplaces/link-builders.ts";
-import { GET_BACKLINK_FROM_LINKBUILDERS_URLS } from "@/globals/marketplaceUrls.ts";
+import { GET_BACKLINK_FROM_LINKBUILDERS_URLS } from "@/globals/globalURLs.ts";
 import { BackLinkData, LinkBuildersResult } from "@/types/backlink.ts";
 
 // Function to fetch and process data from the single URL

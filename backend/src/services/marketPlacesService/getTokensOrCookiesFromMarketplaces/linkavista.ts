@@ -1,6 +1,6 @@
 import * as cheerio from 'cheerio';
 import { getCredentialsForMarketplaces } from '../getCredentialsForMarketplaces.ts';
-import { LINKAVISTA_API_URL } from '@/globals/marketplaceUrls.ts';
+import { LINKAVISTA_API_URL } from '@/globals/globalURLs.ts';
 import { ErrorHandler } from '@/handlers/errorHandler.ts';
 
 export const getCookieFromLinkaVista = async () : Promise<string | null> => {

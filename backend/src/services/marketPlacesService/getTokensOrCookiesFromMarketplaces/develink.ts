@@ -1,4 +1,4 @@
-import { DEVELINK_API_URL } from "@/globals/marketplaceUrls.ts";
+import { DEVELINK_API_URL } from "@/globals/globalURLs.ts";
 import { getCredentialsForMarketplaces } from "../getCredentialsForMarketplaces.ts";
 import { ErrorHandler } from "@/handlers/errorHandler.ts";
 

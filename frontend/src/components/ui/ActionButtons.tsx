@@ -5,9 +5,9 @@ import { parse } from "json2csv";
 
 // List of required sources
 const requiredSources = [
-  "Paperclub", "Prnews", "Ereferer", "Develink", "Presswhizz", "Linkbroker", 
-  "Whitepress", "Seojungle", "123media", "Growwer", "Linkbuilders", 
-  "Mistergoodlink", "Prensalink", "Linkatomic", "Unancor", "Publisuites", 
+  "Paperclub", "Prnews", "Ereferer", "Develink", "Presswhizz", "Linkbroker",
+  "Whitepress", "Seojungle", "123media", "Growwer", "Linkbuilders",
+  "Mistergoodlink", "Prensalink", "Linkatomic", "Unancor", "Publisuites",
   "Backlinked", "Motherlink", "Getalink", "Lemmilink"
 ];
 

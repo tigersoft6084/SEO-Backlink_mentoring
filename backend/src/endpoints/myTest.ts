@@ -1,6 +1,11 @@
 import { Endpoint, PayloadRequest } from 'payload';
-import { getBacklinksDataFromMistergoodlink } from '@/services/marketPlacesService/getBacklinksFromMarketplaces/mistergoodlink.ts';
-import { getBacklinksDataFromPaperclub } from '@/services/marketPlacesService/getBacklinksFromMarketplaces/paperclub.ts';
+import { getBacklinksDataFromPrensalink } from '@/services/marketPlacesService/getBacklinksFromMarketplaces/prensalink.ts';
+import { expiredDomainsHandler } from '@/handlers/expiredDomainHandler.ts';
+import { backgroundMarketplaceProcessHandler } from '@/handlers/backgroundMarketplaceProcessHandler.ts';
+import { createPlansAndGetID } from '@/services/paypal/plan/CreatePlan.ts';
+import { getProductAndPlanIdFromDB } from '@/services/paypal/catalogProducts/getProductsFromDB.ts';
+import { createProduct } from '@/services/paypal/catalogProducts/CreateProduct.ts';
+import { listActivePlans } from '@/services/paypal/plan/ListPlan.ts';
 
 // Define the Payload endpoint
 export const myTestEndpoint: Endpoint = {
@@ -10,13 +15,15 @@ export const myTestEndpoint: Endpoint = {
     try {
 
       // await getBacklinksDataFromGetalink(req.payload);
-      await getBacklinksDataFromPaperclub(req.payload);
+      //await backgroundMarketplaceProcessHandler(req);
+      // const result = await createPlansAndGetID(req);
+      const result = await listActivePlans();
 
       // Return the collected results
       return new Response(
         JSON.stringify({
           message: 'Fetch completed.',
-          // Results: result,
+          Results: result,
         }),
         {
           status: 200,
