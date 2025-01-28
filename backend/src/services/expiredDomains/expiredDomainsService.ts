@@ -125,6 +125,7 @@ export const fetchExpiredDomainsService = async (
             ref_edu: item.ref_edu ?? 0,
             ref_gov: item.ref_gov ?? 0,
             language: item.language ?? null,
+            expiry_date : item.expiry_date ? item.expiry_date.split('T')[0] :null
         }));
 
         // const filteredDomains = expiredDomains.filter((domain) => domain.CF !== 0);

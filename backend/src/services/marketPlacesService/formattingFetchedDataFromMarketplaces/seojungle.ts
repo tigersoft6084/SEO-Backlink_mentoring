@@ -9,6 +9,7 @@ interface SeojungleResponse {
     products?: Array<{
         margedPrice?: number;
     }>;
+    totalBacklinks : number;
 }
 
 export const getFormDataFromSeojungle = async (
@@ -38,6 +39,7 @@ export const getFormDataFromSeojungle = async (
                     tf: item.trustFlow || 0,
                     cf: item.citationFlow || 0,
                     rd: item.referringDomains || 0,
+                    backlinks : item.totalBacklinks || 0,
                     price,
                 };
             }

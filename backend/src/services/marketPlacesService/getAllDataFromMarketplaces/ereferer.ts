@@ -1,7 +1,7 @@
 import PQueue from 'p-queue';
 import { Payload } from 'payload';
 import { fetchDataFromEreferer } from '../fetchDataFromMarketplaces/ereferer.ts';
-import { GET_BACKLINK_FROM_Ereferer_URL } from '@/globals/marketplaceUrls.ts';
+import { GET_BACKLINK_FROM_Ereferer_URL } from '@/globals/globalURLs.ts';
 import { uploadToDatabase } from '../uploadDatabase.ts';
 import { MARKETPLACE_NAME_EREFERER } from '@/globals/strings.ts';
 

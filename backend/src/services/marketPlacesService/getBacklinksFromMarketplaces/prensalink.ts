@@ -1,10 +1,11 @@
 import { ErrorHandler } from "@/handlers/errorHandler.ts";
 import { getAllDataFromPrensalink } from "../getAllDataFromMarketplaces/prensalink.ts";
 import { getTokenForPrensalink } from "../getTokensOrCookiesFromMarketplaces/prensalink.ts";
+import { Payload } from "payload";
 
 
 // Function to process URLs in batches with p-limit
-export const getBacklinksDataFromPrensalink = async () => {
+export const getBacklinksDataFromPrensalink = async (payload : Payload) => {
 
     try{
       const Token = await getTokenForPrensalink();
@@ -13,7 +14,7 @@ export const getBacklinksDataFromPrensalink = async () => {
         throw new Error("API token is missing");
       }
 
-      const allData = await getAllDataFromPrensalink(Token);
+      const allData = await getAllDataFromPrensalink(Token, payload);
 
       return allData;
 

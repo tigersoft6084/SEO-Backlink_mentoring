@@ -1,4 +1,4 @@
-import { GET_BACKLINK_FROM_PAPERCLUB_URLS } from "@/globals/marketplaceUrls.ts";
+import { GET_BACKLINK_FROM_PAPERCLUB_URLS } from "@/globals/globalURLs.ts";
 import PQueue from "p-queue";
 import { fetchDataFromPaperclub } from "../fetchDataFromMarketplaces/paperclub.ts";
 import { uploadToDatabase } from "../uploadDatabase.ts";

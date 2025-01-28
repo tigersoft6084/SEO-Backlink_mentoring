@@ -1,5 +1,5 @@
 import { axiosInstance } from '@/utils/axiosInstance.ts';
-import { getFormDataFromPrensalink } from '../formattingFetchedDataFromMarketplaces/presnalink.ts';
+import { getFormDataFromPrensalink } from '../formattingFetchedDataFromMarketplaces/prensalink.ts';
 import { ErrorHandler } from '@/handlers/errorHandler.ts';
 
 export const fetchDataFromPrensalink = async (url: string, token: string) => {

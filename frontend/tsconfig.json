@@ -30,7 +30,7 @@
     ".next/types/**/*.ts",
     "**/*.ts",
     "**/*.tsx"
-, "../backend/src/app/(payload)/api/auth/[...nextauth].ts"  ],
+, "../backend/src/app/(payload)/api/auth/[...nextauth].ts", "../backend/src/utils/paypal.ts"  ],
   "exclude": [
     "node_modules"
   ]

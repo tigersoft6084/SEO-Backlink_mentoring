@@ -73,7 +73,7 @@ const ExpiredDomainsTable : React.FC<ExpiredDomainsTableProps> = ({
                             </th>
 
                             <th
-                                className="px-6 py-3 text-left text-xs font-medium text-gray-500 tracking-wider dark:text-gray-400 relative"
+                                className="px-3 py-3 text-left text-xs font-medium text-gray-500 tracking-wider dark:text-gray-400 relative"
                                 onClick={() => handleSort("rd")}
                             >
                                 <div className="flex items-center gap-2">
@@ -95,7 +95,7 @@ const ExpiredDomainsTable : React.FC<ExpiredDomainsTableProps> = ({
                             </th>
 
                             <th
-                                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400"
+                                className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400"
                                 onClick={() => handleSort("tf")}
                             >
                                 <div className="flex items-center gap-2">
@@ -105,7 +105,7 @@ const ExpiredDomainsTable : React.FC<ExpiredDomainsTableProps> = ({
                             </th>
 
                             <th
-                                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400"
+                                className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400"
                                 onClick={() => handleSort("cf")}
                             >
                                 <div className="flex items-center gap-2">
@@ -115,7 +115,7 @@ const ExpiredDomainsTable : React.FC<ExpiredDomainsTableProps> = ({
                             </th>
 
                             <th
-                                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400"
+                                className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400"
                                 onClick={() => handleSort("ref_ips")}
                             >
                                 <div className="flex items-center gap-2">
@@ -125,7 +125,7 @@ const ExpiredDomainsTable : React.FC<ExpiredDomainsTableProps> = ({
                             </th>
 
                             <th
-                                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400"
+                                className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400"
                                 onClick={() => handleSort("ref_edu")}
                                 >
                                 <div className="flex items-center gap-2">
@@ -134,7 +134,7 @@ const ExpiredDomainsTable : React.FC<ExpiredDomainsTableProps> = ({
                                 </div>
                             </th>
 
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400"
+                            <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400"
                                 onClick={() => handleSort("ref_gov")}>
                                 <div className="flex items-center gap-2">
                                     <span className="cursor-pointer">Ref.Gov</span>
@@ -142,7 +142,7 @@ const ExpiredDomainsTable : React.FC<ExpiredDomainsTableProps> = ({
                                 </div>
                             </th>
 
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400"
+                            <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400"
                                 onClick={() => handleSort("ttf")}>
                                 <div className="flex items-center gap-2">
                                     <span className="cursor-pointer">TTF</span>
@@ -150,15 +150,15 @@ const ExpiredDomainsTable : React.FC<ExpiredDomainsTableProps> = ({
                                 </div>
                             </th>
 
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400"
+                            <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400"
                                 onClick={() => handleSort("language")}>
                                 <div className="flex items-center gap-2">
-                                    <span className="cursor-pointer">Language</span>
+                                    <span className="cursor-pointer">Lang</span>
                                     {sortConfig?.key === "language" && (sortConfig.direction === "asc" ? "▲" : "▼")}
                                 </div>
                             </th>
 
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400"
+                            <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400"
                                 onClick={() => handleSort("expiry_date")}>
                                 <div className="flex items-center gap-2">
                                     <span className="cursor-pointer">Expiry_Date</span>
@@ -185,7 +185,7 @@ const ExpiredDomainsTable : React.FC<ExpiredDomainsTableProps> = ({
                                         rel="noopener noreferrer"
                                         className="hover:underline"
                                     >
-                                        {row.domain}
+                                        {row.domain.length > 20 ? `${row.domain.substring(0, 20)}...` : row.domain}
                                     </a>
                                 </td>
 
@@ -193,23 +193,23 @@ const ExpiredDomainsTable : React.FC<ExpiredDomainsTableProps> = ({
                                     <MarketPlacesLinks domain={row.domain} />
                                 </td>
 
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{row.rd}</td>
+                                <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{row.rd}</td>
 
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{row.tf}</td>
+                                <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{row.tf}</td>
 
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{row.cf}</td>
+                                <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{row.cf}</td>
 
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{row.ref_ips}</td>
+                                <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{row.ref_ips}</td>
 
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{row.ref_edu}</td>
+                                <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{row.ref_edu}</td>
 
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{row.ref_gov}</td>
+                                <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{row.ref_gov}</td>
 
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">Society/Adult</td>
+                                <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{row.ttf.substring(0, 12)}...</td>
 
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">En</td>
+                                <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{row.language.length > 4 ? `${row.language.substring(0, 4)}...` : row.language}</td>
 
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">2024-01-01</td>
+                                <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{row.expiry_date}</td>
                             </tr>
                         ))}
                     </tbody>

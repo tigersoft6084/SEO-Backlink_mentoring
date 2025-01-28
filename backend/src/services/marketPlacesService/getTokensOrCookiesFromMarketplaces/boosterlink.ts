@@ -1,6 +1,6 @@
 import * as cheerio from 'cheerio';
 import { getCredentialsForMarketplaces } from "../getCredentialsForMarketplaces.ts";
-import { BOOSTERLINK_API_URL } from '@/globals/marketplaceUrls.ts';
+import { BOOSTERLINK_API_URL } from '@/globals/globalURLs.ts';
 import { ErrorHandler } from '@/handlers/errorHandler.ts';
 import { MARKETPLACE_NAME_BOOSTERLINK } from '@/globals/strings.ts';
 

@@ -1,52 +1,108 @@
-import { GET_BACKLINK_FROM_PRENSALINK_URLS } from "@/globals/marketplaceUrls.ts";
-import pLimit from "p-limit";
+import { GET_BACKLINK_FROM_PRENSALINK_URLS } from "@/globals/globalURLs.ts";
 import { fetchDataFromPrensalink } from "../fetchDataFromMarketplaces/prensalink.ts";
-import { FetchedBackLinkDataFromMarketplace } from "@/types/backlink.js";
+import { uploadToDatabase } from "../uploadDatabase.ts";
+import { MARKETPLACE_NAME_PRENSALINK } from "@/globals/strings.ts";
+import { Payload } from "payload";
+import PQueue from "p-queue";
+
+const TOTAL_PAGES = 33;
+const CONCURRENCY_LIMIT = 10;
+const BATCH_SIZE = 20;
 
 export const getAllDataFromPrensalink = async (
-    token: string
-    ): Promise<FetchedBackLinkDataFromMarketplace[]> => {
+    token: string,
+    payload : Payload
+): Promise<void> => {
+
     if (!token) {
         throw new Error("API token is missing");
     }
 
-    const limit = pLimit(5); // Limit concurrent requests to 5
-    const batchSize = 10; // Process 10 URLs in a batch
-    const totalUrls = GET_BACKLINK_FROM_PRENSALINK_URLS.length;
-    const allData: FetchedBackLinkDataFromMarketplace[] = []; // Explicitly type allData
-    let processedUrls = 0;
+    const queue = new PQueue( { concurrency : CONCURRENCY_LIMIT} );
+    const seenDomains = new Set<string>();
 
-    for (let i = 0; i < totalUrls; i += batchSize) {
-        const batchUrls = GET_BACKLINK_FROM_PRENSALINK_URLS.slice(i, i + batchSize);
+    const fetchPageData = async (page: number) => {
+        const url = `${GET_BACKLINK_FROM_PRENSALINK_URLS}&page=${page}&pageSize=500&order=default`;
 
-        console.log(`Processing batch from index ${i} to ${i + batchUrls.length}`);
+        try {
+            console.log(`Fetching Prensalink page ${page}...`);
+            const data = await fetchDataFromPrensalink(url, token);
 
-        // Use Promise.allSettled to handle partial failures
-        const batchResults = await Promise.allSettled(
-        batchUrls.map((url) => limit(() => fetchDataFromPrensalink(url, token)))
-        );
-
-        batchResults.forEach((result, index) => {
-        if (result.status === "fulfilled") {
-            const data = result.value;
-
-            // Ensure the data is valid before adding to allData
-            if (Array.isArray(data)) {
-            allData.push(...data);
+            if (data && Array.isArray(data)) {
+                for (const item of data) {
+                    if (!seenDomains.has(item.domain)) {
+                        seenDomains.add(item.domain); // Track processed domain
+                        await uploadToDatabase(payload, item, MARKETPLACE_NAME_PRENSALINK); // Upload to database
+                    }
+                }
             } else {
-            console.error(`Invalid data format for URL: ${batchUrls[index]}`);
+                console.warn(`No data fetched for page ${page}`);
             }
-        } else {
-            console.error(`Failed to fetch data for URL: ${batchUrls[index]}`);
-            console.error(result.reason); // Log the error reason
+        } catch (error) {
+            console.error(
+                `Failed to fetch data for page ${page}:`,
+                error instanceof Error ? error.message : error
+            );
         }
-        });
+    };
 
-        // Update progress
-        processedUrls += batchUrls.length;
-        const progressPercentage = ((processedUrls / totalUrls) * 100).toFixed(2);
-        console.log(`Progress: ${progressPercentage}%`);
+    for (let start = 1; start <= TOTAL_PAGES; start += BATCH_SIZE) {
+        const end = Math.min(start + BATCH_SIZE - 1, TOTAL_PAGES);
+
+        const tasks = [];
+        for (let page = start; page <= end; page++) {
+            tasks.push(queue.add(() => fetchPageData(page)));
+        }
+
+        await Promise.all(tasks);
     }
 
-    return allData;
+    console.log("Prensalink data processing complete.");
+
+
+
+    // const limit = pLimit(5); // Limit concurrent requests to 5
+    // const totalUrls = GET_BACKLINK_FROM_PRENSALINK_URLS.length;
+
+
+
+    // for (let i = 0; i < totalUrls; i += batchSize) {
+    //     const batchUrls = GET_BACKLINK_FROM_PRENSALINK_URLS.slice(i, i + batchSize);
+
+    //     console.log(`Processing batch from index ${i} to ${i + batchUrls.length}`);
+
+    //     // Use Promise.allSettled to handle partial failures
+    //     await Promise.allSettled(
+    //         batchUrls.map((url) => limit(async() => {
+
+    //             try{
+
+    //                 const data = await fetchDataFromPrensalink(url, token);
+
+    //                 if(Array.isArray(data) && data.length > 0){
+
+    //                     for(const item of data){
+
+    //                         if(!seenDomains.has(item.domain)){
+
+    //                             seenDomains.add(item.domain);
+
+    //                             await uploadToDatabase(payload, item, MARKETPLACE_NAME_PRENSALINK);
+
+    //                         }
+    //                     }
+
+    //                     console.log(`Processed page Prensalink, items : ${data.length}`);
+    //                 }else{
+
+    //                     console.warn(`No data found on page for ${url}`);
+
+    //                 }
+    //             }catch(error){
+    //                 console.error(`Error fetching data for url : ${url} : `, error instanceof Error ? error.message : error);
+    //             }
+
+    //         }))
+    //     );
+    // }
 };

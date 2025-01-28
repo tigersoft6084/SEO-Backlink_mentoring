@@ -7,6 +7,9 @@ export const BULK_KEYWORD_SEARCH_URL = 'https://data.dataforseo.com/api/explorer
 export const COMPETITIVE_ANALYSIS_SEARCH_URL = 'https://data.dataforseo.com/api/explorer/datalabs/google/competitors_domain';
 
 
+// URL for Paypal
+export const PAYPAL_API = 'https://api-m.sandbox.paypal.com';
+
 //URLs for fetch local Database
 export const FETCH_DATABASE = `${BASE_URL}/backlinks`;
 
@@ -26,6 +29,8 @@ export const Mistergoodlink_API_URL = 'https://app.mistergoodlink.com/sign-in';
 export const BOOSTERLINK_API_URL = 'https://pro.boosterlink.fr/';
 
 export const LINKAVISTA_API_URL = 'https://linkavista.com/login';
+
+export const LINKATOMIC_API_URL = 'https://app.linkatomic.com/login';
 
 export const GETALINK_API_URL = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyABCAfw4_higazYHOSlYNGpRi5MSP-I07M';
 
@@ -162,12 +167,14 @@ export const GET_BACKLINK_FROM_PAPERCLUB_URLS = [
     "https://app.paper.club/api/advanced_search/site?to[]=SEbgrulNTz0en5ccH6beQ&to[]=2ENZZUiWjqBEiKCbDUfZjV&to[]=5hWkhjggTdr3IOlRbQYACp&to[]=3zxjjmSVyvWo0RLW1UphJp&to[]=68Nrsn2k1eloewB5LjUwpB&p=18&l=500",
 ];
 
-export const GET_BACKLINK_FROM_PRENSALINK_URLS = [
-    "https://shop.prensalink.com/api/v2/prensalink/products/newspapers_blogs?country=WW&page=1&pageSize=5000&order=default",
-    "https://shop.prensalink.com/api/v2/prensalink/products/newspapers_blogs?country=WW&page=2&pageSize=5000&order=default",
-    "https://shop.prensalink.com/api/v2/prensalink/products/newspapers_blogs?country=WW&page=3&pageSize=5000&order=default",
-    "https://shop.prensalink.com/api/v2/prensalink/products/newspapers_blogs?country=WW&page=4&pageSize=5000&order=default",
-];
+// export const GET_BACKLINK_FROM_PRENSALINK_URLS = [
+//     "https://shop.prensalink.com/api/v2/prensalink/products/newspapers_blogs?country=WW&page=1&pageSize=5000&order=default",
+//     "https://shop.prensalink.com/api/v2/prensalink/products/newspapers_blogs?country=WW&page=2&pageSize=5000&order=default",
+//     "https://shop.prensalink.com/api/v2/prensalink/products/newspapers_blogs?country=WW&page=3&pageSize=5000&order=default",
+//     "https://shop.prensalink.com/api/v2/prensalink/products/newspapers_blogs?country=WW&page=4&pageSize=5000&order=default",
+// ];
+
+export const GET_BACKLINK_FROM_PRENSALINK_URLS = "https://shop.prensalink.com/api/v2/prensalink/products/newspapers_blogs?country=WW";
 
 export const GET_BACKLINK_FROM_SeoJungle_URL = "https://api.seo-jungle.com/support/search";
 
@@ -182,4 +189,6 @@ export const GET_BACKLINK_FROM_LINKAVISTA_URL = "https://linkavista.com/marketli
 export const GET_BACKLINK_FROM_GETALINK_URL = "https://api.getalink.com/marketplace";
 
 export const GET_BACKLINK_FROM_DEVELINK_URL = "https://app.develink.com/cataloguevip";
+
+export const GET_BACKLINK_FROM_LINKATOMIC_URL = "https://app.linkatomic.com/dashboard/sites?activeTable=all";
 

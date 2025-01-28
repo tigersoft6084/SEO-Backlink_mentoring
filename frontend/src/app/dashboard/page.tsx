@@ -14,6 +14,7 @@ import SerpScanner from "./serp-scanner/page";
 import ExpiredDomains from "./expired-domains/page";
 import Projects from "./projects/page";
 import AccountSettings from "./account-settings/page";
+import Support from "./support/page";
 
 export default function Home() {
   // Add icons and descriptions to the menu items
@@ -55,7 +56,7 @@ export default function Home() {
       case "Serp Scanner":
         return <SerpScanner />;
       case "Support":
-        return <div/>;
+        return <Support/>;
       case "Account Settings":
         return <AccountSettings/>;
       default:
