@@ -26,3 +26,4 @@ export const MARKETPLACE_NAME_SOUMETTRE = "Soumettre";
 export const MARKETPLACE_NAME_PRNEWS = "Prnews";
 export const MARKETPLACE_NAME_CONEXOO = "Conexoo";
 export const MARKETPLACE_NAME_Linkatomic = "Linkatomic";
+export const MARKETPLACE_NAME_UNANCOR = "Unancor";

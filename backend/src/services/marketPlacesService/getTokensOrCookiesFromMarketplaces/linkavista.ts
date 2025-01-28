@@ -82,7 +82,7 @@ const fetch_Cookie_FromPostLogin = async (email: string, password: string): Prom
         return '';
 
     } catch (error) {
-        const { errorDetails } = ErrorHandler.handle(error, "Error fetching validation data for Linkbuilders : ");
+        const { errorDetails } = ErrorHandler.handle(error, "Error fetching validation data for Linkavista : ");
         return errorDetails.context;
     }
 };
@@ -125,7 +125,7 @@ const fetch_CSRF_TOKEN_AndCookieFrom_GET_Login = async (): Promise<{CSRF_TOKEN :
         return null;
 
     } catch (error) {
-        const { errorDetails, status } = ErrorHandler.handle(error, "Error fetching validation data for Linkbuilders : ");
+        const { errorDetails, status } = ErrorHandler.handle(error, "Error fetching validation data for Linkavistar : ");
         console.log(errorDetails, status)
         return null;
     }
