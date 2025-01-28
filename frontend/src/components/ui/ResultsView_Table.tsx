@@ -248,7 +248,7 @@ const TableSection: React.FC<TableSectionProps> = ({
                     rel="noopener noreferrer"
                     className="hover:underline"
                   >
-                    {row.domain}
+                    {row.domain.length > 20 ? `${row.domain.substring(0, 20)}...` : row.domain}
                   </a>
                 </td>
 
@@ -262,7 +262,7 @@ const TableSection: React.FC<TableSectionProps> = ({
 
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{row.cf}</td>
 
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{row.ttf}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{row.ttf.length > 12 ? `${row.ttf.substring(0, 12)}...` : row.ttf}</td>
 
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">
                   <DynamicPrice

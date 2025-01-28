@@ -132,6 +132,17 @@ export interface CredentialsForMarketplace {
           | 'Linkavista'
           | 'Getalink'
           | 'Develink'
+          | 'Linkatomic'
+          | 'Unancor'
+          | 'Publisuites'
+          | 'Backlinked'
+          | 'Motherlink'
+          | 'Presswhizz'
+          | 'Whitepress'
+          | 'Conexoo'
+          | 'Linkbroker'
+          | 'Prnews'
+          | '123mdia'
         )
       | null;
     id?: string | null;

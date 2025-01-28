@@ -30,6 +30,8 @@ export const BOOSTERLINK_API_URL = 'https://pro.boosterlink.fr/';
 
 export const LINKAVISTA_API_URL = 'https://linkavista.com/login';
 
+export const LINKATOMIC_API_URL = 'https://app.linkatomic.com/login';
+
 export const GETALINK_API_URL = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyABCAfw4_higazYHOSlYNGpRi5MSP-I07M';
 
 export const DEVELINK_API_URL = 'https://app.develink.com/login';
@@ -187,4 +189,6 @@ export const GET_BACKLINK_FROM_LINKAVISTA_URL = "https://linkavista.com/marketli
 export const GET_BACKLINK_FROM_GETALINK_URL = "https://api.getalink.com/marketplace";
 
 export const GET_BACKLINK_FROM_DEVELINK_URL = "https://app.develink.com/cataloguevip";
+
+export const GET_BACKLINK_FROM_LINKATOMIC_URL = "https://app.linkatomic.com/dashboard/sites?activeTable=all";
 
