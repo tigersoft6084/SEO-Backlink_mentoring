@@ -6,9 +6,7 @@ import { createPlansAndGetID } from '@/services/paypal/plan/CreatePlan.ts';
 import { getProductAndPlanIdFromDB } from '@/services/paypal/catalogProducts/getProductsFromDB.ts';
 import { createProduct } from '@/services/paypal/catalogProducts/CreateProduct.ts';
 import { listActivePlans } from '@/services/paypal/plan/ListPlan.ts';
-import { getCookieFromLinkatomic } from '@/services/marketPlacesService/getTokensOrCookiesFromMarketplaces/linkatomic.ts';
-import { fetchDataFromLinkatomic } from '@/services/marketPlacesService/fetchDataFromMarketplaces/linkatomic.ts';
-import { getBacklinksDataFromLinkatomic } from '@/services/marketPlacesService/getBacklinksFromMarketplaces/linkatomic.ts';
+import { getBacklinksDataFromUnancor } from '@/services/marketPlacesService/getBacklinksFromMarketplaces/unancor.ts';
 
 // Define the Payload endpoint
 export const myTestEndpoint: Endpoint = {
@@ -21,13 +19,14 @@ export const myTestEndpoint: Endpoint = {
       //await backgroundMarketplaceProcessHandler(req);
       // const result = await createPlansAndGetID(req);
       // const result = await listActivePlans();
-      await getBacklinksDataFromLinkatomic(req.payload);
+      const result = await getBacklinksDataFromUnancor(req.payload);
+
 
       // Return the collected results
       return new Response(
         JSON.stringify({
           message: 'Fetch completed.',
-          // Results: result,
+          Results: result,
         }),
         {
           status: 200,

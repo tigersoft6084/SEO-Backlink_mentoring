@@ -36,6 +36,10 @@ export const GETALINK_API_URL = 'https://identitytoolkit.googleapis.com/v1/accou
 
 export const DEVELINK_API_URL = 'https://app.develink.com/login';
 
+export const UNANCOR_API_URL = 'https://app.unancor.com/login';
+export const UNANCOR_API_URL_POST = 'https://app.unancor.com/livewire/update';
+export const UNANCOR_API_URL_FOR_FINAL_COOKIE = 'https://app.unancor.com/marketplace';
+
 
 // URLs for Backlinks
 export const GET_BACKLINK_FROM_BACKLINKED_URL = "https://app.backlinked.com/api/contentlinks";
@@ -191,4 +195,6 @@ export const GET_BACKLINK_FROM_GETALINK_URL = "https://api.getalink.com/marketpl
 export const GET_BACKLINK_FROM_DEVELINK_URL = "https://app.develink.com/cataloguevip";
 
 export const GET_BACKLINK_FROM_LINKATOMIC_URL = "https://app.linkatomic.com/dashboard/sites?activeTable=all";
+
+export const GET_BACKLINK_FROM_UNANCOR_URL = "https://app.unancor.com/livewire/update";
 

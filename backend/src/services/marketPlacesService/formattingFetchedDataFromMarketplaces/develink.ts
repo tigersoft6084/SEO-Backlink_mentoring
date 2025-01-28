@@ -1,4 +1,3 @@
-import { ErrorHandler } from "@/handlers/errorHandler.ts";
 import { FetchedBackLinkDataFromMarketplace } from "@/types/backlink.ts";
 import * as cheerio from "cheerio";
 

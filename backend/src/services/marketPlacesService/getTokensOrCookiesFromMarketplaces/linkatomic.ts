@@ -68,7 +68,7 @@ const fetchCookieFromLinkatomic_POST_Login = async(email : string, password : st
         return '';
 
     }catch(error){
-        const { errorDetails } = ErrorHandler.handle(error, "Error fetching validation data for Linkbuilders : ");
+        const { errorDetails } = ErrorHandler.handle(error, "Error fetching validation data for Linkatomic : ");
         return errorDetails.context;
     }
 }
@@ -97,7 +97,7 @@ const fetch_CSRF_TOKEN_AndCookieFrom_GET_Login = async() : Promise<{CSRF_TOKEN :
             CSRF_TOKEN : csrfToken,
         };
     }catch(error){
-        const { errorDetails, status } = ErrorHandler.handle(error, "Error fetching validation data for Linkbuilders : ");
+        const { errorDetails, status } = ErrorHandler.handle(error, "Error fetching validation data for Linkatomic : ");
         console.log(errorDetails, status);
         return null;
     }
