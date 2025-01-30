@@ -21,7 +21,7 @@ const MinMaxInput: React.FC<{
                 value={minValue}
                 onChange={onChange}
                 placeholder="Min"
-                className="w-full px-4 py-2 border rounded-lg shadow-sm focus:ring focus:ring-blue-200 focus:outline-none dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600"
+                className="w-full px-4 py-2 border rounded-lg shadow-sm focus:ring focus:ring-blue-200 focus:outline-none dark:bg-slate-800 dark:text-gray-200 dark:border-gray-600"
             />
         </div>
         <div>
@@ -34,7 +34,7 @@ const MinMaxInput: React.FC<{
                 value={maxValue}
                 onChange={onChange}
                 placeholder="Max"
-                className="w-full px-4 py-2 border rounded-lg shadow-sm focus:ring focus:ring-blue-200 focus:outline-none dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600"
+                className="w-full px-4 py-2 border rounded-lg shadow-sm focus:ring focus:ring-blue-200 focus:outline-none dark:bg-slate-800 dark:text-gray-200 dark:border-gray-600"
             />
         </div>
     </div>
@@ -75,7 +75,7 @@ const Filters: React.FC<FiltersProps> = ({ filters, updateFilters, onFilter }) =
                         value={filters.Domain}
                         onChange={handleInputChange}
                         placeholder="Search"
-                        className="w-full px-4 py-2 border rounded-lg shadow-sm focus:ring focus:ring-blue-200 focus:outline-none dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600"
+                        className="w-full px-4 py-2 border rounded-lg shadow-sm focus:ring focus:ring-blue-200 focus:outline-none dark:bg-slate-800 dark:text-gray-200 dark:border-gray-600"
                     />
                 </div>
 
@@ -106,7 +106,7 @@ const Filters: React.FC<FiltersProps> = ({ filters, updateFilters, onFilter }) =
                         name="TTF"
                         value={filters.TTF}
                         onChange={handleSelectChange}
-                        className="w-full px-4 py-2 border rounded-lg shadow-sm focus:ring focus:ring-blue-200 focus:outline-none dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600">
+                        className="w-full px-4 py-2 border rounded-lg shadow-sm focus:ring focus:ring-blue-200 focus:outline-none dark:bg-slate-800 dark:text-gray-200 dark:border-gray-600">
                             <option value="Select">Select</option>
                             <option value="Adult">Adult</option>
                             <option value="Arts">Arts</option>
@@ -151,7 +151,7 @@ const Filters: React.FC<FiltersProps> = ({ filters, updateFilters, onFilter }) =
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
                         Language
                     </label>
-                    <select className="w-full px-4 py-2 border rounded-lg shadow-sm focus:ring focus:ring-blue-200 focus:outline-none dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600">
+                    <select className="w-full px-4 py-2 border rounded-lg shadow-sm focus:ring focus:ring-blue-200 focus:outline-none dark:bg-slate-800 dark:text-gray-200 dark:border-gray-600">
                         <option value="All">All</option>
                         <option value="En">English</option>
                         <option value="Fr">French</option>
@@ -176,7 +176,7 @@ const Filters: React.FC<FiltersProps> = ({ filters, updateFilters, onFilter }) =
                             name="minRD"
                             value={filters.minRD}
                             onChange={handleInputChange}
-                            className="w-full px-4 py-2 border rounded-lg shadow-sm focus:ring focus:ring-blue-200 focus:outline-none dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600"
+                            className="w-full px-4 py-2 border rounded-lg shadow-sm focus:ring focus:ring-blue-200 focus:outline-none dark:bg-slate-800 dark:text-gray-200 dark:border-gray-600"
                         />
                     </div>
                     <div>
@@ -189,7 +189,7 @@ const Filters: React.FC<FiltersProps> = ({ filters, updateFilters, onFilter }) =
                             name="maxRD"
                             value={filters.maxRD}
                             onChange={handleInputChange}
-                            className="w-full px-4 py-2 border rounded-lg shadow-sm focus:ring focus:ring-blue-200 focus:outline-none dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600"
+                            className="w-full px-4 py-2 border rounded-lg shadow-sm focus:ring focus:ring-blue-200 focus:outline-none dark:bg-slate-800 dark:text-gray-200 dark:border-gray-600"
                         />
                     </div>
                 </div>

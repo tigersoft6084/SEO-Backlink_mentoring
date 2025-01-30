@@ -13,7 +13,7 @@ export default function ResultsView({ responseData, onBack, pageName } : any) {
   const [selectAll, setSelectAll] = useState(false);
 
   return (
-    <div className="p-6 rounded-lg dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200 mx-auto">
+    <div className="p-6 rounded-lg dark:bg-slate-800 dark:border-gray-600 dark:text-gray-200 mx-auto">
 
       {/* Top section with keyword badges and button */}
       <TopSection responseData={responseData.keys} onBack={onBack} maxKeysToShow={maxKeywordsToShow} />

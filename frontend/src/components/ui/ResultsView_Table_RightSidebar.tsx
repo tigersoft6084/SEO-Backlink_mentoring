@@ -59,7 +59,7 @@ const RightSidebar: React.FC<RightSidebarProps> = ({ visible, data, sellers, onC
   if (!visible || !data) return null;
 
   return (
-    <div className="px-4 fixed top-0 right-0 h-full w-96 bg-white dark:bg-gray-700 shadow-lg z-50 flex flex-col">
+    <div className="px-4 fixed top-0 right-0 h-full w-96 bg-white dark:bg-slate-800 shadow-lg z-50 flex flex-col">
       {/* Close Button */}
       <div className="p-4 dark:border-gray-500">
         <button

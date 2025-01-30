@@ -20,7 +20,7 @@ export default function TopSection({ responseData = [], onBack, maxKeysToShow }:
         {responseData.slice(0, maxKeysToShow).map((key, index) => (
           <span
             key={index}
-            className="px-3 py-1 bg-gray-300 text-gray-800 rounded-full dark:bg-gray-700 dark:text-gray-300"
+            className="px-3 py-1 bg-gray-300 text-gray-800 rounded-full dark:bg-slate-800 dark:text-gray-300"
           >
             {key}
           </span>

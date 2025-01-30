@@ -60,7 +60,7 @@ export default function InputView({ placeholder, onSearch }: InputViewProps) {
   };
 
   return (
-    <div className="flex flex-col flex-1 p-10 border rounded-lg shadow-md bg-white dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200">
+    <div className="flex flex-col flex-1 p-10 border rounded-lg shadow-md bg-white dark:bg-slate-800 dark:border-gray-600 dark:text-gray-200">
       <LocationHeader location="United States" />
       <TextArea value={keyword} onChange={(e) => setKeyword(e.target.value)} placeholder={placeholder} />
       <SearchButton loading={loading} disabled={!keyword || loading} onClick={handleSearch} />

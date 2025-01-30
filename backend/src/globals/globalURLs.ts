@@ -32,6 +32,9 @@ export const LINKAVISTA_API_URL = 'https://linkavista.com/login';
 
 export const LINKATOMIC_API_URL = 'https://app.linkatomic.com/login';
 
+export const PUBLISUITES_API_URL = 'https://www.publisuites.com/es/login/';
+export const PUBLISUITES_API_URL_POST = 'https://www.publisuites.com/advertisers/';
+
 export const GETALINK_API_URL = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyABCAfw4_higazYHOSlYNGpRi5MSP-I07M';
 
 export const DEVELINK_API_URL = 'https://app.develink.com/login';
@@ -198,3 +201,4 @@ export const GET_BACKLINK_FROM_LINKATOMIC_URL = "https://app.linkatomic.com/dash
 
 export const GET_BACKLINK_FROM_UNANCOR_URL = "https://app.unancor.com/livewire/update";
 
+export const GET_BACKLINK_FROM_PUBLISUITES_URL = 'https://www.publisuites.com/advertisers/websites/';

@@ -6,6 +6,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "../context/ThemeContext";
 import "../styles/globals.css";
 import Navbar from "../components/common/Navbar";
+import { ExpiredDomainsProvider } from "../context/ExpiredDomainsContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,8 +25,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ThemeProvider>
           <UserProvider> {/* Wrap everything with UserProvider */}
             <SidebarProvider>
-              <Navbar />
-              {children}
+              <ExpiredDomainsProvider>
+                <Navbar />
+                {children}
+              </ExpiredDomainsProvider>
             </SidebarProvider>
           </UserProvider>
         </ThemeProvider>

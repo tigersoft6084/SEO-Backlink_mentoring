@@ -49,7 +49,7 @@ export default function Projects() {
 
       <div className="mx-auto overflow-hidden rounded-lg shadow-lg bg-white">
         <table className="min-w-full border-collapse">
-          <thead className="bg-gray-200 border-b border-gray-600 dark:bg-gray-600 dark:border-gray-800">
+          <thead className="bg-gray-200 border-b border-gray-600 dark:bg-slate-700 dark:border-gray-800">
             <tr>
               <th className="px-1 py-4"> {/* Reduced x (px-1) and increased y (py-6) */}
                 <div className="flex items-center justify-center">
@@ -105,9 +105,9 @@ export default function Projects() {
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-300 dark:divide-gray-200 dark:bg-gray-700">
+          <tbody className="divide-y divide-gray-300 dark:divide-gray-200 dark:bg-slate-800">
             {rows.map((row) => (
-              <tr key={row.id} className="hover:bg-gray-50 dark:hover:bg-gray-500">
+              <tr key={row.id} className="hover:bg-gray-50 dark:hover:dark:hover:bg-slate-700">
                 <td className="px-1 py-4">
                   <div className="flex items-center justify-center">
                     <input

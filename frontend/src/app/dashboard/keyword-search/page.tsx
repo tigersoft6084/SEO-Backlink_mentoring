@@ -16,7 +16,7 @@ export default function KeywordSearch() {
   const pageName = "KeywordSearch"; // Define the pageName here
 
   return (
-    <div className="flex-1 p-6 bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100">
+    <div className="flex-1 p-6 bg-gray-100 dark:bg-slate-900 text-gray-900 dark:text-gray-100">
       {currentView === "input" ? (
         <InputView
           placeholder="Enter up to 20 keywords (1 per line) to scan Google SERPs."

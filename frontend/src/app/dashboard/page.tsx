@@ -15,15 +15,20 @@ import ExpiredDomains from "./expired-domains/page";
 import Projects from "./projects/page";
 import AccountSettings from "./account-settings/page";
 import Support from "./support/page";
+import useExpiredFilterView from "../../hooks/useExpiredFilterView";
 
 export default function Home() {
+
+  const {selectedMenuItem} = useSidebar();
+
+
   // Add icons and descriptions to the menu items
   const menuItems = [
     { name: "Bulk Search", icon: <FaSearch />, description: "Search in bulk for multiple domains at once." },
     { name: "Keyword Search", icon: <FaGoogle />, description: "Search keywords on Google to analyze rankings." },
     { name: "Competitive Analysis", icon: <TbRadarFilled />, description: "Analyze competitors' domains and backlinks." },
     { name: "Projects", icon: <FaFolderOpen />, description: "Manage and organize your projects here." },
-    { name: "Expired Domains", icon: <FaLink />, description: "Find expired domains for backlink opportunities." },
+    { name: "Expired Domains", icon: <FaLink />, description: "Find expired domains for backlink opportunities.", },
     { name: "Serp Scanner", icon: <FaGauge />, description: "Scan Google SERPs to track keyword rankings." },
   ];
 
@@ -38,8 +43,6 @@ export default function Home() {
   const handleSearch = () => {
     console.log("Search initiated");
   };
-
-  const {selectedMenuItem} = useSidebar();
 
   const renderContent = () => {
     switch (selectedMenuItem) {
@@ -65,7 +68,7 @@ export default function Home() {
     };
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col dark:bg-slate-900">
       <div className="h-fit flex flex-1">
         {/* Sidebar with dynamic icons and descriptions */}
         <Sidebar menuItems={menuItems} quotaUsed={quotaUsed} />

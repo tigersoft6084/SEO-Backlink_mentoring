@@ -7,6 +7,8 @@ import { getProductAndPlanIdFromDB } from '@/services/paypal/catalogProducts/get
 import { createProduct } from '@/services/paypal/catalogProducts/CreateProduct.ts';
 import { listActivePlans } from '@/services/paypal/plan/ListPlan.ts';
 import { getBacklinksDataFromUnancor } from '@/services/marketPlacesService/getBacklinksFromMarketplaces/unancor.ts';
+import { getCookieFromPublisuites } from '@/services/marketPlacesService/getTokensOrCookiesFromMarketplaces/publisuites.ts';
+import { getBakclinksDataFromPublisuites } from '@/services/marketPlacesService/getBacklinksFromMarketplaces/publisuites.ts';
 
 // Define the Payload endpoint
 export const myTestEndpoint: Endpoint = {
@@ -19,7 +21,7 @@ export const myTestEndpoint: Endpoint = {
       //await backgroundMarketplaceProcessHandler(req);
       // const result = await createPlansAndGetID(req);
       // const result = await listActivePlans();
-      const result = await getBacklinksDataFromUnancor(req.payload);
+      const result = await getBakclinksDataFromPublisuites(req.payload);
 
 
       // Return the collected results

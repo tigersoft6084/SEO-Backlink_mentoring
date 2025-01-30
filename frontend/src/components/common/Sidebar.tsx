@@ -4,10 +4,12 @@ import { useState } from "react";
 import { useSidebar } from "../../context/SidebarContext"; // Import context
 import { RiVipCrown2Fill } from "react-icons/ri";
 import { AiOutlineQuestionCircle, AiOutlineSetting } from "react-icons/ai";
+import useExpiredFilterView from "../../hooks/useExpiredFilterView";
 
 interface MenuItem {
   name: string;
   icon: React.ReactNode;
+  count?: number; // Add the count property
 }
 
 interface QuotaItem {
@@ -24,14 +26,20 @@ interface SidebarProps {
 export default function Sidebar({ menuItems, quotaUsed }: SidebarProps) {
   const { setSelectedMenuItem } = useSidebar(); // Access context
   const [selectedItem, setSelectedItem] = useState<number | string | null>(null);
+  const { fetchDomainsOnMount } = useExpiredFilterView();
 
   const handleMenuClick = (index: number, name: string) => {
     setSelectedItem(index);
     setSelectedMenuItem(name); // Update the context
+
+    // Fetch expired domains when "Expired Domains" is clicked
+    if (name === "Expired Domains") {
+      fetchDomainsOnMount();
+    }
   };
 
   return (
-    <aside className="bg-gray-100 dark:bg-gray-800 w-72 p-4 flex flex-col justify-between h-screen" style={{resize : "none"}}>
+    <aside className="bg-gray-100 dark:bg-slate-900 w-72 p-4 flex flex-col justify-between h-screen" style={{resize : "none"}}>
 
       {/* Top Menu */}
       <div>
@@ -42,12 +50,13 @@ export default function Sidebar({ menuItems, quotaUsed }: SidebarProps) {
               onClick={() => handleMenuClick(index, item.name)} // Pass the item's name
               className={`flex items-center space-x-3 p-3 cursor-pointer rounded-full transition-colors ${
                 selectedItem === index
-                  ? "bg-gray-500 text-white" // Selected state
-                  : "text-gray-700 dark:text-gray-300 hover:bg-gray-300 hover:text-black dark:hover:bg-gray-400" // Hover state
+                  ? "dark:hover:bg-slate-700 dark:bg-slate-700 text-white" // Selected state
+                  : "text-gray-700 dark:text-gray-300 hover:bg-gray-300 hover:text-black dark:hover:bg-slate-700" // Hover state
               }`}
             >
               <span className="flex items-center justify-center w-6 h-6 rounded-full">{item.icon}</span>
               <span className="text-sm font-medium">{item.name}</span>
+
             </li>
           ))}
         </ul>
@@ -55,7 +64,7 @@ export default function Sidebar({ menuItems, quotaUsed }: SidebarProps) {
 
 
       {/* Quota Section */}
-      <div className="mt-6 border border-gray-400 dark:border-gray-700 rounded-3xl p-4 dark:bg-gray-700 shadow-sm">
+      <div className="mt-6 border border-gray-400 dark:border-gray-700 rounded-3xl p-4 dark:bg-slate-800 shadow-sm">
         <h2 className="text-gray-600 dark:text-gray-400 mb-4 text-lg font-semibold">QUOTA USED</h2>
         <div className="space-y-4">
           {quotaUsed.map(({ name, value, max }, index) => (
@@ -86,8 +95,8 @@ export default function Sidebar({ menuItems, quotaUsed }: SidebarProps) {
             onClick={() => {setSelectedItem("Support"), setSelectedMenuItem("Support")}}
             className={`flex items-center space-x-3 p-3 cursor-pointer rounded-full transition-colors ${
               selectedItem === "Support"
-                ? "bg-gray-500 text-white"
-                : "text-gray-700 dark:text-gray-300 hover:bg-gray-300 hover:text-black dark:hover:bg-gray-400"
+                ? "dark:hover:bg-slate-700 text-white"
+                : "text-gray-700 dark:text-gray-300 hover:bg-gray-300 hover:text-black dark:hover:bg-slate-700"
             }`}
           >
             <AiOutlineQuestionCircle className="w-6 h-6" />
@@ -97,8 +106,8 @@ export default function Sidebar({ menuItems, quotaUsed }: SidebarProps) {
             onClick={() => {setSelectedItem("Account Settings"), setSelectedMenuItem("Account Settings")}}
             className={`flex items-center space-x-3 p-3 cursor-pointer rounded-full transition-colors ${
               selectedItem === "Account Settings"
-                ? "bg-gray-500 text-white"
-                : "text-gray-700 dark:text-gray-300 hover:bg-gray-300 hover:text-black dark:hover:bg-gray-400"
+                ? "dark:hover:bg-slate-700 text-white"
+                : "text-gray-700 dark:text-gray-300 hover:bg-gray-300 hover:text-black dark:hover:bg-slate-700"
             }`}
           >
             <AiOutlineSetting className="w-6 h-6" />

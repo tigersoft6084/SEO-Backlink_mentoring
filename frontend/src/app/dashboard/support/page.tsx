@@ -1,101 +1,112 @@
 import React, { useState } from "react";
-import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 
-// Define a type for the Message component props
-interface MessageProps {
-    content: string;
-}
+const PricingTable: React.FC = () => {
+  const [billingCycle, setBillingCycle] = useState<"monthly" | "annually">(
+    "monthly"
+  );
 
-// Renders errors or successful transactions on the screen.
-function Message({ content }: MessageProps) {
-    return <p dangerouslySetInnerHTML={{ __html: content }} />;
-}
+  return (
+    <div className="flex flex-col items-center mx-auto py-10">
+      {/* Billing Toggle */}
+      <div className="flex items-center space-x-2 mb-10 border-2 border-gray-300 dark:border-gray-500 dark:bg-slate-900 p-1 rounded-3xl">
+        <button
+          onClick={() => setBillingCycle("monthly")}
+          className={`px-4 py-1 dark:text-gray-200 text-gray-500 rounded-full ${
+            billingCycle === "monthly"
+              ? "bg-primary text-white"
+              : " text-gray-600"
+          }`}
+        >
+          Monthly
+        </button>
+        <button
+          onClick={() => setBillingCycle("annually")}
+          className={`px-4 py-1 dark:text-gray-200 text-gray-500 rounded-full ${
+            billingCycle === "annually"
+              ? "bg-primary text-white"
+              : "text-gray-600"
+          }`}
+        >
+          Annually
+        </button>
+      </div>
 
-interface PayPalResponse {
-    id?: string;
-    details?: Array<{ issue?: string; description?: string }>;
-    message?: string;
-    debug_id?: string;
-}
+      {/* Pricing Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-5xl">
 
-export default function Support () {
-    // Corrected the client-id to clientId (camelCase)
-    const initialOptions = {
-        clientId: "AbpNcG_m61ifryOF-AMldotiw3ey3zorxqUaupMJIWCZoh8YwEvw0W6O5xSLDV9Ea2PGdEVbEcleoZRB",
-        enableFunding: "",
-        disableFunding: "paylater,card",
-        dataSdkIntegrationSource: "integrationbuilder_sc",
-        vault: "true",
-        intent: "subscription",
-    };
-
-    const [message, setMessage] = useState<string>("");
-
-    return (
-
-        <div className="max-w-7xl mx-auto px-4 py-12">
-          <div className="text-center">
-            <h1 className="text-3xl font-semibold text-white">Your plan : Spammer (Monthly)</h1>
-            <div className="mt-4 flex justify-center">
-              <button className="px-4 py-2 rounded-full bg-blue-500 text-white">Monthly</button>
-              <span className="mx-2 text-white">/</span>
-              <button className="px-4 py-2 rounded-full bg-transparent border-2 text-white">Yearly</button>
-            </div>
-          </div>
-
-          <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {/* <!-- Standard Plan --> */}
-            <div className="bg-white rounded-lg shadow-lg p-6 text-center">
-              <h2 className="text-2xl font-semibold text-gray-800">Standard</h2>
-              <p className="text-xl text-gray-600 mt-2">15€ / Month</p>
-              <ul className="mt-6 text-left text-gray-600">
-                <li>300 results per search</li>
-                <li>100 backlinks monitored</li>
-                <li>200 Plugin clicks</li>
-                <li>50 keyword searches</li>
-                <li>20 competitive analyses</li>
-                <li>3 simultaneous bulk competitive</li>
-              </ul>
-              <button className="mt-6 w-full bg-green-500 text-white py-2 rounded-full">Update my plan</button>
-            </div>
-
-            {/* <!-- Booster Plan --> */}
-            <div className="bg-green-500 rounded-lg shadow-lg p-6 text-center text-white">
-              <h2 className="text-2xl font-semibold">Booster</h2>
-              <p className="text-xl mt-2">49€ / Month</p>
-              <div className="mt-6 space-y-2 text-left">
-                <ul>
-                  <li>1000 results per search</li>
-                  <li>500 backlinks monitored</li>
-                  <li>1000 Plugin clicks</li>
-                  <li>250 keyword searches</li>
-                  <li>100 competitive analyses</li>
-                  <li>15 simultaneous bulk competitive</li>
-                </ul>
-              </div>
-              <button className="mt-6 w-full bg-white text-green-500 py-2 rounded-full">Update my plan</button>
-            </div>
-
-            {/* <!-- Spammer Plan --> */}
-            <div className="bg-white rounded-lg shadow-lg p-6 text-center">
-              <h2 className="text-2xl font-semibold text-gray-800">Spammer</h2>
-              <p className="text-xl text-gray-600 mt-2">99€ / Month</p>
-              <ul className="mt-6 text-left text-gray-600">
-                <li>30000 results per search</li>
-                <li>2000 backlinks monitored</li>
-                <li>5000 Plugin clicks</li>
-                <li>2000 keyword searches</li>
-                <li>500 competitive analyses</li>
-                <li>40 simultaneous bulk competitive</li>
-              </ul>
-              <button className="mt-6 w-full bg-green-500 text-white py-2 rounded-full">Current plan</button>
-            </div>
-          </div>
-
-          <div className="text-center mt-6">
-            <p className="text-white">Want to access our API? <a href="/contact" className="text-blue-400">Contact us!</a></p>
-          </div>
+        {/* Freelancer Plan */}
+        <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl shadow-md border-2 border-gray-200 dark:border-gray-700">
+          <h3 className="text-gray-600 dark:text-gray-200 text-xl font-bold mb-2">Freelancer</h3>
+          <p className="text-gray-600 dark:text-gray-200 mb-4">
+            The essentials to provide your best work for clients.
+          </p>
+          <p className="text-3xl font-bold mb-4 text-gray-600 dark:text-gray-200">
+            ${billingCycle === "monthly" ? "19" : "190"}
+            <span className="text-sm text-gray-500 dark:text-gray-200">/month</span>
+          </p>
+          <button className="w-full bg-primary text-white py-2 rounded-lg hover:bg-primary">
+            Buy plan
+          </button>
+          <ul className="mt-6 space-y-2 text-gray-600 dark:text-gray-200">
+            <li>✓ 5 products</li>
+            <li>✓ Up to 1,000 subscribers</li>
+            <li>✓ Basic analytics</li>
+            <li>✓ 48-hour support response time</li>
+          </ul>
         </div>
-    );
-}
 
+        {/* Startup Plan */}
+        <div className="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-md border-2 border-primary">
+          <h3 className="text-xl text-gray-600 dark:text-gray-200 font-bold mb-2">
+            Startup{" "}
+            <span className="text-xs bg-purple-100 text-primary px-2 py-1 rounded-full">
+              Most popular
+            </span>
+          </h3>
+          <p className="text-gray-600 dark:text-gray-200 mb-4">
+            A plan that scales with your rapidly growing business.
+          </p>
+          <p className="text-3xl font-bold mb-4 text-gray-600 dark:text-gray-200">
+            ${billingCycle === "monthly" ? "29" : "290"}
+            <span className="text-sm text-gray-500 dark:text-gray-200">/month</span>
+          </p>
+          <button className="w-full bg-primary text-white py-2 rounded-lg hover:bg-primary">
+            Buy plan
+          </button>
+          <ul className="mt-6 space-y-2 text-gray-600 dark:text-gray-200">
+            <li>✓ 25 products</li>
+            <li>✓ Up to 10,000 subscribers</li>
+            <li>✓ Advanced analytics</li>
+            <li>✓ 24-hour support response time</li>
+            <li>✓ Marketing automations</li>
+          </ul>
+        </div>
+
+        {/* Enterprise Plan */}
+        <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl shadow-md border-2 border-gray-200 dark:border-gray-700">
+          <h3 className="text-xl text-gray-600 dark:text-gray-200 font-bold mb-2">Enterprise</h3>
+          <p className="text-gray-600 dark:text-gray-200 mb-4">
+            Dedicated support and infrastructure for your company.
+          </p>
+          <p className="text-3xl text-gray-600 dark:text-gray-200 font-bold mb-4">
+            ${billingCycle === "monthly" ? "59" : "590"}
+            <span className="text-sm text-gray-500 dark:text-gray-200">/month</span>
+          </p>
+          <button className="w-full bg-primary text-white py-2 rounded-lg hover:bg-primary">
+            Buy plan
+          </button>
+          <ul className="mt-6 space-y-2 text-gray-600 dark:text-gray-200">
+            <li>✓ Unlimited products</li>
+            <li>✓ Unlimited subscribers</li>
+            <li>✓ Advanced analytics</li>
+            <li>✓ 1-hour, dedicated support response time</li>
+            <li>✓ Marketing automations</li>
+            <li>✓ Custom reporting tools</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default PricingTable;

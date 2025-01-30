@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { Filters } from "../types/expired.d";
+import { useExpiredDomains } from "../context/ExpiredDomainsContext";
 
 
 export default function useExpiredFilterView() {
+    const { setTotalExpiredDomains } = useExpiredDomains(); // Use Context
     const [filters, setFilters] = useState<Filters>({
         Domain: "",
         minTF: "",
@@ -22,6 +24,7 @@ export default function useExpiredFilterView() {
     });
 
     const [expiredDomainsData, setExpiredDomainsData] = useState([]);
+    // const [totalExpiredDomains, setTotalExpiredDomains] = useState(0);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);  // Type the error state as string | null
 
@@ -62,6 +65,7 @@ export default function useExpiredFilterView() {
             }
             const data = await response.json();
             setExpiredDomainsData(data.expiredDomains);
+            setTotalExpiredDomains(data.totalExpiredDomains);
         } catch (err: unknown) {
             // Handle the unknown error
             if (err instanceof Error) {
@@ -74,6 +78,14 @@ export default function useExpiredFilterView() {
         }
     };
 
+    // Function to fetch domains when Expired Domains tab is clicked
+    const fetchDomainsOnMount = () => {
+        if (expiredDomainsData.length === 0) {
+            fetchDomains();
+        }
+    };
+
+
     return {
         filters,
         expiredDomainsData,
@@ -81,5 +93,6 @@ export default function useExpiredFilterView() {
         error,
         updateFilters,
         fetchDomains,
+        fetchDomainsOnMount,
     };
 }

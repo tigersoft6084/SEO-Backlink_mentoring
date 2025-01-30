@@ -67,7 +67,7 @@ export default function SigninForm() {
   };
 
   return (
-    <div className="mt-12 w-full max-w-md bg-white dark:bg-gray-700 shadow-lg rounded-lg p-8 mx-auto">
+    <div className="mt-12 w-full max-w-md bg-white dark:bg-slate-800 shadow-lg rounded-lg p-8 mx-auto">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
           Sign In
