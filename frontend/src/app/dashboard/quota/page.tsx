@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useUser } from "../../../context/UserContext";
-import { useUserPlan } from "../../../context/UserPlanContext";
+import { usePlan } from "../../../context/UserPlanContext";
 
 interface Plan {
     plan_name: string;
@@ -13,17 +13,17 @@ interface Plan {
 }
 
 const PricingTable: React.FC = () => {
-    const { userPlanData, loading } = useUserPlan();
-    const { email } = useUser();
-
+    const { user, refreshUser } = useUser(); // ✅ Use `useUser()` instead of `useUserPlan()`
     const [plans, setPlans] = useState<Plan[]>([]);
     const [fetchLoading, setFetchLoading] = useState(true);
+    const { selectedPlanId, selectedPlanName, setPlan } = usePlan();
     const [billingCycle, setBillingCycle] = useState<"monthly" | "annually">("monthly");
 
+    // ✅ Fetch available plans
     useEffect(() => {
         const fetchPlans = async () => {
             try {
-                const response = await fetch("http://localhost:2024/api/plans");
+                const response = await fetch("/api/plans");
                 const data = await response.json();
                 setPlans(data.fetchedPlans);
             } catch (error) {
@@ -35,10 +35,10 @@ const PricingTable: React.FC = () => {
         fetchPlans();
     }, []);
 
-    // Handle subscription process
+  // ✅ Handle subscription process
     const handleSubscription = async (planId: string, planName: string) => {
         try {
-            const response = await fetch("http://localhost:2024/api/create-subscription", {
+            const response = await fetch("/api/create-subscription", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ planId }),
@@ -46,9 +46,7 @@ const PricingTable: React.FC = () => {
 
             const result = await response.json();
             if (response.ok && result.approvalUrl) {
-                localStorage.setItem("selectedPlanId", planId);
-                localStorage.setItem("selectedPlanName", planName);
-                if (email) localStorage.setItem("userEmail", email);
+                setPlan(planId, planName);              // ✅ Store selected plan in state + sessionStorage
                 window.location.href = result.approvalUrl;
             } else {
                 alert("Subscription creation failed.");
@@ -89,7 +87,7 @@ const PricingTable: React.FC = () => {
             {/* Pricing Cards */}
             <div className="px-10 grid grid-cols-1 md:grid-cols-3 gap-16 w-full max-w-7xl">
                 {plans.map((plan, index) => {
-                    const isCurrentPlan = userPlanData?.planName === plan.plan_name;
+                    const isCurrentPlan = user?.planName === plan.plan_name;
                     return (
                         <div
                             key={index}

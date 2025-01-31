@@ -1,78 +1,56 @@
 "use client";
 
-import React, { createContext, useContext, useEffect, useState } from "react";
-import { useUser } from "./UserContext"; // If you already have a user context
+import React, { createContext, useContext, useState, ReactNode, useEffect } from "react";
 
-interface UserPlanData {
-    planId?: string;
-    subscriptionId?: string;
-    planName?: string;
-    features?: {
-        resultsPerSearch?: number;
-        backlinks?: number;
-        plugin?: number;
-        keywordSearches?: number;
-        competitiveAnalysis?: number;
-        bulkCompetitive?: number;
-        bulkKeywords?: number;
-        SerpScanner?: number;
-    };
+interface PlanContextType {
+    selectedPlanId: string | null;
+    selectedPlanName: string | null;
+    setPlan: (planId: string, planName: string) => void;
+    clearPlan: () => void;
 }
 
-interface UserPlanContextType {
-    userPlanData: UserPlanData | null;
-    loading: boolean;
-    refreshUserPlan: () => void;
-}
+const PlanContext = createContext<PlanContextType | undefined>(undefined);
 
-const UserPlanContext = createContext<UserPlanContextType | undefined>(undefined);
+export const PlanProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+    const [selectedPlanId, setSelectedPlanId] = useState<string | null>(null);
+    const [selectedPlanName, setSelectedPlanName] = useState<string | null>(null);
 
-export const UserPlanProvider = ({ children }: { children: React.ReactNode }) => {
-    const { email } = useUser(); // Get user email from auth context
-    const [userPlanData, setUserPlanData] = useState<UserPlanData | null>(null);
-    const [loading, setLoading] = useState(true);
-
-    // Function to fetch user plan data
-    const fetchUserPlan = async () => {
-        if (!email) return;
-
-        try {
-            const response = await fetch(`http://localhost:2024/api/get-user-plan?email=${email}`);
-            const data = await response.json();
-
-            if (data.userPlanData) {
-                setUserPlanData(data.userPlanData);
-            }
-        } catch (error) {
-            console.error("Error fetching user plan:", error);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    // Refresh function to update user plan
-    const refreshUserPlan = () => {
-        setLoading(true);
-        fetchUserPlan();
-    };
-
-    // Fetch user plan on mount
+      // ✅ Load from sessionStorage when the app starts
     useEffect(() => {
-        fetchUserPlan();
-    }, [email]);
+        const storedPlanId = sessionStorage.getItem("selectedPlanId");
+        const storedPlanName = sessionStorage.getItem("selectedPlanName");
+
+        if (storedPlanId && storedPlanName) {
+            setSelectedPlanId(storedPlanId);
+            setSelectedPlanName(storedPlanName);
+        }
+    }, []);
+
+    const setPlan = (planId: string, planName: string) => {
+        setSelectedPlanId(planId);
+        setSelectedPlanName(planName);
+        sessionStorage.setItem("selectedPlanId", planId);
+        sessionStorage.setItem("selectedPlanName", planName);
+    };
+
+    const clearPlan = () => {
+        setSelectedPlanId(null);
+        setSelectedPlanName(null);
+        sessionStorage.removeItem("selectedPlanId");
+        sessionStorage.removeItem("selectedPlanName");
+    };
 
     return (
-        <UserPlanContext.Provider value={{ userPlanData, loading, refreshUserPlan }}>
-            {children}
-        </UserPlanContext.Provider>
+        <PlanContext.Provider value={{ selectedPlanId, selectedPlanName, setPlan, clearPlan }}>
+        {children}
+        </PlanContext.Provider>
     );
 };
 
-// Custom hook to use the UserPlanContext
-export const useUserPlan = () => {
-    const context = useContext(UserPlanContext);
+export const usePlan = (): PlanContextType => {
+    const context = useContext(PlanContext);
     if (!context) {
-        throw new Error("useUserPlan must be used within a UserPlanProvider");
+        throw new Error("usePlan must be used within a PlanProvider");
     }
     return context;
 };

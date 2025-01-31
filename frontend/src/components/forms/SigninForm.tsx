@@ -14,8 +14,9 @@ export default function SigninForm() {
     password: "",
   });
   const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false); // ✅ Add loading state
   const router = useRouter(); // For navigation
-  const { setEmail } = useUser(); // Use the global User context to store email
+  const { setUser } = useUser(); // ✅ Ensure `useUser` is hydrated
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
@@ -28,6 +29,7 @@ export default function SigninForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+    setIsLoading(true); // ✅ Set loading state
 
     try {
       // Send request to Payload CMS login API
@@ -47,18 +49,26 @@ export default function SigninForm() {
       const data = await response.json();
       console.log("Sign-in successful:", data);
 
-      // Store the signed-in email in global context
-      setEmail(data.user.email);
+      // ✅ Ensure `window` is available before using `sessionStorage` (avoids SSR issues)
+      if (typeof window !== "undefined") {
+        sessionStorage.setItem("authToken", data.token);
+        sessionStorage.setItem("user", JSON.stringify(data.user));
+      }
 
-      // Redirect to the dashboard after successful sign-in
+      // ✅ Wrap `setUser` in try/catch to handle errors
+      try {
+        setUser(data.user);
+      } catch (err) {
+        console.error("Error setting user in context:", err);
+      }
+
+      // ✅ Redirect to dashboard after successful sign-in
       router.push("/dashboard");
     } catch (err) {
       console.error(err);
-      if (err instanceof Error) {
-        setError(err.message || "An unexpected error occurred.");
-      } else {
-        setError("An unexpected error occurred.");
-      }
+      setError(err instanceof Error ? err.message : "An unexpected error occurred.");
+    } finally {
+      setIsLoading(false); // ✅ Reset loading state
     }
   };
 

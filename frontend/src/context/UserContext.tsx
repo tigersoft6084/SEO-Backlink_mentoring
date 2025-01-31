@@ -1,22 +1,30 @@
-import { createContext, useContext, useState, ReactNode } from "react";
+"use client";
+
+import { createContext, useContext, ReactNode } from "react";
+import { useAuth } from "../hooks/useAuth"; // ✅ Import custom hook
 
 interface UserContextType {
-  email: string | null;
-  setEmail: (email: string | null) => void;
+  user: User | null;
+  setUser: (user: User | null) => void;
+  refreshUser: () => void;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
-  const [email, setEmail] = useState<string | null>(null);
+  const { user, setUser, refreshUser, isHydrated } = useAuth();
+
+  // ⛔ Prevent rendering until hydration is complete
+  if (!isHydrated) return null;
 
   return (
-    <UserContext.Provider value={{ email, setEmail }}>
+    <UserContext.Provider value={{ user, setUser, refreshUser }}>
       {children}
     </UserContext.Provider>
   );
 };
 
+// ✅ Custom hook to use user data globally
 export const useUser = () => {
   const context = useContext(UserContext);
   if (!context) {
