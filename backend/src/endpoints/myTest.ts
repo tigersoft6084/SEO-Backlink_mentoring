@@ -18,17 +18,17 @@ export const myTestEndpoint: Endpoint = {
     try {
 
       // await getBacklinksDataFromGetalink(req.payload);
-      //await backgroundMarketplaceProcessHandler(req);
+      await backgroundMarketplaceProcessHandler(req);
       // const result = await createPlansAndGetID(req);
       // const result = await listActivePlans();
-      const result = await getBakclinksDataFromPublisuites(req.payload);
+      // const result = await getBakclinksDataFromPublisuites(req.payload);
 
 
       // Return the collected results
       return new Response(
         JSON.stringify({
           message: 'Fetch completed.',
-          Results: result,
+          // Results: result,
         }),
         {
           status: 200,
