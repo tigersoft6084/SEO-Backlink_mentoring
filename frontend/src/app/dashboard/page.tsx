@@ -75,11 +75,11 @@ export default function Home() {
   ];
 
   const quotaUsed = [
-    { name: "Backlinks", value: 100, max: 500 },
-    { name: "Plugin", value: 0, max: 1000 },
-    { name: "Keyword Searches", value: 11, max: 250 },
-    { name: "Competitive Analysis", value: 4, max: 100 },
-    { name: "SERP Scanner", value: 0, max: 100 },
+    { name: "Backlinks", value: 0, max: userPlanData?.features?.backlinks ?? 3 },
+    { name: "Plugin", value: 0, max: userPlanData?.features?.plugin ?? 3 },
+    { name: "Keyword Searches", value: 0, max: userPlanData?.features?.keywordSearches ?? 3 },
+    { name: "Competitive Analysis", value: 0, max: userPlanData?.features?.competitiveAnalysis ?? 1 },
+    { name: "SERP Scanner", value: 0, max: userPlanData?.features?.SerpScanner ?? 0 },
   ];
 
   const handleSearch = () => {
