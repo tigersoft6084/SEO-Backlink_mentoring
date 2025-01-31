@@ -7,6 +7,7 @@ import { ThemeProvider } from "../context/ThemeContext";
 import "../styles/globals.css";
 import Navbar from "../components/common/Navbar";
 import { ExpiredDomainsProvider } from "../context/ExpiredDomainsContext";
+import { UserPlanProvider } from "../context/UserPlanContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,8 +27,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <UserProvider> {/* Wrap everything with UserProvider */}
             <SidebarProvider>
               <ExpiredDomainsProvider>
-                <Navbar />
-                {children}
+                <UserPlanProvider>
+                  <Navbar />
+                  {children}
+                </UserPlanProvider>
               </ExpiredDomainsProvider>
             </SidebarProvider>
           </UserProvider>

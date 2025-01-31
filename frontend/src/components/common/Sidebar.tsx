@@ -50,7 +50,7 @@ export default function Sidebar({ menuItems, quotaUsed }: SidebarProps) {
               onClick={() => handleMenuClick(index, item.name)} // Pass the item's name
               className={`flex items-center space-x-3 p-3 cursor-pointer rounded-full transition-colors ${
                 selectedItem === index
-                  ? "dark:hover:bg-slate-700 dark:bg-slate-700 text-white" // Selected state
+                  ? "dark:hover:bg-slate-700 dark:bg-slate-700 text-white bg-gray-400" // Selected state
                   : "text-gray-700 dark:text-gray-300 hover:bg-gray-300 hover:text-black dark:hover:bg-slate-700" // Hover state
               }`}
             >
@@ -82,7 +82,10 @@ export default function Sidebar({ menuItems, quotaUsed }: SidebarProps) {
             </div>
           ))}
         </div>
-        <button className="mt-6 w-full flex items-center justify-center bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white py-2 rounded-full text-sm font-medium transition">
+        <button
+          className="mt-6 w-full flex items-center justify-center bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white py-2 rounded-full text-sm font-medium transition"
+          onClick={() => {setSelectedItem("Extend Your Quota"), setSelectedMenuItem("Extend Your Quota")}}
+        >
           <RiVipCrown2Fill className="mr-2" size={16} />
           Extend Your Quota
         </button>
@@ -95,7 +98,7 @@ export default function Sidebar({ menuItems, quotaUsed }: SidebarProps) {
             onClick={() => {setSelectedItem("Support"), setSelectedMenuItem("Support")}}
             className={`flex items-center space-x-3 p-3 cursor-pointer rounded-full transition-colors ${
               selectedItem === "Support"
-                ? "dark:hover:bg-slate-700 text-white"
+                ? "dark:hover:bg-slate-700 dark:bg-slate-700 text-white bg-gray-400"
                 : "text-gray-700 dark:text-gray-300 hover:bg-gray-300 hover:text-black dark:hover:bg-slate-700"
             }`}
           >
@@ -106,7 +109,7 @@ export default function Sidebar({ menuItems, quotaUsed }: SidebarProps) {
             onClick={() => {setSelectedItem("Account Settings"), setSelectedMenuItem("Account Settings")}}
             className={`flex items-center space-x-3 p-3 cursor-pointer rounded-full transition-colors ${
               selectedItem === "Account Settings"
-                ? "dark:hover:bg-slate-700 text-white"
+                ? "dark:hover:bg-slate-700 dark:bg-slate-700 text-white bg-gray-400"
                 : "text-gray-700 dark:text-gray-300 hover:bg-gray-300 hover:text-black dark:hover:bg-slate-700"
             }`}
           >

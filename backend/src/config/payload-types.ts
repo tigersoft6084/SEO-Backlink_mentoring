@@ -79,6 +79,18 @@ export interface User {
   username?: string | null;
   profilePicture?: (string | null) | Media;
   authProvider?: string | null;
+  planId?: string | null;
+  subscriptionId?: string | null;
+  planName?: string | null;
+  features?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -306,6 +318,10 @@ export interface UsersSelect<T extends boolean = true> {
   username?: T;
   profilePicture?: T;
   authProvider?: T;
+  planId?: T;
+  subscriptionId?: T;
+  planName?: T;
+  features?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;

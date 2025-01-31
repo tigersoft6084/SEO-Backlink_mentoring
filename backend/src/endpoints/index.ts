@@ -7,7 +7,10 @@ import { fetchLinkbuildersEndpoint } from "./marketplaces/linkbuildersEndpoint.t
 import { fetchprensalinkEndpoint } from "./marketplaces/prensalinkEndpoint.ts";
 import { fetchSeoJungleEndpoint } from "./marketplaces/seojungleEndpoint.ts";
 import { myTestEndpoint } from "./myTest.ts";
+import { getPlansFromDbEndpoint } from "./paypal/getPlansFromDbEndpoint.ts";
+import { getUserPlan } from "./paypal/getUserPlansEndpoint.ts";
 import { paypalSubscriptionEndpoint } from "./paypal/paypalSubscriptionEndpont.ts";
+import { saveSubscriptionToUserCollection } from "./paypal/saveSubscriptionEndpoint.ts";
 
 
 export const customEndpoints = [
@@ -16,6 +19,9 @@ export const customEndpoints = [
     bulkCompetitiveAnalysisEndpoint,
     expiredDomainEndpoint,
     paypalSubscriptionEndpoint,
+    getPlansFromDbEndpoint,
+    saveSubscriptionToUserCollection,
+    getUserPlan,
     fetchLinkbuildersEndpoint,
     fetchprensalinkEndpoint,
     fetchSeoJungleEndpoint,

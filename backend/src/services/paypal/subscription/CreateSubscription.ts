@@ -31,7 +31,7 @@ export const createSubscription = async(planID : string) => {
                 "locale": "en-US", // Optional: Locale for user interface
                 "user_action": "SUBSCRIBE_NOW", // Optional: Sets user action
                 "return_url": "http://localhost:1212/dashboard", // Required: Where the user is redirected after approval
-                "cancel_url": "http://localhost:1212/cancelUrl", // Required: Where the user is redirected after cancelation
+                "cancel_url": "http://localhost:1212/dashboard", // Required: Where the user is redirected after cancelation
             },
         };
 

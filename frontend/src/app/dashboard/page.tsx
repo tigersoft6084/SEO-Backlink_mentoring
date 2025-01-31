@@ -14,12 +14,54 @@ import SerpScanner from "./serp-scanner/page";
 import ExpiredDomains from "./expired-domains/page";
 import Projects from "./projects/page";
 import AccountSettings from "./account-settings/page";
-import Support from "./support/page";
-import useExpiredFilterView from "../../hooks/useExpiredFilterView";
+import PricingTable from "./quota/page";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useUserPlan } from "../../context/UserPlanContext";
 
 export default function Home() {
 
-  const {selectedMenuItem} = useSidebar();
+  const { userPlanData, refreshUserPlan } = useUserPlan();
+  const { selectedMenuItem, setSelectedMenuItem } = useSidebar();
+  const [userFeatures, setUserFeatures] = useState([]);
+  const searchParams = useSearchParams(); // Correct way to get query params in Next.js App Router
+  const pathname = usePathname(); // Get the base URL path ("/dashboard")
+  const router = useRouter();
+
+  useEffect(() => {
+    // refreshUserPlan();
+    const subscriptionId = searchParams?.get("subscription_id");
+    const planId = localStorage.getItem('selectedPlanId');
+    const planName = localStorage.getItem('selectedPlanName');
+    const userEmail = localStorage.getItem('userEmail');
+
+    if (subscriptionId && planId) {
+      // Set the selected page to "Extend Your Quota"
+      setSelectedMenuItem("Extend Your Quota");
+
+      // Send subscription data to the backend
+      fetch("http://localhost:2024/api/save-subscription", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ subscriptionId, planId, planName, userEmail }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.features) {
+            setUserFeatures(data.features); // Save features
+          }
+        })
+        .finally(() => {
+          localStorage.removeItem("selectedPlanId"); // Cleanup
+          localStorage.removeItem("selectedPlanName");
+          if (pathname) {
+            router.replace(pathname); // Remove query params
+          }
+        });
+    }
+  }, [searchParams, pathname, router, setSelectedMenuItem, refreshUserPlan]);
 
 
   // Add icons and descriptions to the menu items
@@ -58,8 +100,10 @@ export default function Home() {
         return <ExpiredDomains/>;
       case "Serp Scanner":
         return <SerpScanner />;
+        case "Extend Your Quota":
+          return <PricingTable/>;
       case "Support":
-        return <Support/>;
+        return "";
       case "Account Settings":
         return <AccountSettings/>;
       default:

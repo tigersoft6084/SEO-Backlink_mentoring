@@ -10,7 +10,7 @@ export const Users: CollectionConfig = {
   },
   access: {
     create: () => true,  // Allow creation for all
-    update: ({ req }) => req.user?.role === 'admin', // Allow only admins to update
+    update: () => true, // Allow only admins to update
     read: () => true
   },
   fields: [
@@ -42,6 +42,24 @@ export const Users: CollectionConfig = {
     {
       name: 'authProvider',
       type: 'text',  // To track which auth provider was used (Google)
+    },
+    {
+      name: "planId",
+      type: "text",
+    },
+    {
+      name: "subscriptionId",
+      type: "text",
+    },
+    {
+      name: "planName",
+      type: "text",
+      admin: { position: "sidebar" }, // Display plan name in admin panel
+    },
+    {
+      name: "features",
+      type: "json", // Store all plan features as JSON
+      admin: { position: "sidebar" },
     },
   ],
   hooks: {

@@ -1,9 +1,10 @@
 import { useEffect } from 'react';
 
-const HandleReturnUrl = () => {
+const useHandleReturnUrl = () => {
     useEffect(() => {
         const queryParams = new URLSearchParams(window.location.search);
-        const subscriptionId = queryParams.get('subscriptionId'); // Or 'token'
+        const subscriptionId = queryParams.get('subscription_id');
+        const planId = localStorage.getItem("selectedPlanId");
 
         if (subscriptionId) {
             validateSubscription(subscriptionId);
@@ -32,4 +33,4 @@ const HandleReturnUrl = () => {
     // return <div>Processing...</div>;
 };
 
-export default HandleReturnUrl;
+export default useHandleReturnUrl;
