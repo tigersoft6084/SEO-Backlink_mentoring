@@ -15,7 +15,7 @@ export default function BulkSearch() {
   const pageName = "BulkSearch"
 
   return (
-    <div className="flex-1 p-6 bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100">
+    <div className="flex-1 p-6 bg-gray-100 dark:bg-slate-900 text-gray-900 dark:text-gray-100">
       {currentView === "input" ? (
         <InputView
           placeholder="Send up to 30000 URLs maximum, 1 per line."

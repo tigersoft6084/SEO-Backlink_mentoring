@@ -6,15 +6,15 @@ export default function AccountSettings() {
   const { email } = useUser(); // Access the globally stored email
 
   return (
-    <div className="flex-1 p-6 bg-gray-100 dark:bg-gray-800 items-center">
-      <div className="w-full p-6 bg-white dark:bg-gray-700 rounded shadow-md">
+    <div className="flex-1 p-6 bg-gray-100 dark:bg-slate-900 items-center">
+      <div className="w-full p-6 bg-white dark:bg-slate-800 rounded shadow-md">
         <div className="divide-y divide-gray-300 dark:divide-gray-500">
           {/* Default Google Geolocation */}
           <div className="py-4 flex justify-between items-center">
             <label className="text-gray-700 dark:text-gray-300">
               Default Google Geolocation
             </label>
-            <select className="w-1/2 p-2 border rounded bg-gray-50 dark:bg-gray-600 dark:text-gray-200 dark:border-gray-600">
+            <select className="w-1/2 p-2 border rounded bg-gray-50 dark:bg-slate-700 dark:text-gray-200 dark:border-gray-600">
               <option>United States</option>
               <option>Canada</option>
               <option>United Kingdom</option>

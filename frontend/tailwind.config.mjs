@@ -14,6 +14,8 @@ const config = {
       colors: {
         background: 'var(--background)', // Use CSS variables for background
         foreground: 'var(--foreground)', // Use CSS variables for foreground
+        primary: "#4f39f6", // Use CSS variables for primary
+        dark : "#101828",
       },
       fontFamily: {
         sans: ['"Euclid Circular A"', ...defaultTheme.fontFamily.sans], // Add custom font with fallback

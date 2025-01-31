@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <main className="flex flex-col items-center justify-center h-screen bg-gray-100 dark:bg-gray-800">
+    <main className="flex flex-col items-center justify-center h-screen bg-gray-100 dark:bg-slate-900">
       <h1 className="text-4xl font-bold mb-6 text-gray-900 dark:text-gray-100">
         Welcome to My App!
       </h1>

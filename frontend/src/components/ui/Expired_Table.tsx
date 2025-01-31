@@ -53,10 +53,10 @@ const ExpiredDomainsTable : React.FC<ExpiredDomainsTableProps> = ({
 
     console.log(sortedRows)
     return (
-        <div className="p-6 bg-white shadow-md rounded-lg dark:bg-gray-700">
+        <div className="p-6 bg-white shadow-md rounded-lg dark:bg-slate-800">
             <div className="overflow-x-auto max-h-[calc(100vh-330px)] overflow-y-auto">
                 <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-500">
-                    <thead className="bg-white dark:bg-gray-700">
+                    <thead className="bg-white dark:bg-slate-800">
                         <tr>
                             <th
                                 className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400 cursor-pointer"
@@ -169,11 +169,11 @@ const ExpiredDomainsTable : React.FC<ExpiredDomainsTableProps> = ({
                         </tr>
                     </thead>
 
-                    <tbody className="bg-white dark:bg-gray-700">
+                    <tbody className="bg-white dark:bg-slate-800">
                         {sortedRows.map((row, idx) => (
                             <tr
                                 key={idx}
-                                className="hover:bg-blue-100 hover:rounded-3xl hover:scale-y-60n dark:hover:bg-gray-500 transition-all duration-100"
+                                className="hover:bg-blue-100 hover:rounded-3xl hover:scale-y-60n dark:hover:dark:hover:bg-slate-700 transition-all duration-100"
                             >
                                 <td
                                     className="px-4 py-4 whitespace-nowrap text-sm text-blue-500 dark:text-blue-300"

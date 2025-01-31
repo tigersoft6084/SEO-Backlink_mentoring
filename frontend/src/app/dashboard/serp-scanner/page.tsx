@@ -19,7 +19,7 @@ export default function SerpScanner() {
 
   return (
     <div className="flex-1 p-6">
-      <div className="flex flex-row flex-1 p-10 border rounded-lg shadow-md bg-white dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200">
+      <div className="flex flex-row flex-1 p-10 border rounded-lg shadow-md bg-white dark:bg-slate-900 dark:border-gray-600 dark:text-gray-200">
         {/* Location header */}
         <div className="flex items-center text-blue-500 font-medium dark:text-blue-300">
           <svg
@@ -44,7 +44,7 @@ export default function SerpScanner() {
         {/* Input field */}
         <input
           type="text"
-          className="flex-1 mx-4 px-4 py-2 border border-gray-300 rounded-lg dark:bg-gray-800 dark:border-gray-500 dark:text-gray-400 focus:ring focus:ring-gray-600 focus:outline-none dark:focus:ring-gray-200"
+          className="flex-1 mx-4 px-4 py-2 border border-gray-300 rounded-lg dark:bg-slate-800 dark:border-gray-500 dark:text-gray-400 focus:ring focus:ring-gray-600 focus:outline-none dark:focus:ring-gray-200"
           placeholder= "Enter a keyword to scan the backlinks of the top 10 search results"
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}

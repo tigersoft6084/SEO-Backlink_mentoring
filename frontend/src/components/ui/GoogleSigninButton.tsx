@@ -21,7 +21,7 @@ const GoogleAuthButton: React.FC<GoogleAuthButtonProps> = ({ action }) => {
   return (
     <button
       onClick={handleClick} // Using the async handleClick function
-      className={`flex items-center justify-center gap-x-2 py-2 px-4 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600 ${
+      className={`flex items-center justify-center gap-x-2 py-2 px-4 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 dark:bg-slate-800 dark:text-gray-200 dark:hover:bg-gray-600 ${
         action === 'signup' ? 'w-auto' : 'w-full' // Adjust width based on action
       }`}
       aria-label={buttonText} // Added accessibility label for better screen reader support

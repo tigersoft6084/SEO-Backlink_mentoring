@@ -7,6 +7,7 @@ interface BacklinkData {
   tf: number;
   cf: number;
   price: number;
+  ttf : string;
   source: string;
   allSources: { marketplace_source: string; price: number }[];
 }
@@ -56,6 +57,7 @@ export const bulkDomainSearchEndpoint: Endpoint = {
           }
         ]
         keyword : string;
+        ttf : string;
         rd : number;
         tf : number;
         cf : number;
@@ -103,6 +105,7 @@ export const bulkDomainSearchEndpoint: Endpoint = {
                 tf: doc.tf || 0,
                 cf: doc.cf || 0,
                 price: minMarketplace.price,
+                ttf : doc.ttf ? doc.ttf : "",
                 source: minMarketplace.marketplace_source,
                 allSources: doc.marketplaces.map((marketplace) => ({
                   marketplace_source: marketplace.marketplace_source,

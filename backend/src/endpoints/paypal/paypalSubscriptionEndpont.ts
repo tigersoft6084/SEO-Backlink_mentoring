@@ -3,43 +3,53 @@ import { createSubscription } from "@/services/paypal/subscription/CreateSubscri
 import { Endpoint, PayloadRequest } from "payload";
 
 export const paypalSubscriptionEndpoint: Endpoint = {
-
     path: '/create-subscription',
 
-    method: 'post', // POST is appropriate for creating resources
+    method: 'post',
 
     handler: withErrorHandling(async (req: PayloadRequest): Promise<Response> => {
+        if (req.method === "OPTIONS") {
+            // Handle preflight requests
+            return new Response(null, {
+                status: 204,
+                headers: {
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Methods": "POST, OPTIONS",
+                    "Access-Control-Allow-Headers": "Content-Type, Authorization",
+                },
+            });
+        }
 
         let planID: string | undefined;
 
-        // Check if req.json exists and parse the body
         if (req.json) {
             const body = await req.json();
-            planID = body?.planID;
+            planID = body?.planId;
         }
 
-        // Validate if planID is provided
         if (!planID) {
             return new Response(
                 JSON.stringify({ error: 'Missing planID in the request body' }),
                 {
                     status: 400,
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: {
+                        'Content-Type': 'application/json',
+                        "Access-Control-Allow-Origin": "*",
+                    },
                 }
             );
         }
 
-        // Create the subscription
         const approvalUrl = await createSubscription(planID);
 
-        // Return the approval URL as the response
         return new Response(
-            JSON.stringify({
-                approvalUrl: approvalUrl,
-            }),
+            JSON.stringify({ approvalUrl }),
             {
                 status: 200,
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                    "Access-Control-Allow-Origin": "*",
+                },
             }
         );
     }),

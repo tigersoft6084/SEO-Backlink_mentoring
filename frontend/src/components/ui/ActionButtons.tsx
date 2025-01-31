@@ -89,14 +89,14 @@ export default function ActionButtons({ responseData }: ActionButtonsProps) {
       {/* CSV Button */}
       <button
         onClick={handleCSVDownload}
-        className="flex items-center gap-2 w-20 h-10 px-4 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
+        className="flex items-center gap-2 w-20 h-10 px-4 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 dark:bg-slate-700 dark:text-gray-300 dark:hover:bg-gray-600"
       >
         <FaArrowDown className="text-lg" />
         <span className="text-sm font-medium">CSV</span>
       </button>
 
       {/* Settings Button */}
-      <button className="flex justify-center items-center w-10 h-10 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600">
+      <button className="flex justify-center items-center w-10 h-10 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 dark:bg-slate-700 dark:text-gray-300 dark:hover:bg-gray-600">
         <IoMdSettings className="text-lg" />
       </button>
     </div>

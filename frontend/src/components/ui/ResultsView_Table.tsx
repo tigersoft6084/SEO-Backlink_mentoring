@@ -107,10 +107,10 @@ const TableSection: React.FC<TableSectionProps> = ({
   }, [selectedRows, rows.length, setSelectAll]);
 
   return (
-    <div className="p-6 bg-white shadow-md rounded-lg dark:bg-gray-700">
+    <div className="p-6 bg-white shadow-md rounded-lg dark:bg-slate-700">
       <div className="overflow-x-auto max-h-[calc(100vh-330px)] overflow-y-auto">
         <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-500">
-          <thead className="bg-white dark:bg-gray-700">
+          <thead className="bg-white dark:bg-slate-700">
             <tr>
               <th className="px-6">
                 <div className="flex items-center justify-center">
@@ -220,11 +220,11 @@ const TableSection: React.FC<TableSectionProps> = ({
             </tr>
           </thead>
 
-          <tbody className="bg-white dark:bg-gray-700">
+          <tbody className="bg-white dark:bg-slate-700">
             {sortedRows.map((row, idx) => (
               <tr
                 key={idx}
-                className="hover:bg-blue-100 hover:rounded-3xl hover:scale-y-60n dark:hover:bg-gray-500 transition-all duration-100"
+                className="hover:bg-blue-100 hover:rounded-3xl hover:scale-y-60n dark:hover:dark:hover:bg-slate-600 transition-all duration-100"
                 onClick={() => handleRowCheckboxChange(idx)}
               >
                 <td className="px-6 whitespace-nowrap text-center" onClick={(e) => e.stopPropagation()}>
@@ -262,7 +262,7 @@ const TableSection: React.FC<TableSectionProps> = ({
 
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{row.cf}</td>
 
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{row.ttf.length > 12 ? `${row.ttf.substring(0, 12)}...` : row.ttf}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{row.ttf?.length > 12 ? `${row.ttf.substring(0, 12)}...` : row.ttf}</td>
 
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">
                   <DynamicPrice

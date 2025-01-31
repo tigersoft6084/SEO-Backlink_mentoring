@@ -73,7 +73,7 @@ const fetchCookieFromUnancor_POST_Login = async (email: string, password: string
         // Extract cookies from the response headers
         const setCookieHeaders = response.headers['set-cookie'] || [];
 
-        const combinedCookies = setCookieHeaders.join('; ');
+        const combinedCookies = setCookieHeaders.join(';');
         const xsrfTokenMatch = combinedCookies.match(/XSRF-TOKEN=[^;]+;/);
         const unancorMatchSession = combinedCookies.match(/unancor_match_session=[^;]+;/);
 
@@ -85,6 +85,7 @@ const fetchCookieFromUnancor_POST_Login = async (email: string, password: string
                 CSRF_TOKEN: finalCookie?.CSRF_TOKEN || '',
                 COOKIE : finalCookie?.COOKIE || ''
             };
+
         } else {
             console.log("One or more required cookies not found.");
         }

@@ -81,6 +81,8 @@ export const bulkKeywordSearchEndpoint: Endpoint = {
             }
             return false;
           });
+          // allLinksByKeyword[keyword] = links;
+
         } catch (error) {
           console.error(`Error fetching data for keyword: ${keyword}`, error);
         }
