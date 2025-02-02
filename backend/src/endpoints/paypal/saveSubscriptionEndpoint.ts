@@ -13,7 +13,7 @@ const planFeatures: {
         bulkKeywords: number;
         SerpScanner: number;
     };
-    } = {
+} = {
     "Standard Plan": {
         resultsPerSearch: 300,
         backlinks: 100,

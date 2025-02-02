@@ -31,7 +31,7 @@ export const getUserPlan: Endpoint = {
 
             if (!user.docs.length) {
                 return new Response(
-                    JSON.stringify({ error: "User not found." }),
+                    JSON.stringify(`❌ Error: User not found for email: ${email}`),
                     {
                         status: 400,
                         headers: {
@@ -54,7 +54,7 @@ export const getUserPlan: Endpoint = {
                     }
             );
         } catch (error) {
-        console.error("Error fetching user plan:", error);
+            console.error("Error fetching user plan:", error);
             console.error("Error updating user subscription:", error);
 
             return new Response(

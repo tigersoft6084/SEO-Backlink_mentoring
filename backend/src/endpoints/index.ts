@@ -11,6 +11,10 @@ import { getPlansFromDbEndpoint } from "./paypal/getPlansFromDbEndpoint.ts";
 import { getUserPlan } from "./paypal/getUserPlansEndpoint.ts";
 import { paypalSubscriptionEndpoint } from "./paypal/paypalSubscriptionEndpont.ts";
 import { saveSubscriptionToUserCollection } from "./paypal/saveSubscriptionEndpoint.ts";
+import { removeFavoriteFromProject } from "./projectManagement/deleteProject.ts";
+import { getUserProjects } from "./projectManagement/getProject.ts";
+import { addProjectToUser } from "./projectManagement/postProject.ts";
+import { updateUserProject } from "./projectManagement/putProject.ts";
 
 
 export const customEndpoints = [
@@ -22,6 +26,10 @@ export const customEndpoints = [
     getPlansFromDbEndpoint,
     saveSubscriptionToUserCollection,
     getUserPlan,
+    getUserProjects,
+    addProjectToUser,
+    updateUserProject,
+    removeFavoriteFromProject,
     fetchLinkbuildersEndpoint,
     fetchprensalinkEndpoint,
     fetchSeoJungleEndpoint,

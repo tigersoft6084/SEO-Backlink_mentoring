@@ -91,6 +91,15 @@ export interface User {
     | number
     | boolean
     | null;
+  projects?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -322,6 +331,7 @@ export interface UsersSelect<T extends boolean = true> {
   subscriptionId?: T;
   planName?: T;
   features?: T;
+  projects?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;

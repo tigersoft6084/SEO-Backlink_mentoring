@@ -46,10 +46,12 @@ export const Users: CollectionConfig = {
     {
       name: "planId",
       type: "text",
+      admin: { position: "sidebar" },
     },
     {
       name: "subscriptionId",
       type: "text",
+      admin: { position: "sidebar" },
     },
     {
       name: "planName",
@@ -61,6 +63,10 @@ export const Users: CollectionConfig = {
       type: "json", // Store all plan features as JSON
       admin: { position: "sidebar" },
     },
+    {
+      name : "projects",
+      type : "json"
+    }
   ],
   hooks: {
     beforeChange: [

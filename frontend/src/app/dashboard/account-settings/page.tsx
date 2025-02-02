@@ -47,7 +47,7 @@ export default function AccountSettings() {
           <div className="py-4 flex justify-between items-center">
             <label className="text-gray-700 dark:text-gray-300">Your Plan</label>
             <p className="w-1/2 text-gray-900 dark:text-gray-200">
-              Booster Monthly{" "}
+              {user?.planName}{" "}
               <a
                 href="#"
                 className="text-blue-500 hover:underline dark:text-blue-400"

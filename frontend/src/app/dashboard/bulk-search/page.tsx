@@ -32,7 +32,7 @@ export default function BulkSearch() {
   };
 
   return (
-    <div className="flex-1 p-6 bg-gray-100 dark:bg-slate-900 text-gray-900 dark:text-gray-100">
+    <div className="flex-1 px-6 pt-6 bg-gray-100 dark:bg-slate-900 text-gray-900 dark:text-gray-100">
       {loading ? (
         // Show Lottie animation while loading
         <div className="flex justify-center items-center h-screen" style={{marginTop : "-100px"}}>

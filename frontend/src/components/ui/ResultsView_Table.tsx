@@ -101,10 +101,10 @@ const TableSection: React.FC<TableSectionProps> = ({
     return "indeterminate"; // Some rows selected
   };
 
-  useEffect(() => {
-    // When rows are selected/deselected, update selectAll state dynamically
-    setSelectAll(selectedRows.size === rows.length);
-  }, [selectedRows, rows.length, setSelectAll]);
+  // useEffect(() => {
+  //   // When rows are selected/deselected, update selectAll state dynamically
+  //   setSelectAll(selectedRows.size === rows.length);
+  // }, [selectedRows, rows.length, setSelectAll]);
 
   return (
     <div className="p-6 bg-white shadow-md rounded-lg dark:bg-slate-700">
@@ -145,14 +145,6 @@ const TableSection: React.FC<TableSectionProps> = ({
                 <div className="flex items-center gap-2">
                   <span className="group relative cursor-pointer">
                     RD
-                    {/* Tooltip */}
-                    <div
-                      className="absolute left-0 bottom-full mb-2 hidden w-64 p-2 bg-gray-800 text-white text-sm rounded shadow-lg group-hover:block"
-                      style={{ zIndex: "10" }}
-                    >
-                      Referring Domains: Unique domains linking to the website. Higher values mean a stronger backlink
-                      profile.
-                    </div>
                   </span>
 
                   {sortConfig?.key === "rd" && (sortConfig.direction === "asc" ? "▲" : "▼")}
