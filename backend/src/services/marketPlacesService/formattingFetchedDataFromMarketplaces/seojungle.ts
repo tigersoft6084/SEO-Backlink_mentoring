@@ -15,23 +15,21 @@ interface SeojungleResponse {
 export const getFormDataFromSeojungle = async (
     response: SeojungleResponse[]
 ): Promise<FetchedBackLinkDataFromMarketplace[] | Response> => {
-
     try {
-        // Ensure response is valid
+        // Ensure response is valid and an array
         if (!response || !Array.isArray(response)) {
-        throw new Error("Invalid response data. Expected an array.");
+            throw new Error("Invalid response data. Expected an array.");
         }
 
         // Process the response and format it into the desired structure
-        const formattedData: FetchedBackLinkDataFromMarketplace[] = response.map(
-            (item) => {
-                // Ensure URL is properly formatted
+        const formattedData: FetchedBackLinkDataFromMarketplace[] = response
+            .filter(item => item?.url) // Ensure item has a URL
+            .map((item) => {
                 const rawDomain = item.url || "Unknown";
                 const formattedDomain = rawDomain
-                .replace(/^(https?:\/\/)?(www\.)?/, "") // Remove protocol and "www."
-                .replace(/\/$/, ""); // Remove trailing slash
+                    .replace(/^(https?:\/\/)?(www\.)?/, "") // Remove protocol and "www."
+                    .replace(/\/$/, ""); // Remove trailing slash
 
-                // Extract price from products array
                 const price = item.products?.[0]?.margedPrice || 0;
 
                 return {
@@ -39,11 +37,10 @@ export const getFormDataFromSeojungle = async (
                     tf: item.trustFlow || 0,
                     cf: item.citationFlow || 0,
                     rd: item.referringDomains || 0,
-                    backlinks : item.totalBacklinks || 0,
+                    backlinks: item.totalBacklinks || 0,
                     price,
                 };
-            }
-        );
+            });
 
         return formattedData;
     } catch (error) {

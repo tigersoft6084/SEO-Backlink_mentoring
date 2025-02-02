@@ -4,7 +4,6 @@ import { GET_BACKLINK_FROM_SeoJungle_URL } from '@/globals/globalURLs.ts';
 import { ErrorHandler } from '@/handlers/errorHandler.ts';
 
 export const fetchDataFromSeojungle = async (token: string, page: number, themes: string[]) => {
-
     const body = {
         searchField: "",
         tfMin: 0,
@@ -45,9 +44,21 @@ export const fetchDataFromSeojungle = async (token: string, page: number, themes
             },
         });
 
-        const formattedData = getFormDataFromSeojungle(response);
+        // Ensure the response is valid and contains backlink data
+        if (!response.data || !response.data.data) {
+            console.warn(`Unexpected response structure on page ${page}:`, response.data);
+            return [];
+        }
 
-        return formattedData;
+        const backlinks = response.data.data.support; // Extract actual backlinks
+
+        // Validate that backlinks is an array before formatting
+        if (!Array.isArray(backlinks)) {
+            console.warn(`Invalid response format on page ${page}:`, response.data);
+            return [];
+        }
+
+        return getFormDataFromSeojungle(backlinks);
 
     } catch (error) {
         const { errorDetails, status } = ErrorHandler.handle(error, "No Seojungle data received.");

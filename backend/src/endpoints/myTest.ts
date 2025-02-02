@@ -6,13 +6,12 @@ import { createPlansAndGetID } from '@/services/paypal/plan/CreatePlan.ts';
 import { getProductAndPlanIdFromDB } from '@/services/paypal/catalogProducts/getProductsFromDB.ts';
 import { createProduct } from '@/services/paypal/catalogProducts/CreateProduct.ts';
 import { listActivePlans } from '@/services/paypal/plan/ListPlan.ts';
-import { getBacklinksDataFromUnancor } from '@/services/marketPlacesService/getBacklinksFromMarketplaces/unancor.ts';
 import { getCookieFromPublisuites } from '@/services/marketPlacesService/getTokensOrCookiesFromMarketplaces/publisuites.ts';
 import { getBakclinksDataFromPublisuites } from '@/services/marketPlacesService/getBacklinksFromMarketplaces/publisuites.ts';
-import { getBacklinksDataFromBoosterlink } from '../services/marketPlacesService/getBacklinksFromMarketplaces/boosterlink.ts';
-import { getTokenForLinkBuilders } from '@/services/marketPlacesService/getTokensOrCookiesFromMarketplaces/linkbuilders.ts';
-import { fetchDataFromLinkbuilders } from '@/services/marketPlacesService/fetchDataFromMarketplaces/linkbuilders.ts';
+
 import { getBacklinksDataFromLinkbuilders } from '@/services/marketPlacesService/getBacklinksFromMarketplaces/linkbuilders.ts';
+import { getTokenForPrensalink } from '@/services/marketPlacesService/getTokensOrCookiesFromMarketplaces/prensalink.ts';
+import { getBacklinksDataFromSeojungle } from '@/services/marketPlacesService/getBacklinksFromMarketplaces/seojungle.ts';
 
 // Define the Payload endpoint
 export const myTestEndpoint: Endpoint = {
@@ -24,9 +23,9 @@ export const myTestEndpoint: Endpoint = {
       // await getBacklinksDataFromGetalink(req.payload);
       //await backgroundMarketplaceProcessHandler(req);
       // const result = await createPlansAndGetID(req);
-      //const result = await getBacklinksDataFromLinkbuilders(req.payload)
-      await getBacklinksDataFromLinkbuilders(req.payload);
-
+      //const result = await getBacklinksDataFromPrensalink(req.payload)
+      await getBacklinksDataFromSeojungle(req.payload);
+      // const result = await getTokenForPrensalink()
 
       // Return the collected results
       return new Response(

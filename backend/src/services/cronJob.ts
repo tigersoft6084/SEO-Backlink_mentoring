@@ -9,6 +9,7 @@ import { getBacklinksDataFromMistergoodlink } from "./marketPlacesService/getBac
 import { getBacklinksDataFromLinkatomic } from "./marketPlacesService/getBacklinksFromMarketplaces/linkatomic.ts";
 import { getBacklinksDataFromUnancor } from "./marketPlacesService/getBacklinksFromMarketplaces/unancor.ts";
 import { getBacklinksDataFromBoosterlink } from "./marketPlacesService/getBacklinksFromMarketplaces/boosterlink.ts";
+import { getBacklinksDataFromLinkbuilders } from "./marketPlacesService/getBacklinksFromMarketplaces/linkbuilders.ts";
 
 /**
  * Logs messages to the console or a log file
@@ -59,6 +60,12 @@ export const startCronJob = async(payload : Payload): Promise<void> => {
             await getBacklinksDataFromLinkaVista(payload);
 
             log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~Completed fetching data from LinkaVista.~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+
+            log("<<<<<<<<<<<<<<<<<<<<<<.....................Fetching data from Linkbuilders..........................>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+
+            await getBacklinksDataFromLinkbuilders(payload);
+
+            log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~Completed fetching data from Linkbuilders.~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
             log("<<<<<<<<<<<<<<<<<<<<<<.....................Fetching data from Paperclub..........................>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 
