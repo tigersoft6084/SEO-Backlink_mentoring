@@ -4,6 +4,7 @@ import { fetchDataFromDevelink } from "../fetchDataFromMarketplaces/develink.ts"
 
 import { uploadToDatabase } from "../uploadDatabase.ts";
 import { Payload } from "payload";
+import { MARKETPLACE_NAME_DEVELINK } from "@/globals/strings.ts";
 
 const TOTAL_PAGES = 1411;
 const CONCURRENCY_LIMIT = 100;
@@ -27,7 +28,7 @@ export const getAllDataFromDevelink = async (cookie: string, payload: Payload) =
                 for (const item of data) {
                     if (!seenDomains.has(item.domain)) {
                         seenDomains.add(item.domain); // Track processed domain
-                        await uploadToDatabase(payload, item, "Develink"); // Upload to database
+                        await uploadToDatabase(payload, item, MARKETPLACE_NAME_DEVELINK); // Upload to database
                     }
                 }
             } else {

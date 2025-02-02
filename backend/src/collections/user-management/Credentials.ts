@@ -79,7 +79,7 @@ export const Credentials: CollectionConfig = {
             { label: 'DataForSeo', value: 'DataForSeo' },
             { label: 'PaperClub', value: 'PaperClub' },
             { label: 'Ereferer', value: 'Ereferer' },
-            { label: 'Link.Builders', value: 'Link.Builders' },
+            { label: 'Linkbuilders', value: 'Linkbuilders' },
             { label: 'Prensalink', value: 'Prensalink' },
             { label: 'Seojungle', value: 'Seojungle' },
             { label: 'Mistergoodlink', value: 'Mistergoodlink' },

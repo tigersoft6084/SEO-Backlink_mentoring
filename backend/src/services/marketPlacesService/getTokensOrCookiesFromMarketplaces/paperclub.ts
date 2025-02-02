@@ -26,6 +26,7 @@ const fetchTokenFromPaperClub = async (email: string, password: string): Promise
 
 // Main function to fetch credentials and compare website target
 export const getTokenForPaperClub = async (): Promise<string | null> => {
+
     const credentials = await getCredentialsForMarketplaces();
 
     // Iterate through the credentials and fetch token for PaperClub

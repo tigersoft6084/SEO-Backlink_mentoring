@@ -145,7 +145,7 @@ export interface CredentialsForMarketplace {
           | 'DataForSeo'
           | 'PaperClub'
           | 'Ereferer'
-          | 'Link.Builders'
+          | 'Linkbuilders'
           | 'Prensalink'
           | 'Seojungle'
           | 'Mistergoodlink'

@@ -5,7 +5,8 @@ import { ErrorHandler } from '@/handlers/errorHandler.ts';
 
 // Function to fetch token from Link.Builders API
 const fetchTokenFromLinkBuilders = async (email: string, password: string): Promise<string> => {
-    try {
+
+  try {
       const response = await axios.post(LINK_BUILDERS_API_URL, {
         email: email,
         password: password,
@@ -15,6 +16,7 @@ const fetchTokenFromLinkBuilders = async (email: string, password: string): Prom
       const token = response.data.token;
 
       return token;
+
     } catch (error) {
 
       const { errorDetails } = ErrorHandler.handle(error, "Error fetching validation data for Linkbuilders : ");
@@ -24,13 +26,14 @@ const fetchTokenFromLinkBuilders = async (email: string, password: string): Prom
 
 // Main function to fetch credentials and compare website target
 export const getTokenForLinkBuilders = async (): Promise<string | null> => {
+
     const credentials = await getCredentialsForMarketplaces();
 
     // Iterate through the credentials and fetch token for Link.Builders
     for (const credential of credentials) {
 
         // Check if any value in websiteTarget array is 'Link.Builders'
-        const hasLinkBuildersTarget = credential.websiteTarget.some((target: { value: string }) => target.value === 'Link.Builders');
+        const hasLinkBuildersTarget = credential.websiteTarget.some((target: { value: string }) => target.value === 'Linkbuilders');
 
         if (hasLinkBuildersTarget) {
             console.log(`Found Link.Builders credentials for ${credential.email}`);

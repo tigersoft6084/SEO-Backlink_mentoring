@@ -1,39 +1,33 @@
-import axios from "axios";
-import { getTokenForLinkBuilders } from "../getTokensOrCookiesFromMarketplaces/link-builders.ts";
+import { ErrorHandler } from "@/handlers/errorHandler.ts";
+
+import { Payload } from "payload";
+import { getTokenForLinkBuilders } from "../getTokensOrCookiesFromMarketplaces/linkbuilders.ts";
+import { fetchDataFromLinkbuilders } from "../fetchDataFromMarketplaces/linkbuilders.ts";
 import { GET_BACKLINK_FROM_LINKBUILDERS_URLS } from "@/globals/globalURLs.ts";
-import { BackLinkData, LinkBuildersResult } from "@/types/backlink.ts";
+import { getAllDataFromLinkbuilders } from "../getAllDataFromMarketplaces/linkbuilders.ts";
 
-// Function to fetch and process data from the single URL
-export const getDataFromLinkbuilders = async () => {
 
-    const Token = await getTokenForLinkBuilders();
+// Function to process URLs in batches with p-limit
+export const getBacklinksDataFromLinkbuilders = async (payload : Payload) => {
 
-    if (!Token) {
+    try{
+        const Token = await getTokenForLinkBuilders();
+
+        if (!Token) {
         throw new Error("API token is missing");
+        }
+
+        const allData = await getAllDataFromLinkbuilders(Token, payload);
+
+        return allData;
+
+    }catch(error){
+        const { errorDetails, status } = ErrorHandler.handle(error, "Error occured from getting backlinks from Linkbuilders");
+
+        return new Response(JSON.stringify(errorDetails), {
+            status,
+            headers: { "Content-Type": "application/json" },
+        });
     }
 
-    try {
-      const response = await axios.get(GET_BACKLINK_FROM_LINKBUILDERS_URLS, {
-        headers: { Cookie : `__Host-access-token=${Token}; Path=/; Secure; HttpOnly;` },
-      });
-
-      const results = response.data.currentPageResults || [];
-      const allData: BackLinkData[] = results.map((result: LinkBuildersResult) => {
-        const kpi = result.kpi || {};
-        const article = result.articles?.[0] || {};
-
-        return {
-          domain: result.name || "Unknown",
-          tf: kpi.trustFlow || 0,
-          cf: kpi.citationFlow || 0,
-          rd: kpi.refDomain || 0,
-          price: article.price || 0,
-        };
-      });
-
-      return allData;
-    } catch (error: any) {
-      console.error(`Failed to fetch data from URL: ${GET_BACKLINK_FROM_LINKBUILDERS_URLS}`, error.message);
-      return []; // Return an empty array in case of failure
-    }
 };

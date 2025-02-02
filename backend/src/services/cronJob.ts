@@ -8,6 +8,7 @@ import { getBacklinksDataFromPaperclub } from "./marketPlacesService/getBacklink
 import { getBacklinksDataFromMistergoodlink } from "./marketPlacesService/getBacklinksFromMarketplaces/mistergoodlink.ts";
 import { getBacklinksDataFromLinkatomic } from "./marketPlacesService/getBacklinksFromMarketplaces/linkatomic.ts";
 import { getBacklinksDataFromUnancor } from "./marketPlacesService/getBacklinksFromMarketplaces/unancor.ts";
+import { getBacklinksDataFromBoosterlink } from "./marketPlacesService/getBacklinksFromMarketplaces/boosterlink.ts";
 
 /**
  * Logs messages to the console or a log file
@@ -27,6 +28,13 @@ export const startCronJob = async(payload : Payload): Promise<void> => {
 
         try {
             // Call the first function
+
+            log("<<<<<<<<<<<<<<<<<<<<<<<....................Fetching data from Boosterlink........................>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+
+            await getBacklinksDataFromBoosterlink(payload); // Pass the payload object
+
+            log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~Completed fetching data from Boosterlink.~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+
             log("<<<<<<<<<<<<<<<<<<<<<<<....................Fetching data from Ereferer........................>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 
             await getBacklinksDataFromEreferer(payload); // Pass the payload object

@@ -47,7 +47,7 @@ export const UNANCOR_API_URL_FOR_FINAL_COOKIE = 'https://app.unancor.com/marketp
 // URLs for Backlinks
 export const GET_BACKLINK_FROM_BACKLINKED_URL = "https://app.backlinked.com/api/contentlinks";
 
-export const GET_BACKLINK_FROM_LINKBUILDERS_URLS = "https://app.link.builders/api/link_market?pageNo=1&size=5000&excludeRejectedLink=true";
+export const GET_BACKLINK_FROM_LINKBUILDERS_URLS = "https://app.link.builders/api/link_market";
 
 export const GET_BACKLINK_FROM_PAPERCLUB_URLS = [
     "https://app.paper.club/api/advanced_search/site?to[]=4DPZZQt60rXRwkaFls6VLf&to[]=Ozpfdv1YRbB9hURJZD9cx&to[]=20OAfJSmwCFhbVuQlAVvdt&to[]=5IYySaNM9xO7zCFeOjgmnE&to[]=79RlEg1w9S2gtbePAEGOME&p=1&l=500",

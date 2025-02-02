@@ -9,6 +9,10 @@ import { listActivePlans } from '@/services/paypal/plan/ListPlan.ts';
 import { getBacklinksDataFromUnancor } from '@/services/marketPlacesService/getBacklinksFromMarketplaces/unancor.ts';
 import { getCookieFromPublisuites } from '@/services/marketPlacesService/getTokensOrCookiesFromMarketplaces/publisuites.ts';
 import { getBakclinksDataFromPublisuites } from '@/services/marketPlacesService/getBacklinksFromMarketplaces/publisuites.ts';
+import { getBacklinksDataFromBoosterlink } from '../services/marketPlacesService/getBacklinksFromMarketplaces/boosterlink.ts';
+import { getTokenForLinkBuilders } from '@/services/marketPlacesService/getTokensOrCookiesFromMarketplaces/linkbuilders.ts';
+import { fetchDataFromLinkbuilders } from '@/services/marketPlacesService/fetchDataFromMarketplaces/linkbuilders.ts';
+import { getBacklinksDataFromLinkbuilders } from '@/services/marketPlacesService/getBacklinksFromMarketplaces/linkbuilders.ts';
 
 // Define the Payload endpoint
 export const myTestEndpoint: Endpoint = {
@@ -18,10 +22,10 @@ export const myTestEndpoint: Endpoint = {
     try {
 
       // await getBacklinksDataFromGetalink(req.payload);
-      await backgroundMarketplaceProcessHandler(req);
+      //await backgroundMarketplaceProcessHandler(req);
       // const result = await createPlansAndGetID(req);
-      // const result = await listActivePlans();
-      // const result = await getBakclinksDataFromPublisuites(req.payload);
+      //const result = await getBacklinksDataFromLinkbuilders(req.payload)
+      await getBacklinksDataFromLinkbuilders(req.payload);
 
 
       // Return the collected results
