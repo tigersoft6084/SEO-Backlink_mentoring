@@ -9,11 +9,11 @@ import SearchButton from "../../../components/forms/SearchButton";
 interface InputViewProps {
   placeholder: string;
   onSearch: (data: any) => void;
+  setLoading: (loading: boolean) => void;
 }
 
-export default function InputView({ placeholder, onSearch }: InputViewProps) {
+export default function InputView({ placeholder, onSearch, setLoading }: InputViewProps) {
   const [domain, setDomain] = useState("");
-  const [loading, setLoading] = useState(false);
   const [file, setFile] = useState(null); // State to track uploaded file
 
 
@@ -63,8 +63,6 @@ export default function InputView({ placeholder, onSearch }: InputViewProps) {
       } catch (error) {
         console.error("Error fetching data:", error);
         alert("An error occurred while processing the request.");
-      } finally {
-        setLoading(false);
       }
     }
   };
@@ -107,7 +105,7 @@ export default function InputView({ placeholder, onSearch }: InputViewProps) {
       <TextArea value={domain} onChange={(e) => setDomain(e.target.value)} placeholder={placeholder} />
       <div className="flex items-center justify-between mt-4">
         <UploadButton onUpload={handleUpload} />
-        <SearchButton loading={loading} disabled={!domain || loading} onClick={handleSearch} />
+        <SearchButton disabled={!domain} onClick={handleSearch} />
       </div>
     </div>
   );

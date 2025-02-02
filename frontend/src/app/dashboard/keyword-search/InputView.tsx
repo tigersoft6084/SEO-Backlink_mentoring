@@ -9,11 +9,11 @@ import SearchButton from "../../../components/forms/SearchButton";
 interface InputViewProps {
   placeholder: string;
   onSearch: (data: any) => void;
+  setLoading: (loading: boolean) => void;
 }
 
-export default function InputView({ placeholder, onSearch }: InputViewProps) {
+export default function InputView({ placeholder, onSearch, setLoading }: InputViewProps) {
   const [keyword, setKeyword] = useState("");
-  const [loading, setLoading] = useState(false);
 
   const handleSearch = async () => {
     if (keyword.trim()) {
@@ -27,8 +27,9 @@ export default function InputView({ placeholder, onSearch }: InputViewProps) {
         return;
       }
 
+      setLoading(true);
+
       try {
-        setLoading(true);
 
         const response = await fetch("/api/bulkKeywordSearch", {
           method: "POST",
@@ -45,7 +46,6 @@ export default function InputView({ placeholder, onSearch }: InputViewProps) {
 
         if (response.ok) {
           const responseJSON = await response.json();
-          console.log(responseJSON)
           onSearch(responseJSON);
         } else {
           const errorData = await response.json();
@@ -54,8 +54,6 @@ export default function InputView({ placeholder, onSearch }: InputViewProps) {
       } catch (error) {
         console.error("Error fetching data:", error);
         alert("An error occurred while processing the request.");
-      } finally {
-        setLoading(false);
       }
     }
   };
@@ -64,7 +62,7 @@ export default function InputView({ placeholder, onSearch }: InputViewProps) {
     <div className="flex flex-col flex-1 p-10 border rounded-lg shadow-md bg-white dark:bg-slate-800 dark:border-gray-600 dark:text-gray-200">
       <LocationHeader location="United States" />
       <TextArea value={keyword} onChange={(e) => setKeyword(e.target.value)} placeholder={placeholder} />
-      <SearchButton loading={loading} disabled={!keyword || loading} onClick={handleSearch} />
+      <SearchButton disabled={!keyword} onClick={handleSearch} />
     </div>
   );
 }
