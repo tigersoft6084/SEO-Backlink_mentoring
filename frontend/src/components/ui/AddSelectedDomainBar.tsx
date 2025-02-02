@@ -68,9 +68,9 @@ export function AddSelectedDomainBar({ selectedDomains }: { selectedDomains: Set
         }
     };
 
-    const handleProjectCreated = (newProject: string) => {
-        setProjects(prev => [...prev, newProject]); // Add project to dropdown
-        setSelectedProject(newProject); // Auto-select the new project
+    const handleProjectCreated = (newProject: { name: string }) => {
+        setProjects(prev => [...prev, newProject.name]); // Add project to dropdown
+        setSelectedProject(newProject.name); // Auto-select new project
         setIsCreateModalOpen(false);
     };
 
@@ -118,6 +118,7 @@ export function AddSelectedDomainBar({ selectedDomains }: { selectedDomains: Set
                 isOpen={!!modalMessage}
                 onClose={() => setModalMessage(null)}
                 title="Projects with your favorite domains"
+                hideOKBUtton={false}
             >
                 {modalMessage}
             </Modal>

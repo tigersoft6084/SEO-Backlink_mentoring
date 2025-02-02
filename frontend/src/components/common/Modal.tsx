@@ -5,9 +5,10 @@ interface ModalProps {
     onClose: () => void;
     title?: string;
     children: ReactNode;
+    hideOKBUtton : boolean;
 }
 
-export default function Modal({ isOpen, onClose, title, children }: ModalProps) {
+export default function Modal({ isOpen, onClose, title, children, hideOKBUtton }: ModalProps) {
     if (!isOpen) return null;
 
     return (
@@ -28,14 +29,16 @@ export default function Modal({ isOpen, onClose, title, children }: ModalProps) 
                 <div className="text-gray-700 dark:text-gray-200">{children}</div>
 
                 {/* Close Button */}
-                <div className="mt-4 flex justify-end">
-                    <button
-                        onClick={onClose}
-                        className="px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white rounded-2xl hover:bg-blue-600"
-                    >
-                        OK
-                    </button>
-                </div>
+                {!hideOKBUtton && (
+                    <div className="mt-4 flex justify-end">
+                        <button
+                            onClick={onClose}
+                            className="px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white rounded-2xl hover:bg-blue-600"
+                        >
+                            OK
+                        </button>
+                    </div>
+                )}
             </div>
         </div>
     );

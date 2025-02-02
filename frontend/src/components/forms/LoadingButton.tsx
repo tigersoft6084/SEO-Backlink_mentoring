@@ -11,27 +11,6 @@ export default function LoadingButton({content} : {content : string}) {
                 {/* Animated Gradient Text */}
                 <div className="loader">{content}...</div>
             </div>
-
-            {/* CSS Styles for Animation */}
-            <style jsx>{`
-                .loader {
-                    width: fit-content;
-                    font-weight: bold;
-                    font-family: monospace;
-                    font-size: 18px;
-                    color: #0000;
-                    background: linear-gradient(90deg, white calc(50% + 0.5ch), #c0c0c0 0) right / calc(200% + 1ch) 100%;
-                    -webkit-background-clip: text;
-                    background-clip: text;
-                    animation: l7 2s infinite steps(11);
-                }
-
-                @keyframes l7 {
-                    to {
-                        background-position: left;
-                    }
-                }
-            `}</style>
         </div>
     );
 }
