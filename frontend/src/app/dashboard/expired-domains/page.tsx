@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import Filters from "../../../components/ui/Expired_Filters";
 import ExpiredDomainsTable from "../../../components/ui/Expired_Table";
 import useExpiredFilterView from "../../../hooks/useExpiredFilterView";
+import LoadingExpiredDomains from '../../../components/forms/PreloadExpiredDomain';
 
 export default function ExpiredDomains() {
     const { filters, expiredDomainsData, loading, error, updateFilters, fetchDomains, fetchDomainsOnMount } = useExpiredFilterView();
@@ -20,9 +21,11 @@ export default function ExpiredDomains() {
                 updateFilters={updateFilters}
                 onFilter={fetchDomains}
             />
-            {loading && <p className="text-center">Loading...</p>}
+            {/* Show loading animation while data is loading */}
+            {loading ? <LoadingExpiredDomains /> : <ExpiredDomainsTable rows={expiredDomainsData} />}
+
+            {/* Show error message if there's an error */}
             {error && <p className="text-center text-red-500">{error}</p>}
-            <ExpiredDomainsTable rows={expiredDomainsData} />
         </div>
     );
 }

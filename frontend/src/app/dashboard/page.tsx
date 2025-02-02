@@ -40,15 +40,19 @@ export default function Home() {
   const saveSubscription = useCallback(
     async (subscriptionId: string, planId: string, planName: string, email: string) => {
       try {
+        console.log("🔵 Sending subscription request:", { subscriptionId, planId, planName, email });
+
         const response = await fetch("http://localhost:2024/api/save-subscription", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ subscriptionId, planId, planName, userEmail: email }),
         });
 
+        const data = await response.json();
+
         if (!response.ok) throw new Error("Failed to save subscription");
 
-        const data = await response.json();
+
         return data.features || null;
       } catch (error) {
         console.error("Failed to save subscription:", error);
@@ -62,14 +66,11 @@ export default function Home() {
   useEffect(() => {
     const subscriptionId = searchParams?.get("subscription_id");
 
-    console.log("<>>><><><><<><><><><><", subscriptionId);
     if (!user || !subscriptionId) return;
 
     let { email } = user;
     let planId = selectedPlanId;
     let planName = selectedPlanName;
-
-    console.log("adfasdfasdfadsfasdfasdfasdfasdfasdfasdfasdfasdfadsfas",email, planId, planName)
 
     if (!email || !planId || !planName) {
       const userSession = sessionStorage.getItem("user");
@@ -80,8 +81,6 @@ export default function Home() {
         planName = sessionStorage.getItem("selectedPlanName") || null;
       }
     }
-
-    console.log("1234567890-", email, planId, planName)
 
     if (!email || !planId || !planName) return;
 

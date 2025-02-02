@@ -1,6 +1,7 @@
 // components/SearchButton.tsx
 import { FC } from "react";
 import { FaSearch } from "react-icons/fa";
+import LoadingButton from "./LoadingButton";
 
 interface SearchButtonProps {
   loading: boolean;
@@ -19,7 +20,8 @@ const SearchButton: FC<SearchButtonProps> = ({ loading, disabled, onClick }) => 
     onClick={onClick}
   >
     {loading ? (
-      <span>Loading...</span>
+      <LoadingButton/>
+
     ) : (
       <>
         <FaSearch />

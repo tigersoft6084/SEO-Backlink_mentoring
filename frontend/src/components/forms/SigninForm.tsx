@@ -47,7 +47,6 @@ export default function SigninForm() {
       }
 
       const data = await response.json();
-      console.log("Sign-in successful:", data);
 
       // ✅ Ensure `window` is available before using `sessionStorage` (avoids SSR issues)
       if (typeof window !== "undefined") {

@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useUser } from "../../../context/UserContext";
 import { usePlan } from "../../../context/UserPlanContext";
+import PreloadSubscription from "../../../components/forms/PreloadSubscription";
 
 interface Plan {
     plan_name: string;
@@ -57,13 +58,13 @@ const PricingTable: React.FC = () => {
         }
     };
 
-    if (fetchLoading) {
+    if (fetchLoading)
         return (
-            <div className="flex items-center justify-center min-h-screen">
-                <p className="text-gray-600 dark:text-gray-200 text-lg">Loading...</p>
+            <div className="flex flex-col items-center mx-auto my-auto">
+                <PreloadSubscription onLoad={() => setFetchLoading(false)} />
             </div>
+
         );
-    }
 
     return (
         <div className="flex flex-col items-center mx-auto py-10">
