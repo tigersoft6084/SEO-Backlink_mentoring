@@ -28,7 +28,7 @@ export default buildConfig({
   },
   collections: [Users, Media, Credentials, Backlinks, DomainsForBackgroundProcess, PayPalPlans],
   globals : [SiteSettings],
-  cors: [FRONTEND_URL], // Allow requests from your frontend
+  cors: {origins : [FRONTEND_URL]}, // Allow requests from your frontend
 
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || 'your-secret-key', // Ensure this is defined

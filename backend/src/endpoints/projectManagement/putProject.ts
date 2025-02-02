@@ -3,14 +3,11 @@ import { Project } from "@/types/project.js";
 import { Endpoint, PayloadRequest } from "payload";
 
 export const updateUserProject: Endpoint = {
-
     path: "/put-project",
-
     method: "put",
 
     handler: withErrorHandling(async (req: PayloadRequest): Promise<Response> => {
-
-        const {payload} = req;
+        const { payload } = req;
 
         if (req.method === "OPTIONS") {
             // Handle preflight requests
@@ -23,16 +20,15 @@ export const updateUserProject: Endpoint = {
                 },
             });
         }
+
         let projectName: string | undefined;
-        let domainName: string | undefined;
         let favourites: string[] | undefined;
         let email: string | undefined;
 
-        if(req.json){
+        if (req.json) {
             const body = await req.json();
             email = body?.email;
             projectName = body?.projectName;
-            domainName = body?.domainName;
             favourites = body?.favourites;
         }
 
@@ -57,7 +53,7 @@ export const updateUserProject: Endpoint = {
 
         if (!users.docs.length) {
             return new Response(
-                JSON.stringify(`❌ Error: User not found for email: ${email}`),
+                JSON.stringify({ error: `User not found for email: ${email}` }),
                 {
                     status: 400,
                     headers: {
@@ -75,21 +71,41 @@ export const updateUserProject: Endpoint = {
 
         // 🔥 Efficiently update projects
         let updated = false;
+        let newFavouritesAdded = false;
+
         const updatedProjects: Project[] = existingProjects.map((project) => {
             if (project.projectName === projectName) {
                 updated = true;
-                return {
-                    ...project,
-                    domainName: domainName || project.domainName,
-                    favourites: favourites ? [...new Set([...project.favourites, ...favourites])] : project.favourites,
-                };
+
+                // ✅ Ensure `favourites` is always an array before modifying it
+                const currentFavourites = Array.isArray(project.favourites) ? project.favourites : [];
+
+                // ✅ Only add new favourites that do not already exist
+                const uniqueNewFavourites = favourites?.filter(fav => !currentFavourites.includes(fav)) || [];
+
+                if (uniqueNewFavourites.length > 0) {
+                    newFavouritesAdded = true;
+                    return {
+                        ...project,
+                        favourites: [...currentFavourites, ...uniqueNewFavourites], // Append new favourites
+                    };
+                }
             }
             return project;
         });
 
-
         if (!updated) {
-            return new Response(JSON.stringify({ error: "Project not found" }), { status: 404 });
+            return new Response(
+                JSON.stringify({ error: "Project not found" }),
+                { status: 404, headers: { "Content-Type": "application/json" } }
+            );
+        }
+
+        if (!newFavouritesAdded) {
+            return new Response(
+                JSON.stringify({ success: true, message: "No new domains added, but project is still up to date" }),
+                { status: 200, headers: { "Content-Type": "application/json" } }
+            );
         }
 
         await payload.update({
@@ -98,6 +114,9 @@ export const updateUserProject: Endpoint = {
             data: { projects: updatedProjects },
         });
 
-        return new Response(JSON.stringify({ message: "Project updated successfully" }), { status: 200 });
+        return new Response(
+            JSON.stringify({ success: true, message: "Domains saved and Project updated successfully", updatedProjects }),
+            { status: 200, headers: { "Content-Type": "application/json" } }
+        );
     }),
 };

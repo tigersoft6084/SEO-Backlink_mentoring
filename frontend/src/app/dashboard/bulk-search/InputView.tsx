@@ -75,7 +75,6 @@ export default function InputView({ placeholder, onSearch, setLoading }: InputVi
       reader.onload = (event) => {
         if (event.target) {
           const csvContent = event.target.result;
-          console.log("CSV Content:", csvContent); // Process CSV content as needed
 
           if (typeof csvContent === "string") {
             // Extract domains from CSV content (assuming CSV format is correct)

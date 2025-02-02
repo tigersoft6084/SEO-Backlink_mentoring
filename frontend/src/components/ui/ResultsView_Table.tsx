@@ -75,7 +75,7 @@ const TableSection: React.FC<TableSectionProps> = ({
         newSelected.add(index);
       }
       return newSelected;
-    });
+  });
   };
 
   const handleFilterChange = (filters: Array<{ condition: string; value: string; logic?: string }>) => {
@@ -100,11 +100,6 @@ const TableSection: React.FC<TableSectionProps> = ({
     }
     return "indeterminate"; // Some rows selected
   };
-
-  // useEffect(() => {
-  //   // When rows are selected/deselected, update selectAll state dynamically
-  //   setSelectAll(selectedRows.size === rows.length);
-  // }, [selectedRows, rows.length, setSelectAll]);
 
   return (
     <div className="p-6 bg-white shadow-md rounded-lg dark:bg-slate-700">

@@ -10,6 +10,24 @@ export const getUserProjects: Endpoint = {
 
         const { payload } = req;
 
+        // CORS headers
+        const corsHeaders = {
+            "Access-Control-Allow-Origin": "*", // You can replace '*' with specific domains for security reasons
+            "Access-Control-Allow-Methods": "GET, OPTIONS, PUT, POST, DELETE",
+            "Access-Control-Allow-Headers": "Content-Type, Authorization",
+            "Access-Control-Allow-Credentials": "true"
+        };
+
+        if (req.method === "OPTIONS") {
+            // Handle preflight requests
+            return new Response(null, {
+                status: 204,
+                headers: {
+                    ...corsHeaders
+                },
+            });
+        }
+
         const { email } = req.query;
 
         if (!email) {
@@ -19,7 +37,7 @@ export const getUserProjects: Endpoint = {
                     status: 400,
                     headers: {
                         "Content-Type": "application/json",
-                        "Access-Control-Allow-Origin": "*",
+                        ...corsHeaders
                     },
                 }
             );
@@ -38,7 +56,7 @@ export const getUserProjects: Endpoint = {
                     status: 400,
                     headers: {
                         "Content-Type": "application/json",
-                        "Access-Control-Allow-Origin": "*",
+                        ...corsHeaders
                     },
                 }
             );

@@ -4,6 +4,7 @@ import TopSection from "./ResultsView_TopSection";
 import StatsSection from "./ResultsView_StatsSection";
 import ActionButtons from "./ActionButtons";
 import TableSection from "./ResultsView_Table";
+import { AddSelectedDomainBar } from "./AddSelectedDomainBar";
 
 export default function ResultsView({ responseData, onBack, pageName } : any) {
   const maxKeywordsToShow = 3;
@@ -48,23 +49,8 @@ export default function ResultsView({ responseData, onBack, pageName } : any) {
         pageName = {pageName}
       />
 
-      {/* Show the "Add selected domain" bar */}
-      {selectedRows.size > 0 && (
-        <div className="flex items-center justify-between w-fit mx-auto my-10 px-6 py-4 border border-gray-300 dark:border-gray-600 rounded-t-3xl bg-white dark:bg-slate-700">
-          <span className="text-gray-700 dark:text-gray-200">
-            Add {selectedRows.size} selected domain{selectedRows.size > 1 ? "s" : ""} to
-          </span>
-          <div className="flex items-center space-x-4 ml-4">
-            <select className="px-2 py-2 w-80 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-slate-800 dark:text-gray-200">
-              <option value="projects">Projects</option>
-              <option value="lists">Lists</option>
-            </select>
-            <button className="px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white rounded-xl hover:bg-blue-600">
-              Save
-            </button>
-          </div>
-        </div>
-      )}
+      {/* Add Selected Domain Bar */}
+      <AddSelectedDomainBar selectedDomains={new Set(Array.from(selectedRows).map((index: number) => responseData.backlinks[index].domain))} />
     </div>
   );
 }

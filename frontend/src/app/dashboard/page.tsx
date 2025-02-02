@@ -42,7 +42,7 @@ export default function Home() {
       try {
         console.log("🔵 Sending subscription request:", { subscriptionId, planId, planName, email });
 
-        const response = await fetch("http://localhost:2024/api/save-subscription", {
+        const response = await fetch("/api/save-subscription", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ subscriptionId, planId, planName, userEmail: email }),
