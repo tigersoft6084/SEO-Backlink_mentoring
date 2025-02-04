@@ -7,9 +7,7 @@ import { MdAdd } from "react-icons/md";
 import CreateProjectModal from "../../../components/common/CreateProjectModal";
 import { useUser } from "../../../context/UserContext";
 import Lottie from "lottie-react";
-import LottiePlayer from "react-lottie-player";
 import emptyAnimation from '../../../../public/preload/noResultsFound.json';
-import findLinks from '../../../../public/preload/findLinks.json'
 
 interface Project {
   id: number;
@@ -27,7 +25,7 @@ export default function Projects() {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState<boolean>(false);
   const [rows, setRows] = useState<Project[]>([]);
   const [deletingProject, setDeletingProject] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(true); 
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     if (!user?.email) return;

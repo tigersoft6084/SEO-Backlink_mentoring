@@ -1,10 +1,9 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";  
 import { Filters } from "../types/expired.d";
 import { useExpiredDomains } from "../context/ExpiredDomainsContext";
 
-
 export default function useExpiredFilterView() {
-    const { setTotalExpiredDomains } = useExpiredDomains(); // Use Context
+    const { setTotalExpiredDomains } = useExpiredDomains();
     const [filters, setFilters] = useState<Filters>({
         Domain: "",
         minTF: "",
@@ -13,8 +12,8 @@ export default function useExpiredFilterView() {
         maxCF: "",
         minRD: "",
         maxRD: "",
-        minRefIps : "",
-        maxRefIps : "",
+        minRefIps: "",
+        maxRefIps: "",
         minRefEdu: "",
         maxRefEdu: "",
         minRefGov: "",
@@ -24,74 +23,54 @@ export default function useExpiredFilterView() {
     });
 
     const [expiredDomainsData, setExpiredDomainsData] = useState([]);
-    // const [totalExpiredDomains, setTotalExpiredDomains] = useState(0);
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);  // Type the error state as string | null
+    const [error, setError] = useState<string | null>(null);
+    const [hasFetched, setHasFetched] = useState(false);  // ✅ Prevent multiple fetches
 
-    // Type the 'name' parameter to match the keys of the filters object
-    const updateFilters = (name: keyof Filters, value: string) => {
-        setFilters((prev) => ({ ...prev, [name]: value }));
-    };
+    const fetchDomains = useCallback(async () => {
+        if (loading) return; // ✅ Prevent duplicate fetches while loading
 
-    // Helper function to build query parameters from the filters
-    const buildQueryParams = () => {
-        const params = new URLSearchParams();
+        setLoading(true);
+        setError(null);
 
-        // Add each filter to the query params if it has a value
+        const queryParams = new URLSearchParams();
         for (const [key, value] of Object.entries(filters)) {
             if (value && value !== "Select" && value !== "All") {
-                params.append(key, value);
+                queryParams.append(key, value);
             }
         }
-
-        return params.toString();
-    };
-
-    const fetchDomains = async () => {
-        setLoading(true);
-        setError(null); // Reset the error state to null before starting the fetch
-
-
-        const queryParams = buildQueryParams();
-        const url = `http://localhost:2024/api/expired?${queryParams}`;
+        const url = `http://localhost:2024/api/expired?${queryParams.toString()}`;
 
         console.log(url);
         try {
-            const response = await fetch(url, {
-                method: "GET",  // Changed to GET
-            });
+            const response = await fetch(url);
             if (!response.ok) {
                 throw new Error("Failed to fetch domains");
             }
             const data = await response.json();
+
             setExpiredDomainsData(data.expiredDomains);
             setTotalExpiredDomains(data.totalExpiredDomains);
-        } catch (err: unknown) {
-            // Handle the unknown error
-            if (err instanceof Error) {
-                setError(err.message);  // Now setError can accept a string
-            } else {
-                setError("An unexpected error occurred"); // Default error message if it's not an instance of Error
-            }
+            setHasFetched(true);  // ✅ Mark as fetched to prevent duplicate calls
+        } catch (err) {
+            setError(err instanceof Error ? err.message : "An unexpected error occurred");
         } finally {
             setLoading(false);
         }
-    };
+    }, [filters, loading, setTotalExpiredDomains]);
 
-    // Function to fetch domains when Expired Domains tab is clicked
-    const fetchDomainsOnMount = () => {
-        if (expiredDomainsData.length === 0) {
+    const fetchDomainsOnMount = useCallback(() => {
+        if (!hasFetched && expiredDomainsData.length === 0) {  // ✅ Prevent re-fetching
             fetchDomains();
         }
-    };
-
+    }, [hasFetched, expiredDomainsData.length, fetchDomains]);
 
     return {
         filters,
         expiredDomainsData,
         loading,
         error,
-        updateFilters,
+        updateFilters: (name: keyof Filters, value: string) => setFilters((prev) => ({ ...prev, [name]: value })),
         fetchDomains,
         fetchDomainsOnMount,
     };
