@@ -6,6 +6,8 @@ export const BULK_KEYWORD_SEARCH_URL = 'https://data.dataforseo.com/api/explorer
 
 export const COMPETITIVE_ANALYSIS_SEARCH_URL = 'https://data.dataforseo.com/api/explorer/datalabs/google/competitors_domain';
 
+//URL for Majestic
+export const MAJESTIC_URL = "https://developer.majestic.com/api/json";
 
 // URL for Paypal
 export const PAYPAL_API = 'https://api-m.sandbox.paypal.com';

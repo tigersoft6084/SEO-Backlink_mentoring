@@ -1,6 +1,6 @@
 import { Endpoint } from 'payload';
 import { ErrorHandler } from '@/handlers/errorHandler.ts';
-import { normalizeDomain } from '@/utils/normalizeDomain.ts';
+import { normalizeDomain } from '@/utils/domainUtils.ts';
 interface BacklinkData {
   domain: string;
   rd: number;

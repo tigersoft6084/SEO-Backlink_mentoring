@@ -10,6 +10,7 @@ import { getBacklinksDataFromLinkatomic } from "./marketPlacesService/getBacklin
 import { getBacklinksDataFromUnancor } from "./marketPlacesService/getBacklinksFromMarketplaces/unancor.ts";
 import { getBacklinksDataFromBoosterlink } from "./marketPlacesService/getBacklinksFromMarketplaces/boosterlink.ts";
 import { getBacklinksDataFromLinkbuilders } from "./marketPlacesService/getBacklinksFromMarketplaces/linkbuilders.ts";
+import { getBacklinksDataFromSeojungle } from "./marketPlacesService/getBacklinksFromMarketplaces/seojungle.ts";
 
 /**
  * Logs messages to the console or a log file
@@ -21,7 +22,7 @@ const log = (message: string): void => {
 export const startCronJob = async(payload : Payload): Promise<void> => {
 
     // Test schedule: Runs every month for testing
-    const schedule = "3 0 22 * *"; // Change to "0 0 1 * *" for monthly execution
+    const schedule = "23 8 3 * *"; // Change to "0 0 1 * *" for monthly execution
 
     cron.schedule(schedule, async () => {
 
@@ -84,6 +85,12 @@ export const startCronJob = async(payload : Payload): Promise<void> => {
             await getBacklinksDataFromLinkatomic(payload);
 
             log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~Completed fetching data from Linkatomic.~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+
+            log("<<<<<<<<<<<<<<<<<<<<<<.....................Fetching data from Seojungle..........................>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+
+            await getBacklinksDataFromSeojungle(payload);
+
+            log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~Completed fetching data from Seojungle.~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
             log("<<<<<<<<<<<<<<<<<<<<<<.....................Fetching data from Unancor..........................>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 

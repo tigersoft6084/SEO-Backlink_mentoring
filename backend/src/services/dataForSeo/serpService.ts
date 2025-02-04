@@ -7,10 +7,8 @@ export const fetchSerpData = async (keyword: string, locationCode: number, langu
   const token = process.env.DATAFORSEO_API_TOKEN; // Access token from .env file
 
   if (!token) {
-    throw new Error('API token is missing');
+    throw new Error('DataForSEO API token is missing');
   }
-
-  console.log(keyword, locationCode, languageCode, depth)
 
   const response = await axios.post(
     BULK_KEYWORD_SEARCH_URL,

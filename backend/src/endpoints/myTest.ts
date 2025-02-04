@@ -11,7 +11,7 @@ import { getBakclinksDataFromPublisuites } from '@/services/marketPlacesService/
 
 import { getBacklinksDataFromLinkbuilders } from '@/services/marketPlacesService/getBacklinksFromMarketplaces/linkbuilders.ts';
 import { getTokenForPrensalink } from '@/services/marketPlacesService/getTokensOrCookiesFromMarketplaces/prensalink.ts';
-import { getBacklinksDataFromSeojungle } from '@/services/marketPlacesService/getBacklinksFromMarketplaces/seojungle.ts';
+import { fetchMajesticData } from '@/services/majesticService.ts';
 
 // Define the Payload endpoint
 export const myTestEndpoint: Endpoint = {
@@ -21,11 +21,11 @@ export const myTestEndpoint: Endpoint = {
     try {
 
       // await getBacklinksDataFromGetalink(req.payload);
-      //await backgroundMarketplaceProcessHandler(req);
+      await backgroundMarketplaceProcessHandler(req);
       // const result = await createPlansAndGetID(req);
       //const result = await getBacklinksDataFromPrensalink(req.payload)
-      await getBacklinksDataFromSeojungle(req.payload);
-      // const result = await getTokenForPrensalink()
+
+      //const result = await fetchMajesticData("cnet.com")
 
       // Return the collected results
       return new Response(

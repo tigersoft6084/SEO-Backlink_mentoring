@@ -1,6 +1,7 @@
 import { bulkCompetitiveAnalysisEndpoint } from "./bulkCompetitorsDomainEndpoint.ts";
 import { bulkDomainSearchEndpoint } from "./bulkDomainSearchEndpoint.ts";
 import { bulkKeywordSearchEndpoint } from "./bulkKeywordSearchEndpoint.ts";
+import { keywordSearchEndpoint } from "./dataForSeo/keywordSearchEndpoint.ts";
 import { expiredDomainEndpoint } from "./expiredDomainEndpoint.ts";
 import { fetchprensalinkEndpoint } from "./marketplaces/prensalinkEndpoint.ts";
 import { myTestEndpoint } from "./myTest.ts";
@@ -16,6 +17,7 @@ import { updateUserProject } from "./projectManagement/putProject.ts";
 
 export const customEndpoints = [
     bulkKeywordSearchEndpoint,
+    keywordSearchEndpoint,
     bulkDomainSearchEndpoint,
     bulkCompetitiveAnalysisEndpoint,
     expiredDomainEndpoint,

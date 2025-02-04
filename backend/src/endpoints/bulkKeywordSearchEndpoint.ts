@@ -2,7 +2,7 @@ import { Endpoint, PayloadRequest } from 'payload';
 import { COLLECTION_NAME_BACKLINK } from '@/globals/strings.ts';
 import { ErrorHandler } from '@/handlers/errorHandler.ts';
 import { fetchSerpData } from '@/services/dataForSeo/serpService.ts';
-import { normalizeDomain } from '@/utils/normalizeDomain.ts';
+import { normalizeDomain } from '@/utils/domainUtils.ts';
 
 // Define types for the responses
 interface SerpItem {

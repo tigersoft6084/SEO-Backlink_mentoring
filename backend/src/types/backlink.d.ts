@@ -10,7 +10,7 @@ export interface FetchedBackLinkDataFromMarketplace {
   ref_subnets? : number | 0;
   ref_edu ? : number | 0;
   ref_gov ? : number | 0;
-  price: number;
+  price?: number;
   language? : string | "";
   ref_lang? : string | "";
 }

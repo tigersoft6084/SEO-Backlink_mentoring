@@ -3,6 +3,7 @@ import whoiser from "whoiser";
 // import pLimit from "p-limit";
 import { parseISO, isValid, parse } from 'date-fns';
 import { ErrorHandler } from "@/handlers/errorHandler.ts";
+import { isValidDomain } from "@/utils/domainUtils.ts";
 // import { BASE_DB_URL, DATABASE_NAME } from "@/config/apiConfig.ts";
 
 
@@ -55,25 +56,6 @@ const parseCustomDate = (dateStr: string): Date | null => {
   }
 
   return null; // Return null if no format matches
-};
-const validDomainRegex = /^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-
-const isValidDomain = (domain: string): boolean => {
-  // Check if the domain matches the regex
-  if (!validDomainRegex.test(domain)) {
-    return false;
-  }
-
-  // Extract the TLD (last part of the domain)
-  const tld = domain.split('.').pop();
-
-  // If the TLD is undefined or invalid, return false
-  if (!tld) {
-    console.error(`Invalid domain: ${domain}`);
-    return false;
-  }
-
-  return true;
 };
 
 // Fetch expiry date from WHOIS data
