@@ -2,7 +2,7 @@ import { ErrorHandler } from "@/handlers/errorHandler.ts";
 import { FetchedBackLinkDataFromMarketplace } from "@/types/backlink.js";
 import * as cheerio from "cheerio";
 import { uploadToDatabase } from "../uploadDatabase.ts";
-import { MARKETPLACE_NAME_LINKAVISTAR } from "@/globals/strings.ts";
+import { MARKETPLACE_NAME_LINKAVISTA } from "@/globals/strings.ts";
 import { Payload } from "payload";
 
 interface WebsiteData {
@@ -74,7 +74,7 @@ export const getFormDataFromLinkavistar = async (response: string, payload : Pay
             for(const item of formattedResult){
                 if(!seenDomains.has(item.domain)){
                     seenDomains.add(item.domain);
-                    await uploadToDatabase(payload, item, MARKETPLACE_NAME_LINKAVISTAR);
+                    await uploadToDatabase(payload, item, MARKETPLACE_NAME_LINKAVISTA);
                 }
             }
             console.log(`Processed page Linkavistar, items: ${formattedResult.length}`);

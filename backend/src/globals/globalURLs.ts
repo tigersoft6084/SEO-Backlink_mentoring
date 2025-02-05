@@ -45,6 +45,15 @@ export const UNANCOR_API_URL = 'https://app.unancor.com/login';
 export const UNANCOR_API_URL_POST = 'https://app.unancor.com/livewire/update';
 export const UNANCOR_API_URL_FOR_FINAL_COOKIE = 'https://app.unancor.com/marketplace';
 
+export const BACKLINKED_API_URL_GET = "https://app.backlinked.com/login";
+export const BAKCLINKED_API_URL_POST = "https://app.backlinked.com/api/login";
+
+export const SOUMETTRE_API_URL = "https://soumettre.fr/login";
+
+export const MEDIA123_API_URL = "https://123.media/login";
+
+export const MYNILINKS_API_URL = "https://app.mynilinks.fr/login";
+
 
 // URLs for Backlinks
 export const GET_BACKLINK_FROM_BACKLINKED_URL = "https://app.backlinked.com/api/contentlinks";
@@ -204,3 +213,4 @@ export const GET_BACKLINK_FROM_LINKATOMIC_URL = "https://app.linkatomic.com/dash
 export const GET_BACKLINK_FROM_UNANCOR_URL = "https://app.unancor.com/livewire/update";
 
 export const GET_BACKLINK_FROM_PUBLISUITES_URL = 'https://www.publisuites.com/advertisers/websites/';
+export const GET_BACKLINK_FROM_MYNILINKS_URL = 'https://app.mynilinks.fr/netlinkings';

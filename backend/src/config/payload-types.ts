@@ -164,6 +164,9 @@ export interface CredentialsForMarketplace {
           | 'Linkbroker'
           | 'Prnews'
           | '123mdia'
+          | 'Soumettre'
+          | '123media'
+          | 'Mynilinks'
         )
       | null;
     id?: string | null;

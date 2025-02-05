@@ -13,6 +13,7 @@ import { removeFavoriteFromProject } from "./projectManagement/deleteProject.ts"
 import { getUserProjects } from "./projectManagement/getProject.ts";
 import { addProjectToUser } from "./projectManagement/postProject.ts";
 import { updateUserProject } from "./projectManagement/putProject.ts";
+import { mytttEndpoint } from "./test.ts";
 
 
 export const customEndpoints = [
@@ -30,5 +31,6 @@ export const customEndpoints = [
     updateUserProject,
     removeFavoriteFromProject,
     fetchprensalinkEndpoint,
-    myTestEndpoint
+    myTestEndpoint,
+    mytttEndpoint
 ];

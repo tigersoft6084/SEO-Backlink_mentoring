@@ -1,6 +1,7 @@
 import { Ereferer_API_URL } from "@/globals/globalURLs.ts";
 import { getCredentialsForMarketplaces } from "../getCredentialsForMarketplaces.ts";
 import { ErrorHandler } from "@/handlers/errorHandler.ts";
+import { MARKETPLACE_NAME_EREFERER } from "@/globals/strings.ts";
 
 // Function to fetch cookie from Ereferer API using fetch
 const fetchCookieFromEreferer = async (email: string, password: string): Promise<string> => {
@@ -80,7 +81,7 @@ export const getCookieFromEreferer = async (): Promise<string | null> => {
   // Iterate through the credentials and fetch cookie for Ereferer
   for (const credential of credentials) {
     // Check if any value in websiteTarget array is 'Ereferer'
-    const hasErefererTarget = credential.websiteTarget.some((target: { value: string }) => target.value === 'Ereferer');
+    const hasErefererTarget = credential.websiteTarget.some((target: { value: string }) => target.value === MARKETPLACE_NAME_EREFERER);
 
     if (hasErefererTarget) {
       console.log(`Found Ereferer credentials for ${credential.email}`);

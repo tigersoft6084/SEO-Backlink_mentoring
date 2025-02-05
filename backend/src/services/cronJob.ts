@@ -11,6 +11,7 @@ import { getBacklinksDataFromUnancor } from "./marketPlacesService/getBacklinksF
 import { getBacklinksDataFromBoosterlink } from "./marketPlacesService/getBacklinksFromMarketplaces/boosterlink.ts";
 import { getBacklinksDataFromLinkbuilders } from "./marketPlacesService/getBacklinksFromMarketplaces/linkbuilders.ts";
 import { getBacklinksDataFromSeojungle } from "./marketPlacesService/getBacklinksFromMarketplaces/seojungle.ts";
+import { getBacklinksDataFromMynilinks } from "./marketPlacesService/getBacklinksFromMarketplaces/mynilinks.ts";
 
 /**
  * Logs messages to the console or a log file
@@ -97,6 +98,12 @@ export const startCronJob = async(payload : Payload): Promise<void> => {
             await getBacklinksDataFromUnancor(payload);
 
             log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~Completed fetching data from Unancor.~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+
+            log("<<<<<<<<<<<<<<<<<<<<<<.....................Fetching data from Mynilinks..........................>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+
+            await getBacklinksDataFromMynilinks(payload);
+
+            log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~Completed fetching data from Mynilinks.~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
         } catch (error) {
             log(`Error occurred: ${(error as Error).message}`);
