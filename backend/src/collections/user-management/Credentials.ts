@@ -102,6 +102,7 @@ export const Credentials: CollectionConfig = {
             { label: 'Soumettre', value: 'Soumettre' },
             { label: '123media', value: '123media' },
             { label: 'Mynilinks', value: 'Mynilinks' },
+            { label: 'Growwer', value: 'Growwer' },
           ],
         },
       ],

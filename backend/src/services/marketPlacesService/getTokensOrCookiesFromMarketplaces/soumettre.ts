@@ -99,7 +99,7 @@ const fetch_Cookie_FromPostLogin = async (email: string, password: string): Prom
     }
 };
 
-export const fetch_CSRF_TOKEN_AndCookieFrom_GET_Login = async (): Promise<{ CSRF_TOKEN: string; COOKIE: string } | null> => {
+const fetch_CSRF_TOKEN_AndCookieFrom_GET_Login = async (): Promise<{ CSRF_TOKEN: string; COOKIE: string } | null> => {
     try {
         const response = await axiosInstance.get(SOUMETTRE_API_URL, {
             headers: {

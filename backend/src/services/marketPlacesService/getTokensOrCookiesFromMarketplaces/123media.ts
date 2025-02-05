@@ -152,27 +152,10 @@ export const fetch_CSRF_TOKEN_AndCookieFrom_GET_Login = async (): Promise<{CSRF_
     }
 };
 
-// Function to extract PHPSESSID and transform into JSON
 const extractPHPSESSID = (cookieString: string): string | null => {
-    // Split the cookie string by semicolons
-    const cookies = cookieString.split(';');
-
-    // Loop through each cookie to find PHPSESSID
-    for (const cookie of cookies) {
-
-    const trimmedCookie = cookie.trim(); // Trim any whitespace
-    if(trimmedCookie.startsWith('PHPSESSID')){
-        const cookieParts = trimmedCookie.split(',');
-
-        for(const part of cookieParts){
-            const trimmedCookiePart = part.trim();
-            if (trimmedCookiePart.startsWith('PHPSESSID=')) {
-                return trimmedCookiePart;
-            }
-        }
-    }
-    }
-
-    // Return null if PHPSESSID is not found
-    return null;
+    return cookieString
+        .split(';')
+        .map(cookie => cookie.trim())
+        .find(cookie => cookie.startsWith('PHPSESSID='))
+        || null;
 };

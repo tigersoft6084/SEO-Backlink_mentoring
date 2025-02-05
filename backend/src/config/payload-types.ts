@@ -167,6 +167,7 @@ export interface CredentialsForMarketplace {
           | 'Soumettre'
           | '123media'
           | 'Mynilinks'
+          | 'Growwer'
         )
       | null;
     id?: string | null;

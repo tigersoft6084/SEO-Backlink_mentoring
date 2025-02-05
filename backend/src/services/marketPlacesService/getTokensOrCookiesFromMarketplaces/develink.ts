@@ -1,6 +1,7 @@
 import { DEVELINK_API_URL } from "@/globals/globalURLs.ts";
 import { getCredentialsForMarketplaces } from "../getCredentialsForMarketplaces.ts";
 import { ErrorHandler } from "@/handlers/errorHandler.ts";
+import { MARKETPLACE_NAME_DEVELINK } from "@/globals/strings.ts";
 
 // Function to fetch cookie from Develink API using fetch
 const fetchCookieFromDevelink = async (email: string, password: string): Promise<string> => {
@@ -52,7 +53,7 @@ export const getCookieFromDevelink = async (): Promise<string | null> => {
   // Iterate through the credentials and fetch cookie for Develink
   for (const credential of credentials) {
     // Check if any value in websiteTarget array is 'Develink'
-    const hasDevelinkTarget = credential.websiteTarget.some((target: { value: string }) => target.value === 'Develink');
+    const hasDevelinkTarget = credential.websiteTarget.some((target: { value: string }) => target.value === MARKETPLACE_NAME_DEVELINK);
 
     if (hasDevelinkTarget) {
       console.log(`Found Develink credentials for ${credential.email}`);

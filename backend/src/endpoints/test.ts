@@ -1,6 +1,7 @@
 import { getBacklinksDataFromMynilinks } from '@/services/marketPlacesService/getBacklinksFromMarketplaces/mynilinks.ts';
 import { fetch_CSRF_TOKEN_AndCookieFrom_GET_Login, getCookieFrom123media } from '@/services/marketPlacesService/getTokensOrCookiesFromMarketplaces/123media.ts';
 import { getCookieFromBacklinked } from '@/services/marketPlacesService/getTokensOrCookiesFromMarketplaces/backlinked.ts';
+import { getCookieFromGrowwer } from '@/services/marketPlacesService/getTokensOrCookiesFromMarketplaces/growwer.ts';
 import { getCookieFromMynilinks } from '@/services/marketPlacesService/getTokensOrCookiesFromMarketplaces/mynilinks.ts';
 import { Endpoint, PayloadRequest } from 'payload';
 
@@ -11,7 +12,7 @@ export const mytttEndpoint: Endpoint = {
     handler: async (req : PayloadRequest) => {
         try {
 
-        const result = await getBacklinksDataFromMynilinks(req.payload);
+        const result = await getCookieFromGrowwer();
 
         // Return the collected results
         return new Response(
