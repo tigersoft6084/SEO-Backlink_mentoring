@@ -7,7 +7,6 @@ import * as cheerio from 'cheerio';
 // Function to fetch cookie from Growwer API using fetch
 const fetchCookieFromGrowwer = async (email: string, password: string): Promise<string> => {
 
-
     try {
 
         const getValidationData = await fetch_CSRF_TOKEN_AndCookieFrom_GET_Login();
@@ -26,6 +25,7 @@ const fetchCookieFromGrowwer = async (email: string, password: string): Promise<
         const response = await fetch(GROWWER_API_URL, {
             method: 'POST',
             headers: {
+                'Cookie' : getValidationData.COOKIE,
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
             body: formData.toString(),

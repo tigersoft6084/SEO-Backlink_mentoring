@@ -16,9 +16,7 @@ export const getBacklinksDataFromMynilinks = async(payload : Payload) => {
         }
 
         //Fetch data from all pages
-        const allData = await getAllDataFromMynilinks(cookie, payload);
-
-        return allData;
+        await getAllDataFromMynilinks(cookie, payload);
 
     }catch(error){
         if (error instanceof Error) {
