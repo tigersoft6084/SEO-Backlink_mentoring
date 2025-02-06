@@ -56,6 +56,8 @@ export const MYNILINKS_API_URL = "https://app.mynilinks.fr/login";
 
 export const GROWWER_API_URL = "https://tool.growwer.com/login";
 
+export const LEMMILINK_API_URL = "https://api.lemmilink.fr/auth/login";
+
 
 // URLs for Backlinks
 export const GET_BACKLINK_FROM_BACKLINKED_URL = "https://app.backlinked.com/api/contentlinks";
@@ -219,3 +221,5 @@ export const GET_BACKLINK_FROM_PUBLISUITES_URL = 'https://www.publisuites.com/ad
 export const GET_BACKLINK_FROM_MYNILINKS_URL = 'https://app.mynilinks.fr/netlinkings';
 
 export const GET_BACKLINK_FROM_GROWWER_URL = 'https://tool.growwer.com/user/api/project/0194d7cf-6096-724b-bea6-72656ce32d8d/media-domains/rendered-list';
+
+export const GET_BACKLINK_FROM_LEMMILINK = "https://api.lemmilink.fr/sites/allsites";

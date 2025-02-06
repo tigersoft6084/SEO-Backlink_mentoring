@@ -12,6 +12,8 @@ import { getBacklinksDataFromBoosterlink } from "./marketPlacesService/getBackli
 import { getBacklinksDataFromLinkbuilders } from "./marketPlacesService/getBacklinksFromMarketplaces/linkbuilders.ts";
 import { getBacklinksDataFromSeojungle } from "./marketPlacesService/getBacklinksFromMarketplaces/seojungle.ts";
 import { getBacklinksDataFromMynilinks } from "./marketPlacesService/getBacklinksFromMarketplaces/mynilinks.ts";
+import { getBacklinksDataFromGrowwer } from "./marketPlacesService/getBacklinksFromMarketplaces/growwer.ts";
+import { getBacklinksDataFromLemmilink } from "./marketPlacesService/getBacklinksFromMarketplaces/lemmilink.ts";
 
 /**
  * Logs messages to the console or a log file
@@ -104,6 +106,18 @@ export const startCronJob = async(payload : Payload): Promise<void> => {
             await getBacklinksDataFromMynilinks(payload);
 
             log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~Completed fetching data from Mynilinks.~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+
+            log("<<<<<<<<<<<<<<<<<<<<<<.....................Fetching data from Growwer..........................>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+
+            await getBacklinksDataFromGrowwer(payload);
+
+            log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~Completed fetching data from Growwer.~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+
+            log("<<<<<<<<<<<<<<<<<<<<<<.....................Fetching data from Lemmilink..........................>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+
+            await getBacklinksDataFromLemmilink(payload);
+
+            log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~Completed fetching data from Lemmilink.~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
         } catch (error) {
             log(`Error occurred: ${(error as Error).message}`);

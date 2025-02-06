@@ -168,6 +168,7 @@ export interface CredentialsForMarketplace {
           | '123media'
           | 'Mynilinks'
           | 'Growwer'
+          | 'Lemmilink'
         )
       | null;
     id?: string | null;

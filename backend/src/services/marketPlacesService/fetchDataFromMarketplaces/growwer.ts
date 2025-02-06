@@ -86,7 +86,7 @@ export const fetchDataFromGrowwer = async (url: string, cookie: string, page : n
         formData.append("filters[website_type][operator]", "IN");
         formData.append("filters[website_type][value]", "");
         formData.append("limit", "100");
-        formData.append("offset", "33100");
+        formData.append("offset", page);
         formData.append("order", "");
         formData.append("order_by", "");
 

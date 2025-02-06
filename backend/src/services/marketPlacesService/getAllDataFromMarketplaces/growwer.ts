@@ -49,8 +49,8 @@ export const getAllDataFromGrowwer = async (cookie: string, payload: Payload) =>
             } else {
                 console.warn(`⚠️ No data found on page ${page}.`);
             }
-        } catch (error: any) {
-            if (error.response?.status === 429) {
+        } catch (error: unknown) {
+            if (error instanceof Error && (error as { response?: { status: number } }).response?.status === 429) {
                 consecutive429Errors++;
 
                 // Increase delay exponentially with jitter
@@ -64,7 +64,11 @@ export const getAllDataFromGrowwer = async (cookie: string, payload: Payload) =>
                     console.error(`❌ Max retries reached for page ${page}. Skipping.`);
                 }
             } else {
-                console.error(`❌ Failed to fetch page ${page}: ${error.message}`);
+                if (error instanceof Error) {
+                    console.error(`❌ Failed to fetch page ${page}: ${error.message}`);
+                } else {
+                    console.error(`❌ Failed to fetch page ${page}: ${String(error)}`);
+                }
             }
         }
     };

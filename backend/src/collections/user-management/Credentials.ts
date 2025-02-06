@@ -103,6 +103,7 @@ export const Credentials: CollectionConfig = {
             { label: '123media', value: '123media' },
             { label: 'Mynilinks', value: 'Mynilinks' },
             { label: 'Growwer', value: 'Growwer' },
+            { label: 'Lemmilink', value: 'Lemmilink' },
           ],
         },
       ],

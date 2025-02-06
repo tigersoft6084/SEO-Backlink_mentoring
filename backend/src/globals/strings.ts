@@ -31,3 +31,4 @@ export const MARKETPLACE_NAME_BACKLINKED = "Backlinked";
 export const MARKETPLACE_NAME_123MEDIA = "123media";
 export const MARKETPLACE_NAME_MYNILINKS = "Mynilinks";
 export const MARKETPLACE_NAME_GROWWER = "Growwer";
+export const MARKETPLACE_NAME_LEMMILINK = "Lemmilink";
