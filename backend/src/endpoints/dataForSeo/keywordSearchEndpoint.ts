@@ -3,6 +3,7 @@ import { Endpoint, PayloadRequest } from "payload";
 import PQueue from "p-queue";
 import { ErrorHandler } from "@/handlers/errorHandler.ts";
 import { normalizeDomain } from "@/utils/domainUtils.ts";
+import { COLLECTION_NAME_BACKLINK } from "@/globals/strings.ts";
 
 export const keywordSearchEndpoint: Endpoint = {
     path: "/kwSearch",
@@ -57,8 +58,21 @@ export const keywordSearchEndpoint: Endpoint = {
                 return true;
             });
 
+            const domainsFromKewordSearchOnDataForSeo = Array.from(uniqueResults.map((item: { domain: string }) => item.domain));
+
+
+            const backlinksData = await req.payload.find({
+                collection : COLLECTION_NAME_BACKLINK,
+                where : {
+                    domain : {
+                        in : domainsFromKewordSearchOnDataForSeo
+                    }
+                },
+                limit : 1000
+            })
+
             return new Response(
-                JSON.stringify({ data: uniqueResults  }), // Flatten the nested array
+                JSON.stringify({ data: backlinksData  }), // Flatten the nested array
                 { status: 200, headers: { "Content-Type": "application/json" } }
             );
         } catch (error) {

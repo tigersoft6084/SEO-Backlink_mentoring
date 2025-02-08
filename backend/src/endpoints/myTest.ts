@@ -1,38 +1,20 @@
-import { Endpoint, PayloadRequest } from 'payload';
-import { getBacklinksDataFromPrensalink } from '@/services/marketPlacesService/getBacklinksFromMarketplaces/prensalink.ts';
-import { expiredDomainsHandler } from '@/handlers/expiredDomainHandler.ts';
-import { backgroundMarketplaceProcessHandler } from '@/handlers/backgroundMarketplaceProcessHandler.ts';
-import { createPlansAndGetID } from '@/services/paypal/plan/CreatePlan.ts';
-import { getProductAndPlanIdFromDB } from '@/services/paypal/catalogProducts/getProductsFromDB.ts';
-import { createProduct } from '@/services/paypal/catalogProducts/CreateProduct.ts';
-import { listActivePlans } from '@/services/paypal/plan/ListPlan.ts';
-import { getCookieFromPublisuites } from '@/services/marketPlacesService/getTokensOrCookiesFromMarketplaces/publisuites.ts';
-import { getBakclinksDataFromPublisuites } from '@/services/marketPlacesService/getBacklinksFromMarketplaces/publisuites.ts';
-
-import { getBacklinksDataFromLinkbuilders } from '@/services/marketPlacesService/getBacklinksFromMarketplaces/linkbuilders.ts';
-import { getTokenForPrensalink } from '@/services/marketPlacesService/getTokensOrCookiesFromMarketplaces/prensalink.ts';
-import { fetchMajesticData } from '@/services/majesticService.ts';
-import { getTokenForLemmilink } from '@/services/marketPlacesService/getTokensOrCookiesFromMarketplaces/lemmilink.ts';
-import { getBacklinksDataFromLemmilink } from '@/services/marketPlacesService/getBacklinksFromMarketplaces/lemmilink.ts';
+import { Endpoint } from 'payload';
+import { bypassCloudflareTurnstile } from '@/services/captchSolver/cloudflare.ts';
 
 // Define the Payload endpoint
 export const myTestEndpoint: Endpoint = {
   path: '/test',
   method: 'get',
-  handler: async (req : PayloadRequest) => {
+  handler: async () => {
     try {
 
-      // await getBacklinksDataFromGetalink(req.payload);
-      // await backgroundMarketplaceProcessHandler(req);
-      await getBacklinksDataFromLemmilink(req.payload);
-      //const result = await getBacklinksDataFromPrensalink(req.payload)
-
-      //const result = await fetchMajesticData("cnet.com")
+      const result = await bypassCloudflareTurnstile();
 
       // Return the collected results
       return new Response(
         JSON.stringify({
           message: 'Fetch completed.',
+          result : result
         }),
         {
           status: 200,

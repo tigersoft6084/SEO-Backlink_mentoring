@@ -8,7 +8,6 @@ import { MARKETPLACE_NAME_GROWWER } from '@/globals/strings.ts';
 const TOTAL_PAGES = 33100;
 const PAGE_STEP = 100; // Pages increment by 100
 const CONCURRENCY_LIMIT = 1; // Reduce to 1 request at a time
-const BATCH_SIZE = 2; // Process one page at a time
 const BASE_DELAY = 8000; // Base delay starts at 8s (increase for Growwer limits)
 const MAX_RETRIES = 6; // More retries before skipping
 let ADAPTIVE_DELAY = BASE_DELAY;

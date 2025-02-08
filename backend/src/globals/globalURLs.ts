@@ -58,6 +58,11 @@ export const GROWWER_API_URL = "https://tool.growwer.com/login";
 
 export const LEMMILINK_API_URL = "https://api.lemmilink.fr/auth/login";
 
+export const PRNEWS_API_URL = "https://prnews.io/login/";
+
+export const PRESSWHIZZ_API_URL = "https://app.presswhizz.com/auth/login";
+
+
 
 // URLs for Backlinks
 export const GET_BACKLINK_FROM_BACKLINKED_URL = "https://app.backlinked.com/api/contentlinks";
@@ -223,3 +228,5 @@ export const GET_BACKLINK_FROM_MYNILINKS_URL = 'https://app.mynilinks.fr/netlink
 export const GET_BACKLINK_FROM_GROWWER_URL = 'https://tool.growwer.com/user/api/project/0194d7cf-6096-724b-bea6-72656ce32d8d/media-domains/rendered-list';
 
 export const GET_BACKLINK_FROM_LEMMILINK = "https://api.lemmilink.fr/sites/allsites";
+
+export const GET_BACKLINK_FROM_PRESSWHIZZ_URL = "https://app.presswhizz.com/_components/marketplace/selectPage";

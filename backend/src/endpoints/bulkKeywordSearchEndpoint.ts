@@ -96,6 +96,7 @@ export const bulkKeywordSearchEndpoint: Endpoint = {
       const backlinksData = await req.payload.find({
         collection: COLLECTION_NAME_BACKLINK,
         where: { domain: { in: normalizedDomains } },
+        limit : 1000
       });
 
       const backlinksMap: Record<string, BacklinkData> = {};

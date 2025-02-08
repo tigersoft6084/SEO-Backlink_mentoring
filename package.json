@@ -25,6 +25,8 @@
     "clean:frontend": "cd frontend && rm -rf node_modules .next"
   },
   "devDependencies": {
-    "concurrently": "^9.1.0"
+    "@types/chrome": "^0.0.303",
+    "concurrently": "^9.1.0",
+    "typescript": "^5.7.3"
   }
 }

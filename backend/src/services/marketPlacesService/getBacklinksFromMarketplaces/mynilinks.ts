@@ -1,8 +1,6 @@
 
 import { Payload } from "payload";
 import { getCookieFromMynilinks } from "../getTokensOrCookiesFromMarketplaces/mynilinks.ts";
-import { GET_BACKLINK_FROM_MYNILINKS_URL } from "@/globals/globalURLs.ts";
-import { fetchDataFromMynilinks } from "../fetchDataFromMarketplaces/mynilinks.ts";
 import { getAllDataFromMynilinks } from "../getAllDataFromMarketplaces/mynilinks.ts";
 
 
