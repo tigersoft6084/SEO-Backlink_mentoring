@@ -30,6 +30,7 @@ export default function Home() {
   const router = useRouter();
   const [userFeatures, setUserFeatures] = useState([]);
   const { selectedPlanId, selectedPlanName, setPlan, clearPlan } = usePlan();
+  const [isUpdatingSubscription, setIsUpdatingSubscription] = useState(false);
 
   // Redirect if user is not authenticated
   useEffect(() => {
@@ -85,6 +86,7 @@ export default function Home() {
     if (!email || !planId || !planName) return;
 
     setSelectedMenuItem("Extend Your Quota");
+    setIsUpdatingSubscription(true); // ✅ Set loading state before starting update
 
     // ✅ FIXED: Use async function inside useEffect
     const updateSubscription = async () => {
@@ -94,9 +96,11 @@ export default function Home() {
       // ✅ Wait for refreshUser to complete before updating UI
       await refreshUser();
 
-  };
+      setIsUpdatingSubscription(false); // ✅ Remove loading state after update
 
-  updateSubscription(); // ✅ Call the async function
+    };
+
+    updateSubscription(); // ✅ Call the async function
 
     sessionStorage.removeItem("selectedPlanId");
     sessionStorage.removeItem("selectedPlanName");
@@ -146,13 +150,13 @@ export default function Home() {
       case "Serp Scanner":
         return <SerpScanner />;
       case "Extend Your Quota":
-        return <PricingTable />;
+        return <PricingTable isUpdatingSubscription={isUpdatingSubscription}/>;
       case "Account Settings":
         return <AccountSettings />;
       default:
         return <div />;
     }
-  }, [selectedMenuItem]);
+  }, [selectedMenuItem, isUpdatingSubscription]);
 
   return (
     <div className="flex flex-col dark:bg-slate-900">

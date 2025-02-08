@@ -13,7 +13,11 @@ interface Plan {
     currency: string;
 }
 
-const PricingTable: React.FC = () => {
+interface PricingTableProps {
+    isUpdatingSubscription: boolean; // ✅ Accept the new prop
+}
+
+const PricingTable: React.FC<PricingTableProps> = ({ isUpdatingSubscription }) => {
     const { user, refreshUser } = useUser(); // ✅ Use `useUser()` instead of `useUserPlan()`
     const [plans, setPlans] = useState<Plan[]>([]);
     const [fetchLoading, setFetchLoading] = useState(true);
@@ -58,7 +62,7 @@ const PricingTable: React.FC = () => {
         }
     };
 
-    if (fetchLoading)
+    if (fetchLoading || isUpdatingSubscription)
         return (
             <div className="flex flex-col items-center mx-auto my-auto">
                 <PreloadSubscription onLoad={() => setFetchLoading(false)} />
@@ -93,7 +97,7 @@ const PricingTable: React.FC = () => {
                         <div
                             key={index}
                             className={`p-6 rounded-3xl shadow-md border-2 bg-white dark:bg-slate-800 ${
-                                isCurrentPlan ? "border-primary" : "border-gray-300 dark:border-gray-700"
+                                isCurrentPlan ? "border-primary dark:bg-slate-600" : "border-gray-300 dark:border-gray-700"
                             }`}
                         >
                             <h3 className="text-gray-600 dark:text-gray-200 text-xl font-bold mb-2">{plan.plan_name}</h3>

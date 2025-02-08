@@ -34,12 +34,6 @@ export default function AccountSettings() {
             <label className="text-gray-700 dark:text-gray-300">Email</label>
             <p className="w-1/2 text-gray-900 dark:text-gray-200">
               {user?.email || "Loading..."}{" "}
-              <a
-                href="#"
-                className="text-blue-500 hover:underline dark:text-blue-400"
-              >
-                Change the email
-              </a>
             </p>
           </div>
 
@@ -47,20 +41,38 @@ export default function AccountSettings() {
           <div className="py-4 flex justify-between items-center">
             <label className="text-gray-700 dark:text-gray-300">Your Plan</label>
             <p className="w-1/2 text-gray-900 dark:text-gray-200">
-              {user?.planName}{" "}
-              <a
-                href="#"
-                className="text-blue-500 hover:underline dark:text-blue-400"
-              >
-                Change the plan
-              </a>
+              {user? user.planName? user.planName : "You have no plans" : "You have no plans"}{" "}
             </p>
           </div>
+
+          {/* Your Plan */}
+          <div className="py-4 flex justify-between items-center">
+            <label className="text-gray-700 dark:text-gray-300">API Key(Chrome Plugin)</label>
+            <div className="w-1/2 overflow-x-auto whitespace-nowrap text-gray-900 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded-md p-2">
+              {user? user.paypalSubscriptionApiKey? user.paypalSubscriptionApiKey : 'Please increase your quota' : 'Please increase your quota'}
+            </div>
+          </div>
+
 
           {/* Renewal Date */}
           <div className="py-4 flex justify-between items-center">
             <label className="text-gray-700 dark:text-gray-300">Renewal Date</label>
-            <p className="w-1/2 text-gray-900 dark:text-gray-200">2025-01-01</p>
+            <p className="w-1/2 text-gray-900 dark:text-gray-200">
+              {
+                user ? user.paypalSubscriptionExpiresAt
+                ? (() => {
+                    const date = new Date(user.paypalSubscriptionExpiresAt);
+                    const year = date.getFullYear();
+                    const month = String(date.getMonth() + 1).padStart(2, "0"); // Ensure 2 digits
+                    const day = String(date.getDate()).padStart(2, "0"); // Ensure 2 digits
+                    const hours = String(date.getHours()).padStart(2, "0");
+                    const minutes = String(date.getMinutes()).padStart(2, "0");
+                    const seconds = String(date.getSeconds()).padStart(2, "0");
+                    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+                  })()
+                : "Please increase your quota" : 'Please increase your quota'
+              }
+            </p>
           </div>
 
           {/* Invoices */}
