@@ -86,10 +86,17 @@ export default function Home() {
 
     setSelectedMenuItem("Extend Your Quota");
 
-    saveSubscription(subscriptionId, planId, planName, email).then((features) => {
-      if (features) setUserFeatures(features);
-      refreshUser();
-    });
+    // ✅ FIXED: Use async function inside useEffect
+    const updateSubscription = async () => {
+
+      await saveSubscription(subscriptionId, planId, planName, email);
+
+      // ✅ Wait for refreshUser to complete before updating UI
+      await refreshUser();
+
+  };
+
+  updateSubscription(); // ✅ Call the async function
 
     sessionStorage.removeItem("selectedPlanId");
     sessionStorage.removeItem("selectedPlanName");
@@ -114,11 +121,11 @@ export default function Home() {
   // Quota usage information
   const quotaUsed = useMemo(
     () => [
-      { name: "Backlinks", value: 0, max: user?.features?.backlinks ?? 3 },
-      { name: "Plugin", value: 0, max: user?.features?.plugin ?? 3 },
-      { name: "Keyword Searches", value: 0, max: user?.features?.keywordSearches ?? 3 },
-      { name: "Competitive Analysis", value: 0, max: user?.features?.competitiveAnalysis ?? 1 },
-      { name: "SERP Scanner", value: 0, max: user?.features?.SerpScanner ?? 0 },
+      { name: "Backlinks", value: 0, max: user?.subscriptionId ? user?.features?.backlinks ?? 3 : 3 },
+      { name: "Plugin", value: 0, max: user?.subscriptionId ? user?.features?.plugin ?? 3 : 3 },
+      { name: "Keyword Searches", value: 0, max: user?.subscriptionId ? user?.features?.keywordSearches ?? 3 : 3 },
+      { name: "Competitive Analysis", value: 0, max: user?.subscriptionId ? user?.features?.competitiveAnalysis ?? 1 : 1 },
+      { name: "SERP Scanner", value: 0, max: user?.subscriptionId ? user?.features?.SerpScanner ?? 0 : 0 }
     ],
     [user]
   );

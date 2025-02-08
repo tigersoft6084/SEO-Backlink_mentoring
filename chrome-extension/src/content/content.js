@@ -1,4 +1,5 @@
-console.log("Link Finder Checker Content Script Loaded");
+"use client";
 
-// Injects a script to modify the webpage if necessary
-document.body.style.border = "5px solid red";
+if (typeof window !== "undefined") {
+    console.log("Chrome Extension Background Script Loaded");
+}

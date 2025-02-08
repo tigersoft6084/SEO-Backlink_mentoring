@@ -12,6 +12,7 @@ export default defineConfig({
   build: {
     outDir: "dist",
     emptyOutDir: true,
+    ssr: false, // ✅ Disable SSR for Chrome Extension
     rollupOptions: {
       input: {
         popup: resolve(__dirname, "index.html"), // Use correct path resolution

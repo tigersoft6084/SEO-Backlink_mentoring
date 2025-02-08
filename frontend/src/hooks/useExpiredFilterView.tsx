@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";  
+import { useCallback, useEffect, useState } from "react";  
 import { Filters } from "../types/expired.d";
 import { useExpiredDomains } from "../context/ExpiredDomainsContext";
 
@@ -28,6 +28,7 @@ export default function useExpiredFilterView() {
     const [hasFetched, setHasFetched] = useState(false);  // ✅ Prevent multiple fetches
 
     const fetchDomains = useCallback(async () => {
+
         if (loading) return; // ✅ Prevent duplicate fetches while loading
 
         setLoading(true);
@@ -39,7 +40,7 @@ export default function useExpiredFilterView() {
                 queryParams.append(key, value);
             }
         }
-        const url = `http://localhost:2024/api/expired?${queryParams.toString()}`;
+        const url = `/api/expired?${queryParams.toString()}`;
 
         console.log(url);
         try {

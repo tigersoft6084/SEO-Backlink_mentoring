@@ -28,7 +28,7 @@ export const getProductAndPlanIdFromDB = async (): Promise<ProductFromDB | null>
         }
 
         // Ensure `price` is converted to string if needed
-        const plans = productData.plans.map((plan: any) => ({
+        const plans = productData.plans.map((plan: { price: number }) => ({
             ...plan,
             price: String(plan.price), // Convert price to string
         }));

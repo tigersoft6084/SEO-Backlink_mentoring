@@ -88,7 +88,7 @@ const PricingTable: React.FC = () => {
             {/* Pricing Cards */}
             <div className="px-10 grid grid-cols-1 md:grid-cols-3 gap-16 w-full max-w-7xl">
                 {plans.map((plan, index) => {
-                    const isCurrentPlan = user?.planName === plan.plan_name;
+                    const isCurrentPlan = user?.subscriptionId && user?.planName === plan.plan_name;
                     return (
                         <div
                             key={index}

@@ -1,3 +1,5 @@
+"use client";
+
 export async function validateApiKey(apiKey) {
     try {
         const response = await fetch("https://localhost:2024/api/validate-key", {

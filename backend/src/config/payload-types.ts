@@ -81,6 +81,8 @@ export interface User {
   authProvider?: string | null;
   planId?: string | null;
   subscriptionId?: string | null;
+  paypalSubscriptionExpiresAt?: string | null;
+  paypalSubscriptionApiKey?: string | null;
   planName?: string | null;
   features?:
     | {
@@ -334,6 +336,8 @@ export interface UsersSelect<T extends boolean = true> {
   authProvider?: T;
   planId?: T;
   subscriptionId?: T;
+  paypalSubscriptionExpiresAt?: T;
+  paypalSubscriptionApiKey?: T;
   planName?: T;
   features?: T;
   projects?: T;

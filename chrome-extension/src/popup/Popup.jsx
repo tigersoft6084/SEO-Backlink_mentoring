@@ -1,3 +1,5 @@
+"use client";  // 🚀 Ensures component only runs in the browser
+
 import { useEffect, useState } from "react";
 import { getApiKey, saveApiKey } from "../utils/storage";
 import { validateApiKey } from "../utils/api";
@@ -8,6 +10,7 @@ function LinkFinderExtension() {
     const [error, setError] = useState(null);
 
     useEffect(() => {
+        if (typeof window === "undefined") return; // ✅ Prevent SSR access
         // Check if API key is already saved
         getApiKey((savedKey) => {
         if (savedKey) {

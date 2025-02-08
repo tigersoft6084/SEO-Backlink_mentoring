@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 
 const useHandleReturnUrl = () => {
     useEffect(() => {
+        if(typeof window === 'undefined') return;
         const queryParams = new URLSearchParams(window.location.search);
         const subscriptionId = queryParams.get('subscription_id');
         const planId = sessionStorage.getItem("selectedPlanId");

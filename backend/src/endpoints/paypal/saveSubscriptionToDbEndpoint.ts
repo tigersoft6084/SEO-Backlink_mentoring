@@ -1,5 +1,7 @@
 import { withErrorHandling } from "@/middleware/errorMiddleware.ts";
+import { showSubscription } from "@/services/paypal/subscription/ShowSubscription.ts";
 import { Endpoint, PayloadRequest } from "payload";
+import crypto from "crypto";
 
 // Define plan features outside for better performance
 const planFeatures: {
@@ -46,6 +48,11 @@ const planFeatures: {
     },
 };
 
+const generateApiKey = async() => {
+    return crypto.randomBytes(32).toString("hex");
+}
+
+
 export const saveSubscriptionToUserCollection: Endpoint = {
 
     path: "/save-subscription",
@@ -72,6 +79,8 @@ export const saveSubscriptionToUserCollection: Endpoint = {
         let planName: string | undefined;
         let subscriptionId: string | undefined;
         let userEmail : string | undefined;
+        let nextBillingTime : string | undefined;
+        let apiKey : string | undefined;
 
         if (req.json) {
             const body = await req.json();
@@ -110,6 +119,11 @@ export const saveSubscriptionToUserCollection: Endpoint = {
                 );
             }
 
+            if(subscriptionId){
+                nextBillingTime = await showSubscription(subscriptionId);
+                apiKey = await generateApiKey();
+            }
+
             const selectedFeatures = planFeatures[planName] || {};
 
             // Update user subscription in Payload CMS
@@ -125,17 +139,19 @@ export const saveSubscriptionToUserCollection: Endpoint = {
                     subscriptionId,
                     planName,
                     features: selectedFeatures,
+                    paypalSubscriptionExpiresAt : nextBillingTime,
+                    paypalSubscriptionApiKey : apiKey
                 },
             });
 
             return new Response(
                 JSON.stringify({ success: "Subscription updated successfully!" }),
                 {
-                status: 200, // Success status corrected
-                headers: {
-                    "Content-Type": "application/json",
-                    "Access-Control-Allow-Origin": "*",
-                },
+                    status: 200, // Success status corrected
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Access-Control-Allow-Origin": "*",
+                    },
                 }
             );
 

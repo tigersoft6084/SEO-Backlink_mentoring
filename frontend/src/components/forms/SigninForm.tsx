@@ -48,6 +48,8 @@ export default function SigninForm() {
 
       const data = await response.json();
 
+      console.log(data)
+
       // ✅ Ensure `window` is available before using `sessionStorage` (avoids SSR issues)
       if (typeof window !== "undefined") {
         sessionStorage.setItem("authToken", data.token);

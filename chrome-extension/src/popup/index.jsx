@@ -1,3 +1,5 @@
+"use client";
+
 import { createRoot } from "react-dom/client";
 import LinkFinderExtension from "./popup.jsx";
 

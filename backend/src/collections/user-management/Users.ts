@@ -54,6 +54,16 @@ export const Users: CollectionConfig = {
       admin: { position: "sidebar" },
     },
     {
+      name : 'paypalSubscriptionExpiresAt',
+      type : 'text',
+      admin : { position : 'sidebar'}
+    },
+    {
+      name : 'paypalSubscriptionApiKey',
+      type : 'text',
+      admin : {position : 'sidebar'}
+    },
+    {
       name: "planName",
       type: "text",
       admin: { position: "sidebar" }, // Display plan name in admin panel

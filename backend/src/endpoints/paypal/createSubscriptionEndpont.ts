@@ -1,5 +1,6 @@
 import { withErrorHandling } from "@/middleware/errorMiddleware.ts";
 import { createSubscription } from "@/services/paypal/subscription/CreateSubscription.ts";
+import { showSubscription } from "@/services/paypal/subscription/ShowSubscription.ts";
 import { Endpoint, PayloadRequest } from "payload";
 
 export const paypalSubscriptionEndpoint: Endpoint = {

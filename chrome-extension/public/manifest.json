@@ -3,7 +3,8 @@
     "name": "Link Finder",
     "version": "1.0",
     "description": "Link Finder extension is the best extension to find Sponsored Articles on 80,000+ websites.",
-    "permissions": ["storage", "activeTab", "scripting"],
+    "permissions": ["storage", "activeTab"],
+    "host_permissions": ["https://localhost:2024/api/*"],
     "background": {
         "service_worker": "background.js"
     },

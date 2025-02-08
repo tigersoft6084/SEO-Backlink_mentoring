@@ -1,6 +1,7 @@
 import { PAYPAL_API } from "@/globals/globalURLs.ts";
 import { getAccessToken } from "../Authentication.ts";
 import { ErrorHandler } from "@/handlers/errorHandler.ts";
+import { showSubscription } from "./ShowSubscription.ts";
 
 interface PayPalLink {
     href: string;

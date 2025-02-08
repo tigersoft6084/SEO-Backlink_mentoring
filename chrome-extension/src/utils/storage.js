@@ -1,3 +1,5 @@
+"use client";
+
 /* global chrome */
 export function saveApiKey(apiKey) {
     chrome.storage.sync.set({ apiKey });
