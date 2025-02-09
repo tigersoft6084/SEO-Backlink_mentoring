@@ -1,0 +1,57 @@
+/* Apply a gradient background to buttons */
+.ant-btn-primary {
+    background: linear-gradient(135deg, #3b82f6, #a855f7);
+    border: none;
+    position: relative;
+    transition: opacity 0.3s, transform 0.3s; /* Add smooth transitions for hover and active states */
+}
+
+.ant-btn-primary:hover {
+    opacity: 0.8;
+    transform: scale(1.05); /* Slightly scale button on hover */
+}
+
+/* Disable the button's appearance and hover when loading */
+.ant-btn-primary[disabled],
+.ant-btn-primary[loading] {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: scale(1); /* No scaling when disabled or loading */
+}
+
+/* Customize the input field */
+.ant-input {
+    border-radius: 5px;
+    border: 1px solid #6253e1;
+    transition: border-color 0.3s, box-shadow 0.3s; /* Smooth transitions for focus effects */
+}
+
+.ant-input:focus {
+    border-color: #04befe;
+    box-shadow: 0 0 0 2px rgba(4, 190, 254, 0.2);
+}
+
+/* Apply custom styles to form */
+.ant-form-item {
+    margin-bottom: 16px;
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    align-items: center; /* Center horizontally */
+    justify-content: center; /* Center vertically */
+}
+
+.ant-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px; /* Adjust based on your content */
+    max-height: 400px; /* Prevent it from growing too much */
+    width: 300px;
+    overflow: hidden; /* Hide scrollbar */
+}
+
+
+.ant-form-item-label {
+    font-weight: bold;
+}
