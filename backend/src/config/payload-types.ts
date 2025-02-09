@@ -81,6 +81,7 @@ export interface User {
   authProvider?: string | null;
   planId?: string | null;
   subscriptionId?: string | null;
+  subscriptionStatus?: string | null;
   paypalSubscriptionExpiresAt?: string | null;
   paypalSubscriptionApiKey?: string | null;
   planName?: string | null;
@@ -245,7 +246,8 @@ export interface PaypalPlan {
         plan_id?: string | null;
         description?: string | null;
         price?: number | null;
-        currency?: string | null;
+        interval_unit?: string | null;
+        currency?: ('USD' | 'EUR') | null;
         id?: string | null;
       }[]
     | null;
@@ -336,6 +338,7 @@ export interface UsersSelect<T extends boolean = true> {
   authProvider?: T;
   planId?: T;
   subscriptionId?: T;
+  subscriptionStatus?: T;
   paypalSubscriptionExpiresAt?: T;
   paypalSubscriptionApiKey?: T;
   planName?: T;
@@ -453,6 +456,7 @@ export interface PaypalPlansSelect<T extends boolean = true> {
         plan_id?: T;
         description?: T;
         price?: T;
+        interval_unit?: T;
         currency?: T;
         id?: T;
       };

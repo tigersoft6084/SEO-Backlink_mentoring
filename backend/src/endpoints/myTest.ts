@@ -1,5 +1,5 @@
 import { Endpoint } from 'payload';
-import { bypassCloudflareTurnstile } from '@/services/captchSolver/cloudflare.ts';
+import { listActivePlans } from '@/services/paypal/plan/ListPlan.ts';
 
 // Define the Payload endpoint
 export const myTestEndpoint: Endpoint = {
@@ -8,7 +8,7 @@ export const myTestEndpoint: Endpoint = {
   handler: async () => {
     try {
 
-      const result = await bypassCloudflareTurnstile();
+      const result = await listActivePlans();
 
       // Return the collected results
       return new Response(

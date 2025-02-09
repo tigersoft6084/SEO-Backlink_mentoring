@@ -16,6 +16,8 @@ import { updateUserProject } from "./projectManagement/putProject.ts";
 import { mytttEndpoint } from "./test.ts";
 import { paypalWebhook } from "./paypal/paypalWebhookEndpoint.ts";
 import { getUserDataForRefreshPageEndpoint } from "./getUserDataForRefreshPageEndpoint.ts";
+import { showSubscriptionEndpoint } from "./paypal/showSubscriptionEndpoint.ts";
+import { verifyApiKey } from "./chromeExtension/apiKey.ts";
 
 
 export const customEndpoints = [
@@ -28,6 +30,7 @@ export const customEndpoints = [
     paypalWebhook,
     getPlansFromDbEndpoint,
     saveSubscriptionToUserCollection,
+    showSubscriptionEndpoint,
     getUserPlan,
     getUserProjects,
     addProjectToUser,
@@ -35,6 +38,7 @@ export const customEndpoints = [
     getUserDataForRefreshPageEndpoint,
     removeFavoriteFromProject,
     fetchprensalinkEndpoint,
+    verifyApiKey,
     myTestEndpoint,
     mytttEndpoint
 ];

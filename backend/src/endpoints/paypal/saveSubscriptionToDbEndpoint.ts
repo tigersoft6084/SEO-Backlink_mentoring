@@ -81,6 +81,7 @@ export const saveSubscriptionToUserCollection: Endpoint = {
         let userEmail : string | undefined;
         let nextBillingTime : string | undefined;
         let apiKey : string | undefined;
+        let subscriptionStatus : string |undefined;
 
         if (req.json) {
             const body = await req.json();
@@ -120,7 +121,11 @@ export const saveSubscriptionToUserCollection: Endpoint = {
             }
 
             if(subscriptionId){
-                nextBillingTime = await showSubscription(subscriptionId);
+                const subscriptionResponse = await showSubscription(subscriptionId);
+                if (typeof subscriptionResponse !== 'string') {
+                    nextBillingTime = subscriptionResponse?.nextBillingTime;
+                    subscriptionStatus = subscriptionResponse?.subscriptionStatus;
+                }
                 apiKey = await generateApiKey();
             }
 
@@ -140,6 +145,7 @@ export const saveSubscriptionToUserCollection: Endpoint = {
                     planName,
                     features: selectedFeatures,
                     paypalSubscriptionExpiresAt : nextBillingTime,
+                    subscriptionStatus : subscriptionStatus,
                     paypalSubscriptionApiKey : apiKey
                 },
             });

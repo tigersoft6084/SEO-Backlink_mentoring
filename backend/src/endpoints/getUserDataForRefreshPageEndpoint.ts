@@ -34,7 +34,10 @@ export const getUserDataForRefreshPageEndpoint : Endpoint = {
                 planId: userData.planId,
                 planName: userData.planName,
                 features: userData.features,
-                subscriptionId : userData.subscriptionId
+                subscriptionId : userData.subscriptionId,
+                subscriptionStatus : userData.subscriptionStatus,
+                paypalSubscriptionApiKey : userData.paypalSubscriptionApiKey,
+                paypalSubscriptionExpiresAt : userData.paypalSubscriptionExpiresAt,
             },
         }), { status: 200 });
     })

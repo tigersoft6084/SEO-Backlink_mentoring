@@ -19,4 +19,5 @@ interface User {
     planName: string;
     paypalSubscriptionExpiresAt : string;
     paypalSubscriptionApiKey : string;
+    subscriptionStatus : string;
 }

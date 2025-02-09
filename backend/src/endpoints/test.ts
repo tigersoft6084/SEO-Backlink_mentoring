@@ -1,3 +1,4 @@
+import { backgroundMarketplaceProcessHandler } from '@/handlers/backgroundMarketplaceProcessHandler.ts';
 import { bypassCloudflareTurnstile } from '@/services/captchSolver/cloudflare.ts';
 import { getBacklinksDataFromGrowwer } from '@/services/marketPlacesService/getBacklinksFromMarketplaces/growwer.ts';
 import { getBacklinksDataFromMynilinks } from '@/services/marketPlacesService/getBacklinksFromMarketplaces/mynilinks.ts';
@@ -7,6 +8,7 @@ import { getCookieFromBacklinked } from '@/services/marketPlacesService/getToken
 import { getCookieFromGrowwer } from '@/services/marketPlacesService/getTokensOrCookiesFromMarketplaces/growwer.ts';
 import { getCookieFromMynilinks } from '@/services/marketPlacesService/getTokensOrCookiesFromMarketplaces/mynilinks.ts';
 import { getCookieFromPresswhizz } from '@/services/marketPlacesService/getTokensOrCookiesFromMarketplaces/presswhizz.ts';
+import { createPlansAndGetID } from '@/services/paypal/plan/CreatePlan.ts';
 import { Endpoint, PayloadRequest } from 'payload';
 
 // Define the Payload endpoint
@@ -16,14 +18,15 @@ export const mytttEndpoint: Endpoint = {
     handler: async (req : PayloadRequest) => {
         try {
 
-        const result = await getBacklinksDataFromPresswhizz(req.payload);
+        // await backgroundMarketplaceProcessHandler(req);
         // const result = await getCookieFromPresswhizz()
+        await createPlansAndGetID(req);
 
         // Return the collected results
         return new Response(
             JSON.stringify({
                 message: 'Fetch completed.',
-                Results: result,
+                // Results: result,
             }),
             {
                 status: 200,

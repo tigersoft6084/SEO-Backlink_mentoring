@@ -2,11 +2,10 @@
 
 export async function validateApiKey(apiKey) {
     try {
-        const response = await fetch("https://localhost:2024/api/validate-key", {
+        const response = await fetch("http://127.0.0.1:2024/api/verify-api-key", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${apiKey}`
             },
             body: JSON.stringify({ key: apiKey })
         });

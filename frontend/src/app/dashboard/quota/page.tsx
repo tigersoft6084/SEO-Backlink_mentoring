@@ -23,6 +23,9 @@ const PricingTable: React.FC<PricingTableProps> = ({ isUpdatingSubscription }) =
     const [fetchLoading, setFetchLoading] = useState(true);
     const { selectedPlanId, selectedPlanName, setPlan } = usePlan();
     const [billingCycle, setBillingCycle] = useState<"monthly" | "annually">("monthly");
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedPlan, setSelectedPlan] = useState<{ id: string; name: string } | null>(null);
+    const [isProcessing, setIsProcessing] = useState(false); // ✅ Loading state
 
     // ✅ Fetch available plans
     useEffect(() => {
@@ -42,7 +45,11 @@ const PricingTable: React.FC<PricingTableProps> = ({ isUpdatingSubscription }) =
 
   // ✅ Handle subscription process
     const handleSubscription = async (planId: string, planName: string) => {
+
         try {
+
+            setIsProcessing(true); // ✅ Show loading state
+
             const response = await fetch("/api/create-subscription", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -51,14 +58,22 @@ const PricingTable: React.FC<PricingTableProps> = ({ isUpdatingSubscription }) =
 
             const result = await response.json();
             if (response.ok && result.approvalUrl) {
+
                 setPlan(planId, planName);              // ✅ Store selected plan in state + sessionStorage
-                window.location.href = result.approvalUrl;
+
+                // ✅ Wait a short time before redirection for better UX
+                setTimeout(() => {
+                    window.location.href = result.approvalUrl;
+                }, 1000);
+
             } else {
                 alert("Subscription creation failed.");
+                setIsProcessing(false);
             }
         } catch (error) {
             console.error("Error creating subscription:", error);
             alert("An error occurred while creating the subscription.");
+            setIsProcessing(false);
         }
     };
 
@@ -115,7 +130,13 @@ const PricingTable: React.FC<PricingTableProps> = ({ isUpdatingSubscription }) =
                                         ? "bg-gradient-to-r from-blue-500 to-purple-500 text-white"
                                         : "bg-white border-2 border-gray-300 hover:border-gray-400 dark:border-0 dark:bg-slate-700 dark:hover:bg-slate-600 text-primary dark:text-gray-200"
                                 }`}
-                                onClick={() => handleSubscription(plan.plan_id, plan.plan_name)}
+                                disabled={!!isCurrentPlan}
+                                onClick={() => {
+                                    if (!isCurrentPlan) {
+                                        setSelectedPlan({ id: plan.plan_id, name: plan.plan_name });
+                                        setIsModalOpen(true);
+                                    }
+                                }}
                             >
                                 {isCurrentPlan ? "Current Plan" : "Upgrade Plan"}
                             </button>
@@ -135,6 +156,42 @@ const PricingTable: React.FC<PricingTableProps> = ({ isUpdatingSubscription }) =
                     );
                 })}
             </div>
+
+            {/* Subscription Confirmation Modal */}
+            {isModalOpen && selectedPlan && (
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                    <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md w-96">
+                        <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100">
+                            Confirm Subscription
+                        </h2>
+                        <p className="text-gray-700 dark:text-gray-300 mt-2">
+                            Are you sure you want to subscribe to <strong>{selectedPlan.name}</strong>?
+                        </p>
+                        <div className="mt-4 flex justify-end space-x-2">
+                            <button
+                                className="px-4 py-2 bg-gray-300 dark:bg-gray-600 text-gray-900 dark:text-gray-200 rounded-lg"
+                                onClick={() => setIsModalOpen(false)}
+                                disabled={isProcessing}
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                className={`px-4 py-2 text-white rounded-lg ${
+                                    isProcessing ? "bg-gray-500 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"
+                                }`}
+                                onClick={() => {
+                                    if (selectedPlan) {
+                                        handleSubscription(selectedPlan.id, selectedPlan.name);
+                                    }
+                                }}
+                                disabled={isProcessing}
+                            >
+                                {isProcessing ? "Processing..." : "OK"}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

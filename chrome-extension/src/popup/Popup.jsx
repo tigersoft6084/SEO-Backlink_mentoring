@@ -23,26 +23,26 @@ function LinkFinderExtension() {
         setError(null);
 
         if (!apiKey) {
-        setError("API Key is required!");
-        return;
+            setError("API Key is required!");
+            return;
         }
 
         const isValid = await validateApiKey(apiKey);
 
         if (isValid) {
-        saveApiKey(apiKey);
-        setIsAuthenticated(true);
+            saveApiKey(apiKey);
+            setIsAuthenticated(true);
         } else {
-        setError("Invalid API Key. Please try again.");
+            setError("Invalid API Key. Please try again.");
         }
     };
 
     if (isAuthenticated) {
         return (
-        <div className="p-4 w-64 bg-gray-100 dark:bg-gray-800">
-            <h2 className="text-lg font-bold">SEO Checker</h2>
-            <p>Extension is ready to use!</p>
-        </div>
+            <div className="p-4 w-64 bg-gray-100 dark:bg-gray-800">
+                <h2 className="text-lg font-bold">SEO Checker</h2>
+                <p>Extension is ready to use!</p>
+            </div>
         );
     }
 

@@ -3,9 +3,10 @@ import { getAccessToken } from "../Authentication.ts";
 import { PAYPAL_API } from "@/globals/globalURLs.ts";
 
 interface showSubscriptionResponse{
-    billing_info : {
-        next_billing_time : string
+    billing_info? : {
+        next_billing_time? : string
     }
+    status? : string
 }
 
 export const showSubscription = async(subscriptionID : string) => {
@@ -31,9 +32,13 @@ export const showSubscription = async(subscriptionID : string) => {
 
         const data : showSubscriptionResponse = await response.json();
 
-        const nextBillingTime = data.billing_info.next_billing_time;
+        const nextBillingTime = data?.billing_info?.next_billing_time;
+        const subscriptionStatus = data?.status;
 
-        return nextBillingTime;
+        return {
+            nextBillingTime: nextBillingTime ? nextBillingTime : '',
+            subscriptionStatus: subscriptionStatus ? subscriptionStatus : ''
+        };
 
     }catch(error){
 

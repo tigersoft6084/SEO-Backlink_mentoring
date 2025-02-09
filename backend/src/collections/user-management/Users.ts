@@ -54,6 +54,11 @@ export const Users: CollectionConfig = {
       admin: { position: "sidebar" },
     },
     {
+      name : 'subscriptionStatus',
+      type : 'text',
+      admin : {position : 'sidebar'}
+    },
+    {
       name : 'paypalSubscriptionExpiresAt',
       type : 'text',
       admin : { position : 'sidebar'}

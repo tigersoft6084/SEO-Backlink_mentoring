@@ -5,7 +5,6 @@ import { FaSearch, FaFolderOpen, FaLink, FaGoogle } from "react-icons/fa";
 import { FaGauge } from "react-icons/fa6";
 import { TbRadarFilled } from "react-icons/tb";
 import { useSidebar } from "../../context/SidebarContext";
-import { useAuth } from "../../hooks/useAuth";
 import { useUser } from "../../context/UserContext";
 import { useEffect, useState, useCallback, useMemo } from "react";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
@@ -28,20 +27,21 @@ export default function Home() {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
-  const [userFeatures, setUserFeatures] = useState([]);
   const { selectedPlanId, selectedPlanName, setPlan, clearPlan } = usePlan();
   const [isUpdatingSubscription, setIsUpdatingSubscription] = useState(false);
 
   // Redirect if user is not authenticated
   useEffect(() => {
-    if (!user) router.push("/auth/signin");
+    if (!user) {
+      router.push("/auth/signin");
+    }
   }, [user, router]);
 
-  // API call to save subscription
+  // ✅ API call to save subscription
   const saveSubscription = useCallback(
     async (subscriptionId: string, planId: string, planName: string, email: string) => {
       try {
-        console.log("🔵 Sending subscription request:", { subscriptionId, planId, planName, email });
+        console.log("🔵 Saving subscription:", { subscriptionId, planId, planName, email });
 
         const response = await fetch("/api/save-subscription", {
           method: "POST",
@@ -51,19 +51,21 @@ export default function Home() {
 
         const data = await response.json();
 
-        if (!response.ok) throw new Error("Failed to save subscription");
+        if (!response.ok) {
+          throw new Error(data.error || "Failed to save subscription");
+        }
 
-
+        console.log("✅ Subscription saved successfully!");
         return data.features || null;
       } catch (error) {
-        console.error("Failed to save subscription:", error);
+        console.error("❌ Failed to save subscription:", error);
         return null;
       }
     },
     []
   );
 
-  // Handle subscription updates
+  // ✅ Handle subscription updates
   useEffect(() => {
     const subscriptionId = searchParams?.get("subscription_id");
 
@@ -73,6 +75,7 @@ export default function Home() {
     let planId = selectedPlanId;
     let planName = selectedPlanName;
 
+    // ✅ Retrieve session data if missing
     if (!email || !planId || !planName) {
       const userSession = sessionStorage.getItem("user");
       if (userSession) {
@@ -86,21 +89,40 @@ export default function Home() {
     if (!email || !planId || !planName) return;
 
     setSelectedMenuItem("Extend Your Quota");
-    setIsUpdatingSubscription(true); // ✅ Set loading state before starting update
+    setIsUpdatingSubscription(true); // ✅ Set loading state
 
-    // ✅ FIXED: Use async function inside useEffect
+    // ✅ Function to check subscription status
     const updateSubscription = async () => {
+      try {
+        if (!subscriptionId || typeof subscriptionId !== "string" || subscriptionId.includes(":")) {
+          console.warn("⚠️ Skipping API request due to invalid subscriptionId:", subscriptionId);
+          return;
+        }
 
-      await saveSubscription(subscriptionId, planId, planName, email);
+        console.log("🔵 Checking subscription status for:", subscriptionId);
+        const response = await fetch(`/api/show-subscription?subscriptionId=${encodeURIComponent(subscriptionId)}`);
 
-      // ✅ Wait for refreshUser to complete before updating UI
-      await refreshUser();
+        if (!response.ok) {
+          throw new Error("Failed to check subscription status");
+        }
 
-      setIsUpdatingSubscription(false); // ✅ Remove loading state after update
+        const data = await response.json();
+        const subscriptionStatus = data.subscriptionStatus;
 
+        console.log("🔵 Subscription Status:", subscriptionStatus);
+
+        if (subscriptionStatus === "ACTIVE") {
+          await saveSubscription(subscriptionId, planId, planName, email);
+          await refreshUser();
+        }
+      } catch (error) {
+        console.error("❌ Error updating subscription:", error);
+      } finally {
+        setIsUpdatingSubscription(false);
+      }
     };
 
-    updateSubscription(); // ✅ Call the async function
+    updateSubscription();
 
     sessionStorage.removeItem("selectedPlanId");
     sessionStorage.removeItem("selectedPlanName");
@@ -109,7 +131,7 @@ export default function Home() {
     }
   }, [searchParams, pathname, router, setSelectedMenuItem, user, refreshUser, saveSubscription, selectedPlanId, selectedPlanName, clearPlan]);
 
-  // Sidebar menu items
+  // ✅ Sidebar menu items
   const menuItems = useMemo(
     () => [
       { name: "Bulk Search", icon: <FaSearch />, description: "Search in bulk for multiple domains at once." },
@@ -122,7 +144,7 @@ export default function Home() {
     []
   );
 
-  // Quota usage information
+  // ✅ Quota usage information
   const quotaUsed = useMemo(
     () => [
       { name: "Backlinks", value: 0, max: user?.subscriptionId ? user?.features?.backlinks ?? 3 : 3 },
@@ -134,7 +156,7 @@ export default function Home() {
     [user]
   );
 
-  // Render selected page content
+  // ✅ Render selected page content
   const renderContent = useMemo(() => {
     switch (selectedMenuItem) {
       case "Bulk Search":
@@ -150,7 +172,7 @@ export default function Home() {
       case "Serp Scanner":
         return <SerpScanner />;
       case "Extend Your Quota":
-        return <PricingTable isUpdatingSubscription={isUpdatingSubscription}/>;
+        return <PricingTable isUpdatingSubscription={isUpdatingSubscription} />;
       case "Account Settings":
         return <AccountSettings />;
       default:
