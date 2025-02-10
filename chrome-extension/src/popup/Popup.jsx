@@ -52,11 +52,17 @@ function LinkFinderExtension() {
                 if(domain){
                     try {
                         const response = await fetchMarketplaceData(domain, apiKey);
-                        const result = await response.json();
-                        setData(result);
+                        // Check if the response is valid and contains the necessary data
+                        if (response && response.message) {
+                            setData(response);
+                        } else {
+                            setError("No data found.");
+                            setData(null);  // Set data to null if no message or result is found
+                        }
                     } catch (err) {
                         console.log(err);
                         setError("Failed to fetch data.");
+                        setData(null);
                     }finally{
                         setDataLoading(false);
                     }
@@ -65,6 +71,8 @@ function LinkFinderExtension() {
                     setError("Failed to normalize the URL.");
                     setDataLoading(false);
                 }
+            }else{
+                setDataLoading(false);
             }
         });
 
@@ -144,11 +152,32 @@ function LinkFinderExtension() {
                 {dataLoading ? (
                     <Spin size="large" />
                 ) : (
-                    <p>{data}</p>
+                    <div>
+                        {data ? (
+                            <>
+                                <div>{data.message}</div>
+                                {/* Optionally, display the result if it exists */}
+                                {data.result && data.result.length > 0 ? (
+                                    <ul>
+                                        {data.result.map((marketplace, index) => (
+                                            <li key={index}>
+                                                {marketplace.marketplace_source} - ${marketplace.price}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                ) : (
+                                    <div>No marketplaces available.</div>
+                                )}
+                            </>
+                        ) : (
+                            <div>{error || "No data"}</div>
+                        )}
+                    </div>
                 )}
             </div>
         );
     }
+
 
     return (
         <div>
