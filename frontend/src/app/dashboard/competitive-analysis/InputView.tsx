@@ -26,6 +26,17 @@ export default function InputView({ placeholder, onSearch, setLoading }: InputVi
         return;
       }
 
+      // Regular expression to check if the domain format is valid
+      const domainRegex = /^(?!:\/\/)(?=[a-zA-Z0-9-]{1,256}\.?[a-zA-Z]{2,6}\b)(?!.*\.\.)(?!.*-$)(?![0-9]+$)(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,6}$/;
+
+      // Check each domain for validity
+      for (let domain of domainsArray) {
+        if (!domainRegex.test(domain)) {
+          alert(`Invalid domain format: ${domain}`);
+          return;
+        }
+      }
+
       setLoading(true);
 
       try {
