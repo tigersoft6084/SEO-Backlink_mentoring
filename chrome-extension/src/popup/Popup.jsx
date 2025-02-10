@@ -1,11 +1,13 @@
 "use client";  // 🚀 Ensures component only runs in the browser
 /* global chrome */
 import { useEffect, useState } from "react";
-import { Button, Form, Input, Space, message, Spin, Table } from 'antd';
+import { Button, Form, Input, Space, message, Spin, Table, Empty, Typography } from 'antd';
 import PropTypes from 'prop-types';
 import { getApiKey, saveApiKey } from "../utils/storage";
 import { fetchMarketplaceData, normalizeDomain, validateApiKey } from "../utils/api";
 import '../style.css'
+
+const { Title } = Typography;
 
 
 function LinkFinderExtension() {
@@ -223,11 +225,35 @@ function LinkFinderExtension() {
                                 {data.result && data.result.length > 0 ? (
                                     <Table pagination={false} columns={columns} dataSource={dataSource} />
                                 ) : (
-                                    <div>No marketplaces available.</div>
+                                    <div style={{width : '200px', height : '100px', justifyContent : "center",  alignItems: 'center'}}>
+                                        <div>
+                                            {<Empty description={false} />}
+                                            <Space
+                                                direction="vertical"
+                                                style={{ width: "100%", justifyContent: "center", display: "flex" }}
+                                            >
+                                                <Title level={4} type="danger" style={{ textAlign: "center" }}>
+                                                    No marketplaces available.
+                                                </Title>
+                                            </Space>
+                                        </div>
+                                    </div>
                                 )}
                             </>
                         ) : (
-                            <div>{error || "No data"}</div>
+                            <div style={{width : '200px', height : '100px', justifyContent : "center",  alignItems: 'center'}}>
+                                <div>
+                                    {<Empty description={false} />}
+                                    <Space
+                                        direction="vertical"
+                                        style={{ width: "100%", justifyContent: "center", display: "flex" }}
+                                    >
+                                        <Title level={4} type="danger" style={{ textAlign: "center" }}>
+                                            No marketplaces available.
+                                        </Title>
+                                    </Space>
+                                </div>
+                            </div>
                         )}
                     </div>
                 )}
