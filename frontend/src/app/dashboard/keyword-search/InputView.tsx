@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { FaSearch } from "react-icons/fa";
 import LocationHeader from "../../../components/forms/LocationHeader";
 import TextArea from "../../../components/forms/TextArea";
 import SearchButton from "../../../components/forms/SearchButton";
