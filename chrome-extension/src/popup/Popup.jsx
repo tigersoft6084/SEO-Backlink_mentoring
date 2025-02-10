@@ -184,29 +184,88 @@ function LinkFinderExtension() {
                 width: 100,
                 render: (_, record) => {
                     // Default base URL
-                    let baseUrl = "https://app.paper.club/annonceur/resultats";
+                    let baseUrl;
 
                     // Switch to change the base URL based on record.key
-                    switch (record.key) {
-                        case "Olivia":
-                            baseUrl = "https://another-url.com/annonceur/resultats";
+                    switch (record.platform) {
+                        case "123media":
+                            baseUrl = `https://123.media/?url=${record.platform}&code=29ae667983`;
                             break;
-                        case "Ethan":
-                            baseUrl = "https://yetanother-url.com/annonceur/resultats";
+                        case "Presswhizz":
+                            baseUrl = `https://app.presswhizz.com/marketplace?portalName=${record.platform}`;
                             break;
-                        case "3":
-                            baseUrl = "https://different-url.com/annonceur/resultats";
+                        case "Prnews":
+                            baseUrl = `https://prnews.io/sites/query/${record.platform}/?i=3745304`;
+                            break;
+                        case "Backlinked":
+                            baseUrl = `https://backlinked.com/?ref=mzu2nwe&domain=${record.platform}`;
+                            break;
+                        case "Growwer":
+                            baseUrl = `https://growwer.com/?af=3dce24df39a94a6a92b3f83951f0a618&domain=${record.platform}`;
+                            break;
+                        case "Ereferer":
+                            baseUrl = `https://fr.ereferer.com/bo/exchange-site-find?search=${record.platform}`;
+                            break;
+                        case "Linkbroker":
+                            baseUrl = `https://app.linkbroker.de/en/contentlinks?domain=${record.platform}`;
+                            break;
+                        case "Paperclub":
+                            baseUrl = `https://app.paper.club/annonceur/results?type=simple&term=${record.platform}`;
+                            break;
+                        case "Whitepress":
+                            baseUrl = `https://www.whitepress.com/Xn9pi`;
+                            break;
+                        case "Develink":
+                            baseUrl = `https://app.develink.com/cataloguevip?search_type=search_url&search_domain=${record.platform}&code=JGADANHO`;
+                            break;
+                        case "Linkatomic":
+                            baseUrl = `https://app.linkatomic.com/register/r/6b04380b67c55d6075bc2f0a9534f0cd?domain=${record.platform}`;
+                            break;
+                        case "Linkbuilders":
+                            baseUrl = `https://app.link.builders/links?domain=${record.platform}`;
+                            break;
+                        case "Motherlink":
+                            baseUrl = `https://app.motherlink.io/market?domain=${record.platform}`;
+                            break;
+                        case "Seojungle":
+                            baseUrl = `https://app.seo-jungle.com/fr/search?searchField=${record.platform}&orders=`;
+                            break;
+                        case "Mynilinks":
+                            baseUrl = `https://app.mynilinks.fr/netlinkings?country=&category=&url=${record.platform}&ttf=&tf_min=&tf_max=&cf_min=&cf_max=&dr_min=&dr_max=&mots_cles=&traffic_min=&traffic_max=&min_price=&max_price=&pagination=10&sponsor_id=7e2c23fd-5929-4a0d-b3f1-94eed47dcb1f`;
+                            break;
+                        case "Mistergoodlink":
+                            baseUrl = `https://app.mistergoodlink.com/shop?ref=${record.platform}`;
+                            break;
+                        case "Getalink":
+                            baseUrl = `https://app.getalink.com/v2/client/marketplace`;
+                            break;
+                        case "Unancor":
+                            baseUrl = `https://app.unancor.com/?aaf=ed161410-1f90-11ef-b5c7-0e52f3fe678a&domain=${record.platform}`;
+                            break;
+                        case "Publisuites":
+                            baseUrl = `https://www.publisuites.com/advertisers/websites/`;
+                            break;
+                        case "Linkavistar":
+                            baseUrl = `https://linkavistar.com/linkfinder/?domain=${record.platform}`;
+                            break;
+                        case "Lemmilink":
+                            baseUrl = `https://app.lemmilink.fr/AnnonceMode?url=${record.platform}&ref=cc6f3b`;
+                            break;
+                        case "Soumettre":
+                            baseUrl = `https://soumettre.fr/user/catalog?url=${record.platform}&parrain=DJKOXI`;
+                            break;
+                        case "Boosterlink":
+                            baseUrl = `https://pro.boosterlink.fr/comparateurs.aspx`;
+                            break;
+                        case "Dealerdetemps":
+                            baseUrl = `https://www.dealerdetemps.com/les-sites/`;
                             break;
                         default:
-                            baseUrl = "https://app.paper.club/annonceur/resultats"; // Default fallback URL
                             break;
                     }
 
-                    // Construct the full URL with the dynamic base and query parameters
-                    const fullUrl = `${baseUrl}?type=simple&term=${record.key}`;
-
                     return (
-                        <a href={fullUrl} target="_blank" rel="noopener noreferrer">
+                        <a href={baseUrl} target="_blank" rel="noopener noreferrer">
                             GO
                         </a>
                     );

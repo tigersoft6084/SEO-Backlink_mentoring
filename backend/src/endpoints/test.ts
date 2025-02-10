@@ -18,9 +18,9 @@ export const mytttEndpoint: Endpoint = {
     handler: async (req : PayloadRequest) => {
         try {
 
-        // await backgroundMarketplaceProcessHandler(req);
+        await backgroundMarketplaceProcessHandler(req);
         // const result = await getCookieFromPresswhizz()
-        await createPlansAndGetID(req);
+        // await createPlansAndGetID(req);
 
         // Return the collected results
         return new Response(
