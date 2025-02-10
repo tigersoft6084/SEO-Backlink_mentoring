@@ -29,17 +29,20 @@ export const Backlinks: CollectionConfig = {
       name: 'marketplaces',
       type: 'array',                                                      // Use an array to allow multiple marketplace-price pairs
       required: true,
+      index: true,
       fields: [
 
         {
           name: 'marketplace_source',                                     // Marketplace for domain
           type: 'text',
+          index: true,
           required: true,
         },
 
         {
           name: 'price',                                                  // Marketplace's price for domain
           type: 'number',
+          index: true,
           required: true,
         },
 

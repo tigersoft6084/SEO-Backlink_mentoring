@@ -1,5 +1,6 @@
 import { Endpoint } from 'payload';
 import { listActivePlans } from '@/services/paypal/plan/ListPlan.ts';
+import { fetchRefDomains } from '@/services/majestic/getRefDomains.ts';
 
 // Define the Payload endpoint
 export const myTestEndpoint: Endpoint = {
@@ -8,7 +9,7 @@ export const myTestEndpoint: Endpoint = {
   handler: async () => {
     try {
 
-      const result = await listActivePlans();
+      const result = await fetchRefDomains('tmcnet.com');
 
       // Return the collected results
       return new Response(

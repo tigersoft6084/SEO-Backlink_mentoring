@@ -1,110 +1,108 @@
-import { fetchCompetitorsDomain } from '@/services/dataForSeo/competitiveAnalysisService.ts';
-import { Endpoint } from 'payload';
+import { Endpoint, PayloadRequest } from "payload";
+import { COLLECTION_NAME_BACKLINK } from "@/globals/strings.ts";
+import { withErrorHandling } from "@/middleware/errorMiddleware.ts";
+import { fetchRefDomains } from "@/services/majestic/getRefDomains.ts";
 
-
-interface CompetitiveAnalysisRequest {
-    target: string;
-    locationCode: number;
-    languageCode: string;
-    limit: number;
-    offset : number;
-}
-
-// Helper to create a JSON response
-const createJsonResponse = (data: object, status: number): Response =>
-    new Response(JSON.stringify(data), {
-        status,
-        headers: { 'Content-Type': 'application/json' },
-    });
-
-// Helper to validate the request body
-const validateRequestBody = (body: Partial<CompetitiveAnalysisRequest>): string | null => {
-    if (!body.target) return 'Target domain is required.';
-    if (!body.locationCode) return 'Location code is required.';
-    if (!body.languageCode) return 'Language code is required.';
-    if (typeof body.limit !== 'number') return 'Limit must be a number.';
-  return null; // All fields are valid
-};
-
-// Helper to validate the domain format
-const isValidDomain = (domain: string): boolean =>
-    /^(?!:\/\/)([a-zA-Z0-9-_]+\.)*[a-zA-Z0-9-]+(\.[a-zA-Z]{2,})$/.test(domain);
-
-// Endpoint definition
 export const bulkCompetitiveAnalysisEndpoint: Endpoint = {
-    path: '/bulkCompetitorsDomain',
+    path: '/bulkCompetitors',
     method: 'post',
-    handler: async (req) => {
-        try {
-            // Parse the request body
-            const body = req.json ? await req.json() : {};
-            const validationError = validateRequestBody(body);
 
-            if (validationError) {
-                return createJsonResponse({ success: false, error: validationError }, 400);
-            }
-
-            const { target, locationCode, languageCode, limit } = body;
-
-            // Validate domain format
-            if (!isValidDomain(target)) {
-                return createJsonResponse({ success: false, error: 'Invalid target domain format.' }, 400);
-            }
-
-            console.log('Processing request with payload:', { target, locationCode, languageCode, limit });
-
-            // Fetch the total count first
-            const initialResponse = await fetchCompetitorsDomain(target, locationCode, languageCode, limit, 0);
-            const totalCount = initialResponse.result?.[0]?.total_count || 0;
-
-            if (totalCount === 0) {
-                console.warn(`No data available for domain: ${target}`);
-                return createJsonResponse({ success: true, data: [] }, 200);
-            }
-
-            const totalPages = Math.ceil(totalCount / limit);
-            const maxSimultaneousRequests = 30; // Per API constraints
-            const allDomains: string[] = [];
-
-            // Helper to fetch a single page
-            const fetchPage = async (page: number) => {
-                const offset = page * limit;
-                try {
-                    console.log(`Fetching data for offset: ${offset}`);
-                    const response = await fetchCompetitorsDomain(target, locationCode, languageCode, limit, offset);
-                    const domains =
-                        response.result?.[0]?.items?.map((item: { domain: string }) => item.domain) || [];
-                    console.log(`Fetched ${domains.length} domains for offset: ${offset}`);
-                    allDomains.push(...domains);
-                } catch (err) {
-                    console.error(`Error fetching data for offset ${offset}:`, err);
-                }
-            };
-
-            // Helper to batch requests
-            const fetchAllPages = async () => {
-                const batches = [];
-                for (let i = 0; i < totalPages; i += maxSimultaneousRequests) {
-                    const batch = Array.from(
-                        { length: Math.min(maxSimultaneousRequests, totalPages - i) },
-                        (_, index) => fetchPage(i + index)
-                    );
-                    batches.push(Promise.all(batch));
-                }
-                await Promise.all(batches);
-            };
-
-            // Fetch all pages in concurrent batches
-            await fetchAllPages();
-
-            console.log(`All pages fetched. Total domains: ${allDomains.length}`);
-            return createJsonResponse({ success: true, data: allDomains, total: allDomains.length }, 200);
-        } catch (error) {
-            console.error('Error processing request:', error);
-            return createJsonResponse(
-                { success: false, error: error instanceof Error ? error.message : 'Unexpected error occurred.' },
-                500
+    handler: withErrorHandling(async (req: PayloadRequest): Promise<Response> => {
+        if (!req.json) {
+            return new Response(
+                JSON.stringify({ error: 'Invalid request: Missing JSON parsing function for competitive analysis' }),
+                { status: 400, headers: { 'Content-Type': 'application/json' } }
             );
         }
-    },
+
+        const body = await req.json();
+        const { reqDomains } = body;
+
+        if (!reqDomains) {
+            return new Response(
+                JSON.stringify({ error: 'Missing or invalid required fields for competitive analysis' }),
+                { status: 400, headers: { 'Content-Type': 'application/json' } }
+            );
+        }
+
+        const uniqueDomains: string[] = Array.from(new Set(reqDomains));
+        const seenDomains = new Set<string>();
+
+        // Optimized concurrent fetching using Promise.all for all domains
+        const allFetchedDomainsData = await Promise.all(uniqueDomains.map(async (domain) => {
+            try {
+                const fetchedRefDomains = await fetchRefDomains(domain);
+                if (Array.isArray(fetchedRefDomains)) {
+                    const newDomains = fetchedRefDomains.filter(item => !seenDomains.has(item.domain));
+                    newDomains.forEach(item => seenDomains.add(item.domain));
+                    return newDomains;
+                }
+                return [];
+            } catch (error) {
+                console.error(`Error fetching data for domain: ${domain}`, error);
+                return [];
+            }
+        }));
+
+        // Flatten the array of domain data
+        const flattenFetchedDomainsData = allFetchedDomainsData.flat();
+        const domainsFromMajestic = Array.from(new Set(flattenFetchedDomainsData.map((item) => item.domain)));
+
+        const totalFound = domainsFromMajestic.length;
+
+        // Batch querying: Split the domains into smaller chunks for faster queries
+        const chunkSize = 1000;
+        const domainChunks = [];
+        for (let i = 0; i < domainsFromMajestic.length; i += chunkSize) {
+            domainChunks.push(domainsFromMajestic.slice(i, i + chunkSize));
+        }
+
+        // Fetch backlinks data in batches concurrently
+        const backlinksDataChunks = await Promise.all(domainChunks.map(async (chunk) => {
+            return req.payload.find({
+                collection: COLLECTION_NAME_BACKLINK,
+                where: { domain: { in: chunk } },
+                depth: 0,
+                select: { domain: true, marketplaces: true },
+                limit: 30000
+            });
+        }));
+
+        // Flatten all backlinks data from batches
+        const allBacklinksData = backlinksDataChunks.flatMap(chunk => chunk.docs);
+
+        const databaseFound = allBacklinksData.length;
+
+        // Create a Map for faster lookup (Majestic data and backlinks data)
+        const majesticDataMap = new Map(flattenFetchedDomainsData.map(item => [item.domain, item]));
+
+        // Enrich backlinks data with Majestic data and best price source
+        const enrichedBacklinksData = allBacklinksData.map(({ marketplaces, ...rest }) => {
+            const majesticData = majesticDataMap.get(rest.domain);
+            const bestMarketplace = (marketplaces ?? []).reduce(
+                (prev, curr) => (prev.price < curr.price ? prev : curr),
+                { price: Infinity, marketplace_source: '' }
+            );
+
+            return {
+                ...majesticData,
+                ...rest, // Spread remaining fields, but marketplaces is removed
+                price: bestMarketplace.price,
+                source: bestMarketplace.marketplace_source,
+                allSources: marketplaces, // Rename marketplaces to allSources
+            };
+        });
+
+        const minPrice = enrichedBacklinksData.reduce((total, backlink) => total + backlink.price, 0);
+        const maxPrice = enrichedBacklinksData.map((backlink) => Math.max(...backlink.allSources.map((source) => source.price))).reduce((sum, price) => sum + price, 0);
+        const avgPrice = Math.floor(minPrice / databaseFound);
+
+        const foundCount = `${databaseFound} / ${totalFound}`;
+        const aboutPrice = [foundCount, avgPrice, minPrice, maxPrice];
+
+        return new Response(
+            JSON.stringify({ keys : uniqueDomains, aboutPrice, backlinks : enrichedBacklinksData }),
+            { status: 200, headers: { 'Content-Type': 'application/json' } }
+        );
+    })
 };

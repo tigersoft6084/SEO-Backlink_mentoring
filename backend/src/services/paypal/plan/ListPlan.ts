@@ -83,10 +83,6 @@ export const listActivePlans = async (): Promise<ActivePlan[]> => {
         } else {
             hasMore = false;
         }
-
-        // Check for more pages
-        // hasMore = data.hasOwnProperty("links") && data.links.some((link: { rel: string }) => link.rel === "next");
-        // currentPage += 1;
     }
 
     return activePlans;

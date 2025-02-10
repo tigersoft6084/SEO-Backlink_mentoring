@@ -28,10 +28,10 @@ export const getAllDataFromMynilinks = async (cookie: string, payload : Payload)
 
         if(Array.isArray(data) && data.length > 0){
             for(const item of data){
-            if(!seenDomains.has(item.domain)){
-                seenDomains.add(item.domain);
-                await uploadToDatabase(payload, item, MARKETPLACE_NAME_MYNILINKS)
-            }
+                if(!seenDomains.has(item.domain)){
+                    seenDomains.add(item.domain);
+                    await uploadToDatabase(payload, item, MARKETPLACE_NAME_MYNILINKS)
+                }
             }
 
             console.log(`Processed page ${page}, items: ${data.length}`);
@@ -55,7 +55,7 @@ export const getAllDataFromMynilinks = async (cookie: string, payload : Payload)
         // Add batch of tasks to the queue
         const tasks = [];
         for (let page = start; page <= end; page++) {
-        tasks.push(queue.add(() => fetchPageData(page)));
+            tasks.push(queue.add(() => fetchPageData(page)));
         }
 
         try {

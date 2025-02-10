@@ -2,7 +2,7 @@ import { PayloadRequest } from "payload";
 import { COLLECTION_NAME_BACKLINK, COLLECTION_NAME_DOMAINS_BACKGROUND_PROCESS } from "@/globals/strings.ts";
 import { ErrorHandler } from "./errorHandler.ts";
 import { fetchExpiryDate } from "@/services/expiredDomains/whoiserService.ts";
-import { fetchMajesticData } from "@/services/majesticService.ts";
+import { fetchMajesticData } from "@/services/majestic/getIndexItemInfo.ts";
 
 export const backgroundMarketplaceProcessHandler = async (req: PayloadRequest) => {
     const { payload } = req;
