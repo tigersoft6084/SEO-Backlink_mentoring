@@ -1,7 +1,7 @@
 "use client";  // 🚀 Ensures component only runs in the browser
 /* global chrome */
 import { useEffect, useState } from "react";
-import { Button, Form, Input, Space, message, Spin } from 'antd';
+import { Button, Form, Input, Space, message, Spin, Table } from 'antd';
 import PropTypes from 'prop-types';
 import { getApiKey, saveApiKey } from "../utils/storage";
 import { fetchMarketplaceData, normalizeDomain, validateApiKey } from "../utils/api";
@@ -15,6 +15,7 @@ function LinkFinderExtension() {
     const [loading, setLoading] = useState(false);
     const [dataLoading, setDataLoading] = useState(false);
     const [data, setData] = useState(null);
+    const [dataSource, setDataSource] = useState([]);
 
 
     useEffect(() => {
@@ -33,6 +34,17 @@ function LinkFinderExtension() {
             fetchData();
         }
     }, [isAuthenticated]);
+
+    useEffect(() => {
+        if (data && data.result) {
+            const formattedData = data.result.map((marketplace, index) => ({
+                key: index,
+                platform: marketplace.marketplace_source,
+                price: marketplace.price,
+            }));
+            setDataSource(formattedData); // Update state with the new data
+        }
+    }, [data]); // Re-run effect when data changes
 
     const fetchData = async (apiKey) => {
 
@@ -146,25 +158,70 @@ function LinkFinderExtension() {
     }
 
     if (isAuthenticated) {
+
+        const columns = [
+            {
+                title: "Platform",
+                width: 100,
+                dataIndex: "platform",
+                key: "platform",
+                fixed: "left",
+            },
+            {
+                title: "Price",
+                width: 100,
+                dataIndex: "price",
+                key: "price",
+                fixed: "left",
+                sorter: (a, b) => a.price - b.price,
+            },
+            {
+                title: "GO",
+                key: "go",
+                fixed: "right",
+                width: 100,
+                render: (_, record) => {
+                    // Default base URL
+                    let baseUrl = "https://app.paper.club/annonceur/resultats";
+
+                    // Switch to change the base URL based on record.key
+                    switch (record.key) {
+                        case "Olivia":
+                            baseUrl = "https://another-url.com/annonceur/resultats";
+                            break;
+                        case "Ethan":
+                            baseUrl = "https://yetanother-url.com/annonceur/resultats";
+                            break;
+                        case "3":
+                            baseUrl = "https://different-url.com/annonceur/resultats";
+                            break;
+                        default:
+                            baseUrl = "https://app.paper.club/annonceur/resultats"; // Default fallback URL
+                            break;
+                    }
+
+                    // Construct the full URL with the dynamic base and query parameters
+                    const fullUrl = `${baseUrl}?type=simple&term=${record.key}`;
+
+                    return (
+                        <a href={fullUrl} target="_blank" rel="noopener noreferrer">
+                            GO
+                        </a>
+                    );
+                },
+            },
+        ];
+
         return (
             <div className="p-4 w-64 bg-gray-100 dark:bg-gray-800">
-                <h2 className="text-lg font-bold">SEO Checker</h2>
                 {dataLoading ? (
                     <Spin size="large" />
                 ) : (
                     <div>
                         {data ? (
                             <>
-                                <div>{data.message}</div>
-                                {/* Optionally, display the result if it exists */}
                                 {data.result && data.result.length > 0 ? (
-                                    <ul>
-                                        {data.result.map((marketplace, index) => (
-                                            <li key={index}>
-                                                {marketplace.marketplace_source} - ${marketplace.price}
-                                            </li>
-                                        ))}
-                                    </ul>
+                                    <Table pagination={false} columns={columns} dataSource={dataSource} />
                                 ) : (
                                     <div>No marketplaces available.</div>
                                 )}

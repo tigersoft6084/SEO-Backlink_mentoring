@@ -55,3 +55,48 @@
 .ant-form-item-label {
     font-weight: bold;
 }
+
+/* Apply gradient to the entire header background */
+.ant-table-thead {
+    background: linear-gradient(
+    -225deg,
+    #2cd8d5 0%,
+    #c5c1ff 56%,
+    #ffbac3 100%
+    ) !important;
+}
+
+.ant-table-thead > tr > th {
+    color: white !important; /* White text */
+    text-align: center !important; /* Center text */
+    font: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: medium;
+    padding: 12px 16px !important; /* Adjust padding */
+}
+
+/* If necessary, target header cells specifically to ensure no other styles conflict */
+.ant-table-thead th {
+    background: inherit !important; /* Ensure inherited background is used */
+}
+
+/* Set a different color for odd-numbered rows */
+.ant-table-tbody > tr:nth-child(odd) > td {
+    background-color: #f3fdfd; /* Set your desired odd row color */
+}
+
+.ant-table-tbody > tr:nth-child(even) > td {
+    background-color: #fef8fa; /* Set your desired odd row color */
+}
+
+/* Center header text horizontally and vertically */
+.ant-table-thead > tr > th {
+    text-align: center !important; /* Ensure horizontal centering */
+    vertical-align: middle !important; /* Ensure vertical centering */
+}
+
+/* Center text horizontally and vertically in all table cells */
+.ant-table-tbody > tr > td {
+    text-align: center; /* Center text horizontally */
+    vertical-align: middle; /* Center text vertically */
+}
