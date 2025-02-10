@@ -1,19 +1,20 @@
 "use client";  // 🚀 Ensures component only runs in the browser
-
+/* global chrome */
 import { useEffect, useState } from "react";
-import { getApiKey, saveApiKey } from "../utils/storage";
-import { validateApiKey } from "../utils/api";
-import { Button, Form, Input, Space, message } from 'antd';
+import { Button, Form, Input, Space, message, Spin } from 'antd';
 import PropTypes from 'prop-types';
+import { getApiKey, saveApiKey } from "../utils/storage";
+import { fetchMarketplaceData, normalizeDomain, validateApiKey } from "../utils/api";
 import '../style.css'
 
 
 function LinkFinderExtension() {
-    // const [apiKey, setApiKey] = useState("");
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [error, setError] = useState(null);
     const [form] = Form.useForm();
     const [loading, setLoading] = useState(false);
+    const [dataLoading, setDataLoading] = useState(false);
+    const [data, setData] = useState(null);
 
 
     useEffect(() => {
@@ -22,9 +23,53 @@ function LinkFinderExtension() {
         getApiKey((savedKey) => {
             if (savedKey) {
                 setIsAuthenticated(true);
+                fetchData(savedKey);
             }
         });
     }, []);
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            fetchData();
+        }
+    }, [isAuthenticated]);
+
+    const fetchData = async (apiKey) => {
+
+        let tabUrl;
+
+        setDataLoading(true);
+
+        chrome.tabs.query({ active: true, currentWindow: true }, async(tabs) => {
+            if (tabs.length > 0) {
+                console.log("Current Tab URL:", tabs[0].url); // Logs the current tab's URL
+                tabUrl = tabs[0].url;
+
+                // Now that we have the URL, normalize the domain
+                const domain = normalizeDomain(tabUrl);
+                console.log("Normalized Domain:", domain); // Debug the normalized domain
+
+                if(domain){
+                    try {
+                        const response = await fetchMarketplaceData(domain, apiKey);
+                        const result = await response.json();
+                        setData(result);
+                    } catch (err) {
+                        console.log(err);
+                        setError("Failed to fetch data.");
+                    }finally{
+                        setDataLoading(false);
+                    }
+                }else{
+                    console.log("Invalid domain.");
+                    setError("Failed to normalize the URL.");
+                    setDataLoading(false);
+                }
+            }
+        });
+
+
+    };
 
     const handleSubmit = async (values) => {
         setLoading(true);
@@ -41,6 +86,7 @@ function LinkFinderExtension() {
             if (isValid) {
                 saveApiKey(values.apiKey);
                 setIsAuthenticated(true);
+                fetchData();
             } else {
                 setError("Invalid API Key. Please try again.");
             }
@@ -91,12 +137,15 @@ function LinkFinderExtension() {
         );
     }
 
-
     if (isAuthenticated) {
         return (
             <div className="p-4 w-64 bg-gray-100 dark:bg-gray-800">
                 <h2 className="text-lg font-bold">SEO Checker</h2>
-                <p>Extension is ready to use!</p>
+                {dataLoading ? (
+                    <Spin size="large" />
+                ) : (
+                    <p>{data}</p>
+                )}
             </div>
         );
     }

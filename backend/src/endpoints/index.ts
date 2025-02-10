@@ -18,6 +18,7 @@ import { paypalWebhook } from "./paypal/paypalWebhookEndpoint.ts";
 import { getUserDataForRefreshPageEndpoint } from "./getUserDataForRefreshPageEndpoint.ts";
 import { showSubscriptionEndpoint } from "./paypal/showSubscriptionEndpoint.ts";
 import { verifyApiKey } from "./chromeExtension/apiKey.ts";
+import { getMarketPlaces } from "./chromeExtension/getMarketplaces.ts";
 
 
 export const customEndpoints = [
@@ -39,6 +40,7 @@ export const customEndpoints = [
     removeFavoriteFromProject,
     fetchprensalinkEndpoint,
     verifyApiKey,
+    getMarketPlaces,
     myTestEndpoint,
     mytttEndpoint
 ];
