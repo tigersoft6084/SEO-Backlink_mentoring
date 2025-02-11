@@ -3,7 +3,7 @@
 import { BULK_KEYWORD_SEARCH_URL } from '@/globals/globalURLs.ts';
 import axios from 'axios';
 
-export const fetchSerpData = async (keyword: string, locationCode: number, languageCode: string, depth: number) => {
+export const fetchSerpData = async (keyword: string, locationCode: number, languageCode: string) => {
   const token = process.env.DATAFORSEO_API_TOKEN; // Access token from .env file
 
   if (!token) {
@@ -18,7 +18,7 @@ export const fetchSerpData = async (keyword: string, locationCode: number, langu
       language_code: languageCode,
       device: 'desktop',
       os: 'windows',
-      depth : depth,
+      depth : 100,
     },
     {
       headers: {

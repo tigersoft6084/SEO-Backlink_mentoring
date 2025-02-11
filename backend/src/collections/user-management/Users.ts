@@ -81,6 +81,24 @@ export const Users: CollectionConfig = {
     {
       name : "projects",
       type : "json"
+    },
+    {
+      name : "location",
+      type : "select",
+      options: [
+        { label: 'United States', value: 'United States' },
+        { label: 'Canada', value: 'Canada' },
+        { label: 'United Kingdom', value: 'United Kingdom' },
+        { label: 'Spain', value: 'Spain' },
+        { label: 'France', value: 'France' },
+        { label: 'Germany', value: 'Germany' },
+        { label: 'Brazil', value: 'Brazil' },
+        { label: 'Portugal', value: 'Portugal' },
+        { label: 'Italy', value: 'Italy' },
+        { label: 'Belgium', value: 'Belgium' },
+        { label: 'Switzerland', value: 'Switzerland' },
+      ],
+      defaultValue: 'United States',
     }
   ],
   hooks: {

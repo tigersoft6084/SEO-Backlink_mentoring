@@ -16,9 +16,9 @@ export const bulkCompetitiveAnalysisEndpoint: Endpoint = {
         }
 
         const body = await req.json();
-        const { reqDomains } = body;
+        const { reqDomains, displayDepth } = body;
 
-        if (!reqDomains) {
+        if (!reqDomains && !displayDepth) {
             return new Response(
                 JSON.stringify({ error: 'Missing or invalid required fields for competitive analysis' }),
                 { status: 400, headers: { 'Content-Type': 'application/json' } }
@@ -64,7 +64,7 @@ export const bulkCompetitiveAnalysisEndpoint: Endpoint = {
                 where: { domain: { in: chunk } },
                 depth: 0,
                 select: { domain: true, marketplaces: true },
-                limit: 30000
+                limit: displayDepth
             });
         }));
 

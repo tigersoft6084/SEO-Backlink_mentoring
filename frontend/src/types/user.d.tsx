@@ -20,4 +20,5 @@ interface User {
     paypalSubscriptionExpiresAt : string;
     paypalSubscriptionApiKey : string;
     subscriptionStatus : string;
+    location : string
 }

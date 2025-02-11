@@ -4,15 +4,16 @@ import { useState } from "react";
 import LocationHeader from "../../../components/forms/LocationHeader";
 import TextArea from "../../../components/forms/TextArea";
 import SearchButton from "../../../components/forms/SearchButton";
+import { useUser } from "../../../context/UserContext";
 
 interface InputViewProps {
-  placeholder: string;
   onSearch: (data: any) => void;
   setLoading: (loading: boolean) => void;
 }
 
-export default function InputView({ placeholder, onSearch, setLoading }: InputViewProps) {
+export default function InputView({ onSearch, setLoading }: InputViewProps) {
   const [domains, setKeyword] = useState("");
+    const {user} = useUser();
 
   const handleSearch = async () => {
     if (domains.trim()) {
@@ -21,8 +22,11 @@ export default function InputView({ placeholder, onSearch, setLoading }: InputVi
         .map((k) => k.trim())
         .filter(Boolean);
 
-      if (domainsArray.length > 40) {
-        alert("Please enter up to 40 domains.");
+      const maxDisplay = user?.features.resultsPerSearch || 100;
+      const maxKDomains = user?.features.bulkCompetitive || 1;
+
+      if (domainsArray.length > maxKDomains) {
+        alert(`Your plan is ${maxKDomains} simultaneous bulk competitive analysis. Please enter up to ${maxKDomains} domains.`);
         return;
       }
 
@@ -48,6 +52,7 @@ export default function InputView({ placeholder, onSearch, setLoading }: InputVi
           },
           body: JSON.stringify({
             reqDomains: domainsArray,
+            displayDepth : maxDisplay
           }),
         });
 
@@ -67,7 +72,7 @@ export default function InputView({ placeholder, onSearch, setLoading }: InputVi
 
   return (
     <div className="flex flex-col flex-1 p-10 border rounded-lg shadow-md bg-white dark:bg-slate-800 dark:border-gray-600 dark:text-gray-200">
-      <TextArea value={domains} onChange={(e) => setKeyword(e.target.value)} placeholder={placeholder} />
+      <TextArea value={domains} onChange={(e) => setKeyword(e.target.value)} placeholder={`Competitor domain or URL per line. ${user?.features.bulkCompetitive} maximum`} />
       <SearchButton disabled={!domains} onClick={handleSearch} />
     </div>
   );

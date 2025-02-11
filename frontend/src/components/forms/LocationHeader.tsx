@@ -1,25 +1,67 @@
-// components/LocationHeader.tsx
 import { FC } from "react";
+import { IoChevronDown } from "react-icons/io5"; // For dropdown icon
+import { FiMapPin } from "react-icons/fi";
+import Image from "next/image"; // Import Image from next/image
 
-const LocationHeader: FC<{ location: string }> = ({ location }) => (
-  <div className="flex items-center text-blue-500 font-medium mb-4">
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      className="w-5 h-5 mr-2"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="2"
-        d="M12 2c4.418 0 8 3.582 8 8 0 5.25-8 12-8 12S4 15.25 4 10c0-4.418 3.582-8 8-8z"
-      />
-      <circle cx="12" cy="10" r="3" stroke="currentColor" strokeWidth="2" />
-    </svg>
-    {location}
-  </div>
-);
+interface LocationHeaderProps {
+  location: string;
+  setLocation: (location: string) => void;
+}
+
+const locations = [
+  { name: "United States", code: "2840", flag: "images/flags/united-states.png" },
+  { name: "United Kingdom", code: "2826", flag: "images/flags/united-kingdom.png" },
+  { name: "Canada", code: "2124", flag: "images/flags/canada.png" },
+  { name: "Spain", code: "2724", flag: "images/flags/spain.png" },
+  { name: "France", code: "2250", flag: "images/flags/france.png" },
+  { name: "Germany", code: "2276", flag: "images/flags/germany.png" },
+  { name: "Brazil", code: "2076", flag: "images/flags/brazil.png" },
+  { name: "Portugal", code: "2620", flag: "images/flags/portugal.png" },
+  { name: "Italy", code: "2380", flag: "images/flags/italy.png" },
+  { name: "Belgium", code: "2056", flag: "images/flags/belgium.png" },
+  { name: "Switzerland", code: "2756", flag: "images/flags/switzerland.png" },
+];
+
+
+const LocationHeader: FC<LocationHeaderProps> = ({ location, setLocation }) => {
+  const selectedLocation = locations.find((loc) => loc.code === location) || locations[0]; // Default location
+
+  return (
+    <div className="flex items-center space-x-3 text-blue-600 font-medium mb-5">
+      <div className="relative w-64">
+        {/* Select Box with SVG & Flag */}
+        <div className="flex items-center bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 shadow-sm w-full relative">
+          {/* Location Pin Icon */}
+          <FiMapPin className="w-8 h-8 text-blue-500 mr-2" />
+
+          {/* Flag Image using next/image */}
+          <Image
+            src={`/${selectedLocation.flag}`}  // Ensure to add a leading slash
+            alt={selectedLocation.name}
+            width={24} // Set appropriate width
+            height={24} // Set appropriate height
+            className="mr-2"
+          />
+
+          {/* Select Box */}
+          <select
+            className="appearance-none bg-transparent w-full text-gray-800 dark:text-gray-200 font-medium focus:outline-none cursor-pointer"
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+          >
+            {locations.map((loc) => (
+              <option key={loc.code} value={loc.code}>
+                {loc.name}
+              </option>
+            ))}
+          </select>
+
+          {/* Dropdown Icon inside select */}
+          <IoChevronDown className="w-5 h-5 text-gray-500 absolute right-3 pointer-events-none" />
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default LocationHeader;

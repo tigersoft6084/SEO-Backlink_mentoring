@@ -71,7 +71,7 @@ export const bulkKeywordSearchEndpoint: Endpoint = {
       // Fetch and process keywords concurrently
       const fetchAndProcessKeyword = async (keyword: string) => {
         try {
-          const serpData = await fetchSerpData(keyword, locationCode, languageCode, depth);
+          const serpData = await fetchSerpData(keyword, locationCode, languageCode);
           const links = extractLinks(serpData, keyword);
 
           allLinksByKeyword[keyword] = links.filter((link) => {
@@ -96,7 +96,7 @@ export const bulkKeywordSearchEndpoint: Endpoint = {
       const backlinksData = await req.payload.find({
         collection: COLLECTION_NAME_BACKLINK,
         where: { domain: { in: normalizedDomains } },
-        limit : 1000
+        limit : depth
       });
 
       const backlinksMap: Record<string, BacklinkData> = {};

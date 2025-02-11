@@ -45,7 +45,6 @@ export default function CompetitiveAnalysis() {
       ) : currentView === "input" ? (
         // Show InputView only when not loading
         <InputView
-          placeholder="Competitor domain or URL per line. 40 maximum"
           onSearch={handleSearch}
           setLoading={setLoading} // Pass down loading function
         />

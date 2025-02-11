@@ -103,6 +103,21 @@ export interface User {
     | number
     | boolean
     | null;
+  location?:
+    | (
+        | 'United States'
+        | 'Canada'
+        | 'United Kingdom'
+        | 'Spain'
+        | 'France'
+        | 'Germany'
+        | 'Brazil'
+        | 'Portugal'
+        | 'Italy'
+        | 'Belgium'
+        | 'Switzerland'
+      )
+    | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -344,6 +359,7 @@ export interface UsersSelect<T extends boolean = true> {
   planName?: T;
   features?: T;
   projects?: T;
+  location?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
