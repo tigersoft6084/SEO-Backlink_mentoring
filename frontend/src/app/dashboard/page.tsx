@@ -184,11 +184,15 @@ export default function Home() {
   }, [selectedMenuItem, isUpdatingSubscription]);
 
   return (
-    <div className="flex flex-col dark:bg-slate-900">
-      <div className="h-fit flex flex-1">
-        <Sidebar menuItems={menuItems} quotaUsed={quotaUsed} />
-        {renderContent}
-      </div>
+<div className="flex flex-col dark:bg-slate-900">
+  <div className="h-fit flex flex-1">
+    <div className="flex-shrink-0">
+    <Sidebar menuItems={menuItems} quotaUsed={quotaUsed}  />
     </div>
+
+    <div className="flex-1">{renderContent}</div>
+  </div>
+</div>
+
   );
 }
