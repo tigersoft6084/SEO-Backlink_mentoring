@@ -12,11 +12,25 @@ interface InputViewProps {
   setLoading: (loading: boolean) => void;
 }
 
+const locations = [
+  { name: "United States", code: "2840"},
+  { name: "United Kingdom", code: "2826"},
+  { name: "Canada", code: "2124"},
+  { name: "Spain", code: "2724"},
+  { name: "France", code: "2250"},
+  { name: "Germany", code: "2276" },
+  { name: "Brazil", code: "2076"},
+  { name: "Portugal", code: "2620"},
+  { name: "Italy", code: "2380"},
+  { name: "Belgium", code: "2056"},
+  { name: "Switzerland", code: "2756" },
+];
+
 export default function InputView({ placeholder, onSearch, setLoading }: InputViewProps) {
   const [keyword, setKeyword] = useState("");
   const {user} = useUser();
 
-  const locationFromDB = user?.location || "United States";
+  const locationFromDB = locations.find(loc => loc.name === user?.location)?.code || "2840"; // Default to "United States" if not found
 
   const [location, setLocation] = useState(locationFromDB); // Default location
 

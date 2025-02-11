@@ -23,6 +23,7 @@ const locations = [
 ];
 
 const LocationHeader: FC<LocationHeaderProps> = ({ location, setLocation }) => {
+
   const selectedLocation = locations.find((loc) => loc.code === location) || locations[0]; // Default location
   const [isOpen, setIsOpen] = useState(false);
 
