@@ -18,7 +18,7 @@ interface PricingTableProps {
 }
 
 const PricingTable: React.FC<PricingTableProps> = ({ isUpdatingSubscription }) => {
-    const { user, refreshUser } = useUser(); // ✅ Use `useUser()` instead of `useUserPlan()`
+    const { user, refreshUser } = useUser(); // ✅ Use `useUser()` instead of `useUserPlan()` 
     const [plans, setPlans] = useState<Plan[]>([]);
     const [fetchLoading, setFetchLoading] = useState(true);
     const { selectedPlanId, selectedPlanName, setPlan } = usePlan();
@@ -43,7 +43,7 @@ const PricingTable: React.FC<PricingTableProps> = ({ isUpdatingSubscription }) =
         fetchPlans();
     }, []);
 
-  // ✅ Handle subscription process
+    // ✅ Handle subscription process
     const handleSubscription = async (planId: string, planName: string) => {
 
         try {
@@ -82,41 +82,43 @@ const PricingTable: React.FC<PricingTableProps> = ({ isUpdatingSubscription }) =
             <div className="flex flex-col items-center mx-auto my-auto">
                 <PreloadSubscription onLoad={() => setFetchLoading(false)} />
             </div>
-
         );
 
     return (
         <div className="flex flex-col items-center mx-auto py-10">
             {/* Billing Toggle */}
-            <div className="flex items-center space-x-2 mb-10 bg-white border-2 border-gray-300 dark:border-gray-500 dark:bg-slate-800 p-1 rounded-3xl">
+            <div className="flex flex-col md:flex-row items-center space-x-0 md:space-x-2 mb-10 bg-white border-2 border-gray-300 dark:border-gray-500 dark:bg-slate-800 p-1 rounded-3xl">
                 {["monthly", "annually"].map((cycle) => (
-                <button
-                    key={cycle}
-                    onClick={() => setBillingCycle(cycle as "monthly" | "annually")}
-                    className={`px-4 py-1 rounded-full ${
-                    billingCycle === cycle
-                        ? "bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white"
-                        : "text-gray-600 dark:text-gray-200"
-                    }`}
-                >
-                    {cycle.charAt(0).toUpperCase() + cycle.slice(1)}
-                </button>
+                    <button
+                        key={cycle}
+                        onClick={() => setBillingCycle(cycle as "monthly" | "annually")}
+                        className={`px-4 py-1 rounded-full w-full md:w-auto ${
+                            billingCycle === cycle
+                                ? "bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white"
+                                : "text-gray-600 dark:text-gray-200"
+                        }`}
+                    >
+                        {cycle.charAt(0).toUpperCase() + cycle.slice(1)}
+                    </button>
                 ))}
             </div>
 
             {/* Pricing Cards */}
-            <div className="px-10 grid grid-cols-1 md:grid-cols-3 gap-16 w-full max-w-7xl">
+            <div className="flex flex-wrap justify-center gap-16 w-full max-w-full">
                 {plans.map((plan, index) => {
                     const isCurrentPlan = user?.subscriptionId && user?.planName === plan.plan_name;
                     return (
                         <div
                             key={index}
-                            className={`p-6 rounded-3xl shadow-md border-2 bg-white dark:bg-slate-800 ${
+                            className={`p-6 rounded-3xl shadow-md border-2 bg-white dark:bg-slate-800 w-80 ${
                                 isCurrentPlan ? "border-primary dark:bg-slate-600" : "border-gray-300 dark:border-gray-700"
                             }`}
                         >
                             <h3 className="text-gray-600 dark:text-gray-200 text-xl font-bold mb-2">{plan.plan_name}</h3>
-                            <p className="text-gray-600 dark:text-gray-200 mb-4">{plan.description}</p>
+                            <div className="h-20">
+                                <p className="text-gray-600 dark:text-gray-200 mb-4">{plan.description}</p>
+                            </div>
+
                             <p className="text-3xl font-bold mb-4 text-gray-600 dark:text-gray-200">
                                 {plan.currency ? "$" : "€"}
                                 {billingCycle === "monthly" ? plan.price : plan.price * 10}
@@ -160,7 +162,7 @@ const PricingTable: React.FC<PricingTableProps> = ({ isUpdatingSubscription }) =
             {/* Subscription Confirmation Modal */}
             {isModalOpen && selectedPlan && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                    <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md w-96">
+                    <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md w-11/12 sm:w-96">
                         <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100">
                             Confirm Subscription
                         </h2>
