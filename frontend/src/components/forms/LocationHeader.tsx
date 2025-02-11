@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { IoChevronDown } from "react-icons/io5"; // For dropdown icon
 import { FiMapPin } from "react-icons/fi";
 import Image from "next/image"; // Import Image from next/image
@@ -22,9 +22,16 @@ const locations = [
   { name: "Switzerland", code: "2756", flag: "images/flags/switzerland.png" },
 ];
 
-
 const LocationHeader: FC<LocationHeaderProps> = ({ location, setLocation }) => {
   const selectedLocation = locations.find((loc) => loc.code === location) || locations[0]; // Default location
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleDropdown = () => setIsOpen(!isOpen);
+
+  const handleSelectLocation = (code: string) => {
+    setLocation(code);
+    setIsOpen(false); // Close the dropdown after selection
+  };
 
   return (
     <div className="flex items-center space-x-3 text-blue-600 font-medium mb-5">
@@ -36,28 +43,45 @@ const LocationHeader: FC<LocationHeaderProps> = ({ location, setLocation }) => {
 
           {/* Flag Image using next/image */}
           <Image
-            src={`/${selectedLocation.flag}`}  // Ensure to add a leading slash
+            src={`/${selectedLocation.flag}`} // Ensure to add a leading slash
             alt={selectedLocation.name}
             width={24} // Set appropriate width
             height={24} // Set appropriate height
             className="mr-2"
           />
 
-          {/* Select Box */}
-          <select
-            className="appearance-none bg-transparent w-full text-gray-800 dark:text-gray-200 font-medium focus:outline-none cursor-pointer"
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
+          {/* Custom Dropdown */}
+          <div
+            className="flex justify-between items-center cursor-pointer w-full"
+            onClick={toggleDropdown}
           >
-            {locations.map((loc) => (
-              <option key={loc.code} value={loc.code}>
-                {loc.name}
-              </option>
-            ))}
-          </select>
-
-          {/* Dropdown Icon inside select */}
-          <IoChevronDown className="w-5 h-5 text-gray-500 absolute right-3 pointer-events-none" />
+            <span className="text-gray-800 dark:text-gray-200 font-medium">
+              {selectedLocation.name}
+            </span>
+            <IoChevronDown className="w-5 h-5 text-gray-500" />
+          </div>
+          
+          {/* Dropdown options */}
+          {isOpen && (
+            <div className="absolute top-12 left-0 w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg z-10">
+              {locations.map((loc) => (
+                <div
+                  key={loc.code}
+                  className="flex items-center px-4 py-2 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
+                  onClick={() => handleSelectLocation(loc.code)}
+                >
+                  <Image
+                    src={`/${loc.flag}`} // Ensure to add a leading slash
+                    alt={loc.name}
+                    width={20}
+                    height={20}
+                    className="mr-2"
+                  />
+                  {loc.name}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>

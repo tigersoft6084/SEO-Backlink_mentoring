@@ -1,8 +1,8 @@
 "use client";
 
 import Sidebar from "../../components/common/Sidebar";
-import { FaSearch, FaFolderOpen, FaLink, FaGoogle } from "react-icons/fa";
-import { FaGauge } from "react-icons/fa6";
+import { FaSearch, FaFolderOpen, FaLink } from "react-icons/fa";
+import { FcGoogle } from "react-icons/fc";
 import { TbRadarFilled } from "react-icons/tb";
 import { useSidebar } from "../../context/SidebarContext";
 import { useUser } from "../../context/UserContext";
@@ -136,11 +136,11 @@ export default function Home() {
   const menuItems = useMemo(
     () => [
       { name: "Bulk Search", icon: <FaSearch />, description: "Search in bulk for multiple domains at once." },
-      { name: "Keyword Search", icon: <FaGoogle />, description: "Search keywords on Google to analyze rankings." },
+      { name: "Keyword Search", icon: <FcGoogle />, description: "Search keywords on Google to analyze rankings." },
       { name: "Competitive Analysis", icon: <TbRadarFilled />, description: "Analyze competitors' domains and backlinks." },
       { name: "Projects", icon: <FaFolderOpen />, description: "Manage and organize your projects here." },
       { name: "Expired Domains", icon: <FaLink />, description: "Find expired domains for backlink opportunities." },
-      { name: "Serp Scanner", icon: <FaGauge />, description: "Scan Google SERPs to track keyword rankings." },
+      { name: "Serp Scanner", icon: <FcGoogle />, description: "Scan Google SERPs to track keyword rankings." },
     ],
     []
   );
