@@ -19,6 +19,7 @@ import { getUserDataForRefreshPageEndpoint } from "./getUserDataForRefreshPageEn
 import { showSubscriptionEndpoint } from "./paypal/showSubscriptionEndpoint.ts";
 import { verifyApiKey } from "./chromeExtension/apiKey.ts";
 import { getMarketPlaces } from "./chromeExtension/getMarketplaces.ts";
+import { updateLocationEndpoint } from "./updateLocationEndpoint.ts";
 
 
 export const customEndpoints = [
@@ -41,6 +42,7 @@ export const customEndpoints = [
     fetchprensalinkEndpoint,
     verifyApiKey,
     getMarketPlaces,
+    updateLocationEndpoint,
     myTestEndpoint,
     mytttEndpoint
 ];
