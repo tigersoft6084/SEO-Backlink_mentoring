@@ -20,6 +20,7 @@ import { showSubscriptionEndpoint } from "./paypal/showSubscriptionEndpoint.ts";
 import { verifyApiKey } from "./chromeExtension/apiKey.ts";
 import { getMarketPlaces } from "./chromeExtension/getMarketplaces.ts";
 import { updateLocationEndpoint } from "./updateLocationEndpoint.ts";
+import { serpScannerEndpoint } from "./serpScannerEndpoint.ts";
 
 
 export const customEndpoints = [
@@ -28,6 +29,7 @@ export const customEndpoints = [
     bulkDomainSearchEndpoint,
     bulkCompetitiveAnalysisEndpoint,
     expiredDomainEndpoint,
+    serpScannerEndpoint,
     paypalSubscriptionEndpoint,
     paypalWebhook,
     getPlansFromDbEndpoint,

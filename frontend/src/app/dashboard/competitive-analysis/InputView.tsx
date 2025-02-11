@@ -22,8 +22,8 @@ export default function InputView({ onSearch, setLoading }: InputViewProps) {
         .map((k) => k.trim())
         .filter(Boolean);
 
-      const maxDisplay = user?.features.resultsPerSearch || 100;
-      const maxKDomains = user?.features.bulkCompetitive || 1;
+      const maxDisplay = user?.features?.resultsPerSearch || 100;
+      const maxKDomains = user?.features?.bulkCompetitive || 1;
 
       if (domainsArray.length > maxKDomains) {
         alert(`Your plan is ${maxKDomains} simultaneous bulk competitive analysis. Please enter up to ${maxKDomains} domains.`);
@@ -72,7 +72,7 @@ export default function InputView({ onSearch, setLoading }: InputViewProps) {
 
   return (
     <div className="flex flex-col flex-1 p-10 border rounded-lg shadow-md bg-white dark:bg-slate-800 dark:border-gray-600 dark:text-gray-200">
-      <TextArea value={domains} onChange={(e) => setKeyword(e.target.value)} placeholder={`Competitor domain or URL per line. ${user?.features.bulkCompetitive} maximum`} />
+      <TextArea value={domains} onChange={(e) => setKeyword(e.target.value)} placeholder={`Competitor domain or URL per line. ${user?.features?.bulkCompetitive || 100} maximum`} />
       <SearchButton disabled={!domains} onClick={handleSearch} />
     </div>
   );

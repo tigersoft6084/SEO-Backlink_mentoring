@@ -1,12 +1,14 @@
 "use client";
 
-import { createContext, useContext, ReactNode } from "react";
+import { createContext, useContext, ReactNode, useState, useEffect } from "react";
 import { useAuth } from "../hooks/useAuth"; // ✅ Import custom hook
 
 interface UserContextType {
   user: User | null;
   setUser: (user: User | null) => void;
   refreshUser: () => void;
+  location: string;
+  setLocation: (location: string) => void;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -14,11 +16,21 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 export const UserProvider = ({ children }: { children: ReactNode }) => {
   const { user, setUser, refreshUser, isHydrated } = useAuth();
 
+  // Add a state to manage location
+  const [location, setLocation] = useState<string>("United States"); // Default location
+
+    // Update location once user data is loaded
+    useEffect(() => {
+      if (user) {
+        setLocation(user.location || "United States"); // Set location from user or fallback
+      }
+    }, [user]);
+
   // ⛔ Prevent rendering until hydration is complete
   if (!isHydrated) return null;
 
   return (
-    <UserContext.Provider value={{ user, setUser, refreshUser }}>
+    <UserContext.Provider value={{ user, setUser, refreshUser, location, setLocation }}>
       {children}
     </UserContext.Provider>
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import LocationHeader from "../../../components/forms/LocationHeader";
 import TextArea from "../../../components/forms/TextArea";
 import SearchButton from "../../../components/forms/SearchButton";
@@ -28,11 +28,19 @@ const locations = [
 
 export default function InputView({ placeholder, onSearch, setLoading }: InputViewProps) {
   const [keyword, setKeyword] = useState("");
-  const {user} = useUser();
+  const {user, location} = useUser();
 
   const locationFromDB = locations.find(loc => loc.name === user?.location)?.code || "2840"; // Default to "United States" if not found
 
-  const [location, setLocation] = useState(locationFromDB); // Default location
+  const [locationCode, setLocationCode] = useState(locationFromDB);
+
+    // Update locationCode whenever location changes
+    useEffect(() => {
+      const locationMatch = locations.find((loc) => loc.name === location);
+      if (locationMatch) {
+        setLocationCode(locationMatch.code);
+      }
+    }, [location]);
 
   const handleSearch = async () => {
     if (keyword.trim()) {
@@ -41,8 +49,8 @@ export default function InputView({ placeholder, onSearch, setLoading }: InputVi
         .map((k) => k.trim())
         .filter(Boolean);
 
-      const maxDisplayKeywords = user?.features.resultsPerSearch || 50;
-      const maxKeywords = user?.features.bulkKeywords || 1;
+      const maxDisplayKeywords = user?.features?.resultsPerSearch || 50;
+      const maxKeywords = user?.features?.bulkKeywords || 1;
 
       if (keywordsArray.length > maxKeywords ) {
         alert(`Your plan is ${maxKeywords} simultaneous bulk Keywords. Please enter up to ${maxKeywords} keywords.`);
@@ -60,13 +68,13 @@ export default function InputView({ placeholder, onSearch, setLoading }: InputVi
           },
           body: JSON.stringify({
             keywords: keywordsArray,
-            locationCode: location, // Example location code
+            locationCode: locationCode, // Example location code
             languageCode: "en", // Example language code
             depth : maxDisplayKeywords
           }),
         });
 
-        console.log( keywordsArray,location, maxDisplayKeywords)
+        console.log( keywordsArray,locationCode, maxDisplayKeywords)
 
         if (response.ok) {
           const responseJSON = await response.json();
@@ -84,8 +92,8 @@ export default function InputView({ placeholder, onSearch, setLoading }: InputVi
 
   return (
     <div className="flex flex-col flex-1 p-10 border rounded-lg shadow-md bg-white dark:bg-slate-800 dark:border-gray-600 dark:text-gray-200">
-      <LocationHeader location={location} setLocation={setLocation} />
-      <TextArea value={keyword} onChange={(e) => setKeyword(e.target.value)} placeholder={`Enter up to ${user?.features.bulkKeywords} keywords (1 per line) to scan Google SERPs.`} />
+      <LocationHeader location={locationCode} setLocation={setLocationCode} />
+      <TextArea value={keyword} onChange={(e) => setKeyword(e.target.value)} placeholder={`Enter up to ${user?.features?.bulkKeywords || 50} keywords (1 per line) to scan Google SERPs.`} />
       <SearchButton disabled={!keyword} onClick={handleSearch} />
     </div>
   );

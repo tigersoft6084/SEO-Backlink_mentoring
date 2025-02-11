@@ -3,7 +3,36 @@
 import { useUser } from "../../../context/UserContext";
 
 export default function AccountSettings() {
-  const { user } = useUser(); // Access the globally stored email
+  const { user, location, setLocation } = useUser(); // Access location and setLocation
+
+  // Function to handle location change
+  const handleLocationChange = async (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedLocation = event.target.value;
+    setLocation(selectedLocation); // Update state locally
+
+    // Send the location change to the backend
+    try {
+      const response = await fetch("/api/update-location", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: user?.email, // Pass the email of the user
+          locationName: selectedLocation, // Pass the new location
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update location");
+      }
+
+      const data = await response.json();
+      console.log("Location updated:", data);
+    } catch (error) {
+      console.error("Error updating location:", error);
+    }
+  };
 
   return (
     <div className="flex-1 p-6 bg-gray-100 dark:bg-slate-900 items-center">
@@ -14,7 +43,11 @@ export default function AccountSettings() {
             <label className="text-gray-700 dark:text-gray-300">
               Default Google Geolocation
             </label>
-            <select className="w-1/2 p-2 border rounded bg-gray-50 dark:bg-slate-700 dark:text-gray-200 dark:border-gray-600">
+            <select
+              className="w-1/2 p-2 border rounded bg-gray-50 dark:bg-slate-700 dark:text-gray-200 dark:border-gray-600"
+              value={location}
+              onChange={handleLocationChange} // Update location on change
+              >
               <option>United States</option>
               <option>Canada</option>
               <option>United Kingdom</option>

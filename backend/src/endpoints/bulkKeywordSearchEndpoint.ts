@@ -71,7 +71,7 @@ export const bulkKeywordSearchEndpoint: Endpoint = {
       // Fetch and process keywords concurrently
       const fetchAndProcessKeyword = async (keyword: string) => {
         try {
-          const serpData = await fetchSerpData(keyword, locationCode, languageCode);
+          const serpData = await fetchSerpData(keyword, locationCode, languageCode, 100);
           const links = extractLinks(serpData, keyword);
 
           allLinksByKeyword[keyword] = links.filter((link) => {
