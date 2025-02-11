@@ -60,7 +60,7 @@ const LocationHeader: FC<LocationHeaderProps> = ({ location, setLocation }) => {
             </span>
             <IoChevronDown className="w-5 h-5 text-gray-500" />
           </div>
-          
+
           {/* Dropdown options */}
           {isOpen && (
             <div className="absolute top-12 left-0 w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg z-10">
