@@ -6,7 +6,7 @@ import Filters from "../../../components/ui/Expired_Filters";
 import ExpiredDomainsTable from "../../../components/ui/Expired_Table";
 import useExpiredFilterView from "../../../hooks/useExpiredFilterView";
 import LoadingExpiredDomains from '../../../components/forms/PreloadExpiredDomain';
-import emptyAnimation from '../../../../public/preload/noResultsFound.json';
+import emptyAnimation from '../../../../public/lottie/noResultsFound.json';
 
 export default function ExpiredDomains() {
     const { filters, expiredDomainsData, loading, error, updateFilters, fetchDomains, fetchDomainsOnMount } = useExpiredFilterView();

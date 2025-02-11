@@ -100,7 +100,6 @@ export default function InputView({ placeholder, onSearch, setLoading }: InputVi
 
   return (
     <div className="flex flex-col flex-1 p-10 border rounded-lg shadow-md bg-white dark:bg-slate-800 dark:border-gray-600 dark:text-gray-200">
-      <LocationHeader location="United States" />
       <TextArea value={domain} onChange={(e) => setDomain(e.target.value)} placeholder={placeholder} />
       <div className="flex items-center justify-between mt-4">
         <UploadButton onUpload={handleUpload} />

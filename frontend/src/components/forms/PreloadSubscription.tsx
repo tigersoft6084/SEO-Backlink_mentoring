@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Lottie from "lottie-react";
-import animationData from "../../../public/preload/subscription.json";
+import animationData from "../../../public/lottie/subscription.json";
 
 export default function PreloadSubscription({ onLoad }: { onLoad: () => void }) {
     const [isVisible, setIsVisible] = useState(true);

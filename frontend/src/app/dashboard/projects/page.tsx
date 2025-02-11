@@ -7,7 +7,7 @@ import { MdAdd } from "react-icons/md";
 import CreateProjectModal from "../../../components/common/CreateProjectModal";
 import { useUser } from "../../../context/UserContext";
 import Lottie from "lottie-react";
-import emptyAnimation from '../../../../public/preload/noResultsFound.json';
+import emptyAnimation from '../../../../public/lottie/noResultsFound.json';
 
 interface Project {
   id: number;

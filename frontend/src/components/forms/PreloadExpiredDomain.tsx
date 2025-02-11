@@ -1,6 +1,6 @@
 "use client"
 import Lottie from "react-lottie-player";
-import loadingAnimation from "../../../public/preload/expiredDomain.json"; // Adjust the path as needed
+import loadingAnimation from "../../../public/lottie/expiredDomain.json"; // Adjust the path as needed
 
 export default function LoadingExpiredDomains({ color = "#ff0000" }) {
     return (

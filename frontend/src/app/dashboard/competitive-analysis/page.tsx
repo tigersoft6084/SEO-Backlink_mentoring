@@ -5,7 +5,7 @@ import Lottie from "react-lottie-player";
 import ResultsView from "../../../components/ui/ResultsView";
 import { useSearchView } from "../../../hooks/useSearchView";
 import InputView from "./InputView";
-import findLinks from '../../../../public/preload/findLinks.json'
+import findLinks from '../../../../public/lottie/findLinks.json'
 
 
 export default function CompetitiveAnalysis() {

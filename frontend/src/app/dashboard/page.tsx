@@ -12,6 +12,7 @@ import { useRouter, useSearchParams, usePathname } from "next/navigation";
 // Lazy imports for performance optimization
 import dynamic from "next/dynamic";
 import { usePlan } from "../../context/UserPlanContext";
+import Support from "./support/page";
 const KeywordSearch = dynamic(() => import("./keyword-search/page"));
 const BulkSearch = dynamic(() => import("./bulk-search/page"));
 const CompetitiveAnalysis = dynamic(() => import("./competitive-analysis/page"));
@@ -175,6 +176,8 @@ export default function Home() {
         return <PricingTable isUpdatingSubscription={isUpdatingSubscription} />;
       case "Account Settings":
         return <AccountSettings />;
+      case "Support" :
+        return <Support/>;
       default:
         return <div />;
     }

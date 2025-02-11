@@ -5,7 +5,7 @@ import { useSearchView } from "../../../hooks/useSearchView";
 import ResultsView from "../../../components/ui/ResultsView";
 import { useState } from "react";
 import Lottie from "react-lottie-player";
-import findLinks from '../../../../public/preload/findLinks.json'
+import findLinks from '../../../../public/lottie/findLinks.json'
 
 export default function BulkSearch() {
   const {
