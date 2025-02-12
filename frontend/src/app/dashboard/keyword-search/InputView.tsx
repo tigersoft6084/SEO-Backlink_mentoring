@@ -54,10 +54,11 @@ export default function InputView({ onSearch, setLoading }: InputViewProps) {
       const maxDisplayKeywords = user?.features?.resultsPerSearch || 50;
       const maxKeywords = user?.features?.bulkKeywords || 1;
 
-      if(user?.usedFeatures.keywordSearches != undefined && usedFeatures_keywords >= user?.usedFeatures.keywordSearches){
+      if(usedFeatures_keywords >= (user?.features.keywordSearches ?? 0)){
         alert(`You are hit on keyword searches.`);
         return;
       }
+
       if (keywordsArray.length > maxKeywords ) {
         alert(`Your plan is ${maxKeywords} simultaneous bulk Keywords. Please enter up to ${maxKeywords} keywords.`);
         return;

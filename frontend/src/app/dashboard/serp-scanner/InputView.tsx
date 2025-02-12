@@ -43,7 +43,14 @@ export default function InputView({ onSearch, setLoading }: InputViewProps) {
 
     const handleSearch = async () => {
 
+        let usedFeatures_serpScanner = user?.usedFeatures?.serpScanner || 0;
+
         const maxDisplayKeywords = user?.features?.resultsPerSearch || 50;
+
+        if(usedFeatures_serpScanner >= (user?.features?.SerpScanner ?? 0)){
+            alert(`You are hit on serp scanner searches.`);
+            return;
+        }
 
         setLoading(true);
 
@@ -68,9 +75,23 @@ export default function InputView({ onSearch, setLoading }: InputViewProps) {
                 displayDepth : maxDisplayKeywords
             }))
 
-            if (response) {
-                const responseJSON = await response.json();
-                onSearch(responseJSON);
+            if (response.ok) {
+                usedFeatures_serpScanner++;
+
+                const saveFeaturesResponse = await fetch("/api/saveUsedFeatures", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        userEmail : user?.email,
+                        keywordSearches: usedFeatures_serpScanner,
+                    }),
+                })
+                if(saveFeaturesResponse){
+                    const responseJSON = await response.json();
+                    onSearch(responseJSON);
+                }
             }
         } catch (error) {
             console.error("Error fetching data:", error);
