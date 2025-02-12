@@ -1,7 +1,5 @@
-import { Endpoint, PayloadRequest } from "payload";
-import { COLLECTION_NAME_BACKLINK } from "@/globals/strings.ts";
+import { Endpoint } from "payload";
 import { withErrorHandling } from "@/middleware/errorMiddleware.ts";
-import { fetchRefDomains } from "@/services/majestic/getRefDomains.ts";
 import { handleBulkCompetitiveAnalysis } from "@/handlers/getRefferingDomainsHandler.ts";
 
 export const bulkCompetitiveAnalysisEndpoint: Endpoint = {

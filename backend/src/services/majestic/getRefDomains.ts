@@ -29,7 +29,7 @@ interface RefDomainResult{
     language : string
 }
 
-export const fetchRefDomains = async(domain : string) : Promise<RefDomainResult[] | null> => {
+export const fetchRefDomains = async(domain : string, countPerDomain : number) : Promise<RefDomainResult[] | null> => {
 
     if(!isValidDomain(domain)){
         console.error(`Invalid domain format : ${domain}`);
@@ -46,7 +46,7 @@ export const fetchRefDomains = async(domain : string) : Promise<RefDomainResult[
 
     try{
 
-        const response = await axiosInstance.get(`${MAJESTIC_URL}?app_api_key=${MAJESTIC_API_KEY}&cmd=GetRefDomains&item0=${domain}&Count=50000&datasource=fresh`)
+        const response = await axiosInstance.get(`${MAJESTIC_URL}?app_api_key=${MAJESTIC_API_KEY}&cmd=GetRefDomains&item0=${domain}&Count=${countPerDomain}&datasource=fresh`)
 
         const reponseData : RefDomainResponse = response.data;
 

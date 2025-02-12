@@ -9,7 +9,11 @@ export const competitiveAnalysisService = async (reqDomains: string[], displayDe
     // Optimized concurrent fetching using Promise.all for all domains
     const allFetchedDomainsData = await Promise.all(uniqueDomains.map(async (domain) => {
         try {
-            const fetchedRefDomains = await fetchRefDomains(domain);
+
+            const domainsCount = reqDomains.length;
+            const MAX_TOTAL_REQUESTS = 50000;
+            const countPerDomain = Math.floor(MAX_TOTAL_REQUESTS / domainsCount);
+            const fetchedRefDomains = await fetchRefDomains(domain, countPerDomain);
             if (Array.isArray(fetchedRefDomains)) {
                 const newDomains = fetchedRefDomains.filter(item => !seenDomains.has(item.domain));
                 newDomains.forEach(item => seenDomains.add(item.domain));
