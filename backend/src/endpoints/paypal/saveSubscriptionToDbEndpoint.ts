@@ -146,9 +146,17 @@ export const saveSubscriptionToUserCollection: Endpoint = {
                     features: selectedFeatures,
                     paypalSubscriptionExpiresAt : nextBillingTime,
                     subscriptionStatus : subscriptionStatus,
-                    paypalSubscriptionApiKey : apiKey
+                    paypalSubscriptionApiKey : apiKey,
+                    usedFeatures : {
+                        backlinks: 0,
+                        plugin: 0,
+                        keywordSearches: 0,
+                        competitiveAnalysis: 0,
+                        serpScanner: 0
+                    }
                 },
             });
+
 
             return new Response(
                 JSON.stringify({ success: "Subscription updated successfully!" }),

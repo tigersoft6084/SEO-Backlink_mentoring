@@ -148,11 +148,31 @@ export default function Home() {
   // ✅ Quota usage information
   const quotaUsed = useMemo(
     () => [
-      { name: "Backlinks", value: user?.usedFeatures.backlinks ?? 0, max: user?.subscriptionId ? user?.features?.backlinks ?? 3 : 3 },
-      { name: "Plugin", value: user?.usedFeatures.plugin ?? 0, max: user?.subscriptionId ? user?.features?.plugin ?? 3 : 3 },
-      { name: "Keyword Searches", value: user?.usedFeatures.keywordSearches ?? 0, max: user?.subscriptionId ? user?.features?.keywordSearches ?? 3 : 3 },
-      { name: "Competitive Analysis", value: user?.usedFeatures.competitiveAnalysis ?? 0, max: user?.subscriptionId ? user?.features?.competitiveAnalysis ?? 1 : 1 },
-      { name: "SERP Scanner", value: user?.usedFeatures.serpScanner ?? 0, max: user?.subscriptionId ? user?.features?.SerpScanner ?? 0 : 0 }
+      {
+        name: "Backlinks",
+        value: user?.usedFeatures?.backlinks ?? 0,
+        max: user?.subscriptionId ? user?.features?.backlinks ?? 3 : 3,
+      },
+      {
+        name: "Plugin",
+        value: user?.usedFeatures?.plugin ?? 0,
+        max: user?.subscriptionId ? user?.features?.plugin ?? 3 : 3,
+      },
+      {
+        name: "Keyword Searches",
+        value: user?.usedFeatures?.keywordSearches ?? 0,
+        max: user?.subscriptionId ? user?.features?.keywordSearches ?? 3 : 3,
+      },
+      {
+        name: "Competitive Analysis",
+        value: user?.usedFeatures?.competitiveAnalysis ?? 0,
+        max: user?.subscriptionId ? user?.features?.competitiveAnalysis ?? 1 : 1,
+      },
+      {
+        name: "SERP Scanner",
+        value: user?.usedFeatures?.serpScanner ?? 0,
+        max: user?.subscriptionId ? user?.features?.SerpScanner ?? 0 : 0,
+      }
     ],
     [user]
   );
@@ -184,15 +204,15 @@ export default function Home() {
   }, [selectedMenuItem, isUpdatingSubscription]);
 
   return (
-<div className="flex flex-col dark:bg-slate-900">
-  <div className="h-fit flex flex-1">
-    <div className="flex-shrink-0">
-    <Sidebar menuItems={menuItems} quotaUsed={quotaUsed}  />
-    </div>
+    <div className="flex flex-col dark:bg-slate-900">
+      <div className="h-fit flex flex-1">
+        <div className="flex-shrink-0">
+        <Sidebar menuItems={menuItems} quotaUsed={quotaUsed}  />
+        </div>
 
-    <div className="flex-1">{renderContent}</div>
-  </div>
-</div>
+        <div className="flex-1">{renderContent}</div>
+      </div>
+    </div>
 
   );
 }

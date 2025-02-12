@@ -38,6 +38,7 @@ export const getUserDataForRefreshPageEndpoint : Endpoint = {
                 subscriptionStatus : userData.subscriptionStatus,
                 paypalSubscriptionApiKey : userData.paypalSubscriptionApiKey,
                 paypalSubscriptionExpiresAt : userData.paypalSubscriptionExpiresAt,
+                usedFeatures : userData.usedFeatures
             },
         }), { status: 200 });
     })

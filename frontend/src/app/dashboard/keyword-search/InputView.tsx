@@ -28,19 +28,24 @@ const locations = [
 
 export default function InputView({ onSearch, setLoading }: InputViewProps) {
   const [keyword, setKeyword] = useState("");
-  const {user, location} = useUser();
+  const {user, location, refreshUser } = useUser();
 
   const locationFromDB = locations.find(loc => loc.name === user?.location)?.code || "2840"; // Default to "United States" if not found
 
   const [locationCode, setLocationCode] = useState(locationFromDB);
 
-    // Update locationCode whenever location changes
-    useEffect(() => {
-      const locationMatch = locations.find((loc) => loc.name === location);
-      if (locationMatch) {
-        setLocationCode(locationMatch.code);
-      }
-    }, [location]);
+  useEffect(() => {
+      refreshUser(); // Fetch user data on initial load
+  }, [refreshUser]);
+
+
+  // Update locationCode whenever location changes
+  useEffect(() => {
+    const locationMatch = locations.find((loc) => loc.name === location);
+    if (locationMatch) {
+      setLocationCode(locationMatch.code);
+    }
+  }, [location]);
 
   const handleSearch = async () => {
     if (keyword.trim()) {
@@ -99,6 +104,7 @@ export default function InputView({ onSearch, setLoading }: InputViewProps) {
           })
           if(saveFeaturesResponse){
             const responseJSON = await response.json();
+            await refreshUser();
             onSearch(responseJSON);
           }
         } else {

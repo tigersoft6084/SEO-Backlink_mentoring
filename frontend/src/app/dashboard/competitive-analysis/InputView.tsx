@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TextArea from "../../../components/forms/TextArea";
 import SearchButton from "../../../components/forms/SearchButton";
 import { useUser } from "../../../context/UserContext";
@@ -12,7 +12,11 @@ interface InputViewProps {
 
 export default function InputView({ onSearch, setLoading }: InputViewProps) {
   const [domains, setKeyword] = useState("");
-    const {user} = useUser();
+    const {user, refreshUser} = useUser();
+
+    useEffect(() => {
+        refreshUser(); // Fetch user data on initial load
+    }, [refreshUser]);
 
   const handleSearch = async () => {
     if (domains.trim()) {
@@ -77,6 +81,7 @@ export default function InputView({ onSearch, setLoading }: InputViewProps) {
           })
           if(saveFeaturesResponse){
             const responseJSON = await response.json();
+            await refreshUser();
             onSearch(responseJSON);
           }
         } else {
