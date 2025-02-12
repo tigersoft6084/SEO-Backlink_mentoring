@@ -20,5 +20,12 @@ interface User {
     paypalSubscriptionExpiresAt : string;
     paypalSubscriptionApiKey : string;
     subscriptionStatus : string;
-    location : string
+    location : string;
+    usedFeatures : {
+        backlinks?: number;
+        plugin?: number;
+        keywordSearches?: number;
+        competitiveAnalysis?: number;
+        serpScanner?: number;
+    }
 }

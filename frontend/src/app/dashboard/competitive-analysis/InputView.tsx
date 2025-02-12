@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import LocationHeader from "../../../components/forms/LocationHeader";
 import TextArea from "../../../components/forms/TextArea";
 import SearchButton from "../../../components/forms/SearchButton";
 import { useUser } from "../../../context/UserContext";

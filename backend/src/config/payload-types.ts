@@ -94,6 +94,15 @@ export interface User {
     | number
     | boolean
     | null;
+  usedFeatures?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
   projects?:
     | {
         [k: string]: unknown;
@@ -358,6 +367,7 @@ export interface UsersSelect<T extends boolean = true> {
   paypalSubscriptionApiKey?: T;
   planName?: T;
   features?: T;
+  usedFeatures?: T;
   projects?: T;
   location?: T;
   updatedAt?: T;

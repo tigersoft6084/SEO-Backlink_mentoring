@@ -1,67 +1,52 @@
 "use client";
 
 import { useState } from "react";
-import { FaSearch } from "react-icons/fa";
-import LocationHeader from "../../../components/forms/LocationHeader";
-import { useUser } from "../../../context/UserContext";
+import ResultsView from "../../../components/ui/ResultsView";
+import { useSearchView } from "../../../hooks/useSearchView";
+import InputView from "./InputView";
+import Lottie from "react-lottie-player";
+import findLinks from '../../../../public/lottie/findLinks.json'
+
 
 export default function SerpScanner() {
-  const [keyword, setKeyword] = useState(""); // State to track input value
-  const { user } = useUser();
-  const locationFromDB = user?.location || "United States";
+  const { currentView, responseData, switchToResults, switchToInput } = useSearchView();
+  const [loading, setLoading] = useState(false);
 
-  const [location, setLocation] = useState(locationFromDB); // Default location
+  const pageName = "Serp Scanner"; // Define the pageName here
 
-  const handleSearch = () => {
-    if (!keyword) return;
-    console.log("Searching for:", keyword); // Replace with actual search logic
-  };
+  const handleSearch = async (data: any) => {
+    setLoading(true); // Start loading animation
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter" && keyword) {
-      handleSearch();
+    try {
+      // Store the response and show results
+      switchToResults(data);
+    } catch (error) {
+      console.error("Search failed:", error);
+    } finally {
+      setLoading(false); // Stop loading animation
     }
   };
 
   return (
-    <div className="flex-1 p-6">
-      <div className="flex flex-col items-center lg:flex-row flex-1 p-8 border rounded-xl shadow-lg bg-white dark:bg-slate-900 dark:border-gray-600 dark:text-gray-200">
-
-        {/* Location header */}
-        <div className="-mb-5">
-          <LocationHeader location={location} setLocation={setLocation} />
+    <div className="flex-1 p-6 bg-gray-100 dark:bg-slate-900 text-gray-900 dark:text-gray-100">
+      {loading ? (
+        // Show Lottie animation while loading
+        <div className="flex flex-col justify-center items-center h-screen" style={{marginTop : "-100px"}}>
+          <Lottie loop animationData={findLinks} play style={{ width: 200, height: 200 }} />
+          <p className="text-gray-500 dark:text-gray-300 text-lg font-semibold mt-4 loaderL">
+            Fetching results... This may take a second.
+          </p>
         </div>
-
-
-        {/* Search input section */}
-        <div className="flex flex-col lg:flex-row items-center w-full mt-4 lg:mt-0">
-          {/* Input field */}
-          <input
-            type="text"
-            className="flex-1 mx-4 px-6 py-3 text-lg border border-gray-300 rounded-lg dark:bg-slate-800 dark:border-gray-500 dark:text-gray-400 focus:ring-2 focus:ring-blue-500 focus:outline-none dark:focus:ring-blue-300 transition-all"
-            placeholder="Enter a keyword to scan the backlinks of the top 10 search results"
-            value={keyword}
-            onChange={(e) => setKeyword(e.target.value)}
-            onKeyDown={handleKeyDown}
-            aria-label="Enter keywords to search"
-          />
-
-          {/* Search button */}
-          <button
-            className={`mt-4 lg:mt-0 px-6 py-3 bg-gradient-to-r text-white font-medium rounded-lg flex items-center space-x-3 transition-all ${
-              keyword
-                ? "from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 dark:bg-blue-700 dark:hover:bg-blue-800"
-                : "from-blue-300 to-purple-300 cursor-not-allowed"
-            }`}
-            disabled={!keyword}
-            onClick={handleSearch}
-            aria-label="Search for links"
-          >
-            <FaSearch />
-            <span className="text-lg">Find Links</span>
-          </button>
-        </div>
-      </div>
+      ) : currentView === "input" ? (
+        // Show InputView only when not loading
+        <InputView
+          onSearch={handleSearch}
+          setLoading={setLoading} // Pass down loading function
+        />
+      ) : (
+        // Show results when loading is complete
+        <ResultsView responseData={responseData} onBack={switchToInput} pageName = {pageName}/>
+      )}
     </div>
   );
 }

@@ -79,6 +79,11 @@ export const Users: CollectionConfig = {
       admin: { position: "sidebar" },
     },
     {
+      name : "usedFeatures",
+      type : "json",
+      admin : { position : "sidebar"}
+    },
+    {
       name : "projects",
       type : "json"
     },

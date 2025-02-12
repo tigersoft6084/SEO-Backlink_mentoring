@@ -21,6 +21,7 @@ import { verifyApiKey } from "./chromeExtension/apiKey.ts";
 import { getMarketPlaces } from "./chromeExtension/getMarketplaces.ts";
 import { updateLocationEndpoint } from "./updateLocationEndpoint.ts";
 import { serpScannerEndpoint } from "./serpScannerEndpoint.ts";
+import { saveUsedFeaturesToUserCollection } from "./paypal/saveUsedFeaturesToDbEndpoint.ts";
 
 
 export const customEndpoints = [
@@ -34,6 +35,7 @@ export const customEndpoints = [
     paypalWebhook,
     getPlansFromDbEndpoint,
     saveSubscriptionToUserCollection,
+    saveUsedFeaturesToUserCollection,
     showSubscriptionEndpoint,
     getUserPlan,
     getUserProjects,

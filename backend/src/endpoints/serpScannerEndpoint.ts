@@ -17,15 +17,19 @@ interface SerpResult {
     };
 }
 
-function extractLinks(serpResults: SerpResult): string[] {
-    return serpResults.result[0].items.map((item) =>
-        normalizeDomain(item.domain) // Directly return the transformed value
-    );
+function extractLinks(serpResults: SerpResult): { domain: string }[] {
+    return serpResults.result[0].items
+        .map((item) => {
+            const domain = normalizeDomain(item.domain);
+            return domain ? { domain } : undefined; // Use `undefined` instead of `null`
+        })
+        .filter((item): item is { domain: string } => !!item); // Type assertion to filter `undefined`
 }
+
 
 export const serpScannerEndpoint : Endpoint = {
 
-    path : '/serp-scanner',
+    path : '/serpScanner',
     method : 'post',
     handler : withErrorHandling(async(req : PayloadRequest) : Promise<Response> => {
 
@@ -50,11 +54,26 @@ export const serpScannerEndpoint : Endpoint = {
         const serpData = await fetchSerpData(keyword, locationCode, languageCode, 10);
 
         const domains = extractLinks(serpData);
+        const seenDomains = new Set<string>();
+        const newDomains = domains.filter(item => !seenDomains.has(item.domain)).map(item => item.domain); // Extract domain as a string
+        newDomains.forEach(domain => seenDomains.add(domain));
 
-        const { aboutPrice, enrichedBacklinksData } = await competitiveAnalysisService(domains, displayDepth, req);
+        console.log(newDomains)
+
+        const { aboutPrice, enrichedBacklinksData } = await competitiveAnalysisService(newDomains, displayDepth, req);
+
+        if(aboutPrice && enrichedBacklinksData){
+            return new Response(
+                JSON.stringify({ keys: [keyword], aboutPrice, backlinks: enrichedBacklinksData }),
+                { status: 200, headers: { 'Content-Type': 'application/json' } }
+            );
+        }
+
         return new Response(
-            JSON.stringify({ keys: keyword, aboutPrice, backlinks: enrichedBacklinksData }),
-            { status: 200, headers: { 'Content-Type': 'application/json' } }
+            JSON.stringify({ error: 'Missing or invalid required fields' }),
+            { status: 400, headers: { 'Content-Type': 'application/json' } }
         );
+
+
     })
 }

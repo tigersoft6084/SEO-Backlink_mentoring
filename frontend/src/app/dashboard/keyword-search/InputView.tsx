@@ -26,7 +26,7 @@ const locations = [
   { name: "Switzerland", code: "2756" },
 ];
 
-export default function InputView({ placeholder, onSearch, setLoading }: InputViewProps) {
+export default function InputView({ onSearch, setLoading }: InputViewProps) {
   const [keyword, setKeyword] = useState("");
   const {user, location} = useUser();
 
@@ -49,9 +49,15 @@ export default function InputView({ placeholder, onSearch, setLoading }: InputVi
         .map((k) => k.trim())
         .filter(Boolean);
 
+      let usedFeatures_keywords = user?.usedFeatures?.keywordSearches || 0;
+
       const maxDisplayKeywords = user?.features?.resultsPerSearch || 50;
       const maxKeywords = user?.features?.bulkKeywords || 1;
 
+      if(user?.usedFeatures.keywordSearches != undefined && usedFeatures_keywords >= user?.usedFeatures.keywordSearches){
+        alert(`You are hit on keyword searches.`);
+        return;
+      }
       if (keywordsArray.length > maxKeywords ) {
         alert(`Your plan is ${maxKeywords} simultaneous bulk Keywords. Please enter up to ${maxKeywords} keywords.`);
         return;
@@ -77,8 +83,23 @@ export default function InputView({ placeholder, onSearch, setLoading }: InputVi
         console.log( keywordsArray,locationCode, maxDisplayKeywords)
 
         if (response.ok) {
-          const responseJSON = await response.json();
-          onSearch(responseJSON);
+
+          usedFeatures_keywords++;
+
+          const saveFeaturesResponse = await fetch("/api/saveUsedFeatures", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              userEmail : user?.email,
+              keywordSearches: usedFeatures_keywords,
+            }),
+          })
+          if(saveFeaturesResponse){
+            const responseJSON = await response.json();
+            onSearch(responseJSON);
+          }
         } else {
           const errorData = await response.json();
           alert(`Error: ${errorData.error}`);
