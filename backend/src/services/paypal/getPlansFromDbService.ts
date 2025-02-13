@@ -7,6 +7,7 @@ interface Plan {
     description: string;
     price: number;
     currency: string;
+    interval_unit : string;
 }
 
 export const getPlansForSubscription = async (): Promise<Plan[]> => {
@@ -31,6 +32,7 @@ export const getPlansForSubscription = async (): Promise<Plan[]> => {
                 description: plan.description,
                 price: plan.price,
                 currency: plan.currency,
+                interval_unit : plan.interval_unit
             };
         });
         return plans; // Return the array of plans

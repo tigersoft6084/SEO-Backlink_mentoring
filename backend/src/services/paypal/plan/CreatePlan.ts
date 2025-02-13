@@ -4,7 +4,7 @@ import { getAccessToken } from "../Authentication.ts";
 import { listActivePlans } from "./ListPlan.ts";
 import { getProductAndPlanIdFromDB } from "../catalogProducts/getProductsFromDB.ts";
 import { Plan, ProductFromDB } from "@/types/paypal.ts";
-import { PayloadRequest } from "payload";
+import { Payload } from "payload";
 
 interface PlanPayload {
     name: string;
@@ -54,7 +54,7 @@ const createPlanPayload = (
     },
 });
 
-export const createPlansAndGetID = async (req: PayloadRequest): Promise<void> => {
+export const createPlansAndGetID = async (payload : Payload): Promise<void> => {
     try {
         const accessToken = await getAccessToken();
 
@@ -78,7 +78,7 @@ export const createPlansAndGetID = async (req: PayloadRequest): Promise<void> =>
             const productResponse = await createProduct();
             productID = productResponse.id;
 
-            await req.payload.create({
+            await payload.create({
                 collection: "paypal-plans",
                 data: {
                     product_id: productID,
@@ -111,14 +111,35 @@ export const createPlansAndGetID = async (req: PayloadRequest): Promise<void> =>
                 name: "Booster Plan",
                 description: "Recommended for agencies, advertisers, and frequent users",
                 interval_unit: "MONTH",
-                price: 49,
+                price: 50,
                 currency: "USD",
             },
             {
                 name: "Spammer Plan",
                 description: "Recommended for analyzing large volumes of data and almost unlimited use",
                 interval_unit: "MONTH",
-                price: 99,
+                price: 100,
+                currency: "USD",
+            },
+            {
+                name: "Standard Plan",
+                description: "Recommended for SEO freelancers and niche site owners",
+                interval_unit: "YEAR",
+                price: 150,
+                currency: "USD",
+            },
+            {
+                name: "Booster Plan",
+                description: "Recommended for agencies, advertisers, and frequent users",
+                interval_unit: "YEAR",
+                price: 500,
+                currency: "USD",
+            },
+            {
+                name: "Spammer Plan",
+                description: "Recommended for analyzing large volumes of data and almost unlimited use",
+                interval_unit: "YEAR",
+                price: 1000,
                 currency: "USD",
             },
         ];
@@ -180,7 +201,7 @@ export const createPlansAndGetID = async (req: PayloadRequest): Promise<void> =>
                     price: parseFloat(plan.price.toString()) || 0,  // Ensure price is valid
                 }));
 
-                await req.payload.update({
+                await payload.update({
                     collection: "paypal-plans", // Replace with your collection name
                     where: {
                         product_id: {

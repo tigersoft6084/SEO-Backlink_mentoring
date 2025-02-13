@@ -17,6 +17,7 @@ import { DomainsForBackgroundProcess } from '@/collections/DomainsForBackgroundP
 import { SiteSettings } from '@/globals/sideSettings.ts';
 import { startCronJob } from '@/services/cronJob.ts';
 import PayPalPlans from '@/collections/paypal.ts';
+import { createPlansAndGetID } from '@/services/paypal/plan/CreatePlan.ts';
 
 
 const filename = fileURLToPath(import.meta.url);
@@ -46,6 +47,8 @@ export default buildConfig({
     ...(customEndpoints || []), // Ensure customEndpoints is defined
   ],
   onInit : async(payload) => {
+    console.log('Paypal plan check');
+    createPlansAndGetID(payload)
     console.log('Payload is initialized.');
     startCronJob(payload);
   }

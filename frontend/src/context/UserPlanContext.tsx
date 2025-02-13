@@ -42,7 +42,7 @@ export const PlanProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
     return (
         <PlanContext.Provider value={{ selectedPlanId, selectedPlanName, setPlan, clearPlan }}>
-        {children}
+            {children}
         </PlanContext.Provider>
     );
 };
