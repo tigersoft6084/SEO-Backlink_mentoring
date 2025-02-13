@@ -27,12 +27,17 @@ export default function InputView({ onSearch, setLoading }: InputViewProps) {
         .map((k) => k.trim())
         .filter(Boolean);
 
+      if(!user?.features || !user.features.competitiveAnalysis){
+        alert(`You are hit on competitive analysis searches. Please Extend your quota`);
+        return;
+      }
+
       let usedFeatures_competitive = user?.usedFeatures?.competitiveAnalysis || 0;
       const maxDisplay = user?.features?.resultsPerSearch || 100;
       const maxKDomains = user?.features?.bulkCompetitive || 1;
 
       if (usedFeatures_competitive >= (user?.features?.competitiveAnalysis ?? 0)) {
-        alert(`You have reached your keyword search limit.`);
+        alert(`You have reached your competitive analysis search limit.`);
         return;
       }
 

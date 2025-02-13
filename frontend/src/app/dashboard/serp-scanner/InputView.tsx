@@ -49,6 +49,11 @@ export default function InputView({ onSearch, setLoading }: InputViewProps) {
 
     const handleSearch = async () => {
 
+        if(!user?.features || !user.features.SerpScanner){
+            alert(`You are hit on serp scanner searches. Please Extend your quota`);
+            return;
+        }
+
         let usedFeatures_serpScanner = user?.usedFeatures?.serpScanner || 0;
 
         const maxDisplayKeywords = user?.features?.resultsPerSearch || 50;

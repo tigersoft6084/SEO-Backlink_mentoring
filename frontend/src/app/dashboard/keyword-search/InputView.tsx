@@ -56,6 +56,11 @@ export default function InputView({ onSearch, setLoading }: InputViewProps) {
         .map((k) => k.trim())
         .filter(Boolean);
 
+      if(!user?.features || !user.features.keywordSearches){
+        alert(`You are hit on keyword searches. Please Extend your quota`);
+        return;
+      }
+
       let usedFeatures_keywords = user?.usedFeatures?.keywordSearches || 0;
 
       const maxDisplayKeywords = user?.features?.resultsPerSearch || 50;

@@ -8,6 +8,9 @@ import GoogleAuthButton from "../ui/GoogleSigninButton";
 import Link from "next/link";
 
 export default function SignupForm() {
+
+  const [isLoading, setIsLoading] = useState(false); // ✅ Add loading state
+
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -31,9 +34,11 @@ export default function SignupForm() {
     e.preventDefault();
     setError(null);
     setSuccess(null);
+    setIsLoading(true); // ✅ Show loading state
 
     if (formData.password !== formData.confirmPassword) {
       setError("Passwords do not match.");
+      setIsLoading(false); // ✅ Reset loading state
       return;
     }
 
@@ -59,15 +64,13 @@ export default function SignupForm() {
 
       console.log("Signup successful:", data);
 
-      // Redirect to the sign-in page after a successful sign-up
-      router.push("/auth/signin"); // Redirect to the sign-in page
+      setTimeout(() => router.push("/auth/signin"), 2000); // ✅ Redirect after delay
+
     } catch (err) {
       console.error(err);
-      if (err instanceof Error) {
-        setError(err.message || "An unexpected error occurred.");
-      } else {
-        setError("An unexpected error occurred.");
-      }
+      setError(err instanceof Error ? err.message : "An unexpected error occurred.");
+    }finally {
+      setIsLoading(false); // ✅ Reset loading state
     }
   };
 
@@ -140,15 +143,35 @@ export default function SignupForm() {
         </div>
 
         <div className="flex justify-center mt-6">
-          <button
-            type="submit"
-            disabled={!formData.terms}  // Disable the button if 'terms' is false
-            className={`w-full py-3 px-8 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-medium rounded-md shadow-sm hover:from-blue-600 hover:to-purple-600 flex items-center gap-x-2 justify-center max-w-xs ${!formData.terms ? "opacity-50 cursor-not-allowed" : ""}`}
-          >
-            <BiLogInCircle />
-            <span>Sign Up</span>
-          </button>
-        </div>
+  <button
+    type="submit"
+    disabled={!formData.terms || isLoading} // Disable while loading
+    className={`w-full py-3 px-8 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-medium rounded-md shadow-sm flex items-center gap-x-2 justify-center max-w-xs transition ${
+      (!formData.terms || isLoading) ? "opacity-50 cursor-not-allowed" : "hover:from-blue-600 hover:to-purple-600"
+    }`}
+  >
+    {isLoading ? (
+      <>
+        <svg
+          className="animate-spin h-5 w-5 text-white"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 01-8 8z"></path>
+        </svg>
+        <span>Signing Up...</span>
+      </>
+    ) : (
+      <>
+        <BiLogInCircle />
+        <span>Sign Up</span>
+      </>
+    )}
+  </button>
+</div>
+
       </form>
 
       <div className="mt-4 text-center">
