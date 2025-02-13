@@ -114,15 +114,46 @@ export default function SigninForm() {
           onChange={handleChange}
           className="w-full"
         />
+
         <div className="flex justify-center">
           <button
             type="submit"
-            className="w-full max-w-md py-2 px-4 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-medium rounded-md shadow-sm hover:from-blue-600 hover:to-purple-600 flex items-center gap-x-2 justify-center"
+            className="w-full max-w-md py-2 px-4 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-medium rounded-md shadow-sm flex items-center gap-x-2 justify-center transition disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled={isLoading} // Disable button when loading
           >
-            <BiSearch />
-            <span>Sign In</span>
+            {isLoading ? (
+              <>
+                <svg
+                  className="animate-spin h-5 w-5 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 01-8 8z"
+                  ></path>
+                </svg>
+                <span>Signing In...</span>
+              </>
+            ) : (
+              <>
+                <BiSearch />
+                <span>Sign In</span>
+              </>
+            )}
           </button>
         </div>
+
       </form>
 
       <hr className="border-t border-gray-300 dark:border-gray-500 my-6" />

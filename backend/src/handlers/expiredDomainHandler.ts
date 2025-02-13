@@ -1,6 +1,6 @@
 import { PayloadRequest } from "payload";
-import { fetchExpiredDomainsService } from "@/services/expiredDomains/expiredDomainsService.ts";
 import { ErrorHandler } from "./errorHandler.ts";
+import { fetchExpiredDomainsService } from "@/services/expiredDomains/expiredDomainsService.ts";
 
 /**
  * Handles requests to fetch expired domains.

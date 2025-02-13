@@ -1,14 +1,6 @@
+
 import { backgroundMarketplaceProcessHandler } from '@/handlers/backgroundMarketplaceProcessHandler.ts';
-import { bypassCloudflareTurnstile } from '@/services/captchSolver/cloudflare.ts';
-import { getBacklinksDataFromGrowwer } from '@/services/marketPlacesService/getBacklinksFromMarketplaces/growwer.ts';
-import { getBacklinksDataFromMynilinks } from '@/services/marketPlacesService/getBacklinksFromMarketplaces/mynilinks.ts';
-import { getBacklinksDataFromPresswhizz } from '@/services/marketPlacesService/getBacklinksFromMarketplaces/presswhizz.ts';
-import { fetch_CSRF_TOKEN_AndCookieFrom_GET_Login, getCookieFrom123media } from '@/services/marketPlacesService/getTokensOrCookiesFromMarketplaces/123media.ts';
-import { getCookieFromBacklinked } from '@/services/marketPlacesService/getTokensOrCookiesFromMarketplaces/backlinked.ts';
-import { getCookieFromGrowwer } from '@/services/marketPlacesService/getTokensOrCookiesFromMarketplaces/growwer.ts';
-import { getCookieFromMynilinks } from '@/services/marketPlacesService/getTokensOrCookiesFromMarketplaces/mynilinks.ts';
-import { getCookieFromPresswhizz } from '@/services/marketPlacesService/getTokensOrCookiesFromMarketplaces/presswhizz.ts';
-import { createPlansAndGetID } from '@/services/paypal/plan/CreatePlan.ts';
+import { updateDBwithMajesticInfo } from '@/services/majestic/updateDBwithMajesticInfo.ts';
 import { Endpoint, PayloadRequest } from 'payload';
 
 // Define the Payload endpoint

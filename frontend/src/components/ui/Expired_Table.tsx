@@ -205,7 +205,7 @@ const ExpiredDomainsTable : React.FC<ExpiredDomainsTableProps> = ({
 
                                 <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{row.ref_gov}</td>
 
-                                <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{row.ttf.substring(0, 12)}...</td>
+                                <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{row.ttf.length > 12 ? `${row.ttf.substring(0, 12)}...` : row.ttf}</td>
 
                                 <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{row.language.length > 4 ? `${row.language.substring(0, 4)}...` : row.language}</td>
 

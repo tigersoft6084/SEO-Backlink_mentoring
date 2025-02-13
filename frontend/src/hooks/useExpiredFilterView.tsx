@@ -1,10 +1,12 @@
-import { useCallback, useEffect, useState } from "react";  
+import { useCallback, useEffect, useState } from "react";
 import { Filters } from "../types/expired.d";
 import { useExpiredDomains } from "../context/ExpiredDomainsContext";
 
 export default function useExpiredFilterView() {
     const { setTotalExpiredDomains } = useExpiredDomains();
     const [filters, setFilters] = useState<Filters>({
+        page:1,
+        limit : 10,
         Domain: "",
         minTF: "",
         maxTF: "",

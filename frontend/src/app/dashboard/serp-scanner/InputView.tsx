@@ -34,8 +34,10 @@ export default function InputView({ onSearch, setLoading }: InputViewProps) {
     const [locationCode, setLocationCode] = useState(locationFromDB);
 
     useEffect(() => {
-        refreshUser(); // Fetch user data on initial load
-    }, [refreshUser]);
+        if (!user) { // Avoid unnecessary refresh if the user data already exists
+          refreshUser(); // Fetch user data only if it isn't already available
+        }
+    }, [refreshUser, user]);
 
     // Update locationCode whenever location changes
     useEffect(() => {

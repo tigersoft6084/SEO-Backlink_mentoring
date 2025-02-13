@@ -15,8 +15,10 @@ export default function InputView({ onSearch, setLoading }: InputViewProps) {
     const {user, refreshUser} = useUser();
 
     useEffect(() => {
-        refreshUser(); // Fetch user data on initial load
-    }, [refreshUser]);
+      if (!user) { // Avoid unnecessary refresh if the user data already exists
+        refreshUser(); // Fetch user data only if it isn't already available
+      }
+    }, [refreshUser, user]);
 
   const handleSearch = async () => {
     if (domains.trim()) {

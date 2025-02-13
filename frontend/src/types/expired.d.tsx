@@ -1,5 +1,7 @@
 // Define the Filters type (same as before)
 export interface Filters {
+    limit : number;
+    page : number;
     Domain: string;
     minTF: string;
     maxTF: string;

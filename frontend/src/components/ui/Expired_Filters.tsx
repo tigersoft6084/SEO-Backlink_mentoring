@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Filters as FilterType, FiltersProps } from "../../types/expired.d";
 import { IoFilterSharp } from "react-icons/io5";
+import { useExpiredDomains } from "../../context/ExpiredDomainsContext";
 
 // Reusable component for min/max input fields
 const MinMaxInput: React.FC<{
@@ -41,6 +42,25 @@ const MinMaxInput: React.FC<{
 );
 
 const Filters: React.FC<FiltersProps> = ({ filters, updateFilters, onFilter }) => {
+
+    const { totalExpiredDomains } = useExpiredDomains();
+    const [expiredCount, setExpiredCount] = useState(totalExpiredDomains || 0);
+
+    const [currentPage, setCurrentPage] = useState(1);
+    const [limit, setLimit] = useState(filters.page || 10); // Default limit to 10
+    console.log("totla expired Odmains", totalExpiredDomains )
+
+    // Calculate totalPages dynamically
+    const totalPages = expiredCount > 0 ? Math.ceil(expiredCount / limit) : 1;
+
+    // Update expiredCount when API updates `totalExpiredDomains`
+    useEffect(() => {
+        if (totalExpiredDomains !== expiredCount) {
+            setExpiredCount(totalExpiredDomains);
+        }
+    }, [totalExpiredDomains, expiredCount]);
+
+
     // Handler for input changes
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -58,6 +78,19 @@ const Filters: React.FC<FiltersProps> = ({ filters, updateFilters, onFilter }) =
     const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const { name, value } = e.target;
         updateFilters(name as keyof FilterType, value);
+    };
+
+    const onSelect = (e : React.ChangeEvent<HTMLSelectElement>) => {
+        const { name, value } = e.target;
+        updateFilters(name as keyof FilterType, value);
+        setLimit(Number(value)); // Update the limit on page size change
+    }
+
+    // Update current page when filter is applied
+    const onPageChange = (newPage: number) => {
+        if (newPage >= 1 && newPage <= totalPages) {
+            setCurrentPage(newPage);
+        }
     };
 
     return (
@@ -204,16 +237,55 @@ const Filters: React.FC<FiltersProps> = ({ filters, updateFilters, onFilter }) =
                 />
             </div>
 
-            {/* Filter Button */}
-            <div className="flex justify-end mt-4">
-                <button
-                    className="flex items-center px-6 py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg shadow-md hover:from-blue-600 hover:to-purple-600 space-x-2"
-                    onClick={onFilter}
-                >
-                    <IoFilterSharp />
-                    <span>Filter</span>
-                </button>
+
+            <div className="flex flex-row flex-1 justify-between">
+
+                <div className="flex justify-start mt-4">
+                    <select
+                        className="px-6 py-3 bg-white w-48 text-center text-gray-900 dark:bg-slate-800 dark:text-gray-200 rounded-xl shadow-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50"
+                        onChange={onSelect} // Handle dropdown value change
+                        name="limit"
+                    >
+                        <option value="10" className="py-2 transition-all duration-200 hover:bg-purple-100 dark:hover:bg-purple-700 dark:hover:text-white">10</option>
+                        <option value="25" className="py-2 transition-all duration-200 hover:bg-purple-100 dark:hover:bg-purple-700 dark:hover:text-white">25</option>
+                        <option value="50" className="py-2 transition-all duration-200 hover:bg-purple-100 dark:hover:bg-purple-700 dark:hover:text-white">50</option>
+                        <option value="100" className="py-2 transition-all duration-200 hover:bg-purple-100 dark:hover:bg-purple-700 dark:hover:text-white">100</option>
+                    </select>
+                </div>
+
+                {/* Pagination Controls */}
+                <div className="flex justify-center mt-4">
+                    <button
+                        onClick={() => onPageChange(currentPage - 1)}
+                        disabled={currentPage <= 1}
+                        className="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg disabled:opacity-50 hover:bg-purple-100 dark:bg-slate-700 dark:hover:bg-purple-600 dark:text-gray-200 transition-colors duration-200"
+                    >
+                        Previous
+                    </button>
+                    <span className="px-4 py-2 text-gray-800 dark:text-gray-200">
+                        {currentPage} / {totalPages}
+                    </span>
+                    <button
+                        onClick={() => onPageChange(currentPage + 1)}
+                        disabled={currentPage >= totalPages}
+                        className="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg disabled:opacity-50 hover:bg-purple-100 dark:bg-slate-700 dark:hover:bg-purple-600 dark:text-gray-200 transition-colors duration-200"
+                    >
+                        Next
+                    </button>
+                </div>
+
+                {/* Filter Button */}
+                <div className="flex justify-end mt-4">
+                    <button
+                        className="flex items-center px-6 py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg shadow-md hover:from-blue-600 hover:to-purple-600 space-x-2 focus:ring-purple-400 transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2  focus:ring-opacity-50"
+                        onClick={onFilter}
+                    >
+                        <IoFilterSharp />
+                        <span>Filter</span>
+                    </button>
+                </div>
             </div>
+
         </div>
 
     );
