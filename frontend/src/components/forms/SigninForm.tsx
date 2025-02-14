@@ -74,7 +74,7 @@ export default function SigninForm() {
   };
 
   const goToSignUp = () => {
-    router.push("/auth/signup"); // Redirect to the sign-up page
+    router.push("/api/auth/signup"); // Redirect to the sign-up page
   };
 
   return (

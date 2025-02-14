@@ -34,7 +34,7 @@ export default function Home() {
   // Redirect if user is not authenticated
   useEffect(() => {
     if (!user) {
-      router.push("/auth/signin");
+      router.push("/api/auth/signin");
     }
   }, [user, router]);
 

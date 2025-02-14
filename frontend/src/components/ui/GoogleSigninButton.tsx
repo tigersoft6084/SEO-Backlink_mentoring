@@ -1,23 +1,35 @@
 import { FcGoogle } from "react-icons/fc";
-import { handleGoogleAuth } from "../../utils/googleAuth";
+// import { handleGoogleAuth } from "../../utils/googleAuth";
+// import { useSession } from "next-auth/react";
 
 interface GoogleAuthButtonProps {
   action: 'signin' | 'signup'; // Action can either be 'signin' or 'signup'
 }
 
 const GoogleAuthButton: React.FC<GoogleAuthButtonProps> = ({ action }) => {
+
+  // const { data: session } = useSession()
+
   const buttonText = action === 'signin' ? 'Sign In with Google' : 'Sign Up with Google';
 
   // Async function for handling the Google authentication process
   const handleClick = async () => {
     try {
       // Trigger Google Auth
-      await handleGoogleAuth(action);
+      // await handleGoogleAuth(action);
     } catch (error) {
       console.error(`Error during ${action} process:`, error);
     }
   };
 
+  // if(session){
+  //   return (
+  //     <>
+  //       Signed in as {session?.user?.email} <br />
+  //       <button onClick={() => signOut()}>Sign out</button>
+  //     </>
+  //   )
+  // }
   return (
     <button
       onClick={handleClick} // Using the async handleClick function

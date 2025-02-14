@@ -5,9 +5,7 @@ export const Users: CollectionConfig = {
   admin: {
     useAsTitle: 'email',
   },
-  auth: {
-    // Additional auth configuration can be added here if needed
-  },
+  auth: true,
   access: {
     create: () => true,  // Allow creation for all
     update: () => true, // Allow only admins to update
@@ -42,6 +40,7 @@ export const Users: CollectionConfig = {
     {
       name: 'authProvider',
       type: 'text',  // To track which auth provider was used (Google)
+      required: false,
     },
     {
       name: "planId",

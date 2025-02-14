@@ -14,6 +14,8 @@ import { getBacklinksDataFromSeojungle } from "./marketPlacesService/getBacklink
 import { getBacklinksDataFromMynilinks } from "./marketPlacesService/getBacklinksFromMarketplaces/mynilinks.ts";
 import { getBacklinksDataFromGrowwer } from "./marketPlacesService/getBacklinksFromMarketplaces/growwer.ts";
 import { getBacklinksDataFromLemmilink } from "./marketPlacesService/getBacklinksFromMarketplaces/lemmilink.ts";
+import { updateDBwithMajesticInfo } from "./majestic/updateDBwithMajesticInfo.ts";
+import { backgroundMarketplaceProcessHandler } from "@/handlers/backgroundMarketplaceProcessHandler.ts";
 
 /**
  * Logs messages to the console or a log file
@@ -118,6 +120,18 @@ export const startCronJob = async(payload : Payload): Promise<void> => {
             await getBacklinksDataFromLemmilink(payload);
 
             log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~Completed fetching data from Lemmilink.~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+
+            log("<<<<<<<<<<<<<<<<<<<<<<.....................Updaing Database with Majestic Info..........................>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+
+            await updateDBwithMajesticInfo(payload);
+
+            log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~Completed uploading database with majestic Info.~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+
+            log("<<<<<<<<<<<<<<<<<<<<<<.....................Updaing Database with Expiry Date Info..........................>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+
+            await backgroundMarketplaceProcessHandler(payload);
+
+            log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~Completed uploading database with expiry date Info.~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
         } catch (error) {
             log(`Error occurred: ${(error as Error).message}`);

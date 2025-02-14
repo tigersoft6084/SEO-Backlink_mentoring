@@ -64,7 +64,7 @@ export default function SignupForm() {
 
       console.log("Signup successful:", data);
 
-      setTimeout(() => router.push("/auth/signin"), 2000); // ✅ Redirect after delay
+      setTimeout(() => router.push("/api/auth/signin"), 2000); // ✅ Redirect after delay
 
     } catch (err) {
       console.error(err);
@@ -177,7 +177,7 @@ export default function SignupForm() {
       <div className="mt-4 text-center">
         <p className="text-sm text-gray-700 dark:text-gray-200">
           Already have an account?{" "}
-          <Link href="/auth/signin" className="text-blue-600 font-medium hover:underline">
+          <Link href="/api/auth/signin" className="text-blue-600 font-medium hover:underline">
             Sign In
           </Link>
         </p>

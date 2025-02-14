@@ -1,16 +1,14 @@
-import { Endpoint } from 'payload';
-import { listActivePlans } from '@/services/paypal/plan/ListPlan.ts';
-import { fetchRefDomains } from '@/services/majestic/getRefDomains.ts';
-import { showPlan } from '@/services/paypal/plan/ShowPlan.ts';
+import { Endpoint, PayloadRequest } from 'payload';
+import { getBacklinksDataFromPrensalink } from '@/services/marketPlacesService/getBacklinksFromMarketplaces/prensalink.ts';
 
 // Define the Payload endpoint
 export const myTestEndpoint: Endpoint = {
   path: '/test',
   method: 'get',
-  handler: async () => {
+  handler: async (req : PayloadRequest) => {
     try {
 
-      const result = await listActivePlans();
+      const result = await getBacklinksDataFromPrensalink(req.payload);
 
       // Return the collected results
       return new Response(

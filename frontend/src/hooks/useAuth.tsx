@@ -28,9 +28,9 @@ export function useAuth() {
       }
     } else {
       // ✅ Delay router push until hydration is complete
-      if (pathname !== "/auth/signin") {
+      if (pathname !== "/api/auth/signin") {
         setTimeout(() => {
-          window.location.href = "/auth/signin"; // ✅ Use `window.location.href` instead of `router.push()`
+          window.location.href = "/api/auth/signin"; // ✅ Use `window.location.href` instead of `router.push()`
         }, 100);
       }
     }

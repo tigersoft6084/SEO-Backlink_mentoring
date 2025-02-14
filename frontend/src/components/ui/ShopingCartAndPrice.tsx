@@ -21,7 +21,7 @@ const DynamicPrice: React.FC<DynamicPriceProps> = ({
       case "Boosterlink":
         return (
           <a
-            href={`https://www.boosterlink.fr/inscription/parrain/blp26425`}
+            href={`https://pro.boosterlink.fr/comparateurs.aspx`}
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -103,6 +103,176 @@ const DynamicPrice: React.FC<DynamicPriceProps> = ({
         return (
           <a
             href={`https://shop.prensalink.com/products/medias`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {price}
+          </a>
+        );
+      case "123media":
+        return (
+          <a
+            href={`https://123.media/?url=${domain}&code=29ae667983`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {price}
+          </a>
+        );
+      case "Presswhizz":
+        return (
+          <a
+            href={`https://app.presswhizz.com/marketplace?portalName=${domain}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {price}
+          </a>
+        );
+      case "Prnews":
+        return (
+          <a
+            href={`https://prnews.io/sites/query/${domain}/?i=3745304`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {price}
+          </a>
+        );
+      case "Backlinked":
+        return (
+          <a
+            href={`https://backlinked.com/?ref=mzu2nwe&domain=${domain}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {price}
+          </a>
+        );
+      case "Growwer":
+        return (
+          <a
+            href={`https://growwer.com/?af=3dce24df39a94a6a92b3f83951f0a618&domain=${domain}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {price}
+          </a>
+        );
+      case "Linkbroker":
+        return (
+          <a
+            href={`https://app.linkbroker.de/en/contentlinks?domain=${domain}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {price}
+          </a>
+        );
+      case "Whitepress":
+        return (
+          <a
+            href={`https://www.whitepress.com/Xn9pi`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {price}
+          </a>
+        );
+      case "Linkatomic":
+        return (
+          <a
+            href={`https://app.linkatomic.com/register/r/6b04380b67c55d6075bc2f0a9534f0cd?domain=${domain}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {price}
+          </a>
+        );
+      case "Linkbuilders":
+        return (
+          <a
+            href={`https://app.link.builders/links?domain=${domain}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {price}
+          </a>
+        );
+      case "Motherlink":
+        return (
+          <a
+            href={`https://app.motherlink.io/market?domain=${domain}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {price}
+          </a>
+        );
+      case "Mynilinks":
+        return (
+          <a
+            href={`https://app.mynilinks.fr/netlinkings?country=&category=&url=${domain}&ttf=&tf_min=&tf_max=&cf_min=&cf_max=&dr_min=&dr_max=&mots_cles=&traffic_min=&traffic_max=&min_price=&max_price=&pagination=10&sponsor_id=7e2c23fd-5929-4a0d-b3f1-94eed47dcb1f`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {price}
+          </a>
+        );
+      case "Unancor":
+        return (
+          <a
+            href={`https://app.unancor.com/?aaf=ed161410-1f90-11ef-b5c7-0e52f3fe678a&domain=${domain}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {price}
+          </a>
+        );
+      case "Publisuites":
+        return (
+          <a
+            href={`https://www.publisuites.com/advertisers/websites/`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {price}
+          </a>
+        );
+      case "Lemmilink":
+        return (
+          <a
+            href={`https://app.lemmilink.fr/AnnonceMode?url=${domain}&ref=cc6f3b`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {price}
+          </a>
+        );
+      case "Soumettre":
+        return (
+          <a
+            href={`https://soumettre.fr/user/catalog?url=${domain}&parrain=DJKOXI`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {price}
+          </a>
+        );
+      case "Boosterlink":
+        return (
+          <a
+            href={`https://pro.boosterlink.fr/comparateurs.aspx`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {price}
+          </a>
+        );
+      case "Dealerdetemps":
+        return (
+          <a
+            href={`https://www.dealerdetemps.com/les-sites/`}
             target="_blank"
             rel="noopener noreferrer"
           >

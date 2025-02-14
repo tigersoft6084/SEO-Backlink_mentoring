@@ -8,7 +8,7 @@ import "../styles/globals.css";
 import Navbar from "../components/common/Navbar";
 import { ExpiredDomainsProvider } from "../context/ExpiredDomainsContext";
 import { PlanProvider } from "../context/UserPlanContext";
-// import { UserPlanProvider } from "../context/UserPlanContext";
+import { SessionProvider } from "next-auth/react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,23 +20,27 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const GOOGLE_CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || "";
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <ThemeProvider>
-          <UserProvider> {/* Wrap everything with UserProvider */}
-            <SidebarProvider>
-              <ExpiredDomainsProvider>
-                <PlanProvider>
-                  <Navbar />
-                  {children}
-                </PlanProvider>
-              </ExpiredDomainsProvider>
-            </SidebarProvider>
-          </UserProvider>
-        </ThemeProvider>
-      </body>
-    </html>
+    // <SessionProvider>
+      <html lang="en">
+        <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+          <ThemeProvider>
+            <UserProvider>
+              <SidebarProvider>
+                <ExpiredDomainsProvider>
+                  <PlanProvider>
+                    <Navbar />
+                    {children}
+                  </PlanProvider>
+                </ExpiredDomainsProvider>
+              </SidebarProvider>
+            </UserProvider>
+          </ThemeProvider>
+        </body>
+      </html>
+    // </SessionProvider>
   );
 }

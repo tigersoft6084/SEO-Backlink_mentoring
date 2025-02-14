@@ -7,12 +7,12 @@ export default function Home() {
         Welcome to My App!
       </h1>
       <div className="space-x-4">
-        <Link href="/auth/signin">
+        <Link href="/api/auth/signin">
           <button className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 dark:bg-blue-700 dark:hover:bg-blue-800">
             Login
           </button>
         </Link>
-        <Link href="/auth/signup">
+        <Link href="/api/auth/signup">
           <button className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 dark:bg-green-700 dark:hover:bg-green-800">
             Signup
           </button>
