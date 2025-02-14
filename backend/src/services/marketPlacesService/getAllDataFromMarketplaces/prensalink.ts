@@ -6,9 +6,9 @@ import { GET_BACKLINK_FROM_PRENSALINK_URLS } from "@/globals/globalURLs.ts";
 import { fetchDataFromPrensalink } from "../fetchDataFromMarketplaces/prensalink.ts";
 import { MARKETPLACE_NAME_PRENSALINK } from "@/globals/strings.ts";
 
-const TOTAL_PAGES = 278;
-const CONCURRENCY_LIMIT = 10;
-const BATCH_SIZE = 20;
+const TOTAL_PAGES = 4;
+const CONCURRENCY_LIMIT = 1;
+const BATCH_SIZE = 2;
 
 export const getAllDataFromPrensalink = async (token : string, payload : Payload) : Promise<void> => {
 
@@ -21,7 +21,7 @@ export const getAllDataFromPrensalink = async (token : string, payload : Payload
 
     const fetchPageData = async(page : number) : Promise<void> => {
 
-        const url = `${GET_BACKLINK_FROM_PRENSALINK_URLS}&page=${page}&pageSize=50&order=default`;
+        const url = `${GET_BACKLINK_FROM_PRENSALINK_URLS}&page=${page}&pageSize=5000&order=default`;
         console.log(`Fetching Prensalink page ${page}...`);
 
         try{

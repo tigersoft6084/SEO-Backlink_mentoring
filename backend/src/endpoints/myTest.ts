@@ -8,13 +8,12 @@ export const myTestEndpoint: Endpoint = {
   handler: async (req : PayloadRequest) => {
     try {
 
-      const result = await getBacklinksDataFromPrensalink(req.payload);
+      await getBacklinksDataFromPrensalink(req.payload);
 
       // Return the collected results
       return new Response(
         JSON.stringify({
           message: 'Fetch completed.',
-          result : result
         }),
         {
           status: 200,

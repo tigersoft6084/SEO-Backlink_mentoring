@@ -4,6 +4,22 @@ import { axiosInstance } from "@/utils/axiosInstance.ts";
 import { isValidDomain } from "@/utils/domainUtils.ts";
 import { Payload } from 'payload';
 
+// Define the type of the data to update in the payload database
+interface BacklinkData {
+    tf: number;
+    cf: number;
+    rd: number;
+    ttf: string;
+    backlinks: number;
+    ref_ips: number;
+    ref_subnets: number;
+    ref_edu: number;
+    ref_gov: number;
+    title: string;
+    language: string;
+    ref_lang: string;
+}
+
 
 export const fetchMajesticData = async (payload : Payload, domain: string): Promise<void | null> => {
 
@@ -48,7 +64,7 @@ export const fetchMajesticData = async (payload : Payload, domain: string): Prom
             return;
         }
 
-        const retryUpdate = async (id: string, data: any, retries: number = 3): Promise<void> => {
+        const retryUpdate = async (id: string, data: BacklinkData, retries: number = 3): Promise<void> => {
             for (let attempt = 1; attempt <= retries; attempt++) {
                 try {
                     await payload.update({
