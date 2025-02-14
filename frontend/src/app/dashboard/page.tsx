@@ -20,7 +20,8 @@ const SerpScanner = dynamic(() => import("./serp-scanner/page"));
 const ExpiredDomains = dynamic(() => import("./expired-domains/page"));
 const Projects = dynamic(() => import("./projects/page"));
 const AccountSettings = dynamic(() => import("./account-settings/page"));
-const PricingTable = dynamic(() => import("./quota/page"));
+const PricingTable = dynamic(() => import("././quota/page"));
+
 
 export default function Home() {
   const { user, refreshUser } = useUser();
@@ -29,7 +30,7 @@ export default function Home() {
   const pathname = usePathname();
   const router = useRouter();
   const { selectedPlanId, selectedPlanName, setPlan, clearPlan } = usePlan();
-  const [isUpdatingSubscription, setIsUpdatingSubscription] = useState(false);
+  const [isUpdatingSubscription, setIsUpdatingSubscription] = useState<boolean>(false);
 
   // Redirect if user is not authenticated
   useEffect(() => {

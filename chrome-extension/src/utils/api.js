@@ -2,7 +2,7 @@
 
 export async function validateApiKey(apiKey) {
     try {
-        const response = await fetch("http://127.0.0.1:2024/api/verify-api-key", {
+        const response = await fetch("http://62.164.210.157:2024/api/verify-api-key", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -43,7 +43,7 @@ export function normalizeDomain(url) {
 export async function fetchMarketplaceData(domain, apiKey) {
 
     try {
-        const response = await fetch(`http://127.0.0.1:2024/api/get-market-places?marketplaceUrl=${domain}`, {
+        const response = await fetch(`http://62.164.210.157:2024/api/get-market-places?marketplaceUrl=${domain}`, {
             headers: { Authorization: `Bearer ${apiKey}` }
         });
 

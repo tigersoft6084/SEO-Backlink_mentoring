@@ -1,9 +1,12 @@
-import { useState } from "react";
+"use client"
+
+
 import { useSearchView } from "../../../hooks/useSearchView";
 import Lottie from "react-lottie-player";
 import findLinks from '../../../../public/lottie/findLinks.json'
 import ProjectRowView from "./ProjectRowView";
 import ProjectDetailsView from "./ProjectDetailsView";
+import { useState } from "react";
 
 export default function Projects() {
 

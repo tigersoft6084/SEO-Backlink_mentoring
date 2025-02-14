@@ -15,10 +15,11 @@ interface Plan {
 }
 
 interface PricingTableProps {
-    isUpdatingSubscription: boolean; // ✅ Accept the new prop
-}
+    isUpdatingSubscription: boolean;
+};
 
-const PricingTable: React.FC<PricingTableProps> = ({ isUpdatingSubscription }) => {
+
+export default function PricingTable ({ isUpdatingSubscription } : any) {
     const { user, refreshUser } = useUser(); // ✅ Use `useUser()` instead of `useUserPlan()`
     const [plans, setPlans] = useState<Plan[]>([]);
     const [fetchLoading, setFetchLoading] = useState(true);
@@ -211,5 +212,3 @@ const PricingTable: React.FC<PricingTableProps> = ({ isUpdatingSubscription }) =
         </div>
     );
 };
-
-export default PricingTable;

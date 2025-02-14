@@ -33,7 +33,7 @@ export const keywordSearchEndpoint: Endpoint = {
         try {
             const tasks = uniqueKeywords.map((keyword) =>
                 queue.add(() =>
-                    fetchSerpData(keyword, locationCode, languageCode)
+                    fetchSerpData(keyword, locationCode, languageCode, 100)
                         .then(res =>
                             res.result[0]?.items.map((item: { domain: string }) => ({
                                 domain: normalizeDomain(item.domain), // Corrected syntax
