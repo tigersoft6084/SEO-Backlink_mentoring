@@ -1,4 +1,4 @@
-import { AxiosInstance, AxiosRequestConfig } from 'axios';
+import { AxiosInstance } from 'axios';
 import { CookieJar } from 'tough-cookie';
 
 declare module 'axios-cookiejar-support' {

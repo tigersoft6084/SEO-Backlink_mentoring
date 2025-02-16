@@ -1,7 +1,7 @@
 
 import { Payload } from "payload";
 import { getCookieFromPresswhizz } from "../getTokensOrCookiesFromMarketplaces/presswhizz.ts";
-import { getAllDataFromPresswhizz } from "../getAllDataFromMarketplaces/presswhizz.ts";
+// import { getAllDataFromPresswhizz } from "../getAllDataFromMarketplaces/presswhizz.ts";
 
 
 
@@ -18,7 +18,7 @@ export const getBacklinksDataFromPresswhizz = async(payload : Payload) => {
         if (typeof cookie === 'string') {
             throw new Error("Invalid cookie format");
         }
-        await getAllDataFromPresswhizz(cookie, payload);
+        // await getAllDataFromPresswhizz(cookie, payload);
 
     }catch(error){
         if (error instanceof Error) {

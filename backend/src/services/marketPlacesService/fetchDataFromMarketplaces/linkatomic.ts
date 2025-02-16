@@ -1,5 +1,4 @@
 import { axiosInstance } from '@/utils/axiosInstance.ts';
-// import { getFormDataFromLinkatomic } from '../formattingFetchedDataFromMarketplaces/linkavista.ts';
 import { ErrorHandler } from '@/handlers/errorHandler.ts';
 import { getFormDataFromLinkatomic } from '../formattingFetchedDataFromMarketplaces/linkatomic.ts';
 

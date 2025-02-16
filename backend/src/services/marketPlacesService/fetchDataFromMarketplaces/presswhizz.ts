@@ -16,7 +16,6 @@ export const fetchDataFromPresswhizz = async (
         },
         children : Record<string, { fingerprint: string; tag: string }>
     },
-    page : number
 ) => {
     try {
 

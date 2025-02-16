@@ -2,8 +2,6 @@ import { ErrorHandler } from "@/handlers/errorHandler.ts";
 
 import { Payload } from "payload";
 import { getTokenForLinkBuilders } from "../getTokensOrCookiesFromMarketplaces/linkbuilders.ts";
-import { fetchDataFromLinkbuilders } from "../fetchDataFromMarketplaces/linkbuilders.ts";
-import { GET_BACKLINK_FROM_LINKBUILDERS_URLS } from "@/globals/globalURLs.ts";
 import { getAllDataFromLinkbuilders } from "../getAllDataFromMarketplaces/linkbuilders.ts";
 
 

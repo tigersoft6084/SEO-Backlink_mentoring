@@ -4,7 +4,7 @@ import { BACKLINKED_API_URL_GET } from "@/globals/globalURLs.ts";
 import { ErrorHandler } from "@/handlers/errorHandler.ts";
 import { BAKCLINKED_API_URL_POST } from '../../../globals/globalURLs.ts';
 
-export const getCookieFromBacklinked = async () : Promise<string | null> => {
+export const getCookieFromBacklinked = async () : Promise<{ X_XSRF_TOKEN: string; COOKIE: string } | null> => {
 
     const credentials = await getCredentialsForMarketplaces();
 
@@ -18,9 +18,9 @@ export const getCookieFromBacklinked = async () : Promise<string | null> => {
 
             if(credential.password){
 
-                const cookie = await fetchCookieFromBacklinked(credential.email, credential.password);
+                const validationData = await fetchCookieFromBacklinked(credential.email, credential.password);
 
-                return cookie;
+                return validationData;
             }
         }
     }
@@ -52,11 +52,8 @@ const fetch_CSRF_TOKEN_from_GET_Login = async (): Promise<{ X_XSRF_TOKEN: string
         if (xsrfTokenMatch && sessionTokenMatch) {
             const X_XSRF_TOKEN = xsrfTokenMatch[1];
             const COOKIE = `XSRF-TOKEN=${X_XSRF_TOKEN}; backlinked_session=${sessionTokenMatch[1]}`;
-
-            console.log("XSRF : ", X_XSRF_TOKEN);
-            console.log("COOKIRE : ", COOKIE);
             return {
-                X_XSRF_TOKEN,
+                X_XSRF_TOKEN : X_XSRF_TOKEN,
                 COOKIE
             };
         } else {
@@ -71,27 +68,24 @@ const fetch_CSRF_TOKEN_from_GET_Login = async (): Promise<{ X_XSRF_TOKEN: string
     }
 };
 
-const fetchCookieFromBacklinked = async (email: string, password: string): Promise<string> => {
+const fetchCookieFromBacklinked = async (email: string, password: string): Promise<{ X_XSRF_TOKEN: string; COOKIE: string } | null> => {
     try {
         const getValidationData = await fetch_CSRF_TOKEN_from_GET_Login();
+
         if (!getValidationData) {
             throw new Error('Failed to fetch CSRF token or initial cookies from Backlinked');
         }
-
-        console.log('CSRF Validation Data:', getValidationData);
 
         const response = await fetch(BAKCLINKED_API_URL_POST, {
             method: 'POST',
             headers: {
                 Cookie: getValidationData.COOKIE,
                 'Content-Type': 'application/json',
-                'X-XSRF-TOKEN': getValidationData.X_XSRF_TOKEN,
+                'X-XSRF-TOKEN': decodeURIComponent(getValidationData.X_XSRF_TOKEN),
                 Accept: 'application/json',
                 Host: 'app.backlinked.com',
-                'Sec-Fetch-Site': 'same-origin',
-                'Sec-Fetch-Mode': 'cors',
-                'Sec-Fetch-Dest': 'empty',
-                'sec-ch-ua-platform': 'Windows'
+                'Referer' : 'https://app.backlinked.com/login',
+                'Referrer-Policy' : 'strict-origin-when-cross-origin'
             },
             body: JSON.stringify({
                 email,
@@ -99,9 +93,6 @@ const fetchCookieFromBacklinked = async (email: string, password: string): Promi
                 remember: true
             })
         });
-
-        console.log(`Login response status: ${response.status}`);
-        console.log(`Login response body: ${await response.text()}`);
 
         if (!response.ok) {
             throw new Error('Failed to login to Backlinked');
@@ -112,18 +103,25 @@ const fetchCookieFromBacklinked = async (email: string, password: string): Promi
             throw new Error('Login successful, but no cookies received.');
         }
 
-        console.log('set-cookie after login:', setCookieHeader);
+        const xsrfTokenMatch = setCookieHeader.match(/XSRF-TOKEN=([^;]+)/);
+        const sessionTokenMatch = setCookieHeader.match(/backlinked_session=([^;]+)/);
 
-        const formattedCookies = setCookieHeader
-            .split(',')
-            .map(cookie => cookie.split(';')[0])
-            .join('; ');
+        if (xsrfTokenMatch && sessionTokenMatch) {
+            const X_XSRF_TOKEN = xsrfTokenMatch[1];
+            const COOKIE = `XSRF-TOKEN=${X_XSRF_TOKEN}; backlinked_session=${sessionTokenMatch[1]}`;
+            return {
+                X_XSRF_TOKEN : decodeURIComponent(X_XSRF_TOKEN),
+                COOKIE
+            };
+        } else {
+            console.log('One or both tokens not found in the cookies.');
+        }
 
-        return formattedCookies;
+        return null;
     } catch (error) {
         const { errorDetails } = ErrorHandler.handle(error, 'Error fetching validation data for Backlinked');
         console.error(errorDetails);
-        return '';
+        return null;
     }
 };
 

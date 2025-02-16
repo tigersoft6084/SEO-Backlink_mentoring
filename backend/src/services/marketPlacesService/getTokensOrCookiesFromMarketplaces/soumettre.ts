@@ -53,8 +53,6 @@ const fetch_Cookie_FromPostLogin = async (email: string, password: string): Prom
         formData.append('email', email);
         formData.append('password', password);
 
-        console.log(getValidationData)
-
         const response = await axios.post(SOUMETTRE_API_URL, formData.toString(), {
             headers: {
                 'Cookie': getValidationData.COOKIE,
@@ -71,7 +69,8 @@ const fetch_Cookie_FromPostLogin = async (email: string, password: string): Prom
                 'sec-ch-ua': '"Not A(Brand";v="8", "Chromium";v="132", "Google Chrome";v="132"',
                 'sec-ch-ua-mobile': '?0',
                 'sec-ch-ua-platform': '"Windows"',
-            }
+            },
+            maxRedirects : 0
         });
 
         const setCookies = response.headers['set-cookie'] || [];
@@ -99,7 +98,7 @@ const fetch_Cookie_FromPostLogin = async (email: string, password: string): Prom
     }
 };
 
-const fetch_CSRF_TOKEN_AndCookieFrom_GET_Login = async (): Promise<{ CSRF_TOKEN: string; COOKIE: string } | null> => {
+export const fetch_CSRF_TOKEN_AndCookieFrom_GET_Login = async (): Promise<{ CSRF_TOKEN: string; COOKIE: string } | null> => {
     try {
         const response = await axiosInstance.get(SOUMETTRE_API_URL, {
             headers: {
@@ -113,9 +112,6 @@ const fetch_CSRF_TOKEN_AndCookieFrom_GET_Login = async (): Promise<{ CSRF_TOKEN:
                 'Accept-Encoding': 'gzip, deflate, br',
                 'Connection': 'keep-alive',
                 'Upgrade-Insecure-Requests': '1',
-                'sec-ch-ua': '"Not A(Brand";v="8", "Chromium";v="132", "Google Chrome";v="132"',
-                'sec-ch-ua-mobile': '?0',
-                'sec-ch-ua-platform': '"Windows"',
             },
             maxRedirects : 0,
             withCredentials: true,

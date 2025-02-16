@@ -4,8 +4,6 @@ import { ErrorHandler } from '@/handlers/errorHandler.ts';
 import { MARKETPLACE_NAME_PRNEWS } from '@/globals/strings.ts';
 import { PRNEWS_API_URL } from '@/globals/globalURLs.ts';
 
-
-
 export const getCookieFromPrnews = async () : Promise<string | null> => {
 
     try {

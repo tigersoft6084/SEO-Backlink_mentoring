@@ -1,6 +1,5 @@
-import { createPlanForUpdateValues, createPlansAndGetID } from '@/services/paypal/plan/CreatePlan.ts';
+import { createPlanForUpdateValues } from '@/services/paypal/plan/CreatePlan.ts';
 import { deactivePlan } from '@/services/paypal/plan/DeactivePlan.ts';
-import { listActivePlans } from '@/services/paypal/plan/ListPlan.ts';
 import { CollectionConfig } from 'payload';
 
 const PayPalPlans: CollectionConfig = {

@@ -104,6 +104,7 @@ export const Credentials: CollectionConfig = {
             { label: 'Mynilinks', value: 'Mynilinks' },
             { label: 'Growwer', value: 'Growwer' },
             { label: 'Lemmilink', value: 'Lemmilink' },
+            { label : "Dealerdetemps", value : "Dealerdetemps"}
           ],
         },
       ],
