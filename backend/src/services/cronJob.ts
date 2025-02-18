@@ -16,6 +16,7 @@ import { getBacklinksDataFromGrowwer } from "./marketPlacesService/getBacklinksF
 import { getBacklinksDataFromLemmilink } from "./marketPlacesService/getBacklinksFromMarketplaces/lemmilink.ts";
 import { updateDBwithMajesticInfo } from "./majestic/updateDBwithMajesticInfo.ts";
 import { backgroundMarketplaceProcessHandler } from "@/handlers/backgroundMarketplaceProcessHandler.ts";
+import { getBacklinksDataFromBacklinked } from "./marketPlacesService/getBacklinksFromMarketplaces/backlinked.ts";
 
 /**
  * Logs messages to the console or a log file
@@ -121,9 +122,16 @@ export const startCronJob = async(payload : Payload): Promise<void> => {
 
             log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~Completed fetching data from Lemmilink.~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
+            log("<<<<<<<<<<<<<<<<<<<<<<.....................Fetching data from Backlinked..........................>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+
+            await getBacklinksDataFromBacklinked(payload);
+
+            log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~Completed fetching data from Backlinked.~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+
             log("<<<<<<<<<<<<<<<<<<<<<<.....................Updaing Database with Majestic Info..........................>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 
             await updateDBwithMajesticInfo(payload);
+
 
             log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~Completed uploading database with majestic Info.~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 

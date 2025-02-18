@@ -6,8 +6,8 @@ import { MARKETPLACE_NAME_BACKLINKED } from "@/globals/strings.ts";
 import { GET_BACKLINK_FROM_BACKLINKED_URL } from "@/globals/globalURLs.ts";
 
 const TOTAL_PAGES = 1638;
-const CONCURRENCY_LIMIT = 10;
-const BATCH_SIZE = 50;
+const CONCURRENCY_LIMIT = 50;
+const BATCH_SIZE = 100;
 
 export const getAllDataFromBacklinked = async (cookie : { X_XSRF_TOKEN: string; COOKIE: string }, payload : Payload) : Promise<void> => {
 

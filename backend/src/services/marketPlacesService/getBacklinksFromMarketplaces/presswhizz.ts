@@ -1,7 +1,8 @@
 
 import { Payload } from "payload";
 import { getCookieFromPresswhizz } from "../getTokensOrCookiesFromMarketplaces/presswhizz.ts";
-// import { getAllDataFromPresswhizz } from "../getAllDataFromMarketplaces/presswhizz.ts";
+// import { getAllDataFromPresswhizz } from '../getAllDataFromMarketplaces/presswhizz';
+import { fetchDataFromPresswhizz } from "../fetchDataFromMarketplaces/presswhizz.ts";
 
 
 
@@ -18,7 +19,8 @@ export const getBacklinksDataFromPresswhizz = async(payload : Payload) => {
         if (typeof cookie === 'string') {
             throw new Error("Invalid cookie format");
         }
-        // await getAllDataFromPresswhizz(cookie, payload);
+        const data = await fetchDataFromPresswhizz("https://app.presswhizz.com/_components/marketplace/selectPage", cookie);
+        return data;
 
     }catch(error){
         if (error instanceof Error) {

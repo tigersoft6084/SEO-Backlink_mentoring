@@ -33,3 +33,5 @@ export const MARKETPLACE_NAME_MYNILINKS = "Mynilinks";
 export const MARKETPLACE_NAME_GROWWER = "Growwer";
 export const MARKETPLACE_NAME_LEMMILINK = "Lemmilink";
 export const MARKETPLACE_NAME_DEALERDETEMPS = "Dealerdetemps";
+export const MARKETPLACE_NAME_LINKSCLUB = "Linksclub";
+export const MARKETPLACE_NAME_LINKBROKER = "Linkbroker";

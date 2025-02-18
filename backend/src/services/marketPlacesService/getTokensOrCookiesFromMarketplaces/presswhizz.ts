@@ -55,6 +55,18 @@ const fetch_Cookie_FromPostLogin = async (email: string, password: string) => {
             headers: {
                 'Cookie' : getValidationData.COOKIE,
                 'Content-Type': 'application/x-www-form-urlencoded',
+                "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+                "priority": "u=0, i",
+                "sec-ch-ua": "\"Not A(Brand\";v=\"8\", \"Chromium\";v=\"132\", \"Google Chrome\";v=\"132\"",
+                "sec-ch-ua-mobile": "?0",
+                "sec-ch-ua-platform": "\"Windows\"",
+                "sec-fetch-dest": "document",
+                "sec-fetch-mode": "navigate",
+                "sec-fetch-site": "same-origin",
+                "sec-fetch-user": "?1",
+                "upgrade-insecure-requests": "1",
+                "Referer": "https://app.presswhizz.com/auth/login",
+                "Referrer-Policy": "same-origin"
             },
             body: formData.toString(),
             redirect: 'manual',  // Prevent automatic redirects
@@ -138,7 +150,21 @@ const fetchTokenFromRedirectedURL = async (cookie: string) => {
     const response = await fetch('https://app.presswhizz.com/marketplace', {
         method: 'GET',
         headers: {
-            'Cookie': cookie
+            'Cookie': cookie,
+            "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+            "accept-language": "en-US,en;q=0.9",
+            "cache-control": "max-age=0",
+            "priority": "u=0, i",
+            "sec-ch-ua": "\"Not A(Brand\";v=\"8\", \"Chromium\";v=\"132\", \"Google Chrome\";v=\"132\"",
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": "\"Windows\"",
+            "sec-fetch-dest": "document",
+            "sec-fetch-mode": "navigate",
+            "sec-fetch-site": "same-origin",
+            "sec-fetch-user": "?1",
+            "upgrade-insecure-requests": "1",
+            "Referer": "https://app.presswhizz.com/auth/login",
+            "Referrer-Policy": "same-origin"
         }
     });
 
@@ -160,11 +186,42 @@ const fetchTokenFromRedirectedURL = async (cookie: string) => {
 
     // Extract multiple attributes
     const token = decodedValue.marketplace_columns?._token || null;
-    const csrfToken = $('div[data-live-csrf-value]').first().attr('data-live-csrf-value') || null;
-    const baggageValue = $('meta[name="baggage"]').attr('content') || null;
+    const csrfToken = $('div[data-live-csrf-value]').eq(0).attr('data-live-csrf-value') || null;
+    const baggageValue = $('meta[name="baggage"]').attr('content') || '';
     const sentryTraceValue = $('meta[name="sentry-trace"]').attr('content') || null;
     const checksum = decodedValue['@checksum'] || null;
     const attributes = decodedValue['@attributes'] || null;
+
+    const parseAndReorderBaggage = (baggage: string): string => {
+        const baggageEntries = baggage.split(',').map(entry => entry.trim());
+
+        const order = [
+            'sentry-environment',
+            'sentry-release',
+            'sentry-public_key',
+            'sentry-trace_id',
+            'sentry-sample_rate',
+            'sentry-sampled'
+        ];
+
+        // Convert to an object for easy manipulation
+        const baggageMap: { [key: string]: string } = {};
+        baggageEntries.forEach(entry => {
+            const [key, value] = entry.split('=');
+            if (key && value) {
+                baggageMap[key] = value;
+            }
+        });
+
+        // Reconstruct baggage string in the desired order
+        return order
+            .filter(key => baggageMap[key]) // Only include existing keys
+            .map(key => `${key}=${baggageMap[key]}`)
+            .join(',');
+    };
+
+    // Usage inside fetchTokenFromRedirectedURL
+    const reorderedBaggage = parseAndReorderBaggage(baggageValue);
 
     // Extract and structure children elements dynamically
     const children: { [key: string]: { fingerprint: string; tag: string } } = {};
@@ -183,7 +240,7 @@ const fetchTokenFromRedirectedURL = async (cookie: string) => {
         console.error({
             token,
             csrfToken,
-            baggageValue,
+            baggage : reorderedBaggage,
             sentryTraceValue,
             checksum,
             attributes
@@ -195,7 +252,7 @@ const fetchTokenFromRedirectedURL = async (cookie: string) => {
         token,
         csrfToken,
         COOKIE: cookie,
-        baggageValue,
+        baggage : reorderedBaggage,
         sentryTraceValue,
         checksum,
         attributes,

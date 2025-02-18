@@ -43,8 +43,6 @@ const fetch_Cookie_FromPostLogin = async (email: string, password: string): Prom
             throw new Error('Failed to fetch CSRF token or initial cookies from Prnews');
         }
 
-        console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", getValidationData)
-
         const formData = new URLSearchParams();
         formData.append('_token', getValidationData.CSRF_TOKEN);
         formData.append('email', email);
@@ -114,8 +112,6 @@ const fetch_CSRF_TOKEN_AndCookieFrom_GET_Login = async (): Promise<{CSRF_TOKEN :
         const _app_s_v1 = cookieOrigin.match(/_app_s_v1=[^;]+;/);
         const MvDz78miPVY6h0pTOtOEQuZx2yhlkrjX8pJoI2vg = cookieOrigin.match(/MvDz78miPVY6h0pTOtOEQuZx2yhlkrjX8pJoI2vg=[^;]+/);
 
-
-        console.log('./\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\', xsrfTokenMatch, _app_s_v1, MvDz78miPVY6h0pTOtOEQuZx2yhlkrjX8pJoI2vg);
         if (xsrfTokenMatch && _app_s_v1 && MvDz78miPVY6h0pTOtOEQuZx2yhlkrjX8pJoI2vg) {
             const extractedCookie = `${xsrfTokenMatch[0]} ${_app_s_v1[0]} ${MvDz78miPVY6h0pTOtOEQuZx2yhlkrjX8pJoI2vg[0]}`.trim();
 

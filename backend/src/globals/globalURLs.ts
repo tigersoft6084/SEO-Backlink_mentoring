@@ -62,6 +62,10 @@ export const PRNEWS_API_URL = "https://prnews.io/login/";
 
 export const PRESSWHIZZ_API_URL = "https://app.presswhizz.com/auth/login";
 
+export const LINKSCLUB_API_URL = "https://app.linksclub.fr/login.php";
+
+export const LINKBROKER_API_URL = "https://api.linkbroker.de/auth/v1/token?grant_type=password";
+
 
 
 // URLs for Backlinks
@@ -230,3 +234,9 @@ export const GET_BACKLINK_FROM_GROWWER_URL = 'https://tool.growwer.com/user/api/
 export const GET_BACKLINK_FROM_LEMMILINK = "https://api.lemmilink.fr/sites/allsites";
 
 export const GET_BACKLINK_FROM_PRESSWHIZZ_URL = "https://app.presswhizz.com/_components/marketplace/selectPage";
+
+export const GET_BACKLINK_FROM_SOUMETTRE_URL = "https://soumettre.fr/livewire/message/catalog.partials.spot-results";
+
+export const GET_BACKLINK_FROM_LINKSCLUB_URL = "https://app.linksclub.fr/new-campaign.php";
+
+export const GET_BACKLINK_FROM_LINKBROKER_URL = "https://app.linkbroker.de/api/v2/backlinks/get";

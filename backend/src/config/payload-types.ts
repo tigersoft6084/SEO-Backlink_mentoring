@@ -197,6 +197,7 @@ export interface CredentialsForMarketplace {
           | 'Growwer'
           | 'Lemmilink'
           | 'Dealerdetemps'
+          | 'Linksclub'
         )
       | null;
     id?: string | null;
