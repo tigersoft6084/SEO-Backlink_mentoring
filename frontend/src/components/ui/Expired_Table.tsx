@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { MdFilterList } from "react-icons/md";
-import { FaList } from "react-icons/fa";
 import MarketPlacesLinks from "./MarketPlacesLinks";
 interface Row {
     domain: string;
@@ -23,7 +22,6 @@ const ExpiredDomainsTable : React.FC<ExpiredDomainsTableProps> = ({
     rows
 }) => {
 
-    console.log(rows);
     const [sortedRows, setSortedRows] = useState(rows);
     const [sortConfig, setSortConfig] = useState<{ key: keyof Row; direction: "asc" | "desc" } | null>(null);
 
@@ -40,10 +38,10 @@ const ExpiredDomainsTable : React.FC<ExpiredDomainsTableProps> = ({
 
         const sorted = [...rows].sort((a, b) => {
             if (a[key] < b[key]) {
-            return direction === "asc" ? -1 : 1;
+                return direction === "asc" ? -1 : 1;
             }
             if (a[key] > b[key]) {
-            return direction === "asc" ? 1 : -1;
+                return direction === "asc" ? 1 : -1;
             }
             return 0;
         });
@@ -51,7 +49,6 @@ const ExpiredDomainsTable : React.FC<ExpiredDomainsTableProps> = ({
         setSortConfig({ key, direction });
     };
 
-    console.log(sortedRows)
     return (
         <div className="p-6 bg-white shadow-md rounded-lg dark:bg-slate-800">
             <div className="overflow-x-auto max-h-[calc(100vh-330px)] overflow-y-auto">

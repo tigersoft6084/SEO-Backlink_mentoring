@@ -42,6 +42,58 @@ const TableSection: React.FC<TableSectionProps> = ({
   const [sidebarVisible, setSidebarVisible] = useState(false);
   const [selectedRowData, setSelectedRowData] = useState<Row | null>(null);
 
+  const [filters, setFilters] = useState<{ [key in keyof Row]?: Array<{ condition: string; value: string; logic?: string }> }>({});
+
+  useEffect(() => {
+    let filteredRows = rows;
+    Object.keys(filters).forEach((key) => {
+      const filterConditions = filters[key as keyof Row];
+      if (filterConditions && filterConditions.length > 0) {
+        filteredRows = filteredRows.filter((row) => {
+          return filterConditions.reduce((acc, { condition, value, logic }, index) => {
+            if (!value) return acc;
+            let result = false;
+            switch (condition) {
+              case "equals":
+                result = String(row[key as keyof Row]) === String(value);
+                break;
+              case "doesnotequal":
+                result = String(row[key as keyof Row]) !== String(value);
+                break;
+              case "greaterThan":
+                result = Number(row[key as keyof Row]) > Number(value);
+                break;
+              case "greaterThanOrEqual":
+                result = Number(row[key as keyof Row]) >= Number(value);
+                break;
+              case "lessThan":
+                result = Number(row[key as keyof Row]) < Number(value);
+                break;
+              case "lessThanOrEqual":
+                result = Number(row[key as keyof Row]) <= Number(value);
+                break;
+              case "between":
+                const [min, max] = value.split(",").map(Number);
+                result = Number(row[key as keyof Row]) >= min && Number(row[key as keyof Row]) <= max;
+                break;
+              case "notBlank":
+                result = String(row[key as keyof Row]).trim() !== "";
+                break;
+              case "blank":
+                result = String(row[key as keyof Row]).trim() === "";
+                break;
+              default:
+                result = true;
+            }
+            return index === 0 ? result : logic === "AND" ? acc && result : acc || result;
+          }, true);
+        });
+      }
+    });
+    setSortedRows(filteredRows);
+  }, [filters, rows]);
+
+
   useEffect(() => {
     setSortedRows(rows);
   }, [rows]);
@@ -78,8 +130,8 @@ const TableSection: React.FC<TableSectionProps> = ({
   });
   };
 
-  const handleFilterChange = (filters: Array<{ condition: string; value: string; logic?: string }>) => {
-    console.log("Filter values:", filters);
+  const handleFilterChange = (key: keyof Row, newFilters: Array<{ condition: string; value: string; logic?: string }>) => {
+    setFilters((prev) => ({ ...prev, [key]: newFilters }));
   };
 
   const handleSelectAllChange = () => {
@@ -144,7 +196,7 @@ const TableSection: React.FC<TableSectionProps> = ({
 
                   {sortConfig?.key === "rd" && (sortConfig.direction === "asc" ? "▲" : "▼")}
 
-                  <FilterDropdown onFilterChange={handleFilterChange} />
+                  <FilterDropdown onFilterChange={(filters) => handleFilterChange("rd", filters)} />
                 </div>
               </th>
 
@@ -155,7 +207,7 @@ const TableSection: React.FC<TableSectionProps> = ({
                 <div className="flex items-center gap-2">
                   <span className="cursor-pointer">TF</span>
                   {sortConfig?.key === "tf" && (sortConfig.direction === "asc" ? "▲" : "▼")}
-                  <FilterDropdown onFilterChange={handleFilterChange} />
+                  <FilterDropdown onFilterChange={(filters) => handleFilterChange("tf", filters)} />
                 </div>
               </th>
 
@@ -166,7 +218,7 @@ const TableSection: React.FC<TableSectionProps> = ({
                 <div className="flex items-center gap-2">
                   <span className="cursor-pointer">CF</span>
                   {sortConfig?.key === "cf" && (sortConfig.direction === "asc" ? "▲" : "▼")}
-                  <FilterDropdown onFilterChange={handleFilterChange} />
+                  <FilterDropdown onFilterChange={(filters) => handleFilterChange("cf", filters)} />
                 </div>
               </th>
 
@@ -184,7 +236,7 @@ const TableSection: React.FC<TableSectionProps> = ({
                 <div className="flex items-center gap-2">
                   <span className="cursor-pointer">Best Price</span>
                   {sortConfig?.key === "price" && (sortConfig.direction === "asc" ? "▲" : "▼")}
-                  <FilterDropdown onFilterChange={handleFilterChange} />
+                  <FilterDropdown onFilterChange={(filters) => handleFilterChange("price", filters)} />
                 </div>
               </th>
 

@@ -48,7 +48,6 @@ const Filters: React.FC<FiltersProps> = ({ filters, updateFilters, onFilter }) =
 
     const [currentPage, setCurrentPage] = useState(1);
     const [limit, setLimit] = useState(filters.page || 10); // Default limit to 10
-    console.log("totla expired Odmains", totalExpiredDomains )
 
     // Calculate totalPages dynamically
     const totalPages = expiredCount > 0 ? Math.ceil(expiredCount / limit) : 1;
@@ -59,6 +58,21 @@ const Filters: React.FC<FiltersProps> = ({ filters, updateFilters, onFilter }) =
             setExpiredCount(totalExpiredDomains);
         }
     }, [totalExpiredDomains, expiredCount]);
+
+    // Update filters only when currentPage changes
+    useEffect(() => {
+        if (Number(filters.page) !== currentPage) {  // Convert filters.page to number
+            updateFilters("page", currentPage.toString()); // Ensure it's stored as a string
+        }
+    }, [currentPage, updateFilters, filters.page]);
+
+
+
+    // Trigger API call after filters are updated
+    useEffect(() => {
+        onFilter();
+    }, [filters]); // Runs only when filters are updated
+
 
 
     // Handler for input changes

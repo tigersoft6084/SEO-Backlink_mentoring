@@ -17,21 +17,16 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({ onFilterChange }) => {
     updatedFilters[index][key] = value;
     setFilters(updatedFilters);
 
-    // Automatically add a second filter if the first input has a value and there is only one filter
     if (filters.length === 1 && updatedFilters[0].value.trim()) {
-      setFilters([
-        ...updatedFilters,
-        { condition: "equals", value: "", logic },
-      ]);
+      setFilters([...updatedFilters, { condition: "equals", value: "", logic }]);
     }
 
-    // Remove the second filter if both inputs are empty
     if (
       filters.length === 2 &&
       !updatedFilters[0].value.trim() &&
       !updatedFilters[1].value.trim()
     ) {
-      setFilters(updatedFilters.slice(0, 1)); // Keep only the first filter
+      setFilters(updatedFilters.slice(0, 1));
     }
 
     onFilterChange(updatedFilters);
@@ -39,7 +34,6 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({ onFilterChange }) => {
 
   const handleLogicChange = (newLogic: "AND" | "OR") => {
     setLogic(newLogic);
-    // Update the logic for the second filter, if it exists
     if (filters.length > 1) {
       const updatedFilters = [...filters];
       updatedFilters[1].logic = newLogic;
@@ -50,13 +44,10 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({ onFilterChange }) => {
 
   return (
     <span className="relative">
-      <MdFilterList
-        className="cursor-pointer"
-        onClick={() => setFilterOpen((prev) => !prev)}
-      />
+      <MdFilterList className="cursor-pointer" onClick={() => setFilterOpen((prev) => !prev)} />
       {isFilterOpen && (
         <div
-          className="absolute left-0 mt-2 bg-white border border-gray-300 rounded-xl shadow-lg w-[11rem] py-3 px-2 z-10"
+          className="absolute left-0 mt-2 bg-white border border-gray-300 rounded-xl shadow-lg w-[12rem] py-3 px-2 z-10"
           onClick={(e) => e.stopPropagation()}
         >
           {filters.map((filter, index) => (
@@ -93,22 +84,39 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({ onFilterChange }) => {
                 onChange={(e) => handleFilterChange(index, "condition", e.target.value)}
               >
                 <option value="equals">Equals</option>
-                <option value="contains">Does not equal</option>
-                <option value="startsWith">Greater than</option>
-                <option value="endsWith">Greater than or equal to</option>
+                <option value="doesnotequal">Does not equal</option>
+                <option value="greaterThan">Greater than</option>
+                <option value="greaterThanOrEqual">Greater than or equal to</option>
                 <option value="lessThan">Less than</option>
                 <option value="lessThanOrEqual">Less than or equal to</option>
                 <option value="between">Between</option>
                 <option value="blank">Blank</option>
                 <option value="notBlank">Not blank</option>
               </select>
-              <input
-                type="text"
-                placeholder="Enter value"
-                className="w-full px-2 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                value={filter.value}
-                onChange={(e) => handleFilterChange(index, "value", e.target.value)}
-              />
+              {filter.condition === "between" ? (
+                <div className="flex space-x-2">
+                  <input
+                    type="text"
+                    placeholder="Min"
+                    className="w-1/2 px-2 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    onChange={(e) => handleFilterChange(index, "value", e.target.value + "," + filter.value.split(",")[1] || "")}
+                  />
+                  <input
+                    type="text"
+                    placeholder="Max"
+                    className="w-1/2 px-2 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    onChange={(e) => handleFilterChange(index, "value", filter.value.split(",")[0] + "," + e.target.value)}
+                  />
+                </div>
+              ) : filter.condition === "blank" || filter.condition === "notBlank" ? null : (
+                <input
+                  type="text"
+                  placeholder="Enter value"
+                  className="w-full px-2 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  value={filter.value}
+                  onChange={(e) => handleFilterChange(index, "value", e.target.value)}
+                />
+              )}
             </div>
           ))}
         </div>
