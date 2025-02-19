@@ -77,10 +77,10 @@ const TableSection: React.FC<TableSectionProps> = ({
                 result = Number(row[key as keyof Row]) >= min && Number(row[key as keyof Row]) <= max;
                 break;
               case "notBlank":
-                result = String(row[key as keyof Row]).trim() !== "";
+                result = row[key as keyof Row] !== null && row[key as keyof Row] !== undefined && String(row[key as keyof Row]).trim() !== "";
                 break;
               case "blank":
-                result = String(row[key as keyof Row]).trim() === "";
+                result = row[key as keyof Row] === null || row[key as keyof Row] === undefined || String(row[key as keyof Row]).trim() === "";
                 break;
               default:
                 result = true;
@@ -154,189 +154,195 @@ const TableSection: React.FC<TableSectionProps> = ({
   };
 
   return (
-    <div className="p-6 bg-white shadow-md rounded-lg dark:bg-slate-700">
-      <div className="overflow-x-auto max-h-[calc(100vh-330px)] overflow-y-auto">
-        <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-500">
-          <thead className="bg-white dark:bg-slate-700">
-            <tr>
-              <th className="px-6">
-                <div className="flex items-center justify-center">
-                  <input
-                    type="checkbox"
-                    className={`form-checkbox h-4 w-4 text-blue-600 dark:text-blue-500 ${
-                      calculateHeaderCheckboxState() === "indeterminate" ? "bg-yellow-500" : ""
-                    }`}
-                    checked={selectedRows.size === rows.length}
-                    onChange={handleSelectAllChange}
-                  />
-                </div>
-              </th>
-              <th
-                className="py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400 cursor-pointer"
-                onClick={() => handleSort("domain")}
-              >
-                <div className="flex items-center gap-2">
-                  <span>Domain</span>
-                  {sortConfig?.key === "domain" && (sortConfig.direction === "asc" ? "▲" : "▼")}
-                  <MdFilterList />
-                </div>
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400">
-                Tools
-              </th>
-
-              <th
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 tracking-wider dark:text-gray-400 relative"
-                onClick={() => handleSort("rd")}
-              >
-                <div className="flex items-center gap-2">
-                  <span className="group relative cursor-pointer">
-                    RD
-                  </span>
-
-                  {sortConfig?.key === "rd" && (sortConfig.direction === "asc" ? "▲" : "▼")}
-
-                  <FilterDropdown onFilterChange={(filters) => handleFilterChange("rd", filters)} />
-                </div>
-              </th>
-
-              <th
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400"
-                onClick={() => handleSort("tf")}
-              >
-                <div className="flex items-center gap-2">
-                  <span className="cursor-pointer">TF</span>
-                  {sortConfig?.key === "tf" && (sortConfig.direction === "asc" ? "▲" : "▼")}
-                  <FilterDropdown onFilterChange={(filters) => handleFilterChange("tf", filters)} />
-                </div>
-              </th>
-
-              <th
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400"
-                onClick={() => handleSort("cf")}
-              >
-                <div className="flex items-center gap-2">
-                  <span className="cursor-pointer">CF</span>
-                  {sortConfig?.key === "cf" && (sortConfig.direction === "asc" ? "▲" : "▼")}
-                  <FilterDropdown onFilterChange={(filters) => handleFilterChange("cf", filters)} />
-                </div>
-              </th>
-
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400">
-                <div className="flex items-center gap-2">
-                  <span className="cursor-pointer">TTF</span>
-                  <MdFilterList />
-                </div>
-              </th>
-
-              <th
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400"
-                onClick={() => handleSort("price")}
-              >
-                <div className="flex items-center gap-2">
-                  <span className="cursor-pointer">Best Price</span>
-                  {sortConfig?.key === "price" && (sortConfig.direction === "asc" ? "▲" : "▼")}
-                  <FilterDropdown onFilterChange={(filters) => handleFilterChange("price", filters)} />
-                </div>
-              </th>
-
-              {pageName === "KeywordSearch" && (
-                <th
-                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400"
-                  onClick={() => handleSort("keyword")}
-                >
-                  <div className="flex items-center gap-2">
-                    <span className="cursor-pointer">Keyword</span>
-                    {sortConfig?.key === "keyword" && (sortConfig.direction === "asc" ? "▲" : "▼")}
-                    <MdFilterList />
-                  </div>
-                </th>
-              )}
-
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400">
-                All
-              </th>
-            </tr>
-          </thead>
-
-          <tbody className="bg-white dark:bg-slate-700">
-            {sortedRows.map((row, idx) => (
-              <tr
-                key={idx}
-                className="hover:bg-blue-100 hover:rounded-3xl hover:scale-y-60n dark:hover:dark:hover:bg-slate-600 transition-all duration-100"
-                onClick={() => handleRowCheckboxChange(idx)}
-              >
-                <td className="px-6 whitespace-nowrap text-center" onClick={(e) => e.stopPropagation()}>
+    <div className="p-6 bg-white shadow-md rounded-lg dark:bg-slate-700 min-h-[300px] flex flex-col">
+      <div className="overflow-x-auto max-h-[calc(100vh-330px)] overflow-y-auto  flex-grow">
+          <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-500">
+            <thead className="bg-white dark:bg-slate-700">
+              <tr>
+                <th className="px-6">
                   <div className="flex items-center justify-center">
                     <input
                       type="checkbox"
-                      className="form-checkbox h-4 w-4 text-blue-600 dark:text-blue-500"
-                      checked={selectedRows.has(idx)}
-                      onChange={() => handleRowCheckboxChange(idx)}
+                      className={`form-checkbox h-4 w-4 text-blue-600 dark:text-blue-500 ${
+                        calculateHeaderCheckboxState() === "indeterminate" ? "bg-yellow-500" : ""
+                      }`}
+                      checked={selectedRows.size === rows.length}
+                      onChange={handleSelectAllChange}
                     />
                   </div>
-                </td>
-
-                <td
-                  className="py-4 whitespace-nowrap text-sm text-blue-500 dark:text-blue-300"
-                  onClick={(e) => e.stopPropagation()}
+                </th>
+                <th
+                  className="py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400 cursor-pointer"
+                  onClick={() => handleSort("domain")}
                 >
-                  <a
-                    href={`https://${row.domain}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:underline"
-                  >
-                    {row.domain.length > 20 ? `${row.domain.substring(0, 20)}...` : row.domain}
-                  </a>
-                </td>
+                  <div className="flex items-center gap-2">
+                    <span>Domain</span>
+                    {sortConfig?.key === "domain" && (sortConfig.direction === "asc" ? "▲" : "▼")}
+                    <MdFilterList />
+                  </div>
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400">
+                  Tools
+                </th>
 
-                <td className="px-6 py-4" onClick={(e) => e.stopPropagation()}>
-                  <MarketPlacesLinks domain={row.domain} />
-                </td>
+                <th
+                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 tracking-wider dark:text-gray-400 relative"
+                  onClick={() => handleSort("rd")}
+                >
+                  <div className="flex items-center gap-2">
+                    <span className="group relative cursor-pointer">
+                      RD
+                    </span>
 
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{row.rd}</td>
+                    {sortConfig?.key === "rd" && (sortConfig.direction === "asc" ? "▲" : "▼")}
 
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{row.tf}</td>
+                    <FilterDropdown onFilterChange={(filters) => handleFilterChange("rd", filters)} />
+                  </div>
+                </th>
 
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{row.cf}</td>
+                <th
+                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400"
+                  onClick={() => handleSort("tf")}
+                >
+                  <div className="flex items-center gap-2">
+                    <span className="cursor-pointer">TF</span>
+                    {sortConfig?.key === "tf" && (sortConfig.direction === "asc" ? "▲" : "▼")}
+                    <FilterDropdown onFilterChange={(filters) => handleFilterChange("tf", filters)} />
+                  </div>
+                </th>
 
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{row.ttf?.length > 12 ? `${row.ttf.substring(0, 12)}...` : row.ttf}</td>
+                <th
+                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400"
+                  onClick={() => handleSort("cf")}
+                >
+                  <div className="flex items-center gap-2">
+                    <span className="cursor-pointer">CF</span>
+                    {sortConfig?.key === "cf" && (sortConfig.direction === "asc" ? "▲" : "▼")}
+                    <FilterDropdown onFilterChange={(filters) => handleFilterChange("cf", filters)} />
+                  </div>
+                </th>
 
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">
-                  <DynamicPrice
-                    source={row.source}
-                    price={row.price}
-                    domain={row.domain}
-                    onClick={(e) => e.stopPropagation()}
-                  />
-                </td>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400">
+                  <div className="flex items-center gap-2">
+                    <span className="cursor-pointer">TTF</span>
+                    <MdFilterList />
+                  </div>
+                </th>
+
+                <th
+                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400"
+                  onClick={() => handleSort("price")}
+                >
+                  <div className="flex items-center gap-2">
+                    <span className="cursor-pointer">Best Price</span>
+                    {sortConfig?.key === "price" && (sortConfig.direction === "asc" ? "▲" : "▼")}
+                    <FilterDropdown onFilterChange={(filters) => handleFilterChange("price", filters)} />
+                  </div>
+                </th>
 
                 {pageName === "KeywordSearch" && (
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">
-                    {row.keyword}
-                  </td>
+                  <th
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400"
+                    onClick={() => handleSort("keyword")}
+                  >
+                    <div className="flex items-center gap-2">
+                      <span className="cursor-pointer">Keyword</span>
+                      {sortConfig?.key === "keyword" && (sortConfig.direction === "asc" ? "▲" : "▼")}
+                      <MdFilterList />
+                    </div>
+                  </th>
                 )}
 
-                <td
-                  className="py-4 whitespace-nowrap text-sm text-blue-500 dark:text-blue-300"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <div
-                    className="flex justify-center cursor-pointer"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setSelectedRowData(row); // Set row data
-                      setSidebarVisible(true); // Open sidebar
-                    }}
-                  >
-                    <FaList style={{ transform: "scaleX(-1)" }} />
-                  </div>
-                </td>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400">
+                  All
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+
+            <tbody className="bg-white dark:bg-slate-700">
+              {sortedRows.length > 0 ? (
+                sortedRows.map((row, idx) => (
+                  <tr
+                    key={idx}
+                    className="hover:bg-blue-100 hover:rounded-3xl hover:scale-y-60n dark:hover:dark:hover:bg-slate-600 transition-all duration-100"
+                    onClick={() => handleRowCheckboxChange(idx)}
+                  >
+                    <td className="px-6 whitespace-nowrap text-center" onClick={(e) => e.stopPropagation()}>
+                      <div className="flex items-center justify-center">
+                        <input
+                          type="checkbox"
+                          className="form-checkbox h-4 w-4 text-blue-600 dark:text-blue-500"
+                          checked={selectedRows.has(idx)}
+                          onChange={() => handleRowCheckboxChange(idx)}
+                        />
+                      </div>
+                    </td>
+
+                    <td
+                      className="py-4 whitespace-nowrap text-sm text-blue-500 dark:text-blue-300"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <a
+                        href={`https://${row.domain}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:underline"
+                      >
+                        {row.domain.length > 20 ? `${row.domain.substring(0, 20)}...` : row.domain}
+                      </a>
+                    </td>
+
+                    <td className="px-6 py-4" onClick={(e) => e.stopPropagation()}>
+                      <MarketPlacesLinks domain={row.domain} />
+                    </td>
+
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{row.rd}</td>
+
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{row.tf}</td>
+
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{row.cf}</td>
+
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{row.ttf?.length > 12 ? `${row.ttf.substring(0, 12)}...` : row.ttf}</td>
+
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">
+                      <DynamicPrice
+                        source={row.source}
+                        price={row.price}
+                        domain={row.domain}
+                        onClick={(e) => e.stopPropagation()}
+                      />
+                    </td>
+
+                    {pageName === "KeywordSearch" && (
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">
+                        {row.keyword}
+                      </td>
+                    )}
+
+                    <td
+                      className="py-4 whitespace-nowrap text-sm text-blue-500 dark:text-blue-300"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <div
+                        className="flex justify-center cursor-pointer"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedRowData(row); // Set row data
+                          setSidebarVisible(true); // Open sidebar
+                        }}
+                      >
+                        <FaList style={{ transform: "scaleX(-1)" }} />
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={4} className="text-center text-gray-500 py-10">No data available</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
       </div>
 
       {/* Sidebar */}
