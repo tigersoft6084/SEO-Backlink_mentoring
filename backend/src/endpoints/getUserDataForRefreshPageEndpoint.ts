@@ -11,8 +11,35 @@ export const getUserDataForRefreshPageEndpoint : Endpoint = {
 
         const authHeader = req.headers.get('authorization');
 
+        console.log(authHeader)
+
+        // CORS headers
+        const corsHeaders = {
+            "Access-Control-Allow-Origin": "*", // You can replace '*' with specific domains for security reasons
+            "Access-Control-Allow-Methods": "GET, OPTIONS, PUT, POST, DELETE",
+            "Access-Control-Allow-Headers": "Content-Type, Authorization",
+            "Access-Control-Allow-Credentials": "true"
+        };
+
+        if (req.method === "OPTIONS") {
+            // Handle preflight requests
+            return new Response(null, {
+                status: 204,
+                headers: {
+                    ...corsHeaders
+                },
+            });
+        }
+
         if(!authHeader || !authHeader.startsWith('Bearer')){
-            return new Response(JSON.stringify({ message: "Unauthorized" }), { status: 200 });
+            return new Response(JSON.stringify({ message: "Unauthorized" }),
+            {
+                status: 200,
+                headers: {
+                    "Content-Type": "application/json",
+                    ...corsHeaders
+                },
+            });
         }
 
         // ✅ Find user by email in Payload CMS
@@ -22,7 +49,14 @@ export const getUserDataForRefreshPageEndpoint : Endpoint = {
         });
 
         if (!user.docs.length) {
-            return new Response(JSON.stringify({ message: "User not found" }), { status: 404 });
+            return new Response(JSON.stringify({ message: "User not found" }),
+            {
+                status: 404,
+                headers: {
+                    "Content-Type": "application/json",
+                    ...corsHeaders
+                },
+            });
         }
 
         const userData = user.docs[0];
@@ -40,6 +74,13 @@ export const getUserDataForRefreshPageEndpoint : Endpoint = {
                 paypalSubscriptionExpiresAt : userData.paypalSubscriptionExpiresAt,
                 usedFeatures : userData.usedFeatures
             },
-        }), { status: 200 });
+        }),
+        {
+            status: 200,
+            headers: {
+                "Content-Type": "application/json",
+                ...corsHeaders
+            },
+        });
     })
 }

@@ -17,6 +17,7 @@
   "dependencies": {
     "@paypal/react-paypal-js": "^8.8.1",
     "axios": "^1.7.9",
+    "cookies-next": "^5.1.0",
     "cross-env": "^7.0.3",
     "json2csv": "^6.0.0-alpha.2",
     "lottie-react": "^2.4.1",

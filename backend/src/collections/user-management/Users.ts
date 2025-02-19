@@ -1,3 +1,4 @@
+import { googleAuthEndpoint } from '@/endpoints/auth/googleAuthEndpoint.ts';
 import type { CollectionConfig } from 'payload';
 
 export const Users: CollectionConfig = {
@@ -11,6 +12,7 @@ export const Users: CollectionConfig = {
     update: () => true, // Allow only admins to update
     read: () => true
   },
+  endpoints : [googleAuthEndpoint],
   fields: [
     {
       name: 'role',
@@ -38,7 +40,7 @@ export const Users: CollectionConfig = {
       required: false,
     },
     {
-      name: 'authProvider',
+      name: 'googleId',
       type: 'text',  // To track which auth provider was used (Google)
       required: false,
     },

@@ -4,9 +4,9 @@ import { Endpoint } from "payload";
 
 export const googleAuthEndpoint : Endpoint = {
 
-    path : '/googleAuth',
+    path : '/auth/google/callback',
 
-    method : 'post',
+    method : 'get',
 
     handler : withErrorHandling(googleAuthHandler)
 }

@@ -78,7 +78,7 @@ export interface User {
   role: 'admin' | 'user';
   username?: string | null;
   profilePicture?: (string | null) | Media;
-  authProvider?: string | null;
+  googleId?: string | null;
   planId?: string | null;
   subscriptionId?: string | null;
   subscriptionStatus?: string | null;
@@ -361,7 +361,7 @@ export interface UsersSelect<T extends boolean = true> {
   role?: T;
   username?: T;
   profilePicture?: T;
-  authProvider?: T;
+  googleId?: T;
   planId?: T;
   subscriptionId?: T;
   subscriptionStatus?: T;

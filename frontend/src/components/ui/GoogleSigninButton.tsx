@@ -1,6 +1,5 @@
 import { FcGoogle } from "react-icons/fc";
-// import { handleGoogleAuth } from "../../utils/googleAuth";
-// import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 
 interface GoogleAuthButtonProps {
   action: 'signin' | 'signup'; // Action can either be 'signin' or 'signup'
@@ -8,28 +7,46 @@ interface GoogleAuthButtonProps {
 
 const GoogleAuthButton: React.FC<GoogleAuthButtonProps> = ({ action }) => {
 
-  // const { data: session } = useSession()
-
   const buttonText = action === 'signin' ? 'Sign In with Google' : 'Sign Up with Google';
+
+  const GOOGLE_CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || '';
+
+  const REDIRECT_URI = process.env.NEXT_PUBLIC_REDIRECT_URI || '';
+
+  const router = useRouter();
 
   // Async function for handling the Google authentication process
   const handleClick = async () => {
     try {
-      // Trigger Google Auth
-      // await handleGoogleAuth(action);
+
+      const url = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${encodeURIComponent(GOOGLE_CLIENT_ID)}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=code&scope=${encodeURIComponent("openid email profile")}&prompt=consent&access_type=offline`;
+
+      // Get the screen width and height
+      const width = 600;
+      const height = 550;
+      const left = (window.innerWidth - width) / 2;
+      const top = (window.innerHeight - height) / 2;
+
+      // Open the popup window at the calculated position
+      const popup = window.open(
+        url,
+        "_blank",
+        `width=${width},height=${height},left=${left},top=${top}`
+      );
+
+      // Polling to check if the popup is closed and checking for the token in the URL
+      const checkPopupClosed = setInterval(() => {
+        if (popup && popup.closed) {
+          clearInterval(checkPopupClosed);
+          // If you had any other cleanup to do, this is where you'd handle it
+        }
+      }, 1000);
+
     } catch (error) {
       console.error(`Error during ${action} process:`, error);
     }
   };
 
-  // if(session){
-  //   return (
-  //     <>
-  //       Signed in as {session?.user?.email} <br />
-  //       <button onClick={() => signOut()}>Sign out</button>
-  //     </>
-  //   )
-  // }
   return (
     <button
       onClick={handleClick} // Using the async handleClick function
