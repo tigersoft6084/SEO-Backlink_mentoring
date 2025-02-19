@@ -34,10 +34,10 @@ export default function Home() {
 
   // Redirect if user is not authenticated
   useEffect(() => {
-    if (!user) {
+    if (!user && pathname !== "/auth/signup" && pathname?.startsWith("/dashboard")) {
       router.push("/api/auth/signin");
     }
-  }, [user, router]);
+  }, [user, router, pathname]);
 
   // ✅ API call to save subscription
   const saveSubscription = useCallback(

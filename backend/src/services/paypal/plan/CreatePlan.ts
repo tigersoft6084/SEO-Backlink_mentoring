@@ -224,65 +224,65 @@ export const createPlansAndGetID = async (payload : Payload): Promise<void> => {
     }
 };
 
-export const createPlanForUpdateValues = async(updatedPlan : {plan_name : string, description : string, interval_unit : string, price : number, currency : "USD" | "EUR"}, productID : string) => {
+// export const createPlanForUpdateValues = async(updatedPlan : {plan_name : string, description : string, interval_unit : string, price : number, currency : "USD" | "EUR"}, productID : string) => {
 
-    const accessToken = await getAccessToken();
+//     const accessToken = await getAccessToken();
 
-    // Define new plans to create
-    const planForUpdate: PlanPayload =
-        {
-            name: updatedPlan.plan_name,
-            description: updatedPlan.description,
-            interval_unit: updatedPlan.interval_unit,
-            price: updatedPlan.price,
-            currency: updatedPlan.currency,
-        };
+//     // Define new plans to create
+//     const planForUpdate: PlanPayload =
+//         {
+//             name: updatedPlan.plan_name,
+//             description: updatedPlan.description,
+//             interval_unit: updatedPlan.interval_unit,
+//             price: updatedPlan.price,
+//             currency: updatedPlan.currency,
+//         };
 
-    const payload = createPlanPayload(planForUpdate, productID);
+//     const payload = createPlanPayload(planForUpdate, productID);
 
-    const response = await fetch(`${PAYPAL_API}/v1/billing/plans`, {
-        method: "POST",
-        headers: {
-            Authorization: `Bearer ${accessToken}`,
-            "Content-Type": "application/json",
-            Accept: "application/json",
-            "PayPal-Request-Id": `PLAN-${Date.now()}-${planForUpdate.name}`,
-            Prefer: "return=representation",
-        },
-        body: JSON.stringify(payload),
-    });
+//     const response = await fetch(`${PAYPAL_API}/v1/billing/plans`, {
+//         method: "POST",
+//         headers: {
+//             Authorization: `Bearer ${accessToken}`,
+//             "Content-Type": "application/json",
+//             Accept: "application/json",
+//             "PayPal-Request-Id": `PLAN-${Date.now()}-${planForUpdate.name}`,
+//             Prefer: "return=representation",
+//         },
+//         body: JSON.stringify(payload),
+//     });
 
-    if (!response.ok) {
-        const error = await response.json();
-        console.error(`Error creating ${planForUpdate.name}:`, error);
-    }
+//     if (!response.ok) {
+//         const error = await response.json();
+//         console.error(`Error creating ${planForUpdate.name}:`, error);
+//     }
 
-    // const activePayPalPlans = await listActivePlans();
+//     // const activePayPalPlans = await listActivePlans();
 
-    // // Update the database with the new plans
-    // if (activePayPalPlans.length > 0) {
-    //     try {
+//     // // Update the database with the new plans
+//     // if (activePayPalPlans.length > 0) {
+//     //     try {
 
-    //         const sanitizedPlans = activePayPalPlans.map((plan) => ({
-    //             ...plan,
-    //             currency: (["USD", "EUR"].includes(plan.currency || "")) ? plan.currency : "USD",
-    //             price: parseFloat(plan.price.toString()) || 0,  // Ensure price is valid
-    //         }));
+//     //         const sanitizedPlans = activePayPalPlans.map((plan) => ({
+//     //             ...plan,
+//     //             currency: (["USD", "EUR"].includes(plan.currency || "")) ? plan.currency : "USD",
+//     //             price: parseFloat(plan.price.toString()) || 0,  // Ensure price is valid
+//     //         }));
 
-    //         await req.payload.update({
-    //             collection: "paypal-plans", // Replace with your collection name
-    //             where: {
-    //                 product_id: {
-    //                     equals: productID, // Ensure this matches your database schema
-    //                 },
-    //             },
-    //             data: {
-    //                 plans: [...sanitizedPlans], // Append the new plans to the existing plans
-    //             },
-    //         });
-    //         console.log("Database updated with new plans.");
-    //     } catch (updateError) {
-    //         console.error("Error updating the database with new plans:", updateError);
-    //     }
-    // }
-}
+//     //         await req.payload.update({
+//     //             collection: "paypal-plans", // Replace with your collection name
+//     //             where: {
+//     //                 product_id: {
+//     //                     equals: productID, // Ensure this matches your database schema
+//     //                 },
+//     //             },
+//     //             data: {
+//     //                 plans: [...sanitizedPlans], // Append the new plans to the existing plans
+//     //             },
+//     //         });
+//     //         console.log("Database updated with new plans.");
+//     //     } catch (updateError) {
+//     //         console.error("Error updating the database with new plans:", updateError);
+//     //     }
+//     // }
+// }

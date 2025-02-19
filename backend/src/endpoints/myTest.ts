@@ -4,6 +4,7 @@ import { getBacklinksDataFromPrensalink } from '@/services/marketPlacesService/g
 import { getBacklinksDataFromPresswhizz } from '@/services/marketPlacesService/getBacklinksFromMarketplaces/presswhizz.ts';
 import { getTokenForLinkbroker } from '@/services/marketPlacesService/getTokensOrCookiesFromMarketplaces/linkbroker.ts';
 import { getCookieFromPresswhizz } from '@/services/marketPlacesService/getTokensOrCookiesFromMarketplaces/presswhizz.ts';
+import { listActivePlans } from '@/services/paypal/plan/ListPlan.ts';
 import { Endpoint, PayloadRequest } from 'payload';
 
 // Define the Payload endpoint
@@ -13,7 +14,7 @@ export const myTestEndpoint: Endpoint = {
   handler: async (req : PayloadRequest) => {
     try {
 
-      const result = await getBacklinksDataFromLinkbroker(req.payload);
+      const result = await listActivePlans();
 
       // Return the collected results
       return new Response(
