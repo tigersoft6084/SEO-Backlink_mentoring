@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import FormInput from "./SigninInput";
 import { BiLogInCircle } from "react-icons/bi";
 import { useRouter } from "next/navigation"; // Import the useRouter hook
 import GoogleAuthButton from "../ui/GoogleSigninButton";
 import Link from "next/link";
+import { useUser } from "../../context/UserContext";
 
 export default function SignupForm() {
 
@@ -21,6 +22,36 @@ export default function SignupForm() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const router = useRouter(); // Initialize the useRouter hook
+    const { setUser } = useUser(); // ✅ Ensure `useUser` is hydrated
+
+    useEffect(() => {
+      // Listen for changes to localStorage (when the token is set by the popup)
+      const storageListener = () => {
+        const userDataString = localStorage.getItem("googleAuthUser");
+
+        if (userDataString) {
+
+          const userData = JSON.parse(userDataString);
+
+          console.log(userData)
+
+          sessionStorage.setItem("authToken", JSON.stringify(userData.token));
+          sessionStorage.setItem("user", JSON.stringify(userData.user));
+          setUser(userData);
+
+          // Redirect to the dashboard after successful sign-in
+          router.push("/dashboard");
+        }
+      };
+
+      // Add event listener to monitor localStorage changes
+      window.addEventListener("storage", storageListener);
+
+      // Cleanup the event listener when the component unmounts
+      return () => {
+        window.removeEventListener("storage", storageListener);
+      };
+    }, [router, setUser]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value, type, checked } = e.target;
