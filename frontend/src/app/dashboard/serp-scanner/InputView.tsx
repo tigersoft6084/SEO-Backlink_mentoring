@@ -96,7 +96,7 @@ export default function InputView({ onSearch, setLoading }: InputViewProps) {
                     },
                     body: JSON.stringify({
                         userEmail : user?.email,
-                        keywordSearches: usedFeatures_serpScanner,
+                        serpScanner: usedFeatures_serpScanner,
                     }),
                 })
                 if(saveFeaturesResponse){

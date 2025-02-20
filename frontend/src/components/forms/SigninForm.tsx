@@ -27,11 +27,12 @@ export default function SigninForm() {
 
         const userData = JSON.parse(userDataString);
 
-        console.log(userData)
+        console.log(userData.token)
 
         sessionStorage.setItem("authToken", JSON.stringify(userData.token));
         sessionStorage.setItem("user", JSON.stringify(userData.user));
         setUser(userData);
+        localStorage.removeItem("googleAuthUser")
 
         // Redirect to the dashboard after successful sign-in
         router.push("/dashboard");
