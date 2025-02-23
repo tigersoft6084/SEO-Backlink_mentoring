@@ -18,7 +18,8 @@ const config = {
         dark : "#101828",
       },
       fontFamily: {
-        sans: ['"Euclid Circular A"', ...defaultTheme.fontFamily.sans], // Add custom font with fallback
+        sans: ["Euclid Circular A", ...defaultTheme.fontFamily.sans], // Add custom font with fallback
+        euclid: ["Euclid Circular A", "sans-serif"],
       },
     },
   },

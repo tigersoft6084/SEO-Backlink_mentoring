@@ -3,14 +3,6 @@ import { getCredentialsForMarketplaces } from '../getCredentialsForMarketplaces.
 import { ErrorHandler } from '@/handlers/errorHandler.ts';
 import { MARKETPLACE_NAME_123MEDIA } from '@/globals/strings.ts';
 import { MEDIA123_API_URL } from '@/globals/globalURLs.ts';
-import { CookieJar } from 'tough-cookie';
-import { wrapper } from 'axios-cookiejar-support';
-import axios from 'axios';
-
-// Initialize axios with cookie support
-const jar = new CookieJar(); // Create a cookie jar
-const client = wrapper(axios.create({ jar, withCredentials: true })); // Wrap axios with cookie support
-
 
 export const getCookieFrom123media = async () => {
 
@@ -43,60 +35,62 @@ export const getCookieFrom123media = async () => {
     }
 }
 
-const fetch_Cookie_FromPostLogin = async (email: string, password: string) => {
+const fetch_Cookie_FromPostLogin = async (email: string, password: string) : Promise<{catSearchToken : string; COOKIE : string} | null> => {
     try {
         const getValidationData = await fetch_CSRF_TOKEN_AndCookieFrom_GET_Login();
 
         if (!getValidationData) {
             throw new Error('Failed to fetch CSRF token or initial cookies from 123media');
         }
+        console.log(getValidationData)
+
+        const formData = new URLSearchParams();
+
+        formData.append('email', email);
+        formData.append('password', password);
+        formData.append('_csrf_token', getValidationData.CSRF_TOKEN);
+
 
         // Step 1: Send POST request to login
-        const loginResponse = await client.post(
-            MEDIA123_API_URL,
-            new URLSearchParams({
-                email: email,
-                password: password,
-            }).toString(),
-            {
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    Referer: MEDIA123_API_URL,
-                },
-                maxRedirects: 0, // Prevent axios from automatically following redirects
-                validateStatus: (status) => status === 200 || status === 302, // Handle both 200 and 302
-            }
-        );
+        const loginResponse = await fetch(MEDIA123_API_URL, {
+            method: 'POST',
+            headers: {
+                'Cookie' : getValidationData.COOKIE,
+                "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+                "accept-language": "en-US,en;q=0.9",
+                "cache-control": "max-age=0",
+                "content-type": "application/x-www-form-urlencoded",
+                "sec-ch-ua": "\"Not A(Brand\";v=\"8\", \"Chromium\";v=\"132\", \"Google Chrome\";v=\"132\"",
+                "sec-ch-ua-mobile": "?0",
+                "sec-ch-ua-platform": "\"Windows\"",
+                "sec-fetch-dest": "document",
+                "sec-fetch-mode": "navigate",
+                "sec-fetch-site": "same-origin",
+                "sec-fetch-user": "?1",
+                'host' : '123.media'
+            },
+            body: formData.toString()
+        });
 
-        const cookieOrigin = loginResponse.headers['set-cookie'] || "";
+        const cookieOrigin = loginResponse.headers.get('set-cookie') || "";
 
-        const cookies = extractPHPSESSID(Array.isArray(cookieOrigin) ? cookieOrigin.join('; ') : cookieOrigin);
+        let cookies;
+
+        if(cookieOrigin){
+            cookies = extractPHPSESSID(cookieOrigin);
+        }
         console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', cookies)
 
-        console.log('Login Response Status:', loginResponse.status);
-        console.log('Login Response Headers:', loginResponse.headers);
+        const responseBody = await loginResponse.text();
+        const $ = cheerio.load(responseBody);
 
-        // Step 2: Extract cookies and handle the response
-        if ((loginResponse.status === 200 || loginResponse.status === 302) && loginResponse.headers['set-cookie']) {
-            console.log('Login successful, session cookie set.');
+        // Extract the token value
+        const catSearchToken = $('#cat_search__token').attr('value');
 
-            // Follow the redirect manually to GET /offers
-            const offersResponse = await client.get('https://123.media/offers', {
-                headers: {
-                    Referer: 'https://123.media/login',
-                    'Cookie': cookies
-                },
-            });
-
-            if (offersResponse.status === 200) {
-                return {
-                    success: true,
-                    offersPageHtml: offersResponse.data, // The HTML content of the /offers page
-                };
-            }
+        return {
+            catSearchToken : responseBody || '',
+            COOKIE : cookies || ''
         }
-
-        throw new Error('Login failed: No valid cookie or token found.');
     } catch (error) {
         const { errorDetails } = ErrorHandler.handle(error, 'Error fetching validation data for 123media: ');
         console.error(errorDetails.context);
@@ -110,8 +104,17 @@ export const fetch_CSRF_TOKEN_AndCookieFrom_GET_Login = async (): Promise<{CSRF_
         const response = await fetch(MEDIA123_API_URL, {
             method: 'GET',
             headers : {
-                'Accept' : 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
-                'Host' : '123.media',
+                "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+                "accept-language": "en-US,en;q=0.9",
+                "sec-ch-ua": "\"Not A(Brand\";v=\"8\", \"Chromium\";v=\"132\", \"Google Chrome\";v=\"132\"",
+                "sec-ch-ua-mobile": "?0",
+                "sec-ch-ua-platform": "\"Windows\"",
+                "sec-fetch-dest": "document",
+                "sec-fetch-mode": "navigate",
+                "sec-fetch-site": "same-origin",
+                "sec-fetch-user": "?1",
+                "upgrade-insecure-requests": "1",
+                'host' : '123.media',
             }
         });
 
@@ -134,9 +137,8 @@ export const fetch_CSRF_TOKEN_AndCookieFrom_GET_Login = async (): Promise<{CSRF_
         if(cookieOrigin){
             const cookies = extractPHPSESSID(cookieOrigin);
 
-            console.log(">..............................", cookies)
             return {
-                CSRF_TOKEN : csrfToken,
+                CSRF_TOKEN : csrfToken || '',
                 COOKIE : cookies || ''
             }
         }

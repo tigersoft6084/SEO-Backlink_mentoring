@@ -1,9 +1,6 @@
-
-import { getBacklinksDataFromLinkbroker } from '@/services/marketPlacesService/getBacklinksFromMarketplaces/linkbroker.ts';
 import { getBacklinksDataFromPrensalink } from '@/services/marketPlacesService/getBacklinksFromMarketplaces/prensalink.ts';
-import { getBacklinksDataFromPresswhizz } from '@/services/marketPlacesService/getBacklinksFromMarketplaces/presswhizz.ts';
-import { getTokenForLinkbroker } from '@/services/marketPlacesService/getTokensOrCookiesFromMarketplaces/linkbroker.ts';
-import { getCookieFromPresswhizz } from '@/services/marketPlacesService/getTokensOrCookiesFromMarketplaces/presswhizz.ts';
+import { fetch_CSRF_TOKEN_AndCookieFrom_GET_Login, getCookieFrom123media } from '@/services/marketPlacesService/getTokensOrCookiesFromMarketplaces/123media.ts';
+import { getDataFrom123media } from '@/services/marketPlacesService/webscraping/123media.ts';
 import { listActivePlans } from '@/services/paypal/plan/ListPlan.ts';
 import { Endpoint, PayloadRequest } from 'payload';
 
@@ -14,7 +11,7 @@ export const myTestEndpoint: Endpoint = {
   handler: async (req : PayloadRequest) => {
     try {
 
-      const result = await listActivePlans();
+      const result = await getBacklinksDataFromPrensalink(req.payload);
 
       // Return the collected results
       return new Response(
