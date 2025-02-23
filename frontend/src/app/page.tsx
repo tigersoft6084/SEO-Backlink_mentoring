@@ -402,51 +402,95 @@ export default function Home() {
       </section>
 
       {/* Pricing Section */}
-      <section className="bg-gray-50 dark:bg-gray-800 py-24">
-        <div className="container mx-auto text-center">
-          <h2 className="text-4xl font-extrabold text-gray-900 dark:text-white">💰 Pricing</h2>
-          <p className="text-lg text-gray-600 dark:text-gray-500 mt-2">
-            Choose the plan that works best for you
-          </p>
+      <section className="py-16 text-left">
+        <h2 className="text-4xl font-bold text-gray-600 text-center">Pricing</h2>
 
-          <div className="flex flex-wrap justify-center gap-10 mt-12">
-            <PricingCard
-              plan="Starter"
-              price="€15/month"
-              features={["50 keyword searches", "20 competitor analyses"]}
-            />
-            <PricingCard
-              plan="Pro"
-              price="€49/month"
-              features={["1000 keyword searches", "100 competitor analyses"]}
-            />
-            <PricingCard
-              plan="Enterprise"
-              price="€99/month"
-              features={["Unlimited searches", "500 competitor analyses"]}
-            />
+        {/* Pricing Cards */}
+        <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8 px-6 md:px-20">
+
+          {/* Standard Plan */}
+          <div className="p-8 mb-16 bg-gradient-to-b from-[#199DFB] to-[#9159FF] text-white rounded-3xl shadow-lg transition-transform duration-300 hover:scale-105">
+            <h3 className="text-2xl font-bold mt-6">Standard</h3>
+            <p className="text-sm opacity-90">For freelancers and niche site owners</p>
+            <p className="text-5xl font-bold mt-4">€15 <span className="text-lg font-medium">/month</span></p>
+            <ul className="mt-6 space-y-2 text-white/90 text-left">
+              <li>Forums and expired domains</li>
+              <li>300 results per search</li>
+              <li>100 backlinks monitored</li>
+              <li>200 Plugin clicks</li>
+              <li>50 keyword searches</li>
+              <li>20 competitive analyses</li>
+              <li>Scan 3 competitors in bulk</li>
+            </ul>
+            <Link href="/api/auth/signin">
+              <button className="mt-6 px-6 py-3 bg-white text-blue-600 font-bold rounded-lg shadow-md hover:bg-gray-200 transition-all w-full">
+                Start Free Analysis Now
+              </button>
+            </Link>
           </div>
+
+          {/* Booster Plan (Popular) */}
+          <div className="relative p-8 bg-gradient-to-b from-[#BE45DD] to-[#4859CA] text-white rounded-3xl shadow-lg overflow-hidden transition-transform duration-300 hover:scale-105">
+            {/* Overlay the badge at the top-right corner */}
+            <div className="absolute -top-4 -right-6 w-36 h-36">
+              <Image
+                src="/images/badge.svg" // Ensure the path is correct
+                alt="Popular Badge"
+                width={128}
+                height={128}
+                className="w-full h-full"
+              />
+            </div>
+
+            <h3 className="text-2xl font-bold mt-6">Booster</h3>
+            <p className="text-sm opacity-90">For small agencies and online businesses</p>
+            <p className="text-5xl font-bold mt-4">€49 <span className="text-lg font-medium">/month</span></p>
+
+            <ul className="mt-6 space-y-2 text-white/90 text-left">
+              <li>Forums and expired domains</li>
+              <li>1000 results per search</li>
+              <li>500 backlinks monitored</li>
+              <li>1000 Plugin clicks</li>
+              <li>250 keyword searches</li>
+              <li>100 competitive analyses</li>
+              <li>Scan 15 competitors in bulk</li>
+              <li>Scan 20 keywords in Bulk</li>
+              <li>20 SERP Scanner</li>
+            </ul>
+
+            <Link href="/api/auth/signin">
+              <button className="mt-6 px-6 py-3 bg-white text-purple-600 font-bold rounded-lg shadow-md hover:bg-gray-200 transition-all w-full">
+                Start Free Analysis Now
+              </button>
+            </Link>
+          </div>
+
+          {/* Elite Plan */}
+          <div className="p-8 bg-black text-white rounded-3xl shadow-lg transition-transform duration-300 hover:scale-105">
+            <h3 className="text-2xl font-bold mt-6">Elite</h3>
+            <p className="text-sm opacity-90">For an almost unlimited use of Link Finder</p>
+            <p className="text-5xl font-bold mt-4">€99 <span className="text-lg font-medium">/month</span></p>
+            <ul className="mt-6 space-y-2 text-white/90 text-left">
+              <li>Forums and expired domains</li>
+              <li>30,000 results per search</li>
+              <li>2000 backlinks monitored</li>
+              <li>5000 Plugin clicks</li>
+              <li>2000 keyword searches</li>
+              <li>500 competitive analyses</li>
+              <li>Scan 40 competitors in bulk</li>
+              <li>Scan 100 keywords in Bulk</li>
+              <li>50 SERP Scanner</li>
+            </ul>
+            <Link href="/api/auth/signin">
+              <button className="mt-6 px-6 py-3 bg-white text-black font-bold rounded-lg shadow-md hover:bg-gray-200 transition-all w-full">
+                Start Free Analysis Now
+              </button>
+            </Link>
+          </div>
+
         </div>
       </section>
 
     </main>
   );
 }
-
-/* Pricing Card Component */
-const PricingCard = ({ plan, price, features }: { plan: string; price: string; features: string[] }) => (
-  <div className="p-8 bg-white dark:bg-gray-800 shadow-lg rounded-2xl w-80 border border-gray-200 dark:border-gray-700">
-    <h3 className="text-2xl font-semibold text-gray-900 dark:text-white">{plan}</h3>
-    <p className="mt-2 text-xl font-bold text-indigo-500">{price}</p>
-    <ul className="mt-5 text-gray-600 dark:text-gray-300 space-y-2">
-      {features.map((feature, index) => (
-        <li key={index} className="flex items-center justify-center space-x-2">
-          ✅ <span>{feature}</span>
-        </li>
-      ))}
-    </ul>
-    <button className="mt-6 px-5 py-3 bg-indigo-500 hover:bg-indigo-600 text-white rounded-full shadow-md text-lg transition-all duration-300 ease-in-out hover:scale-105">
-      Get Started
-    </button>
-  </div>
-);
