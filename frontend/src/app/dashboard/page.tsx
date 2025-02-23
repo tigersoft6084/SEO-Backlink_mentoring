@@ -32,6 +32,7 @@ export default function Home() {
   const { selectedPlanId, selectedPlanName, setPlan, clearPlan } = usePlan();
   const [isUpdatingSubscription, setIsUpdatingSubscription] = useState<boolean>(false);
 
+
   // Redirect if user is not authenticated
   useEffect(() => {
     if (!user && pathname !== "/auth/signup" && pathname?.startsWith("/dashboard")) {

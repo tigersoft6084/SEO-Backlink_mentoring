@@ -1,16 +1,18 @@
+"use client"
+
 import { useState, useEffect } from "react";
 import { useSidebar } from "../../context/SidebarContext";
-import { FiLogOut, FiMenu, FiX } from "react-icons/fi"; 
+import { FiLogOut, FiMenu, FiX } from "react-icons/fi";
 import ThemeToggle from "./ThemeToggle";
 import Image from "next/image";
 import { useExpiredDomains } from "../../context/ExpiredDomainsContext";
-import { useUser } from "../../context/UserContext"; 
+import { useUser } from "../../context/UserContext";
 import Link from "next/link";
 import { Poppins } from "next/font/google";
 
 const poppins = Poppins({
   subsets: ["latin"],
-  weight: ["400", "700"], 
+  weight: ["400", "700"],
   display: "swap",
 });
 

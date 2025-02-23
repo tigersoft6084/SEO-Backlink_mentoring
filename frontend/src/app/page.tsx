@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { ThumbsUp, Moon, Smartphone, ArrowRightCircle } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FiPlus, FiMinus } from "react-icons/fi";
 
 const faqs = [
@@ -32,9 +32,30 @@ const faqs = [
 export default function Home() {
 
   const [openIndex, setOpenIndex] = useState(0); // Default first item open
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const toggleFAQ = (index: number) => {
     setOpenIndex(openIndex === index ? -1 : index);
+  };
+
+  const smoothScroll = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, targetId: string) => {
+    e.preventDefault();
+    const target = document.getElementById(targetId);
+    if (target) {
+      const offsetTop = target.offsetTop - 80;
+      window.scrollTo({
+        top: offsetTop,
+        behavior: "smooth",
+      });
+    }
   };
 
   return (
@@ -585,12 +606,12 @@ export default function Home() {
             <div className="text-center md:text-left">
               <h3 className="text-lg font-semibold text-gray-300 mb-3">Menu</h3>
               <div className="grid grid-cols-2 gap-x-24 gap-y-2 text-sm">
-                <Link href="#features" className="hover:text-white transition">Features</Link>
-                <Link href="#testimonials" className="hover:text-white transition">Testimonials</Link>
-                <Link href="#whos-it-for" className="hover:text-white transition">Who’s It For?</Link>
-                <Link href="#pricing" className="hover:text-white transition">Pricing</Link>
-                <Link href="#seo-toolkit" className="hover:text-white transition">SEO Toolkit</Link>
-                <Link href="#faq" className="hover:text-white transition">FAQ</Link>
+                <a href="#features" onClick={(e) => smoothScroll(e, "features")} className="hover:text-blue-500 dark:hover:text-white transition-all duration-200">Features</a>
+                <a href="#whos-it-for" onClick={(e) => smoothScroll(e, "whos-it-for")} className="hover:text-blue-500 dark:hover:text-white transition-all duration-200">Who’s It For?</a>
+                <a href="#seo-toolkit" onClick={(e) => smoothScroll(e, "seo-toolkit")} className="hover:text-blue-500 dark:hover:text-white transition-all duration-200">SEO Toolkit</a>
+                <a href="#testimonials" onClick={(e) => smoothScroll(e, "testimonials")} className="hover:text-blue-500 dark:hover:text-white transition-all duration-200">Testimonials</a>
+                <a href="#pricing" onClick={(e) => smoothScroll(e, "pricing")} className="hover:text-blue-500 dark:hover:text-white transition-all duration-200">Pricing</a>
+                <a href="#faq" onClick={(e) => smoothScroll(e, "faq")} className="hover:text-blue-500 dark:hover:text-white transition-all duration-200">FAQ</a>
               </div>
             </div>
 
