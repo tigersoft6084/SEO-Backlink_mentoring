@@ -106,7 +106,7 @@ export default function SignupForm() {
   };
 
   return (
-    <div className="mt-12 w-full max-w-lg bg-white dark:bg-slate-800 shadow-lg rounded-lg p-8 mx-auto">
+    <div className="mt-24 w-full max-w-lg bg-white dark:bg-slate-800 shadow-lg rounded-lg p-8 mx-auto">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Sign Up</h2>
 

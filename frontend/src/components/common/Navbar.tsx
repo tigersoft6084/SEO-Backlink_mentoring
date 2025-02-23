@@ -43,11 +43,15 @@ export default function Navbar() {
 
   const handleLogout = () => {
     sessionStorage.removeItem("user");
+    sessionStorage.setItem("theme", "light"); // ✅ Force theme to light
+    document.body.classList.remove("dark"); // ✅ Ensure UI updates immediately
+
     setUser(null);
-    setTimeout(() => {
-      window.location.reload();
-    }, 100);
+
+    // Redirect to sign-in IMMEDIATELY
+    window.location.href = "/api/auth/signin";
   };
+
 
   const smoothScroll = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, targetId: string) => {
     e.preventDefault();
@@ -63,9 +67,10 @@ export default function Navbar() {
   };
 
   return (
-    <nav className={`fixed top-0 left-0 w-full flex items-center justify-between px-6 py-4 z-50 transition-all duration-300
-      ${isScrolled ? "bg-white/80 backdrop-blur-md shadow-md dark:bg-slate-900/80 border-b border-gray-300/30" : "bg-transparent"}
-    `}>
+      <nav className={`fixed top-0 left-0 w-full flex items-center justify-between px-6 py-4 z-50 transition-all duration-300
+        ${isScrolled ? "bg-white/80 backdrop-blur-md shadow-md dark:bg-slate-900/80 border-b border-gray-300/30" : "bg-transparent dark:bg-slate-900"}
+      `}>
+
       <div className="container mx-auto flex items-center justify-between">
 
         {/* ✅ Show ONLY logo on Sign In / Sign Up pages */}

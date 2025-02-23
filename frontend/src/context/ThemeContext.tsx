@@ -4,6 +4,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 
 interface ThemeContextProps {
   theme: string;
+  setTheme: (theme: string) => void;
   toggleTheme: () => void;
 }
 
@@ -14,19 +15,29 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     const storedTheme = sessionStorage.getItem("theme") || "light";
-    setTheme(storedTheme);
-    document.body.classList.toggle("dark", storedTheme === "dark");
+
+    // Ensure non-logged-in users always get light mode
+    const user = sessionStorage.getItem("user");
+    const finalTheme = user ? storedTheme : "light";
+
+    setTheme(finalTheme);
+    document.body.classList.toggle("dark", finalTheme === "dark");
   }, []);
 
-  const toggleTheme = () => {
-    const newTheme = theme === "light" ? "dark" : "light";
+
+  const handleSetTheme = (newTheme: string) => { // ✅ New function to correctly update theme
     setTheme(newTheme);
     sessionStorage.setItem("theme", newTheme);
     document.body.classList.toggle("dark", newTheme === "dark");
   };
 
+  const toggleTheme = () => {
+    const newTheme = theme === "light" ? "dark" : "light";
+    handleSetTheme(newTheme);
+  };
+
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    <ThemeContext.Provider value={{ theme, setTheme : handleSetTheme, toggleTheme }}>
       {children}
     </ThemeContext.Provider>
   );

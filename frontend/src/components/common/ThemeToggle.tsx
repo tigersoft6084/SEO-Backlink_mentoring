@@ -1,9 +1,19 @@
 "use client";
 
+import { useEffect } from "react";
 import { useTheme } from "../../context/ThemeContext";
+import { useUser } from "../../context/UserContext";
 
 export default function ThemeToggle() {
-  const { theme, toggleTheme } = useTheme();
+  const { theme, setTheme, toggleTheme } = useTheme();
+  const { user } = useUser(); // ✅ Get user context
+
+  // ✅ Ensure theme is "light" when user is not logged in
+  useEffect(() => {
+    if (!user && theme !== "light") {
+      setTheme("light"); // ✅ Force light mode for non-logged-in users
+    }
+  }, [user, theme, setTheme]);
 
   return (
     <button
