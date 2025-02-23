@@ -209,7 +209,7 @@ export default function Home() {
         <div className="container mx-auto px-6 text-center">
 
           {/* Section Heading */}
-          <h2 className="text-5xl font-extrabold text-gray-900 dark:text-white mb-12">
+          <h2 className="text-5xl font-extrabold text-gray-600 dark:text-white mb-12">
             Who’s It For?
           </h2>
 
@@ -268,6 +268,36 @@ export default function Home() {
               </p>
             </div>
 
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div className="container mx-auto px-6 text-center">
+          {/* Section Heading */}
+          <h2 className="text-5xl font-extrabold text-center text-gray-600">All-in-One SEO Toolkit</h2>
+          <p className="mt-6 text-lg text-gray-700 dark:text-gray-300">
+            Everything you need to opimize your SEO strategy in one place
+          </p>
+          <div className="flex flex-1 mt-10 items-center gap-12">
+            <div className="mr-10 mt-3 flex ">
+              <Image
+                src="/images/all_in_one_section/menu.svg"
+                alt="Hero Image"
+                width={500} // Remove or adjust this if necessary
+                height={600} // Remove or adjust this if necessary
+                className="w-full h-auto"
+              />
+            </div>
+            <div className="mr-10 mt-3 flex ">
+              <Image
+                src="/images/all_in_one_section/description.svg"
+                alt="Hero Image"
+                width={500} // Remove or adjust this if necessary
+                height={300} // Remove or adjust this if necessary
+                className="w-full h-auto"
+              />
+            </div>
           </div>
         </div>
       </section>
