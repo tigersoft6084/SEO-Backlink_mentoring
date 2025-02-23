@@ -120,7 +120,7 @@ export default function Home() {
       <section className="bg-gray-100 py-16">
         <div className="container mx-auto px-6">
           {/* Section Heading */}
-          <h2 className="text-4xl font-extrabold text-center text-gray-900">Core Features</h2>
+          <h2 className="text-5xl font-extrabold text-center text-gray-600">Core Features</h2>
 
           {/* Features Grid */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-10">
@@ -198,6 +198,74 @@ export default function Home() {
                   Sign Up Now
                 </button>
               </Link>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* {Who's it for Section} */}
+      <section className="py-20 w-full">
+        <div className="container mx-auto px-6 text-center">
+
+          {/* Section Heading */}
+          <h2 className="text-5xl font-extrabold text-gray-900 dark:text-white mb-12">
+            Who’s It For?
+          </h2>
+
+          {/* 3 Column Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+
+            {/* SEO Specialists */}
+            <div className="flex flex-col items-center">
+              <Image
+                src="/images/whos_it_for_section/person1.svg"
+                alt="Hero Image"
+                width={100} // Bigger size for a premium look
+                height={100}
+
+              />
+              <h3 className="text-2xl font-semibold text-gray-900 dark:text-white mt-6">
+                SEO Specialists
+              </h3>
+              <p className="mt-3 text-gray-600 dark:text-gray-300 max-w-xs">
+                Struggling to find accurate data for competitor analysis? <br />
+                Our tool provides real-time analytics to keep you one step ahead.
+              </p>
+            </div>
+
+            {/* Small Business Owners */}
+            <div className="flex flex-col items-center">
+            <Image
+                src="/images/whos_it_for_section/person2.svg"
+                alt="Hero Image"
+                width={100} // Bigger size for a premium look
+                height={100}
+              />
+              <h3 className="text-2xl font-semibold text-gray-900 dark:text-white mt-6">
+                Small Business Owners
+              </h3>
+              <p className="mt-3 text-gray-600 dark:text-gray-300 max-w-xs">
+                Short on time and expertise to improve SEO? <br />
+                Our platform’s simple interface makes analysis quick and easy.
+              </p>
+            </div>
+
+            {/* Digital Marketers */}
+            <div className="flex flex-col items-center">
+            <Image
+                src="/images/whos_it_for_section/person3.svg"
+                alt="Hero Image"
+                width={100} // Bigger size for a premium look
+                height={100}
+              />
+              <h3 className="text-2xl font-semibold text-gray-900 dark:text-white mt-6">
+                Digital Marketers
+              </h3>
+              <p className="mt-3 text-gray-600 dark:text-gray-300 max-w-xs">
+                Wasting budget on ineffective backlinks? <br />
+                Use our service to discover links that deliver maximum value.
+              </p>
             </div>
 
           </div>
