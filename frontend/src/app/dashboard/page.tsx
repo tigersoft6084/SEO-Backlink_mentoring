@@ -32,7 +32,6 @@ export default function Home() {
   const { selectedPlanId, selectedPlanName, setPlan, clearPlan } = usePlan();
   const [isUpdatingSubscription, setIsUpdatingSubscription] = useState<boolean>(false);
 
-
   // Redirect if user is not authenticated
   useEffect(() => {
     if (!user && pathname !== "/auth/signup" && pathname?.startsWith("/dashboard")) {
@@ -206,7 +205,7 @@ export default function Home() {
   }, [selectedMenuItem, isUpdatingSubscription]);
 
   return (
-    <div className="flex flex-col dark:bg-slate-900">
+    <div className="flex flex-col dark:bg-slate-900 mt-20">
       <div className="h-fit flex flex-1">
         <div className="flex-shrink-0">
         <Sidebar menuItems={menuItems} quotaUsed={quotaUsed}  />

@@ -245,7 +245,7 @@ export default function ProjectRowView({ onSearch, setProjectRowLoading} : Proje
                                         {row.favourites}
                                     </td>
 
-                                    <td className="px-6 py-4 text-right">
+                                    <td className="px-6 py-4 text-right" onClick={(e) => e.stopPropagation()}>
                                         <div className="flex items-center justify-end space-x-6">
                                             <button className="text-indigo-600 hover:text-indigo-900 flex items-center space-x-1">
                                                 <FiEdit className="h-4 w-4" />
