@@ -151,7 +151,7 @@ export default function Home() {
       </section>
 
       {/* Feature Section */}
-      <section className="bg-gray-100 py-16">
+      <section id="features" className="bg-gray-100 py-16">
         <div className="container mx-auto px-6">
           {/* Section Heading */}
           <h2 className="text-5xl font-extrabold text-center text-gray-600">Core Features</h2>
@@ -239,7 +239,7 @@ export default function Home() {
       </section>
 
       {/* {Who's it for Section} */}
-      <section className="py-20 w-full">
+      <section id="whos-it-for" className="py-20 w-full">
         <div className="container mx-auto px-6 text-center">
 
           {/* Section Heading */}
@@ -307,7 +307,7 @@ export default function Home() {
       </section>
 
       {/* All in One Seo toolkit section  */}
-      <section>
+      <section id="seo-toolkit">
         <div className="container mx-auto px-6 text-center">
           {/* Section Heading */}
           <h2 className="text-5xl font-extrabold text-center text-gray-600">All-in-One SEO Toolkit</h2>
@@ -338,7 +338,7 @@ export default function Home() {
       </section>
 
       {/* Testimonials Section */}
-      <section className="py-20">
+      <section id="testimonials" className="py-20">
         <div className="container mx-auto px-6 text-center">
 
           {/* Section Heading */}
@@ -436,7 +436,7 @@ export default function Home() {
       </section>
 
       {/* Pricing Section */}
-      <section className="py-16 text-left">
+      <section id="pricing" className="py-16 text-left">
         <h2 className="text-4xl font-bold text-gray-600 text-center">Pricing</h2>
 
         {/* Pricing Cards */}
@@ -526,7 +526,7 @@ export default function Home() {
       </section>
 
       {/* FAQ Section */}
-      <section className="py-16 text-center w-full">
+      <section id="faq" className="py-16 text-center w-full">
         <h2 className="text-4xl font-bold text-gray-600 dark:text-white mb-8">FAQ</h2>
 
         {/* FAQ Items */}
@@ -561,6 +561,51 @@ export default function Home() {
           ))}
         </div>
       </section>
+
+      <footer className="bg-[#18191C] text-gray-400 py-12 w-full">
+        <div className="container mx-auto px-6 lg:px-16 mt-10">
+          <div className="flex flex-col md:flex-row justify-between items-center md:items-start space-y-6 md:space-y-0">
+
+            {/* Left Section - Logo and Copyright */}
+            <div className="flex flex-col justify-between h-full min-h-[100px]">
+              <Image
+                src="/images/logotype_dark.svg" // ✅ Replace with actual logo path
+                alt="SurferLink Logo"
+                width={140}
+                height={40}
+                className="mb-3"
+              />
+              <div className="flex-grow"></div> {/* Pushes the text to the bottom */}
+              <p className="text-sm opacity-75 self-start md:self-auto">
+                © {new Date().getFullYear()} SurferLink
+              </p>
+            </div>
+
+            {/* Center Section - Menu Links */}
+            <div className="text-center md:text-left">
+              <h3 className="text-lg font-semibold text-gray-300 mb-3">Menu</h3>
+              <div className="grid grid-cols-2 gap-x-24 gap-y-2 text-sm">
+                <Link href="#features" className="hover:text-white transition">Features</Link>
+                <Link href="#testimonials" className="hover:text-white transition">Testimonials</Link>
+                <Link href="#whos-it-for" className="hover:text-white transition">Who’s It For?</Link>
+                <Link href="#pricing" className="hover:text-white transition">Pricing</Link>
+                <Link href="#seo-toolkit" className="hover:text-white transition">SEO Toolkit</Link>
+                <Link href="#faq" className="hover:text-white transition">FAQ</Link>
+              </div>
+            </div>
+
+            {/* Right Section - Legal Links */}
+            <div className="text-center md:text-left">
+              <h3 className="text-lg font-semibold text-gray-300 mb-3">Legal</h3>
+              <div className="grid grid-cols-1 gap-x-24 gap-y-2 text-sm">
+                <Link href="#" className="hover:text-white transition">Privacy Policy</Link>
+                <Link href="#" className="hover:text-white transition">Terms of Use</Link>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </footer>
 
     </main>
   );
