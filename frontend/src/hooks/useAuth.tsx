@@ -39,7 +39,7 @@ export function useAuth() {
   }, [pathname, isHydrated, router]);
 
   // ✅ Function to refresh user session
-  const refreshUser = async (): Promise<void> => {
+  const refreshUser = async () => {
     try {
       const token = sessionStorage.getItem("authToken");
       if (!token) {

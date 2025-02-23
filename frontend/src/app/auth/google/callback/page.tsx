@@ -1,19 +1,30 @@
-"use client"; // Ensure this page is client-side
+"use client";
 
 import { useEffect } from "react";
 
 const GoogleCallbackPage = () => {
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
-        const userData = urlParams.get("userData");
+        const userDataString = urlParams.get("userData");
 
-        if (userData) {
+        if (userDataString) {
+        try {
+            const userData = JSON.parse(decodeURIComponent(userDataString));
 
-            // Store the token in localStorage
-            localStorage.setItem("googleAuthUser", userData);
-            window.close(); // Close the popup after saving the token
+            // ✅ Store token & user in localStorage
+            localStorage.setItem("googleAuthUser", JSON.stringify(userData));
+
+            // ✅ Store token & user in sessionStorage (so it persists across refresh)
+            sessionStorage.setItem("authToken", userData.token);
+            sessionStorage.setItem("user", JSON.stringify(userData.user));
+
+            // ✅ Close the popup window
+            window.close();
+        } catch (error) {
+            console.error("❌ Error parsing user data:", error);
+        }
         } else {
-            console.error("Token not found in the URL.");
+        console.error("❌ Token not found in the URL.");
         }
     }, []);
 

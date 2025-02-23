@@ -21,10 +21,17 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 
     // Update location once user data is loaded
     useEffect(() => {
-      if (user) {
-        setLocation(user.location || "United States"); // Set location from user or fallback
+      const storedUser = sessionStorage.getItem("user");
+      if (storedUser) {
+        try {
+          const parsedUser = JSON.parse(storedUser);
+          setUser(parsedUser);
+          setLocation(parsedUser.location || "United States"); // ✅ Use stored location or fallback
+        } catch (error) {
+          console.error("❌ Failed to parse stored user data:", error);
+        }
       }
-    }, [user]);
+    }, [setUser]);
 
   // ⛔ Prevent rendering until hydration is complete
   if (!isHydrated) return null;

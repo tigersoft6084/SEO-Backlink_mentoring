@@ -19,33 +19,40 @@ export default function SigninForm() {
   const { setUser } = useUser(); // ✅ Ensure `useUser` is hydrated
 
   useEffect(() => {
-    // Listen for changes to localStorage (when the token is set by the popup)
-    const storageListener = () => {
+    // ✅ Listen for Google login data in localStorage
+    const checkGoogleLogin = () => {
       const userDataString = localStorage.getItem("googleAuthUser");
 
       if (userDataString) {
+        try {
+          const userData = JSON.parse(userDataString);
 
-        const userData = JSON.parse(userDataString);
+          // ✅ Move auth data to sessionStorage
+          sessionStorage.setItem("authToken", userData.token);
+          sessionStorage.setItem("user", JSON.stringify(userData.user));
 
-        console.log(userData.token)
+          // ✅ Update user context
+          setUser(userData.user);
 
-        sessionStorage.setItem("authToken", JSON.stringify(userData.token));
-        sessionStorage.setItem("user", JSON.stringify(userData.user));
-        setUser(userData);
-        localStorage.removeItem("googleAuthUser")
+          // ✅ Remove from localStorage after use (to prevent re-triggers)
+          localStorage.removeItem("googleAuthUser");
 
-        // Redirect to the dashboard after successful sign-in
-        router.push("/dashboard");
+          // ✅ Redirect to dashboard
+          router.push("/dashboard");
+        } catch (error) {
+          console.error("❌ Error parsing user data:", error);
+        }
       }
     };
 
-    // Add event listener to monitor localStorage changes
+    // ✅ Check on mount
+    checkGoogleLogin();
+
+    // ✅ Check when localStorage changes
+    const storageListener = () => checkGoogleLogin();
     window.addEventListener("storage", storageListener);
 
-    // Cleanup the event listener when the component unmounts
-    return () => {
-      window.removeEventListener("storage", storageListener);
-    };
+    return () => window.removeEventListener("storage", storageListener);
   }, [router, setUser]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
