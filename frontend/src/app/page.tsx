@@ -1,8 +1,42 @@
+"use client"
+
 import Link from "next/link";
 import Image from "next/image";
 import { ThumbsUp, Moon, Smartphone, ArrowRightCircle } from "lucide-react";
+import { useState } from "react";
+import { FiPlus, FiMinus } from "react-icons/fi";
+
+const faqs = [
+  {
+    question: "How often is your database updated?",
+    answer: "The database will be updated once a month.",
+  },
+  {
+    question: "Do you offer customer service?",
+    answer: "Customer support is available on our Discord server. You’ll find access to the server directly on the tool. You can also contact us via our contact form. We’ll get back to you as soon as possible.",
+  },
+  {
+    question: "How can I include my marketplace on your database?",
+    answer: "We are open to working with any linkbuilding platform. We’ll need an API that lists your sites and rates. To start a collaboration, please contact us via Twitter or fill in the contact form.",
+  },
+  {
+    question: "Do you offer a free trial?",
+    answer: "We offer one free search to demonstrate the power of our tool. Our demo showcases all the functionalities available. Additionally, we provide a satisfaction guarantee with a refund policy.",
+  },
+  {
+    question: "I don't want my site showing up on SurferLink. What can I do?",
+    answer: "If you don’t want your site displayed in Surferlink, visit this page: Surferlink – Remove Me",
+  },
+];
 
 export default function Home() {
+
+  const [openIndex, setOpenIndex] = useState(0); // Default first item open
+
+  const toggleFAQ = (index: number) => {
+    setOpenIndex(openIndex === index ? -1 : index);
+  };
+
   return (
     <main className="relative flex flex-col items-center justify-center bg-gray-100 dark:bg-slate-900 mt-24">
 
@@ -468,7 +502,7 @@ export default function Home() {
           {/* Elite Plan */}
           <div className="p-8 bg-black text-white rounded-3xl shadow-lg transition-transform duration-300 hover:scale-105">
             <h3 className="text-2xl font-bold mt-6">Elite</h3>
-            <p className="text-sm opacity-90">For an almost unlimited use of Link Finder</p>
+            <p className="text-sm opacity-90">For an almost unlimited use of Surferlink</p>
             <p className="text-5xl font-bold mt-4">€99 <span className="text-lg font-medium">/month</span></p>
             <ul className="mt-6 space-y-2 text-white/90 text-left">
               <li>Forums and expired domains</li>
@@ -488,6 +522,43 @@ export default function Home() {
             </Link>
           </div>
 
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="py-16 text-center w-full">
+        <h2 className="text-4xl font-bold text-gray-600 dark:text-white mb-8">FAQ</h2>
+
+        {/* FAQ Items */}
+        <div className="max-w-5xl mx-auto space-y-4">
+          {faqs.map((faq, index) => (
+            <div
+              key={index}
+              className="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-5 transition-all"
+            >
+              <button
+                className="w-full flex items-center text-left text-lg font-semibold text-gray-600 dark:text-white"
+                onClick={() => toggleFAQ(index)}
+              >
+                {openIndex === index ? (
+                  <FiMinus className="text-gray-500 dark:text-gray-300" />
+                ) : (
+                  <FiPlus className="text-gray-500 dark:text-gray-300" />
+                )}
+                <div className="ml-3">
+                  {faq.question}
+                </div>
+              </button>
+              <div className="ml-7">
+                {openIndex === index && faq.answer && (
+                  <p className="mt-2 text-gray-600 dark:text-gray-400 text-left">
+                    {faq.answer}
+                  </p>
+                )}
+              </div>
+
+            </div>
+          ))}
         </div>
       </section>
 
