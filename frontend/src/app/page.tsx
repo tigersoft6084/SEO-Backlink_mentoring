@@ -272,6 +272,7 @@ export default function Home() {
         </div>
       </section>
 
+      {/* All in One Seo toolkit section  */}
       <section>
         <div className="container mx-auto px-6 text-center">
           {/* Section Heading */}
@@ -298,6 +299,104 @@ export default function Home() {
                 className="w-full h-auto"
               />
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section className="py-20">
+        <div className="container mx-auto px-6 text-center">
+
+          {/* Section Heading */}
+          <h2 className="text-5xl font-extrabold text-gray-600 dark:text-white">
+            Testimonials
+          </h2>
+          <p className="text-lg text-gray-600 dark:text-gray-300 mt-4">
+            Over 10,000 marketers and SEO professionals trust SurferLink to <br/>
+            take their strategies to the next level.
+          </p>
+
+          {/* 3 Column Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
+
+            {/* Testimonial 1 */}
+            <div className="p-6 bg-white dark:bg-gray-800 shadow-xl rounded-2xl flex flex-col items-start space-y-4 transition-transform duration-300 hover:scale-105">
+              <div className="flex items-center gap-4 mb-3">
+                {/* Image */}
+                <div className="h-18 w-18 flex items-center justify-center">
+                  <Image
+                    src="/images/testimonials_section/person1.svg"
+                    alt="Hero Image"
+                    width={70} // Adjust width
+                    height={70} // Adjust height
+                    className="rounded-full object-cover"
+                  />
+                </div>
+
+                {/* Text (Vertically Centered) */}
+                <div className="flex flex-col justify-center">
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white">Sarah T.</h3>
+                  <p className="text-gray-500 dark:text-gray-400">SEO Specialist</p>
+                </div>
+              </div>
+              <p className="text-gray-700 dark:text-gray-300 text-left">
+                This tool has transformed the way I approach backlink strategies.
+                The real-time data is a game-changer for staying ahead of competitors.
+              </p>
+            </div>
+
+            {/* Testimonial 2 */}
+            <div className="p-6 bg-white dark:bg-gray-800 shadow-xl rounded-2xl flex flex-col items-start space-y-4 transition-transform duration-300 hover:scale-105">
+              <div className="flex items-center gap-4 mb-3">
+                {/* Image */}
+                <div className="h-18 w-18 flex items-center justify-center">
+                  <Image
+                    src="/images/testimonials_section/person2.svg"
+                    alt="Hero Image"
+                    width={70} // Adjust width
+                    height={70} // Adjust height
+                    className="rounded-full object-cover"
+                  />
+                </div>
+
+                {/* Text (Vertically Centered) */}
+                <div className="flex flex-col justify-center">
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white">James L.</h3>
+                  <p className="text-gray-500 dark:text-gray-400">Digital Marketer</p>
+                </div>
+              </div>
+              <p className="text-gray-700 dark:text-gray-300 text-left">
+                Managing campaigns has never been easier. The insights provided by this platform have helped me
+                optimise my budgets and drive better results.
+              </p>
+            </div>
+
+            {/* Testimonial 3 */}
+            <div className="p-6 bg-white dark:bg-gray-800 shadow-xl rounded-2xl flex flex-col items-start space-y-4 transition-transform duration-300 hover:scale-105">
+              <div className="flex items-center gap-4 mb-3">
+                {/* Image */}
+                <div className="h-18 w-18 flex items-center justify-center">
+                  <Image
+                    src="/images/testimonials_section/person3.svg"
+                    alt="Hero Image"
+                    width={70} // Adjust width
+                    height={70} // Adjust height
+                    className="rounded-full object-cover"
+                  />
+                </div>
+
+                {/* Text (Vertically Centered) */}
+                <div className="flex flex-col justify-center">
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white">Emiliy R.</h3>
+                  <p className="text-gray-500 dark:text-gray-400">Small Business Owner</p>
+                </div>
+              </div>
+              <p className="text-gray-700 dark:text-gray-300 text-left">
+                As someone new to SEO, I found the interface incredibly intuitive. It’s helped me boost my website rankings
+                without any technical expertise.
+              </p>
+            </div>
+
           </div>
         </div>
       </section>
@@ -333,14 +432,6 @@ export default function Home() {
     </main>
   );
 }
-
-/* Feature Card Component */
-const FeatureCard = ({ title, description }: { title: string; description: string }) => (
-  <div className="p-8 bg-white dark:bg-gray-800 shadow-xl rounded-xl text-center border border-gray-200 dark:border-gray-700">
-    <h3 className="text-2xl font-semibold text-gray-900 dark:text-white">{title}</h3>
-    <p className="mt-3 text-gray-600 dark:text-gray-300">{description}</p>
-  </div>
-);
 
 /* Pricing Card Component */
 const PricingCard = ({ plan, price, features }: { plan: string; price: string; features: string[] }) => (
