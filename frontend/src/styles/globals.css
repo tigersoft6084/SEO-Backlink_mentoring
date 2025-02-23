@@ -79,3 +79,11 @@ html.dark {
   @apply font-sans;
   font-family: "Euclid Circular A", sans-serif;
 }
+
+@layer utilities {
+  .mask-image-gradient {
+    -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 70%, rgba(0, 0, 0, 0) 100%);
+    mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 70%, rgba(0, 0, 0, 0) 100%);
+  }
+}
+
