@@ -2,5 +2,5 @@
 
 /* global chrome */
 chrome.runtime.onInstalled.addListener(() => {
-    console.log("LInk Finder Extension Installed");
+    console.log("Surferlink Extension Installed");
 });

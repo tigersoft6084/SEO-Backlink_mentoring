@@ -1,8 +1,8 @@
 {
     "manifest_version": 3,
-    "name": "Link Finder",
+    "name": "Surferlink",
     "version": "1.0",
-    "description": "Link Finder extension is the best extension to find Sponsored Articles on 80,000+ websites.",
+    "description": "Surferlink extension is the best extension to find Sponsored Articles on 80,000+ websites.",
     "permissions": ["storage", "activeTab", "tabs"],
     "host_permissions": ["http://127.0.0.1:2024/*"],
     "background": {
