@@ -72,11 +72,14 @@ export default function Home() {
         </p>
 
         {/* CTA Button */}
-        <button className="mt-8 px-10 py-4 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600
-          text-white font-semibold text-lg rounded-3xl full shadow-lg transition-all duration-300 ease-in-out
-          hover:scale-105 hover:shadow-2xl backdrop-blur-md">
-          Start Free Analysis Now
-        </button>
+        <Link href="/api/auth/signin">
+          <button className="mt-8 px-10 py-4 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600
+            text-white font-semibold text-lg rounded-3xl full shadow-lg transition-all duration-300 ease-in-out
+            hover:scale-105 hover:shadow-2xl backdrop-blur-md">
+            Start Free Analysis Now
+          </button>
+        </Link>
+
 
         <p className="mt-4 text-gray-500 text-sm">
           No credit card required - get instant insights!

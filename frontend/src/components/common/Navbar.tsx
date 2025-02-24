@@ -81,11 +81,29 @@ export default function Navbar() {
           </Link>
         ) : (
           <>
-            {/* ✅ Normal Navbar Content (Same as Before) */}
-            <Link href="/" className="flex items-center space-x-2">
-              <Image src="/images/logotype.svg" alt="SurferLink Logo" width={160} height={50} className="dark:hidden" />
-              <Image src="/images/logotype_dark.svg" alt="SurferLink Logo" width={160} height={50} className="hidden dark:block" />
+            <Link
+              href={user ? "#" : "/"} // ✅ Disable link when logged in
+              onClick={(e) => {
+                if (user) e.preventDefault(); // ✅ Prevent navigation if logged in
+              }}
+              className="flex items-center space-x-2 cursor-pointer"
+            >
+              <Image
+                src="/images/logotype.svg"
+                alt="SurferLink Logo"
+                width={160}
+                height={50}
+                className={`dark:hidden ${user ? "cursor-not-allowed" : ""}`} // ✅ Make it look disabled
+              />
+              <Image
+                src="/images/logotype_dark.svg"
+                alt="SurferLink Logo"
+                width={160}
+                height={50}
+                className={`hidden dark:block ${user ? "cursor-not-allowed" : ""}`} // ✅ Make it look disabled
+              />
             </Link>
+
 
             {/* User is Logged In */}
             {user ? (
