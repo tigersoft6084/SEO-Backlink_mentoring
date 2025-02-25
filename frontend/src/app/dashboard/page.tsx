@@ -208,7 +208,7 @@ export default function Home() {
     <div className="flex flex-col dark:bg-slate-900 mt-20">
       <div className="h-fit flex flex-1">
         <div className="flex-shrink-0">
-        <Sidebar menuItems={menuItems} quotaUsed={quotaUsed}  />
+          <Sidebar menuItems={menuItems} quotaUsed={quotaUsed}  />
         </div>
 
         <div className="flex-1">{renderContent}</div>

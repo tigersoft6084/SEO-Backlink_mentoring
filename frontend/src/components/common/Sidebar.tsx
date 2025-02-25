@@ -24,7 +24,7 @@ interface SidebarProps {
 }
 
 export default function Sidebar({ menuItems, quotaUsed }: SidebarProps) {
-  const { setSelectedMenuItem } = useSidebar(); // Access context
+  const { selectedMenuItem, setSelectedMenuItem } = useSidebar(); // Access context
   const [selectedItem, setSelectedItem] = useState<number | string | null>(null);
   const { fetchDomainsOnMount } = useExpiredFilterView();
 
@@ -47,16 +47,15 @@ export default function Sidebar({ menuItems, quotaUsed }: SidebarProps) {
           {menuItems.map((item, index) => (
             <li
               key={index}
-              onClick={() => handleMenuClick(index, item.name)} // Pass the item's name
+              onClick={() => handleMenuClick(index, item.name)}
               className={`flex items-center space-x-3 p-3 cursor-pointer rounded-full transition-colors ${
-                selectedItem === index
-                  ? "dark:hover:bg-slate-700 dark:bg-slate-700 text-white bg-gray-400" // Selected state
-                  : "text-gray-700 dark:text-gray-300 hover:bg-gray-300 hover:text-black dark:hover:bg-slate-700" // Hover state
+                selectedMenuItem === item.name
+                  ? "dark:hover:bg-slate-700 dark:bg-slate-700 text-white bg-gray-400"
+                  : "text-gray-700 dark:text-gray-300 hover:bg-gray-300 hover:text-black dark:hover:bg-slate-700"
               }`}
             >
               <span className="flex items-center justify-center w-6 h-6 rounded-full">{item.icon}</span>
               <span className="text-sm font-medium">{item.name}</span>
-
             </li>
           ))}
         </ul>

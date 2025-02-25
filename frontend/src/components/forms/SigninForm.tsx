@@ -7,6 +7,7 @@ import { useUser } from "../../context/UserContext"; // Import the User context
 import FormInput from "./SigninInput";
 import GoogleAuthButton from "../ui/GoogleSigninButton";
 import Link from "next/link";
+import { useSidebar } from "../../context/SidebarContext";
 
 export default function SigninForm() {
   const [formData, setFormData] = useState({
@@ -17,6 +18,7 @@ export default function SigninForm() {
   const [isLoading, setIsLoading] = useState(false); // ✅ Add loading state
   const router = useRouter(); // For navigation
   const { setUser } = useUser(); // ✅ Ensure `useUser` is hydrated
+  const { setSelectedMenuItem } = useSidebar(); // Access context
 
   useEffect(() => {
     // ✅ Listen for Google login data in localStorage
@@ -101,6 +103,7 @@ export default function SigninForm() {
       }
 
       // ✅ Redirect to dashboard after successful sign-in
+      setSelectedMenuItem('Keyword Search');
       router.push("/dashboard");
     } catch (err) {
       console.error(err);

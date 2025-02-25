@@ -141,7 +141,7 @@ export default function Home() {
         {/* Centered & Responsive Image */}
         <div className="flex justify-center mt-3">
           <Image
-            src="/images/hero.png"
+            src="/images/hero.svg"
             alt="Hero Image"
             width={800} // Bigger size for a premium look
             height={600}

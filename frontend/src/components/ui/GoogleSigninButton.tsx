@@ -13,8 +13,6 @@ const GoogleAuthButton: React.FC<GoogleAuthButtonProps> = ({ action }) => {
 
   const REDIRECT_URI = process.env.NEXT_PUBLIC_REDIRECT_URI || '';
 
-  const router = useRouter();
-
   // Async function for handling the Google authentication process
   const handleClick = async () => {
     try {

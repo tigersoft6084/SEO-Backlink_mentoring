@@ -76,21 +76,6 @@ export default function Navbar() {
         {/* ✅ Show ONLY logo on Sign In / Sign Up pages */}
         {isAuthPage ? (
           <Link href="/" className="flex items-center space-x-2">
-            {/* Logo icon at the front */}
-            <Image
-              src="/images/icons/fav_white.svg"
-              alt="SurferLink Icon"
-              width={32}
-              height={32}
-              className="dark:hidden block" // Show only in dark mode
-            />
-            <Image
-              src="/images/icons/fav_dark.svg"
-              alt="SurferLink Icon"
-              width={32}
-              height={32}
-              className="dark:block hidden" // Show only in light mode
-            />
             <Image src="/images/icons/logo_white.svg" alt="SurferLink Logo" width={160} height={50} className="dark:hidden" />
             <Image src="/images/icons/logo_dark.svg" alt="SurferLink Logo" width={160} height={50} className="hidden dark:block" />
           </Link>
@@ -103,21 +88,6 @@ export default function Navbar() {
               }}
               className="flex items-center space-x-2 cursor-pointer"
             >
-                    {/* Logo icon at the front */}
-              <Image
-                src="/images/icons/fav_white.svg"
-                alt="SurferLink Icon"
-                width={32}
-                height={32}
-                className="dark:hidden block" // Show only in dark mode
-              />
-              <Image
-                src="/images/icons/fav_dark.svg"
-                alt="SurferLink Icon"
-                width={32}
-                height={32}
-                className="dark:block hidden" // Show only in light mode
-              />
               <Image
                 src="/images/icons/logo_white.svg"
                 alt="SurferLink Logo"
