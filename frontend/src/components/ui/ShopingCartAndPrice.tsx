@@ -5,7 +5,7 @@ interface DynamicPriceProps {
   source: string;
   price: number;
   domain: string;
-  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void;
   showSource?: boolean; // New prop to control the visibility of the source
 }
 
@@ -19,280 +19,76 @@ const DynamicPrice: React.FC<DynamicPriceProps> = ({
   const getDynamicPrice = (source: string, price: number, domain: string) => {
     switch (source) {
       case "Boosterlink":
-        return (
-          <a
-            href={`https://pro.boosterlink.fr/comparateurs.aspx`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {price}
-          </a>
-        );
+        return `https://pro.boosterlink.fr/comparateurs.aspx`;
       case "Develink":
-        return (
-          <a
-            href={`https://app.develink.com/cataloguevip?search_type=search_url&search_domain=${domain}&code=JGADANHO`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {price}
-          </a>
-        );
+        return `https://app.develink.com/cataloguevip?search_type=search_url&search_domain=${domain}&code=JGADANHO`;
       case "Ereferer":
-        return (
-          <a
-            href={`https://fr.ereferer.com/bo/exchange-site-find?search=${domain}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {price}
-          </a>
-        );
+        return `https://fr.ereferer.com/bo/exchange-site-find?search=${domain}`;
       case "Getalink":
-        return (
-          <a
-            href={`https://www.getalink.com/sistema/cliente/medio/?nombre=${domain}&tipo_enlace..............`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {price}
-          </a>
-        );
+        return `https://www.getalink.com/sistema/cliente/medio/?nombre=${domain}`;
       case "Linkavistar":
-        return (
-          <a
-            href={`https://linkavista.com/linkfinder/?domain=${domain}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {price}
-          </a>
-        );
+        return `https://linkavista.com/linkfinder/?domain=${domain}`;
       case "<Mistergoodlink>":
-        return (
-          <a
-            href={`https://app.mistergoodlink.com/shop?ref=${domain}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {price}
-          </a>
-        );
+        return `https://app.mistergoodlink.com/shop?ref=${domain}`;
       case "Paperclub":
-        return (
-          <a
-            href={`https://app.paper.club/annonceur/resultats?type=simple&term=${domain}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {price}
-          </a>
-        );
+        return `https://app.paper.club/annonceur/resultats?type=simple&term=${domain}`;
       case "Seojungle":
-        return (
-          <a
-            href={`https://app.seo-jungle.com/search?searchField=${domain}&priceMax=110.6`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {price}
-          </a>
-        );
-
+        return `https://app.seo-jungle.com/search?searchField=${domain}&priceMax=110.6`;
       case "Prensalink":
-        return (
-          <a
-            href={`https://shop.prensalink.com/products/medias`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {price}
-          </a>
-        );
+        return `https://shop.prensalink.com/products/medias`;
       case "123media":
-        return (
-          <a
-            href={`https://123.media/?url=${domain}&code=29ae667983`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {price}
-          </a>
-        );
+        return `https://123.media/?url=${domain}&code=29ae667983`;
       case "Presswhizz":
-        return (
-          <a
-            href={`https://app.presswhizz.com/marketplace?portalName=${domain}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {price}
-          </a>
-        );
+        return `https://app.presswhizz.com/marketplace?portalName=${domain}`;
       case "Prnews":
-        return (
-          <a
-            href={`https://prnews.io/sites/query/${domain}/?i=3745304`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {price}
-          </a>
-        );
+        return `https://prnews.io/sites/query/${domain}/?i=3745304`;
       case "Backlinked":
-        return (
-          <a
-            href={`https://backlinked.com/?ref=mzu2nwe&domain=${domain}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {price}
-          </a>
-        );
+        return `https://backlinked.com/?ref=mzu2nwe&domain=${domain}`;
       case "Growwer":
-        return (
-          <a
-            href={`https://growwer.com/?af=3dce24df39a94a6a92b3f83951f0a618&domain=${domain}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {price}
-          </a>
-        );
+        return `https://growwer.com/?af=3dce24df39a94a6a92b3f83951f0a618&domain=${domain}`;
       case "Linkbroker":
-        return (
-          <a
-            href={`https://app.linkbroker.de/en/contentlinks?domain=${domain}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {price}
-          </a>
-        );
+        return `https://app.linkbroker.de/en/contentlinks?domain=${domain}`;
       case "Whitepress":
-        return (
-          <a
-            href={`https://www.whitepress.com/Xn9pi`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {price}
-          </a>
-        );
+        return `https://www.whitepress.com/Xn9pi`;
       case "Linkatomic":
-        return (
-          <a
-            href={`https://app.linkatomic.com/register/r/6b04380b67c55d6075bc2f0a9534f0cd?domain=${domain}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {price}
-          </a>
-        );
+        return `https://app.linkatomic.com/register/r/6b04380b67c55d6075bc2f0a9534f0cd?domain=${domain}`;
       case "Linkbuilders":
-        return (
-          <a
-            href={`https://app.link.builders/links?domain=${domain}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {price}
-          </a>
-        );
+        return `https://app.link.builders/links?domain=${domain}`;
       case "Motherlink":
-        return (
-          <a
-            href={`https://app.motherlink.io/market?domain=${domain}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {price}
-          </a>
-        );
+        return `https://app.motherlink.io/market?domain=${domain}`;
       case "Mynilinks":
-        return (
-          <a
-            href={`https://app.mynilinks.fr/netlinkings?country=&category=&url=${domain}&ttf=&tf_min=&tf_max=&cf_min=&cf_max=&dr_min=&dr_max=&mots_cles=&traffic_min=&traffic_max=&min_price=&max_price=&pagination=10&sponsor_id=7e2c23fd-5929-4a0d-b3f1-94eed47dcb1f`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {price}
-          </a>
-        );
+        return `https://app.mynilinks.fr/netlinkings?country=&category=&url=${domain}&ttf=&tf_min=&tf_max=&cf_min=&cf_max=&dr_min=&dr_max=&mots_cles=&traffic_min=&traffic_max=&min_price=&max_price=&pagination=10&sponsor_id=7e2c23fd-5929-4a0d-b3f1-94eed47dcb1f`;
       case "Unancor":
-        return (
-          <a
-            href={`https://app.unancor.com/?aaf=ed161410-1f90-11ef-b5c7-0e52f3fe678a&domain=${domain}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {price}
-          </a>
-        );
+        return `https://app.unancor.com/?aaf=ed161410-1f90-11ef-b5c7-0e52f3fe678a&domain=${domain}`;
       case "Publisuites":
-        return (
-          <a
-            href={`https://www.publisuites.com/advertisers/websites/`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {price}
-          </a>
-        );
+        return `https://www.publisuites.com/advertisers/websites/`;
       case "Lemmilink":
-        return (
-          <a
-            href={`https://app.lemmilink.fr/AnnonceMode?url=${domain}&ref=cc6f3b`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {price}
-          </a>
-        );
+        return `https://app.lemmilink.fr/AnnonceMode?url=${domain}&ref=cc6f3b`;
       case "Soumettre":
-        return (
-          <a
-            href={`https://soumettre.fr/user/catalog?url=${domain}&parrain=DJKOXI`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {price}
-          </a>
-        );
+        return `https://soumettre.fr/user/catalog?url=${domain}&parrain=DJKOXI`;
       case "Boosterlink":
-        return (
-          <a
-            href={`https://pro.boosterlink.fr/comparateurs.aspx`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {price}
-          </a>
-        );
+        return `https://pro.boosterlink.fr/comparateurs.aspx`;
       case "Dealerdetemps":
-        return (
-          <a
-            href={`https://www.dealerdetemps.com/les-sites/`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {price}
-          </a>
-        );
+        return `https://www.dealerdetemps.com/les-sites/`;
       default:
-        return price; // Default price
+        return '#'; // Default price
     }
   };
 
+  const href = getDynamicPrice(source, price, domain);
+
   return (
     <div className="flex items-center gap-2">
-      <button
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
         className="w-24 h-7 px-3 py-1 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg shadow hover:from-blue-600 hover:to-purple-600 flex items-center justify-center gap-2"
-        onClick={onClick}
+        onClick={onClick} // Correctly typed for HTMLAnchorElement
       >
         <TiShoppingCart />
-        {getDynamicPrice(source, price, domain)}
-      </button>
+        {price}
+      </a>
       {showSource && <span>{source}</span>}
     </div>
   );
