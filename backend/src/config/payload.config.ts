@@ -14,7 +14,7 @@ import { Media } from '@/collections/user-management/Media.ts';
 import { customEndpoints } from '@/endpoints/index.ts';
 import { FRONTEND_URL } from './apiConfig.ts';
 import { DomainsForBackgroundProcess } from '@/collections/DomainsForBackgroundProcess.ts';
-import { SiteSettings } from '@/globals/sideSettings.ts';
+import { intercomSettings } from '@/globals/intercomSettings.ts';
 import { startCronJob } from '@/services/cronJob.ts';
 import PayPalPlans from '@/collections/paypal.ts';
 import { createPlansAndGetID } from '@/services/paypal/plan/CreatePlan.ts';
@@ -28,7 +28,7 @@ export default buildConfig({
     user: Users.slug,
   },
   collections: [Users, Media, Credentials, Backlinks, DomainsForBackgroundProcess, PayPalPlans],
-  globals : [SiteSettings],
+  globals : [intercomSettings],
   cors: {origins : [FRONTEND_URL]}, // Allow requests from your frontend
 
   editor: lexicalEditor(),

@@ -5,6 +5,9 @@ import Image from "next/image";
 import { ThumbsUp, Moon, Smartphone, ArrowRightCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import { FiPlus, FiMinus } from "react-icons/fi";
+import Intercom from '@intercom/messenger-js-sdk';
+import crypto from 'crypto';
+import { useUser } from "../context/UserContext";
 
 const faqs = [
   {
@@ -33,6 +36,56 @@ export default function Home() {
 
   const [openIndex, setOpenIndex] = useState(0); // Default first item open
   const [isScrolled, setIsScrolled] = useState(false);
+  const {user} = useUser();
+
+  const [intercomSettings, setIntercomSettings] = useState(null);
+
+  const token = process.env.PAYLOAD_SECRET;
+
+  useEffect(() => {
+    // Fetch the settings when the component is mounted
+    const fetchIntercomSettings = async () => {
+      try {
+        const response = await fetch('/api/globals/intercom-settings', {
+          headers : {
+            Authorization : `Bearer ${token}`
+          }
+        }); // Adjust to your API route
+        const data = await response.json();
+
+        if (response.ok && data) {
+          // Store the settings in localStorage or sessionStorage
+          localStorage.setItem('intercomSettings', JSON.stringify(data));
+          setIntercomSettings(data);
+        }
+      } catch (error) {
+        console.error('Error fetching Intercom settings:', error);
+      }
+    };
+
+    // Check if settings are already stored in localStorage
+    const savedSettings = localStorage.getItem('intercomSettings');
+    if (savedSettings) {
+      setIntercomSettings(JSON.parse(savedSettings));
+    } else {
+      fetchIntercomSettings();
+    }
+  }, [token]);
+
+  // Only initialize Intercom when settings are available
+  useEffect(() => {
+    if (intercomSettings) {
+      const { intercomID, intercomeSecretKey } = intercomSettings;
+      const userIdentifier = user?.email || '';
+      const hash = crypto.createHmac('sha256', intercomeSecretKey).update(userIdentifier).digest('hex');
+
+      Intercom({
+        app_id: intercomID,
+        email: user?.email,
+        user_hash: hash,
+      });
+    }
+  }, [intercomSettings, user]); // Re-run this effect only when intercomSettings or user changes
 
   useEffect(() => {
     const handleScroll = () => {

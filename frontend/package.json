@@ -15,6 +15,7 @@
     "clean": "rm -rf .next node_modules && npm install"
   },
   "dependencies": {
+    "@intercom/messenger-js-sdk": "^0.0.14",
     "@paypal/react-paypal-js": "^8.8.1",
     "axios": "^1.7.9",
     "cookies-next": "^5.1.0",

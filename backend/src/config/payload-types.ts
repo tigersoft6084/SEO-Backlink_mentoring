@@ -37,10 +37,10 @@ export interface Config {
     defaultIDType: string;
   };
   globals: {
-    'site-settings': SiteSetting;
+    'intercom-settings': IntercomSetting;
   };
   globalsSelect: {
-    'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
+    'intercom-settings': IntercomSettingsSelect<false> | IntercomSettingsSelect<true>;
   };
   locale: null;
   user: User & {
@@ -525,38 +525,22 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "site-settings".
+ * via the `definition` "intercom-settings".
  */
-export interface SiteSetting {
+export interface IntercomSetting {
   id: string;
-  siteTitle: string;
-  description: string;
-  socialLinks?:
-    | {
-        platform: string;
-        url: string;
-        id?: string | null;
-      }[]
-    | null;
-  logo?: (string | null) | Media;
+  intercomID: string;
+  intercomeSecretKey: string;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "site-settings_select".
+ * via the `definition` "intercom-settings_select".
  */
-export interface SiteSettingsSelect<T extends boolean = true> {
-  siteTitle?: T;
-  description?: T;
-  socialLinks?:
-    | T
-    | {
-        platform?: T;
-        url?: T;
-        id?: T;
-      };
-  logo?: T;
+export interface IntercomSettingsSelect<T extends boolean = true> {
+  intercomID?: T;
+  intercomeSecretKey?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
