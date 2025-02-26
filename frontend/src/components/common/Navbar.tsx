@@ -29,6 +29,9 @@ export default function Navbar() {
   // ✅ Check if the page is Sign In or Sign Up
   const isAuthPage = pathname === "/api/auth/signin" || pathname === "/api/auth/signup";
 
+  // ✅ Check if the current page is "privacy-policy"
+  const isPrivacyPolicyPage = pathname === "/privacy-policy";
+
   useEffect(() => {
     setExpiredCount(totalExpiredDomains);
   }, [totalExpiredDomains]);
@@ -104,6 +107,22 @@ export default function Navbar() {
               />
             </Link>
 
+            {/* Show navigation only if NOT on the privacy-policy page */}
+            {!isPrivacyPolicyPage && !user && (
+              <div className={`absolute right-72 hidden lg:flex items-center space-x-6 text-gray-700 dark:text-gray-300 ${poppins.className}`}>
+                <a href="#features" onClick={(e) => smoothScroll(e, "features")} className="hover:text-blue-500 dark:hover:text-white transition-all duration-200">Features</a>
+                <a href="#whos-it-for" onClick={(e) => smoothScroll(e, "whos-it-for")} className="hover:text-blue-500 dark:hover:text-white transition-all duration-200">Who’s It For?</a>
+                <a href="#seo-toolkit" onClick={(e) => smoothScroll(e, "seo-toolkit")} className="hover:text-blue-500 dark:hover:text-white transition-all duration-200">SEO Toolkit</a>
+                <a href="#testimonials" onClick={(e) => smoothScroll(e, "testimonials")} className="hover:text-blue-500 dark:hover:text-white transition-all duration-200">Testimonials</a>
+                <a href="#pricing" onClick={(e) => smoothScroll(e, "pricing")} className="hover:text-blue-500 dark:hover:text-white transition-all duration-200">Pricing</a>
+                <a href="#faq" onClick={(e) => smoothScroll(e, "faq")} className="hover:text-blue-500 dark:hover:text-white transition-all duration-200">FAQ</a>
+                <div className="w-px h-6 bg-gray-300"></div>
+              </div>
+            )}
+
+            {/* Vertical Divider */}
+
+
 
             {/* User is Logged In */}
             {user ? (
@@ -122,18 +141,6 @@ export default function Navbar() {
 
                 {/* Navigation & Right Section in One Line */}
                 <div className="flex items-center space-x-8">
-                  {/* Desktop Navigation */}
-                  <div className={`hidden md:flex items-center space-x-6 text-gray-700 dark:text-gray-300 ${poppins.className}`}>
-                    <a href="#features" onClick={(e) => smoothScroll(e, "features")} className="hover:text-blue-500 dark:hover:text-white transition-all duration-200">Features</a>
-                    <a href="#whos-it-for" onClick={(e) => smoothScroll(e, "whos-it-for")} className="hover:text-blue-500 dark:hover:text-white transition-all duration-200">Who’s It For?</a>
-                    <a href="#seo-toolkit" onClick={(e) => smoothScroll(e, "seo-toolkit")} className="hover:text-blue-500 dark:hover:text-white transition-all duration-200">SEO Toolkit</a>
-                    <a href="#testimonials" onClick={(e) => smoothScroll(e, "testimonials")} className="hover:text-blue-500 dark:hover:text-white transition-all duration-200">Testimonials</a>
-                    <a href="#pricing" onClick={(e) => smoothScroll(e, "pricing")} className="hover:text-blue-500 dark:hover:text-white transition-all duration-200">Pricing</a>
-                    <a href="#faq" onClick={(e) => smoothScroll(e, "faq")} className="hover:text-blue-500 dark:hover:text-white transition-all duration-200">FAQ</a>
-                  </div>
-
-                  {/* Vertical Divider */}
-                  <div className="w-px h-6 bg-gray-300"></div>
 
                   {/* Log In & Sign Up Section */}
                   <div className="hidden md:flex items-center space-x-4">
@@ -178,7 +185,7 @@ export default function Navbar() {
 
       {/* Mobile Menu (Only for Non-Logged In Users) */}
       {!user && menuOpen && (
-        <div className="absolute top-16 left-0 w-full bg-white/95 dark:bg-slate-900/95 shadow-lg md:hidden transition-all duration-300">
+        <div className="absolute top-16 left-0 w-full bg-white/95 dark:bg-slate-900/95 shadow-lg lg:hidden transition-all duration-300">
           <div className="flex flex-col space-y-4 p-6 text-gray-700 dark:text-gray-300">
             <a href="#features" onClick={(e) => smoothScroll(e, "features")} className="hover:text-blue-500 dark:hover:text-white transition-all duration-200">Features</a>
             <a href="#whos-it-for" onClick={(e) => smoothScroll(e, "whos-it-for")} className="hover:text-blue-500 dark:hover:text-white transition-all duration-200">Who’s It For?</a>

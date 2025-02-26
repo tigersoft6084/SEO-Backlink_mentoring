@@ -29,7 +29,7 @@ export function useAuth() {
       }
     } else {
       // ✅ Exclude public pages from redirection
-      const publicPaths = ["/", "/api/auth/signup", "/api/auth/forgot-password", "/api/auth/signin"];
+      const publicPaths = ["/", "/api/auth/signup", "/api/auth/forgot-password", "/api/auth/signin", "/privacy-policy"];
 
       if (!publicPaths.includes(pathname) && isHydrated) {
         console.warn("Redirecting to signin...");

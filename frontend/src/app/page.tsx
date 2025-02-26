@@ -675,7 +675,14 @@ export default function Home() {
             <div className="text-center md:text-left">
               <h3 className="text-lg font-semibold text-gray-300 mb-3">Legal</h3>
               <div className="grid grid-cols-1 gap-x-24 gap-y-2 text-sm">
-                <Link href="#" className="hover:text-white transition">Privacy Policy</Link>
+                <a
+                  href="/privacy-policy"  // Replace with your privacy policy URL
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-white transition"
+                >
+                  Privacy Policy
+                </a>
                 <Link href="#" className="hover:text-white transition">Terms of Use</Link>
               </div>
             </div>
