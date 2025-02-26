@@ -120,10 +120,6 @@ export default function Navbar() {
               </div>
             )}
 
-            {/* Vertical Divider */}
-
-
-
             {/* User is Logged In */}
             {user ? (
               <div className="absolute left-80 flex items-center space-x-2">
