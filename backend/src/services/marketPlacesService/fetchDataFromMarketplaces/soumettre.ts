@@ -99,8 +99,6 @@ export const fetchDataFromSoumettre = async (url: string, page : number, validat
 
     try {
 
-        console.log(validationData)
-
         const response = await axiosInstance.post(url, body, {
             headers: {
                 Cookie: validationData.COOKIE,

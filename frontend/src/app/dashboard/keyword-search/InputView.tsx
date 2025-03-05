@@ -93,8 +93,6 @@ export default function InputView({ onSearch, setLoading }: InputViewProps) {
           }),
         });
 
-        console.log( keywordsArray,locationCode, maxDisplayKeywords)
-
         if (response.ok) {
 
           usedFeatures_keywords += keywordsArray.length;

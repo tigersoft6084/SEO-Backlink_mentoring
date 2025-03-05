@@ -33,8 +33,6 @@ export default function SignupForm() {
 
           const userData = JSON.parse(userDataString);
 
-          console.log(userData)
-
           sessionStorage.setItem("authToken", JSON.stringify(userData.token));
           sessionStorage.setItem("user", JSON.stringify(userData.user));
           setUser(userData);
@@ -93,9 +91,7 @@ export default function SignupForm() {
       const data = await response.json();
       setSuccess("Sign-up successful! Redirecting...");
 
-      console.log("Signup successful:", data);
-
-      setTimeout(() => router.push("/api/auth/signin"), 2000); // ✅ Redirect after delay
+      setTimeout(() => router.push("/auth/signin"), 500); // ✅ Redirect after delay
 
     } catch (err) {
       console.error(err);
@@ -208,7 +204,7 @@ export default function SignupForm() {
       <div className="mt-4 text-center">
         <p className="text-sm text-gray-700 dark:text-gray-200">
           Already have an account?{" "}
-          <Link href="/api/auth/signin" className="text-blue-600 font-medium hover:underline">
+          <Link href="/auth/signin" className="text-blue-600 font-medium hover:underline">
             Sign In
           </Link>
         </p>

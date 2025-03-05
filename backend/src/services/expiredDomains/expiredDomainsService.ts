@@ -91,7 +91,6 @@ export const fetchExpiredDomainsService = async (
     if (req.query.Language) where.and?.push({ language: { equals: req.query.Language } });
 
     try {
-        console.log("Constructed Where Clause:", JSON.stringify(where, null, 2)); // Debugging
 
         // Fetch the total count of expired domains (without pagination or other filters)
         const totalExpiredDomainsResponse  = await payload.count({

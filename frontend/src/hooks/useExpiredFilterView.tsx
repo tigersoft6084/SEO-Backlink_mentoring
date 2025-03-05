@@ -44,7 +44,6 @@ export default function useExpiredFilterView() {
         }
         const url = `/api/expired?${queryParams.toString()}`;
 
-        console.log(url);
         try {
             const response = await fetch(url);
             if (!response.ok) {

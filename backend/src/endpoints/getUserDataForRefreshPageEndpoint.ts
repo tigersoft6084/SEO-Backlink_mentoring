@@ -11,8 +11,6 @@ export const getUserDataForRefreshPageEndpoint : Endpoint = {
 
         const authHeader = req.headers.get('authorization');
 
-        console.log(authHeader)
-
         // CORS headers
         const corsHeaders = {
             "Access-Control-Allow-Origin": "*", // You can replace '*' with specific domains for security reasons

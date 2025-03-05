@@ -1,5 +1,4 @@
 import { FcGoogle } from "react-icons/fc";
-import { useRouter, useSearchParams, usePathname } from "next/navigation";
 
 interface GoogleAuthButtonProps {
   action: 'signin' | 'signup'; // Action can either be 'signin' or 'signup'

@@ -42,7 +42,6 @@ const fetch_Cookie_FromPostLogin = async (email: string, password: string) : Pro
         if (!getValidationData) {
             throw new Error('Failed to fetch CSRF token or initial cookies from 123media');
         }
-        console.log(getValidationData)
 
         const formData = new URLSearchParams();
 
@@ -79,7 +78,6 @@ const fetch_Cookie_FromPostLogin = async (email: string, password: string) : Pro
         if(cookieOrigin){
             cookies = extractPHPSESSID(cookieOrigin);
         }
-        console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', cookies)
 
         const responseBody = await loginResponse.text();
         const $ = cheerio.load(responseBody);

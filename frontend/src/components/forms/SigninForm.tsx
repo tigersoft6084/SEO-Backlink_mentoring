@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { BiSearch } from "react-icons/bi";
 import { useRouter } from "next/navigation";
 import { useUser } from "../../context/UserContext"; // Import the User context
@@ -8,6 +7,7 @@ import FormInput from "./SigninInput";
 import GoogleAuthButton from "../ui/GoogleSigninButton";
 import Link from "next/link";
 import { useSidebar } from "../../context/SidebarContext";
+import { useEffect, useState } from "react";
 
 export default function SigninForm() {
   const [formData, setFormData] = useState({
@@ -87,8 +87,6 @@ export default function SigninForm() {
 
       const data = await response.json();
 
-      console.log(data)
-
       // ✅ Ensure `window` is available before using `sessionStorage` (avoids SSR issues)
       if (typeof window !== "undefined") {
         sessionStorage.setItem("authToken", data.token);
@@ -114,7 +112,7 @@ export default function SigninForm() {
   };
 
   const goToSignUp = () => {
-    router.push("/api/auth/signup"); // Redirect to the sign-up page
+    router.push("/auth/signup"); // Redirect to the sign-up page
   };
 
   return (

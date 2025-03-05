@@ -85,8 +85,6 @@ console.log("Dropdown menu opened successfully");
 // Click the "Filtrer" button
 await page.waitForSelector('.btn-form.btn-small', { visible: true, timeout: 5000 });
 await page.click('.btn-form.btn-small');
-console.log('Clicked Filtrer');
-
 
 
 

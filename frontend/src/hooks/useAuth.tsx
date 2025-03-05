@@ -29,11 +29,11 @@ export function useAuth() {
       }
     } else {
       // ✅ Exclude public pages from redirection
-      const publicPaths = ["/", "/api/auth/signup", "/api/auth/forgot-password", "/api/auth/signin", "/privacy-policy"];
+      const publicPaths = ["/", "/auth/signup", "/auth/forgot-password", "/auth/signin", "/privacy-policy", "/terms-of-service"];
 
       if (!publicPaths.includes(pathname) && isHydrated) {
         console.warn("Redirecting to signin...");
-        router.push("/api/auth/signin"); // ✅ Use Next.js routing instead of full reload
+        router.push("/auth/signin"); // ✅ Use Next.js routing instead of full reload
       }
     }
   }, [pathname, isHydrated, router]);

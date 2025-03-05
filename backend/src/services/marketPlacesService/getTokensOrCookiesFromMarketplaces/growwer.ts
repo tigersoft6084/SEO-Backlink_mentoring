@@ -38,8 +38,6 @@ const fetchCookieFromGrowwer = async (email: string, password: string): Promise<
         const cookie = setCookieHeader.split(/[,;]\s*/)
             .find(cookie => cookie.startsWith("PHPSESSID=")) || null;
 
-        console.log(cookie)
-
         if (cookie) {
             return cookie;
         } else {

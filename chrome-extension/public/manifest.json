@@ -4,7 +4,6 @@
     "version": "1.0",
     "description": "Surferlink extension is the best extension to find Sponsored Articles on 80,000+ websites.",
     "permissions": ["storage", "activeTab", "tabs"],
-    "host_permissions": ["http://127.0.0.1:2024/*"],
     "background": {
         "service_worker": "background.js"
     },
@@ -23,5 +22,6 @@
             "matches": ["<all_urls>"],
             "js": ["content.js"]
         }
-    ]
+    ],
+    "homepage_url": "https://surferlink.io"
 }

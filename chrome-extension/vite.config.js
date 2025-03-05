@@ -16,6 +16,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         popup: resolve(__dirname, "index.html"), // Use correct path resolution
+        privacy: resolve(__dirname, "public/privacy-policy.html"), // Entry for privacy policy page
         content: resolve(__dirname, "src/content/content.js"), // Include content script
         background: resolve(__dirname, "src/background/background.js") // Include content script
       },

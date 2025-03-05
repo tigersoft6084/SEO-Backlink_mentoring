@@ -35,7 +35,7 @@ export default function Home() {
   // Redirect if user is not authenticated
   useEffect(() => {
     if (!user && pathname !== "/auth/signup" && pathname?.startsWith("/dashboard")) {
-      router.push("/api/auth/signin");
+      router.push("/auth/signin");
     }
   }, [user, router, pathname]);
 

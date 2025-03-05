@@ -27,10 +27,12 @@ export default function Navbar() {
   const pathname = usePathname(); // ✅ Get current route
 
   // ✅ Check if the page is Sign In or Sign Up
-  const isAuthPage = pathname === "/api/auth/signin" || pathname === "/api/auth/signup";
+  const isAuthPage = pathname === "/auth/signin" || pathname === "/auth/signup";
 
   // ✅ Check if the current page is "privacy-policy"
   const isPrivacyPolicyPage = pathname === "/privacy-policy";
+  const isTermsOfServicePage = pathname === "/terms-of-service";
+  const isDashboardPage = pathname === "/dashboard";
 
   useEffect(() => {
     setExpiredCount(totalExpiredDomains);
@@ -52,7 +54,7 @@ export default function Navbar() {
     setUser(null);
 
     // Redirect to sign-in IMMEDIATELY
-    window.location.href = "/api/auth/signin";
+    window.location.href = "/auth/signin";
   };
 
 
@@ -108,7 +110,7 @@ export default function Navbar() {
             </Link>
 
             {/* Show navigation only if NOT on the privacy-policy page */}
-            {!isPrivacyPolicyPage && !user && (
+            {!isPrivacyPolicyPage && !isTermsOfServicePage && !user && (
               <div className={`absolute right-72 hidden lg:flex items-center space-x-6 text-gray-700 dark:text-gray-300 ${poppins.className}`}>
                 <a href="#features" onClick={(e) => smoothScroll(e, "features")} className="hover:text-blue-500 dark:hover:text-white transition-all duration-200">Features</a>
                 <a href="#whos-it-for" onClick={(e) => smoothScroll(e, "whos-it-for")} className="hover:text-blue-500 dark:hover:text-white transition-all duration-200">Who’s It For?</a>
@@ -121,7 +123,7 @@ export default function Navbar() {
             )}
 
             {/* User is Logged In */}
-            {user ? (
+            {isDashboardPage ? (
               <div className="absolute left-80 flex items-center space-x-2">
                 <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-200">
                   {selectedMenuItem}
@@ -140,8 +142,8 @@ export default function Navbar() {
 
                   {/* Log In & Sign Up Section */}
                   <div className="hidden md:flex items-center space-x-4">
-                    <Link href="/api/auth/signin" className="text-blue-600 dark:text-blue-400 hover:underline transition-all">Log In</Link>
-                    <Link href="/api/auth/signup">
+                    <Link href="/auth/signin" className="text-blue-600 dark:text-blue-400 hover:underline transition-all">Log In</Link>
+                    <Link href="/auth/signup">
                       <button className="px-5 py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold rounded-full shadow-md hover:from-blue-600 hover:to-purple-600 transition-all">
                         Sign Up
                       </button>

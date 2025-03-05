@@ -58,8 +58,6 @@ export const serpScannerEndpoint : Endpoint = {
         const newDomains = domains.filter(item => !seenDomains.has(item.domain)).map(item => item.domain); // Extract domain as a string
         newDomains.forEach(domain => seenDomains.add(domain));
 
-        console.log(newDomains)
-
         const { aboutPrice, enrichedBacklinksData } = await competitiveAnalysisService(newDomains, displayDepth, req);
 
         if(aboutPrice && enrichedBacklinksData){

@@ -79,12 +79,6 @@ export default function InputView({ onSearch, setLoading }: InputViewProps) {
                     displayDepth : maxDisplayKeywords
                 }),
             });
-            console.log(JSON.stringify({
-                keyword: keyword,
-                locationCode: parseInt(locationCode), // Example location code
-                languageCode: "en", // Example language code
-                displayDepth : maxDisplayKeywords
-            }))
 
             if (response.ok) {
                 usedFeatures_serpScanner++;

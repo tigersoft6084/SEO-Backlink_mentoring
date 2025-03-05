@@ -31,7 +31,7 @@ const fetchCookieFromLinksclub = async (email: string, password: string): Promis
 
         // Extract cookies from the response headers
         const setCookieHeader = response.headers.get('set-cookie') || '';
-        console.log(setCookieHeader)
+
         if(setCookieHeader){
             const cookies = extractPHPSESSID(setCookieHeader);
             return cookies || '';

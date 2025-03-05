@@ -83,8 +83,6 @@ export const bulkDomainSearchEndpoint: Endpoint = {
         backlinksData.docs.push(...mappedDocs);
       }
 
-      console.log('Fetched backlinks data:', backlinksData.docs);
-
       // Filter to get unique domains with the smallest price
       const backlinksMap: Record<string, BacklinkData> = {};
 

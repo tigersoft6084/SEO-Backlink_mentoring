@@ -106,10 +106,6 @@ export const googleAuthHandler = async (req: PayloadRequest) : Promise<Response>
             req, // Pass the request object to maintain session cookies
         });
 
-        console.log(loggedInUser)
-        console.log(userData)
-
-
         if (loggedInUser) {
 
             // Step 5: Redirect to the frontend with the token

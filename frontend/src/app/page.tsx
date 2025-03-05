@@ -125,7 +125,7 @@ export default function Home() {
         </p>
 
         {/* CTA Button */}
-        <Link href="/api/auth/signin">
+        <Link href="/auth/signin">
           <button className="mt-8 px-10 py-4 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600
             text-white font-semibold text-lg rounded-3xl full shadow-lg transition-all duration-300 ease-in-out
             hover:scale-105 hover:shadow-2xl backdrop-blur-md">
@@ -304,7 +304,7 @@ export default function Home() {
               <p className="mt-4 text-white/90">
                 Get started in seconds. No complicated forms or credit card required. Just sign up and dive into your backlink insights.
               </p>
-              <Link href="/api/auth/signup">
+              <Link href="/auth/signup">
                 <button className="mt-6 px-6 py-3 bg-white text-blue-500 font-bold rounded-2xl shadow-md hover:bg-gray-200 transition-all w-52">
                   Sign Up Now
                 </button>
@@ -533,7 +533,7 @@ export default function Home() {
               <li>20 competitive analyses</li>
               <li>Scan 3 competitors in bulk</li>
             </ul>
-            <Link href="/api/auth/signin">
+            <Link href="/auth/signin">
               <button className="mt-6 px-6 py-3 bg-white text-blue-600 font-bold rounded-lg shadow-md hover:bg-gray-200 transition-all w-full">
                 Start Free Analysis Now
               </button>
@@ -569,7 +569,7 @@ export default function Home() {
               <li>20 SERP Scanner</li>
             </ul>
 
-            <Link href="/api/auth/signin">
+            <Link href="/auth/signin">
               <button className="mt-6 px-6 py-3 bg-white text-purple-600 font-bold rounded-lg shadow-md hover:bg-gray-200 transition-all w-full">
                 Start Free Analysis Now
               </button>
@@ -592,7 +592,7 @@ export default function Home() {
               <li>Scan 100 keywords in Bulk</li>
               <li>50 SERP Scanner</li>
             </ul>
-            <Link href="/api/auth/signin">
+            <Link href="/auth/signin">
               <button className="mt-6 px-6 py-3 bg-white text-black font-bold rounded-lg shadow-md hover:bg-gray-200 transition-all w-full">
                 Start Free Analysis Now
               </button>
@@ -683,7 +683,14 @@ export default function Home() {
                 >
                   Privacy Policy
                 </a>
-                <Link href="#" className="hover:text-white transition">Terms of Use</Link>
+                <a
+                  href="/terms-of-service"  // Replace with your privacy policy URL
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-white transition"
+                >
+                  Terms of Use
+                </a>
               </div>
             </div>
 
