@@ -11,7 +11,7 @@ export const myTestEndpoint: Endpoint = {
   handler: async (req : PayloadRequest) => {
     try {
 
-      const result = await getBacklinksDataFromPrensalink(req.payload);
+      const result = await listActivePlans();
 
       // Return the collected results
       return new Response(
