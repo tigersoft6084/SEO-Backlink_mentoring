@@ -269,20 +269,21 @@ export interface PaypalPlan {
   plans?:
     | {
         plan_name?: string | null;
-        plan_id?: string | null;
+        month_plan_id?: string | null;
+        year_plan_id?: string | null;
         description?: string | null;
-        price?: number | null;
-        interval_unit: 'MONTH' | 'YEAR';
+        monthly_price?: number | null;
+        yearly_price?: number | null;
+        interval_unit?: ('MONTH' | 'YEAR') | null;
         currency?: ('USD' | 'EUR') | null;
-        features?:
-          | {
-              [k: string]: unknown;
-            }
-          | unknown[]
-          | string
-          | number
-          | boolean
-          | null;
+        'results per search'?: number | null;
+        'backlinks monitored'?: number | null;
+        'plugin clicks'?: number | null;
+        'keyword searches'?: number | null;
+        'competitive analyses'?: number | null;
+        'simultaneous bulk competitive'?: number | null;
+        'bulk keywords'?: number | null;
+        'SERP scanner'?: number | null;
         id?: string | null;
       }[]
     | null;
@@ -490,12 +491,21 @@ export interface PaypalPlansSelect<T extends boolean = true> {
     | T
     | {
         plan_name?: T;
-        plan_id?: T;
+        month_plan_id?: T;
+        year_plan_id?: T;
         description?: T;
-        price?: T;
+        monthly_price?: T;
+        yearly_price?: T;
         interval_unit?: T;
         currency?: T;
-        features?: T;
+        'results per search'?: T;
+        'backlinks monitored'?: T;
+        'plugin clicks'?: T;
+        'keyword searches'?: T;
+        'competitive analyses'?: T;
+        'simultaneous bulk competitive'?: T;
+        'bulk keywords'?: T;
+        'SERP scanner'?: T;
         id?: T;
       };
   updatedAt?: T;

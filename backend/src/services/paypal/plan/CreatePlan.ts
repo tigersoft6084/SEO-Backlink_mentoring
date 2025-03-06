@@ -5,28 +5,27 @@ import { listActivePlans } from "./ListPlan.ts";
 import { getProductAndPlanIdFromDB } from "../catalogProducts/getProductsFromDB.ts";
 import { Plan, ProductFromDB } from "@/types/paypal.ts";
 import { Payload } from "payload";
+import { deactivePlan } from "./DeactivePlan.ts";
 
 interface PlanPayload {
     name: string;
     description: string;
-    interval_unit: string;
+    interval_unit: "MONTH" | "YEAR";
     price: number;
-    currency: "USD" | "EUR" | null | undefined;
+    currency: "USD" | "EUR";
 }
 
-// Dynamic multipliers for interval-based pricing adjustments
 const INTERVAL_PRICE_MULTIPLIERS: Record<string, number> = {
     MONTH: 1,
-    YEAR: 10, // Yearly price is roughly 10x the monthly price
+    YEAR: 10,
 };
 
+// Helper function to create plan payload
 const createPlanPayload = (
     { name, description, interval_unit, price, currency }: PlanPayload,
     productID: string
 ) => {
-
-    const multiplier = INTERVAL_PRICE_MULTIPLIERS[interval_unit] || 1;
-    const adjustedPrice = (price * multiplier).toFixed(2);
+    const adjustedPrice = (price * INTERVAL_PRICE_MULTIPLIERS[interval_unit]).toFixed(2);
 
     return {
         product_id: productID,
@@ -37,15 +36,15 @@ const createPlanPayload = (
             {
                 frequency: {
                     interval_unit,
-                    interval_count: 1, // Monthly subscription
+                    interval_count: 1,
                 },
                 tenure_type: "REGULAR",
                 sequence: 1,
-                total_cycles: 0, // 0 for infinite billing
+                total_cycles: 0,
                 pricing_scheme: {
                     fixed_price: {
-                        value: adjustedPrice.toString(), // Ensure price is a string as required by PayPal API
-                        currency_code: currency,
+                        value: adjustedPrice.toString(),
+                        currency_code: currency || "USD", // Ensure currency is always valid
                     },
                 },
             },
@@ -53,8 +52,8 @@ const createPlanPayload = (
         payment_preferences: {
             auto_bill_outstanding: true,
             setup_fee: {
-                value: "0", // No setup fee
-                currency_code: currency,
+                value: "0",
+                currency_code: currency || "USD",
             },
             setup_fee_failure_action: "CONTINUE",
             payment_failure_threshold: 3,
@@ -63,26 +62,18 @@ const createPlanPayload = (
             percentage: "0",
             inclusive: false,
         },
-    }
+    };
 };
 
-export const createPlansAndGetID = async (payload : Payload): Promise<void> => {
+// ✅ Function to create new PayPal plans and save them to Payload CMS
+export const createPlansAndGetID = async (payload: Payload): Promise<void> => {
     try {
         const accessToken = await getAccessToken();
-
-        let productFromDB: ProductFromDB | null = null;
-
-        try {
-            productFromDB = await getProductAndPlanIdFromDB();
-        } catch (dbError) {
-            console.error("Error fetching product from the database:", dbError);
-        }
-
+        const productFromDB: ProductFromDB | null = await getProductAndPlanIdFromDB();
         let productID: string;
         let plansFromDB: Plan[] = [];
 
-        // Check if product exists in the database
-        if (productFromDB && productFromDB.productID) {
+        if (productFromDB?.productID) {
             productID = productFromDB.productID;
             plansFromDB = productFromDB.plans || [];
         } else {
@@ -97,20 +88,17 @@ export const createPlansAndGetID = async (payload : Payload): Promise<void> => {
                     plans: [],
                 },
             });
+
             console.log("New product saved to the database:", productID);
         }
 
-        // Fetch active PayPal plans
         const activePayPalPlans = await listActivePlans();
+        const databasePlanIDs = new Set(plansFromDB.map(plan => plan.plan_id));
+        const payPalPlanIDs = new Set(activePayPalPlans.map(plan => plan.plan_id));
 
-        // Create ID sets for comparison
-        const databasePlanIDSet = new Set(plansFromDB.map((dbPlan) => dbPlan.plan_id));
-        const payPalPlanIDSet = new Set(activePayPalPlans.map((payPalPlan: { plan_id: string }) => payPalPlan.plan_id));
+        console.log("Database Plan IDs:", databasePlanIDs);
+        console.log("PayPal Plan IDs:", payPalPlanIDs);
 
-        console.log('Database Plan IDs:', databasePlanIDSet);
-        console.log('PayPal Plan IDs:', payPalPlanIDSet);
-
-        // Define new plans to create
         const plans: PlanPayload[] = [
             {
                 name: "Standard Plan",
@@ -132,66 +120,84 @@ export const createPlansAndGetID = async (payload : Payload): Promise<void> => {
                 interval_unit: "MONTH",
                 price: 100,
                 currency: "USD",
-            }
+            },
         ];
 
-        const intervalUnits: ("MONTH" | "YEAR")[] = ["MONTH", "YEAR"];
         const newPlans: Plan[] = [];
 
-        const isExist = Array.from(databasePlanIDSet).some((planId) =>
-            activePayPalPlans.some((payPalPlan: { plan_id: string }) => payPalPlan.plan_id === planId)
-        );
-
-        if(!isExist){
-            for (const plan of plans) {
-                for(const interval_unit of intervalUnits){
-                    console.log(`Creating new plan: ${plan.name}`);
-
-                    const payload = createPlanPayload({...plan, interval_unit}, productID);
-
-                    const response = await fetch(`${PAYPAL_API}/v1/billing/plans`, {
-                        method: "POST",
-                        headers: {
-                            Authorization: `Bearer ${accessToken}`,
-                            "Content-Type": "application/json",
-                            Accept: "application/json",
-                            "PayPal-Request-Id": `PLAN-${Date.now()}-${plan.name}`,
-                            Prefer: "return=representation",
-                        },
-                        body: JSON.stringify(payload),
-                    });
-
-                    if (!response.ok) {
-                        const error = await response.json();
-                        console.error(`Error creating ${plan.name}:`, error);
-                        continue;
-                    }
-
-                    const data = await response.json();
-                    console.log(`${plan.name} Created Successfully:`);
-
-                    newPlans.push({
-                        plan_name: data.name,
-                        plan_id: data.id,
-                        description: data.description,
-                        interval_unit,
-                        price: data.billing_cycles[0].pricing_scheme.fixed_price.value,
-                        currency: data.billing_cycles[0].pricing_scheme.fixed_price.currency_code,
-                    });
-
-                    databasePlanIDSet.add(data.id); // Add the new plan ID to the database set
-                }
+        for (const plan of plans) {
+            if (databasePlanIDs.has(plan.name)) {
+                console.log(`Skipping existing plan: ${plan.name}`);
+                continue;
             }
+
+            console.log(`Creating new plan: ${plan.name}`);
+
+            const monthPlanPayload = createPlanPayload({ ...plan, interval_unit: "MONTH" }, productID);
+            const yearPlanPayload = createPlanPayload({ ...plan, interval_unit: "YEAR" }, productID);
+
+            // ✅ Use Promise.all to create both plans in parallel
+            const [monthResponse, yearResponse] = await Promise.all([
+                fetch(`${PAYPAL_API}/v1/billing/plans`, {
+                    method: "POST",
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                        "Content-Type": "application/json",
+                        Accept: "application/json",
+                        "PayPal-Request-Id": `PLAN-${Date.now()}-${plan.name}-MONTH`,
+                    },
+                    body: JSON.stringify(monthPlanPayload),
+                }),
+                fetch(`${PAYPAL_API}/v1/billing/plans`, {
+                    method: "POST",
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                        "Content-Type": "application/json",
+                        Accept: "application/json",
+                        "PayPal-Request-Id": `PLAN-${Date.now()}-${plan.name}-YEAR`,
+                    },
+                    body: JSON.stringify(yearPlanPayload),
+                }),
+            ]);
+
+            if (!monthResponse.ok || !yearResponse.ok) {
+                console.error(
+                    `Error creating ${plan.name}:`,
+                    await monthResponse.json(),
+                    await yearResponse.json()
+                );
+                continue;
+            }
+
+            const monthData = await monthResponse.json();
+            const yearData = await yearResponse.json();
+
+            console.log(`${plan.name} Created Successfully.`);
+
+            newPlans.push({
+                plan_name: plan.name,
+                plan_id: monthData.id, // Storing the monthly plan ID
+                description: plan.description,
+                monthly_price: plan.price,
+                yearly_price: plan.price * INTERVAL_PRICE_MULTIPLIERS.YEAR,
+                currency: plan.currency,
+                month_plan_id: monthData.id,
+                year_plan_id: yearData.id,
+                interval_unit: "MONTH", // ✅ Ensuring interval_unit is present
+            });
+
+            databasePlanIDs.add(monthData.id);
+            databasePlanIDs.add(yearData.id);
         }
 
         // Update the database with the new plans
+        // ✅ Update the database with the new plans
         if (newPlans.length > 0) {
             try {
 
                 const sanitizedPlans = newPlans.map((plan) => ({
                     ...plan,
                     currency: (["USD", "EUR"].includes(plan.currency || "")) ? plan.currency : "USD",
-                    price: parseFloat(plan.price.toString()) || 0,  // Ensure price is valid
                 }));
 
                 await payload.update({
@@ -209,6 +215,8 @@ export const createPlansAndGetID = async (payload : Payload): Promise<void> => {
             } catch (updateError) {
                 console.error("Error updating the database with new plans:", updateError);
             }
+        } else {
+            console.warn("No new plans created, skipping database update.");
         }
 
         console.log("All plans processed successfully.");
@@ -217,41 +225,112 @@ export const createPlansAndGetID = async (payload : Payload): Promise<void> => {
     }
 };
 
-export const createPlanForUpdateValues = async(updatedPlan : {plan_name : string, description : string, interval_unit : string, price : number, currency : "USD" | "EUR"}, productID : string) => {
 
+export const createPlanForUpdateValues = async (
+    updatedPlan: {
+        plan_name: string;
+        description: string;
+        interval_unit: "MONTH" | "YEAR";
+        monthly_price?: number;
+        yearly_price?: number;
+        currency: "USD" | "EUR";
+        month_plan_id?: string; // ✅ Now included
+        year_plan_id?: string;  // ✅ Now included
+    },
+    productID: string,
+    shouldDeactivateMonth: boolean = false, // Controls whether the month plan should be deactivated
+    shouldDeactivateYear: boolean = false  // Controls whether the year plan should be deactivated
+) => {
     const accessToken = await getAccessToken();
 
-    // 🔥 Apply pricing multiplier for the interval unit
-    const adjustedPrice = updatedPlan.price * (INTERVAL_PRICE_MULTIPLIERS[updatedPlan.interval_unit] || 1);
+    // Validate and format price
+    const validatedPrice = (price?: number) => (typeof price === "number" && !isNaN(price) ? price.toFixed(2) : "0.00");
 
-    // Define new plans to create
-    const planForUpdate: PlanPayload =
-        {
-            name: updatedPlan.plan_name,
-            description: updatedPlan.description,
-            interval_unit: updatedPlan.interval_unit,
-            price: adjustedPrice,
-            currency: updatedPlan.currency,
-        };
+    // Ensure price values exist
+    const monthPrice = validatedPrice(updatedPlan.monthly_price);
+    const defaultYearlyPrice = updatedPlan.monthly_price ? updatedPlan.monthly_price * 10 : 0;
+    const yearPrice = validatedPrice(updatedPlan.yearly_price !== undefined ? updatedPlan.yearly_price : defaultYearlyPrice);
 
-    const payload = createPlanPayload(planForUpdate, productID);
+    // Prepare payloads
+    const monthPlanPayload = createPlanPayload({
+        ...updatedPlan,
+        name: updatedPlan.plan_name,
+        interval_unit: "MONTH",
+        price: parseFloat(monthPrice),
+    }, productID);
 
-    const response = await fetch(`${PAYPAL_API}/v1/billing/plans`, {
-        method: "POST",
-        headers: {
-            Authorization: `Bearer ${accessToken}`,
-            "Content-Type": "application/json",
-            Accept: "application/json",
-            "PayPal-Request-Id": `PLAN-${Date.now()}-${planForUpdate.name}`,
-            Prefer: "return=representation",
-        },
-        body: JSON.stringify(payload),
-    });
+    const yearPlanPayload = createPlanPayload({
+        ...updatedPlan,
+        name: updatedPlan.plan_name,
+        interval_unit: "YEAR",
+        price: parseFloat(yearPrice),
+    }, productID);
 
-    if (!response.ok) {
-        const error = await response.json();
-        console.error(`Error creating ${planForUpdate.name}:`, error);
+    console.log(`Processing PayPal plans for ${updatedPlan.plan_name}...`);
+
+    let monthPlanId = null;
+    let yearPlanId = null;
+
+    if (shouldDeactivateMonth && updatedPlan.month_plan_id) {
+        console.log(`Deactivating existing MONTH plan...`);
+        await deactivePlan(updatedPlan.month_plan_id); // ✅ Guaranteed to be a string
+    } else if (shouldDeactivateMonth) {
+        console.warn(`Skipping MONTH plan deactivation: No valid month_plan_id found.`);
     }
 
-    return { success: true };
-}
+    if (shouldDeactivateYear && updatedPlan.year_plan_id) {
+        console.log(`Deactivating existing YEAR plan...`);
+        await deactivePlan(updatedPlan.year_plan_id); // ✅ Guaranteed to be a string
+    } else if (shouldDeactivateYear) {
+        console.warn(`Skipping YEAR plan deactivation: No valid year_plan_id found.`);
+    }
+
+    // Create only the necessary plans
+    if (shouldDeactivateMonth) {
+        console.log(`Creating new MONTH plan for ${updatedPlan.plan_name}...`);
+        const monthResponse = await fetch(`${PAYPAL_API}/v1/billing/plans`, {
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+                "Content-Type": "application/json",
+                Accept: "application/json",
+                "PayPal-Request-Id": `PLAN-${Date.now()}-${updatedPlan.plan_name}-MONTH`,
+            },
+            body: JSON.stringify(monthPlanPayload),
+        });
+
+        if (monthResponse.ok) {
+            const monthData = await monthResponse.json();
+            monthPlanId = monthData.id;
+        } else {
+            console.error(`Error creating MONTH plan for ${updatedPlan.plan_name}:`, await monthResponse.json());
+        }
+    }
+
+    if (shouldDeactivateYear) {
+        console.log(`Creating new YEAR plan for ${updatedPlan.plan_name}...`);
+        const yearResponse = await fetch(`${PAYPAL_API}/v1/billing/plans`, {
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+                "Content-Type": "application/json",
+                Accept: "application/json",
+                "PayPal-Request-Id": `PLAN-${Date.now()}-${updatedPlan.plan_name}-YEAR`,
+            },
+            body: JSON.stringify(yearPlanPayload),
+        });
+
+        if (yearResponse.ok) {
+            const yearData = await yearResponse.json();
+            yearPlanId = yearData.id;
+        } else {
+            console.error(`Error creating YEAR plan for ${updatedPlan.plan_name}:`, await yearResponse.json());
+        }
+    }
+
+    return {
+        success: !!(monthPlanId || yearPlanId),
+        month_plan_id: monthPlanId,
+        year_plan_id: yearPlanId,
+    };
+};

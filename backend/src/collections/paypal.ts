@@ -1,12 +1,5 @@
 import { createPlanForUpdateValues } from '@/services/paypal/plan/CreatePlan.ts';
-import { deactivePlan } from '@/services/paypal/plan/DeactivePlan.ts';
-import { listActivePlans } from '@/services/paypal/plan/ListPlan.ts';
-import { Plan } from '@/types/paypal.ts';
 import { CollectionConfig } from 'payload';
-
-interface ActivePlan extends Plan {
-    interval_unit: "MONTH" | "YEAR";
-}
 
 const PayPalPlans: CollectionConfig = {
     slug: 'paypal-plans',
@@ -29,16 +22,26 @@ const PayPalPlans: CollectionConfig = {
             type: 'text',
             required: true,
             unique: true,
-            admin: { readOnly: true }
+            admin: { hidden: true }
         },
         {
             name: 'plans',
             type: 'array',
             fields: [
                 { name: 'plan_name', type: 'text' },
-                { name: 'plan_id', type: 'text', unique: true, admin: { readOnly: true } },
+                { name: 'month_plan_id', type: 'text', unique: true, admin: { hidden: true } },
+                { name: 'year_plan_id', type: 'text', unique: true, admin: { hidden: true } },
                 { name: 'description', type: 'text' },
-                { name: 'price', type: 'number' },
+                {
+                    name: 'monthly_price',
+                    type: 'number',
+                    admin: { placeholder: "Enter Monthly Price" }
+                },
+                {
+                    name: 'yearly_price',
+                    type: 'number',
+                    admin: { placeholder: "Enter Yearly Price (Auto-calculated if empty)" }
+                },
                 {
                     name: 'interval_unit',
                     type: 'select',
@@ -47,6 +50,10 @@ const PayPalPlans: CollectionConfig = {
                         { label: 'Month', value: 'MONTH' },
                         { label: 'Year', value: 'YEAR' },
                     ],
+                    admin: {
+                        hidden: true,
+                        condition: () => true,
+                    }
                 },
                 {
                     name: 'currency',
@@ -56,105 +63,83 @@ const PayPalPlans: CollectionConfig = {
                         { label: 'EUR', value: 'EUR' }
                     ]
                 },
-                {
-                    name: 'features',
-                    type: 'json',
-                    admin: { position: 'sidebar' }
-                }
+                { name: 'results per search', type: 'number' },
+                { name: 'backlinks monitored', type: 'number' },
+                { name: 'plugin clicks', type: 'number' },
+                { name: 'keyword searches', type: 'number' },
+                { name: 'competitive analyses', type: 'number' },
+                { name: 'simultaneous bulk competitive', type: 'number' },
+                { name: 'bulk keywords', type: 'number' },
+                { name: 'SERP scanner', type: 'number' },
             ],
         },
     ],
     hooks: {
         beforeChange: [
             async ({ data, originalDoc, req }) => {
-                // ✅ Ensure this runs only when an admin manually updates the plans
-                if (!req?.user) {
+                if (!req?.user || req?.user?.role !== 'admin') {
                     console.log("Skipping PayPal plan update: Not an admin request.");
                     return data;
                 }
-
-                if (!originalDoc || !originalDoc.plans) return data;
 
                 const updatedPlans = data.plans;
                 const oldPlans = originalDoc.plans;
                 const productID = originalDoc.product_id;
 
-                const INTERVAL_PRICE_MULTIPLIERS: Record<string, number> = {
-                    MONTH: 1,
-                    YEAR: 10,
-                };
-
                 for (const updatedPlan of updatedPlans) {
-                    const existingPlan = oldPlans.find((plan: { plan_id: string }) => plan.plan_id === updatedPlan.plan_id);
+                    const existingPlan = oldPlans.find((plan: { plan_name: string }) => plan.plan_name === updatedPlan.plan_name);
 
                     if (!existingPlan) {
                         console.log(`New plan manually added by admin: ${updatedPlan.plan_name}. Creating on PayPal...`);
-
                         try {
-                            const adjustedPlan = {
-                                ...updatedPlan,
-                                price: updatedPlan.price * (INTERVAL_PRICE_MULTIPLIERS[updatedPlan.interval_unit] || 1),
-                            };
+                            const { success, month_plan_id, year_plan_id } = await createPlanForUpdateValues(updatedPlan, productID, true, true);
 
-                            await createPlanForUpdateValues(adjustedPlan, productID);
-                            const activePayPalPlans = await listActivePlans();
-
-                            const newPlan = activePayPalPlans.find((plan) =>
-                                plan.plan_name === updatedPlan.plan_name &&
-                                plan.description === updatedPlan.description &&
-                                parseFloat(plan.price as unknown as string) === adjustedPlan.price &&
-                                plan.currency === updatedPlan.currency &&
-                                plan.interval_unit === updatedPlan.interval_unit
-                            );
-
-                            if (newPlan?.plan_id) {
-                                updatedPlan.plan_id = newPlan.plan_id;
-                            } else {
-                                throw new Error('Failed to find the newly created PayPal plan.');
+                            if (success) {
+                                updatedPlan.month_plan_id = month_plan_id;
+                                updatedPlan.year_plan_id = year_plan_id;
                             }
                         } catch (error) {
                             console.error(`Error creating new PayPal plan:`, error);
                             throw new Error('PayPal plan creation failed. Rolling back.');
                         }
+                        continue;
+                    }
 
+                    let shouldDeactivateMonth = false;
+                    let shouldDeactivateYear = false;
+
+                    // Detect changes that require deactivation
+                    if (updatedPlan.currency !== existingPlan.currency) {
+                        shouldDeactivateMonth = true;
+                        shouldDeactivateYear = true;
                     } else {
-                        if (
-                            updatedPlan.plan_name !== existingPlan.plan_name ||
-                            updatedPlan.description !== existingPlan.description ||
-                            updatedPlan.price !== existingPlan.price ||
-                            updatedPlan.currency !== existingPlan.currency ||
-                            updatedPlan.interval_unit !== existingPlan.interval_unit
-                        ) {
-                            console.log(`Plan ${existingPlan.plan_id} has changed. Deactivating and creating a new one.`);
+                        if (updatedPlan.monthly_price !== existingPlan.monthly_price) {
+                            shouldDeactivateMonth = true;
+                        }
+                        if (updatedPlan.yearly_price !== existingPlan.yearly_price) {
+                            shouldDeactivateYear = true;
+                        }
+                    }
 
-                            try {
-                                await deactivePlan(existingPlan.plan_id);
+                    if (shouldDeactivateMonth || shouldDeactivateYear) {
+                        console.log(`Plan ${existingPlan.plan_name} has changed. Deactivating and creating a new one.`);
+                        try {
+                            const { success, month_plan_id, year_plan_id } = await createPlanForUpdateValues(
+                                updatedPlan,
+                                productID,
+                                shouldDeactivateMonth,
+                                shouldDeactivateYear
+                            );
 
-                                const adjustedPlan = {
-                                    ...updatedPlan,
-                                    price: updatedPlan.price * (INTERVAL_PRICE_MULTIPLIERS[updatedPlan.interval_unit] || 1),
-                                };
-
-                                await createPlanForUpdateValues(updatedPlan, productID);
-                                const activePayPalPlans = await listActivePlans();
-
-                                const newPlan = activePayPalPlans.find((plan) =>
-                                    plan.plan_name === updatedPlan.plan_name &&
-                                    plan.description === updatedPlan.description &&
-                                    parseFloat(plan.price as unknown as string) === adjustedPlan.price &&
-                                    plan.currency === updatedPlan.currency &&
-                                    plan.interval_unit === updatedPlan.interval_unit
-                                );
-
-                                if (newPlan?.plan_id) {
-                                    updatedPlan.plan_id = newPlan.plan_id;
-                                } else {
-                                    throw new Error('Failed to find the newly created PayPal plan.');
-                                }
-                            } catch (error) {
-                                console.error(`Error updating PayPal plans:`, error);
-                                throw new Error('PayPal plan update failed. Rolling back.');
+                            if (success) {
+                                if (shouldDeactivateMonth) updatedPlan.month_plan_id = month_plan_id;
+                                if (shouldDeactivateYear) updatedPlan.year_plan_id = year_plan_id;
+                            } else {
+                                throw new Error('Failed to create updated PayPal plan.');
                             }
+                        } catch (error) {
+                            console.error(`Error updating PayPal plans:`, error);
+                            throw new Error('PayPal plan update failed. Rolling back.');
                         }
                     }
                 }
