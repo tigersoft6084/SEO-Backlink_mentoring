@@ -14,45 +14,57 @@ interface PlanPayload {
     currency: "USD" | "EUR" | null | undefined;
 }
 
+// Dynamic multipliers for interval-based pricing adjustments
+const INTERVAL_PRICE_MULTIPLIERS: Record<string, number> = {
+    MONTH: 1,
+    YEAR: 10, // Yearly price is roughly 10x the monthly price
+};
+
 const createPlanPayload = (
     { name, description, interval_unit, price, currency }: PlanPayload,
     productID: string
-) => ({
-    product_id: productID,
-    name,
-    description,
-    status: "ACTIVE",
-    billing_cycles: [
-        {
-            frequency: {
-                interval_unit,
-                interval_count: 1, // Monthly subscription
-            },
-            tenure_type: "REGULAR",
-            sequence: 1,
-            total_cycles: 0, // 0 for infinite billing
-            pricing_scheme: {
-                fixed_price: {
-                    value: price.toString(), // Ensure price is a string as required by PayPal API
-                    currency_code: currency,
+) => {
+
+    const multiplier = INTERVAL_PRICE_MULTIPLIERS[interval_unit] || 1;
+    const adjustedPrice = (price * multiplier).toFixed(2);
+
+    return {
+        product_id: productID,
+        name,
+        description,
+        status: "ACTIVE",
+        billing_cycles: [
+            {
+                frequency: {
+                    interval_unit,
+                    interval_count: 1, // Monthly subscription
+                },
+                tenure_type: "REGULAR",
+                sequence: 1,
+                total_cycles: 0, // 0 for infinite billing
+                pricing_scheme: {
+                    fixed_price: {
+                        value: adjustedPrice.toString(), // Ensure price is a string as required by PayPal API
+                        currency_code: currency,
+                    },
                 },
             },
+        ],
+        payment_preferences: {
+            auto_bill_outstanding: true,
+            setup_fee: {
+                value: "0", // No setup fee
+                currency_code: currency,
+            },
+            setup_fee_failure_action: "CONTINUE",
+            payment_failure_threshold: 3,
         },
-    ],
-    payment_preferences: {
-        auto_bill_outstanding: true,
-        setup_fee: {
-            value: "0", // No setup fee
-            currency_code: currency,
+        taxes: {
+            percentage: "0",
+            inclusive: false,
         },
-        setup_fee_failure_action: "CONTINUE",
-        payment_failure_threshold: 3,
-    },
-    taxes: {
-        percentage: "0",
-        inclusive: false,
-    },
-});
+    }
+};
 
 export const createPlansAndGetID = async (payload : Payload): Promise<void> => {
     try {
@@ -120,30 +132,10 @@ export const createPlansAndGetID = async (payload : Payload): Promise<void> => {
                 interval_unit: "MONTH",
                 price: 100,
                 currency: "USD",
-            },
-            {
-                name: "Standard Plan",
-                description: "Recommended for SEO freelancers and niche site owners",
-                interval_unit: "YEAR",
-                price: 150,
-                currency: "USD",
-            },
-            {
-                name: "Booster Plan",
-                description: "Recommended for agencies, advertisers, and frequent users",
-                interval_unit: "YEAR",
-                price: 500,
-                currency: "USD",
-            },
-            {
-                name: "Spammer Plan",
-                description: "Recommended for analyzing large volumes of data and almost unlimited use",
-                interval_unit: "YEAR",
-                price: 1000,
-                currency: "USD",
-            },
+            }
         ];
 
+        const intervalUnits: ("MONTH" | "YEAR")[] = ["MONTH", "YEAR"];
         const newPlans: Plan[] = [];
 
         const isExist = Array.from(databasePlanIDSet).some((planId) =>
@@ -152,42 +144,43 @@ export const createPlansAndGetID = async (payload : Payload): Promise<void> => {
 
         if(!isExist){
             for (const plan of plans) {
+                for(const interval_unit of intervalUnits){
+                    console.log(`Creating new plan: ${plan.name}`);
 
-                console.log(`Creating new plan: ${plan.name}`);
+                    const payload = createPlanPayload({...plan, interval_unit}, productID);
 
-                const payload = createPlanPayload(plan, productID);
+                    const response = await fetch(`${PAYPAL_API}/v1/billing/plans`, {
+                        method: "POST",
+                        headers: {
+                            Authorization: `Bearer ${accessToken}`,
+                            "Content-Type": "application/json",
+                            Accept: "application/json",
+                            "PayPal-Request-Id": `PLAN-${Date.now()}-${plan.name}`,
+                            Prefer: "return=representation",
+                        },
+                        body: JSON.stringify(payload),
+                    });
 
-                const response = await fetch(`${PAYPAL_API}/v1/billing/plans`, {
-                    method: "POST",
-                    headers: {
-                        Authorization: `Bearer ${accessToken}`,
-                        "Content-Type": "application/json",
-                        Accept: "application/json",
-                        "PayPal-Request-Id": `PLAN-${Date.now()}-${plan.name}`,
-                        Prefer: "return=representation",
-                    },
-                    body: JSON.stringify(payload),
-                });
+                    if (!response.ok) {
+                        const error = await response.json();
+                        console.error(`Error creating ${plan.name}:`, error);
+                        continue;
+                    }
 
-                if (!response.ok) {
-                    const error = await response.json();
-                    console.error(`Error creating ${plan.name}:`, error);
-                    continue;
+                    const data = await response.json();
+                    console.log(`${plan.name} Created Successfully:`);
+
+                    newPlans.push({
+                        plan_name: data.name,
+                        plan_id: data.id,
+                        description: data.description,
+                        interval_unit,
+                        price: data.billing_cycles[0].pricing_scheme.fixed_price.value,
+                        currency: data.billing_cycles[0].pricing_scheme.fixed_price.currency_code,
+                    });
+
+                    databasePlanIDSet.add(data.id); // Add the new plan ID to the database set
                 }
-
-                const data = await response.json();
-                console.log(`${plan.name} Created Successfully:`);
-
-                newPlans.push({
-                    plan_name: data.name,
-                    plan_id: data.id,
-                    description: data.description,
-                    interval_unit : data.billing_cycles[0].frequency.interval_unit,
-                    price: data.billing_cycles[0].pricing_scheme.fixed_price.value,
-                    currency: data.billing_cycles[0].pricing_scheme.fixed_price.currency_code,
-                });
-
-                databasePlanIDSet.add(data.id); // Add the new plan ID to the database set
             }
         }
 
@@ -228,13 +221,16 @@ export const createPlanForUpdateValues = async(updatedPlan : {plan_name : string
 
     const accessToken = await getAccessToken();
 
+    // 🔥 Apply pricing multiplier for the interval unit
+    const adjustedPrice = updatedPlan.price * (INTERVAL_PRICE_MULTIPLIERS[updatedPlan.interval_unit] || 1);
+
     // Define new plans to create
     const planForUpdate: PlanPayload =
         {
             name: updatedPlan.plan_name,
             description: updatedPlan.description,
             interval_unit: updatedPlan.interval_unit,
-            price: updatedPlan.price,
+            price: adjustedPrice,
             currency: updatedPlan.currency,
         };
 

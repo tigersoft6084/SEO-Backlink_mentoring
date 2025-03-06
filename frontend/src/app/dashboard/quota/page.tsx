@@ -12,11 +12,8 @@ interface Plan {
     price: number;
     currency: string;
     interval_unit: string;
+    features: { [key: string]: number }; // ✅ Features are now dynamic!
 }
-
-interface PricingTableProps {
-    isUpdatingSubscription: boolean;
-};
 
 
 export default function PricingTable ({ isUpdatingSubscription } : any) {
@@ -35,16 +32,13 @@ export default function PricingTable ({ isUpdatingSubscription } : any) {
             try {
                 const response = await fetch("/api/plans");
                 const data = await response.json();
+                console.log("Fetched plans:", data.fetchedPlans);
                 setPlans(data.fetchedPlans);
 
                 // Set billing cycle based on database interval_unit
                 if (data.fetchedPlans.length > 0) {
                     const firstPlan = data.fetchedPlans[0]; // Get first plan
-                    if (firstPlan.interval_unit === "MONTH") {
-                        setBillingCycle("monthly");
-                    } else if (firstPlan.interval_unit === "YEAR") {
-                        setBillingCycle("annually");
-                    }
+                    setBillingCycle(firstPlan.interval_unit === "MONTH" ? "monthly" : "annually");
                 }
 
             } catch (error) {
@@ -158,16 +152,13 @@ export default function PricingTable ({ isUpdatingSubscription } : any) {
                                     {isCurrentPlan ? "Current Plan" : "Upgrade Plan"}
                                 </button>
 
+                                {/* Dynamic Feature List */}
                                 <ul className="mt-6 space-y-4 text-gray-600 dark:text-gray-200">
-                                    <li>✓ Forums and expired domains analysis</li>
-                                    <li>✓ {index === 0 ? "300" : index === 1 ? "1000" : "30000"} results per search</li>
-                                    <li>✓ {index === 0 ? "100" : index === 1 ? "500" : "2000"} backlinks monitored</li>
-                                    <li>✓ {index === 0 ? "200" : index === 1 ? "1000" : "5000"} Plugin clicks</li>
-                                    <li>✓ {index === 0 ? "50" : index === 1 ? "250" : "2000"} keyword searches</li>
-                                    <li>✓ {index === 0 ? "20" : index === 1 ? "100" : "500"} competitive analyses</li>
-                                    <li>✓ {index === 0 ? "3" : index === 1 ? "15" : "40"} simultaneous bulk competitive</li>
-                                    <li>✓ {index === 0 ? "0" : index === 1 ? "20" : "100"} bulk keywords</li>
-                                    <li>✓ {index === 0 ? "0" : index === 1 ? "20" : "50"} SERP Scanner</li>
+                                    {Object.entries(plan.features).map(([featureName, value]) => (
+                                        <li key={featureName}>
+                                            ✓ {value} {featureName.replace(/([A-Z])/g, " $1").trim()}
+                                        </li>
+                                    ))}
                                 </ul>
                             </div>
                         );

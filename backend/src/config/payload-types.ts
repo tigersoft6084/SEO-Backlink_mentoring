@@ -272,8 +272,17 @@ export interface PaypalPlan {
         plan_id?: string | null;
         description?: string | null;
         price?: number | null;
-        interval_unit?: string | null;
+        interval_unit: 'MONTH' | 'YEAR';
         currency?: ('USD' | 'EUR') | null;
+        features?:
+          | {
+              [k: string]: unknown;
+            }
+          | unknown[]
+          | string
+          | number
+          | boolean
+          | null;
         id?: string | null;
       }[]
     | null;
@@ -486,6 +495,7 @@ export interface PaypalPlansSelect<T extends boolean = true> {
         price?: T;
         interval_unit?: T;
         currency?: T;
+        features?: T;
         id?: T;
       };
   updatedAt?: T;

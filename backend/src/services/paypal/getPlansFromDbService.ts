@@ -1,5 +1,6 @@
 import { API_KEY, BASE_URL } from "@/config/apiConfig.ts"
 import axios from 'axios';
+import { features } from "process";
 
 interface Plan {
     plan_name: string;
@@ -8,6 +9,7 @@ interface Plan {
     price: number;
     currency: string;
     interval_unit : string;
+    features : {[key: string]: number};
 }
 
 export const getPlansForSubscription = async (): Promise<Plan[]> => {
@@ -32,7 +34,8 @@ export const getPlansForSubscription = async (): Promise<Plan[]> => {
                 description: plan.description,
                 price: plan.price,
                 currency: plan.currency,
-                interval_unit : plan.interval_unit
+                interval_unit : plan.interval_unit,
+                features : plan.features || {},
             };
         });
         return plans; // Return the array of plans

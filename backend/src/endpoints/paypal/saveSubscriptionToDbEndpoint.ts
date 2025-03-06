@@ -3,68 +3,38 @@ import { showSubscription } from "@/services/paypal/subscription/ShowSubscriptio
 import { Endpoint, PayloadRequest } from "payload";
 import crypto from "crypto";
 
-// Define plan features outside for better performance
-const planFeatures: {
-    [key: string]: {
-        resultsPerSearch: number;
-        backlinks: number;
-        plugin: number;
-        keywordSearches: number;
-        competitiveAnalysis: number;
-        bulkCompetitive: number;
-        bulkKeywords: number;
-        SerpScanner: number;
-    };
-} = {
-    "Standard Plan": {
-        resultsPerSearch: 300,
-        backlinks: 100,
-        plugin: 200,
-        keywordSearches: 50,
-        competitiveAnalysis: 20,
-        bulkCompetitive: 3,
-        bulkKeywords: 0,
-        SerpScanner: 0,
-    },
-    "Booster Plan": {
-        resultsPerSearch: 1000,
-        backlinks: 500,
-        plugin: 1000,
-        keywordSearches: 250,
-        competitiveAnalysis: 100,
-        bulkCompetitive: 15,
-        bulkKeywords: 20,
-        SerpScanner: 20,
-    },
-    "Spammer Plan": {
-        resultsPerSearch: 30000,
-        backlinks: 2000,
-        plugin: 5000,
-        keywordSearches: 2000,
-        competitiveAnalysis: 500,
-        bulkCompetitive: 40,
-        bulkKeywords: 100,
-        SerpScanner: 50,
-    },
-};
-
-const generateApiKey = async() => {
-    return crypto.randomBytes(32).toString("hex");
+// Define a flexible structure for dynamic plan features
+interface DynamicFeatures {
+    [key: string]: number; // Dynamic keys (feature names), values are numbers
 }
 
+// Define structure for a Plan
+interface Plan {
+    plan_id: string;
+    plan_name: string;
+    description: string;
+    price: number;
+    currency: string;
+    features?: DynamicFeatures; // Now optional to prevent TypeScript errors
+}
+
+// Define structure for PayPal Plans collection response
+interface PayPalPlansDocument {
+    product_id: string;
+    plans: Plan[];
+}
+
+const generateApiKey = async (): Promise<string> => {
+    return crypto.randomBytes(32).toString("hex");
+};
 
 export const saveSubscriptionToUserCollection: Endpoint = {
-
     path: "/save-subscription",
-
     method: "post",
-
     handler: withErrorHandling(async (req: PayloadRequest): Promise<Response> => {
-
         const { payload } = req;
 
         if (req.method === "OPTIONS") {
-            // Handle preflight requests
             return new Response(null, {
                 status: 204,
                 headers: {
@@ -78,10 +48,10 @@ export const saveSubscriptionToUserCollection: Endpoint = {
         let planId: string | undefined;
         let planName: string | undefined;
         let subscriptionId: string | undefined;
-        let userEmail : string | undefined;
-        let nextBillingTime : string | undefined;
-        let apiKey : string | undefined;
-        let subscriptionStatus : string |undefined;
+        let userEmail: string | undefined;
+        let nextBillingTime: string | undefined;
+        let apiKey: string | undefined;
+        let subscriptionStatus: string | undefined;
 
         if (req.json) {
             const body = await req.json();
@@ -92,9 +62,9 @@ export const saveSubscriptionToUserCollection: Endpoint = {
         }
 
         // Ensure required fields are present
-        if (!planId || !subscriptionId || !planName) {
+        if (!planId || !subscriptionId || !planName || !userEmail) {
             return new Response(
-                JSON.stringify({ error: "Missing planId, subscriptionId, or planName" }),
+                JSON.stringify({ error: "Missing required fields: planId, subscriptionId, planName, or userEmail" }),
                 {
                     status: 400,
                     headers: {
@@ -106,12 +76,43 @@ export const saveSubscriptionToUserCollection: Endpoint = {
         }
 
         try {
+            if (subscriptionId) {
+                const subscriptionResponse = await showSubscription(subscriptionId);
+                if (typeof subscriptionResponse !== "string") {
+                    nextBillingTime = subscriptionResponse?.nextBillingTime;
+                    subscriptionStatus = subscriptionResponse?.subscriptionStatus;
+                }
+                apiKey = await generateApiKey();
+            }
 
-            if (!userEmail) {
+            // Fetch plan details from Payload CMS
+            const planData = await payload.find({
+                collection: "paypal-plans",
+                where: {
+                    "plans.plan_id": {
+                        equals: planId,
+                    },
+                },
+            });
+
+            // Properly cast the fetched data
+            const paypalPlansDocs: PayPalPlansDocument[] = planData.docs.map((doc) => ({
+                product_id: doc.product_id,
+                plans: (doc.plans || []).map((plan) => ({
+                    plan_id: plan.plan_id || "",
+                    plan_name: plan.plan_name || "",
+                    description: plan.description || "",
+                    price: plan.price || 0,
+                    currency: plan.currency || "USD",
+                    features: (plan as Plan).features || {}, // Ensure features always exist
+                })),
+            }));
+
+            if (!paypalPlansDocs.length) {
                 return new Response(
-                    JSON.stringify({ error: "User ID is missing" }),
+                    JSON.stringify({ error: "Plan not found in database" }),
                     {
-                        status: 400,
+                        status: 404,
                         headers: {
                             "Content-Type": "application/json",
                             "Access-Control-Allow-Origin": "*",
@@ -120,16 +121,26 @@ export const saveSubscriptionToUserCollection: Endpoint = {
                 );
             }
 
-            if(subscriptionId){
-                const subscriptionResponse = await showSubscription(subscriptionId);
-                if (typeof subscriptionResponse !== 'string') {
-                    nextBillingTime = subscriptionResponse?.nextBillingTime;
-                    subscriptionStatus = subscriptionResponse?.subscriptionStatus;
-                }
-                apiKey = await generateApiKey();
+            // Extract the correct plan from all retrieved documents
+            const matchedPlan = paypalPlansDocs
+                .flatMap((doc) => doc.plans)
+                .find((p) => p.plan_id === planId);
+
+            if (!matchedPlan) {
+                return new Response(
+                    JSON.stringify({ error: "Plan features not found in database" }),
+                    {
+                        status: 404,
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Access-Control-Allow-Origin": "*",
+                        },
+                    }
+                );
             }
 
-            const selectedFeatures = planFeatures[planName] || {};
+            // Ensure features exist
+            const selectedFeatures: DynamicFeatures = matchedPlan.features || {};
 
             // Update user subscription in Payload CMS
             await payload.update({
@@ -143,44 +154,38 @@ export const saveSubscriptionToUserCollection: Endpoint = {
                     planId,
                     subscriptionId,
                     planName,
-                    features: selectedFeatures,
-                    paypalSubscriptionExpiresAt : nextBillingTime,
-                    subscriptionStatus : subscriptionStatus,
-                    paypalSubscriptionApiKey : apiKey,
-                    usedFeatures : {
-                        backlinks: 0,
-                        plugin: 0,
-                        keywordSearches: 0,
-                        competitiveAnalysis: 0,
-                        serpScanner: 0
-                    }
+                    features: selectedFeatures, // Now supports dynamic features
+                    paypalSubscriptionExpiresAt: nextBillingTime,
+                    subscriptionStatus: subscriptionStatus,
+                    paypalSubscriptionApiKey: apiKey,
+                    usedFeatures: Object.keys(selectedFeatures).reduce((acc, key) => {
+                        acc[key] = 0; // Initialize used features dynamically
+                        return acc;
+                    }, {} as DynamicFeatures),
                 },
             });
-
 
             return new Response(
                 JSON.stringify({ success: "Subscription updated successfully!" }),
                 {
-                    status: 200, // Success status corrected
+                    status: 200,
                     headers: {
                         "Content-Type": "application/json",
                         "Access-Control-Allow-Origin": "*",
                     },
                 }
             );
-
         } catch (error) {
-
             console.error("Error updating user subscription:", error);
 
             return new Response(
                 JSON.stringify({ error: "Internal server error" }),
                 {
-                status: 500,
-                headers: {
-                    "Content-Type": "application/json",
-                    "Access-Control-Allow-Origin": "*",
-                },
+                    status: 500,
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Access-Control-Allow-Origin": "*",
+                    },
                 }
             );
         }
