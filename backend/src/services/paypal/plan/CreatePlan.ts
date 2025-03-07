@@ -93,7 +93,7 @@ export const createPlansAndGetID = async (payload: Payload): Promise<void> => {
         }
 
         const activePayPalPlans = await listActivePlans();
-        const databasePlanIDs = new Set(plansFromDB.map(plan => plan.plan_id));
+        const databasePlanIDs = new Set(plansFromDB.flatMap(plan => [plan.month_plan_id, plan.year_plan_id].filter(Boolean)));
         const payPalPlanIDs = new Set(activePayPalPlans.map(plan => plan.plan_id));
 
         console.log("Database Plan IDs:", databasePlanIDs);
@@ -125,70 +125,77 @@ export const createPlansAndGetID = async (payload: Payload): Promise<void> => {
 
         const newPlans: Plan[] = [];
 
-        for (const plan of plans) {
-            if (databasePlanIDs.has(plan.name)) {
-                console.log(`Skipping existing plan: ${plan.name}`);
-                continue;
+        const isExist = Array.from(databasePlanIDs).some((planId) =>
+            activePayPalPlans.some((payPalPlan: { plan_id: string }) => payPalPlan.plan_id === planId)
+        );
+
+        if(!isExist){
+            for (const plan of plans) {
+                if (databasePlanIDs.has(plan.name)) {
+                    console.log(`Skipping existing plan: ${plan.name}`);
+                    continue;
+                }
+
+                console.log(`Creating new plan: ${plan.name}`);
+
+                const monthPlanPayload = createPlanPayload({ ...plan, interval_unit: "MONTH" }, productID);
+                const yearPlanPayload = createPlanPayload({ ...plan, interval_unit: "YEAR" }, productID);
+
+                // ✅ Use Promise.all to create both plans in parallel
+                const [monthResponse, yearResponse] = await Promise.all([
+                    fetch(`${PAYPAL_API}/v1/billing/plans`, {
+                        method: "POST",
+                        headers: {
+                            Authorization: `Bearer ${accessToken}`,
+                            "Content-Type": "application/json",
+                            Accept: "application/json",
+                            "PayPal-Request-Id": `PLAN-${Date.now()}-${plan.name}-MONTH`,
+                        },
+                        body: JSON.stringify(monthPlanPayload),
+                    }),
+                    fetch(`${PAYPAL_API}/v1/billing/plans`, {
+                        method: "POST",
+                        headers: {
+                            Authorization: `Bearer ${accessToken}`,
+                            "Content-Type": "application/json",
+                            Accept: "application/json",
+                            "PayPal-Request-Id": `PLAN-${Date.now()}-${plan.name}-YEAR`,
+                        },
+                        body: JSON.stringify(yearPlanPayload),
+                    }),
+                ]);
+
+                if (!monthResponse.ok || !yearResponse.ok) {
+                    console.error(
+                        `Error creating ${plan.name}:`,
+                        await monthResponse.json(),
+                        await yearResponse.json()
+                    );
+                    continue;
+                }
+
+                const monthData = await monthResponse.json();
+                const yearData = await yearResponse.json();
+
+                console.log(`${plan.name} Created Successfully.`);
+
+                newPlans.push({
+                    plan_name: plan.name,
+                    plan_id: monthData.id, // Storing the monthly plan ID
+                    description: plan.description,
+                    monthly_price: plan.price,
+                    yearly_price: plan.price * INTERVAL_PRICE_MULTIPLIERS.YEAR,
+                    currency: plan.currency,
+                    month_plan_id: monthData.id,
+                    year_plan_id: yearData.id,
+                    interval_unit: "MONTH", // ✅ Ensuring interval_unit is present
+                });
+
+                databasePlanIDs.add(monthData.id);
+                databasePlanIDs.add(yearData.id);
             }
-
-            console.log(`Creating new plan: ${plan.name}`);
-
-            const monthPlanPayload = createPlanPayload({ ...plan, interval_unit: "MONTH" }, productID);
-            const yearPlanPayload = createPlanPayload({ ...plan, interval_unit: "YEAR" }, productID);
-
-            // ✅ Use Promise.all to create both plans in parallel
-            const [monthResponse, yearResponse] = await Promise.all([
-                fetch(`${PAYPAL_API}/v1/billing/plans`, {
-                    method: "POST",
-                    headers: {
-                        Authorization: `Bearer ${accessToken}`,
-                        "Content-Type": "application/json",
-                        Accept: "application/json",
-                        "PayPal-Request-Id": `PLAN-${Date.now()}-${plan.name}-MONTH`,
-                    },
-                    body: JSON.stringify(monthPlanPayload),
-                }),
-                fetch(`${PAYPAL_API}/v1/billing/plans`, {
-                    method: "POST",
-                    headers: {
-                        Authorization: `Bearer ${accessToken}`,
-                        "Content-Type": "application/json",
-                        Accept: "application/json",
-                        "PayPal-Request-Id": `PLAN-${Date.now()}-${plan.name}-YEAR`,
-                    },
-                    body: JSON.stringify(yearPlanPayload),
-                }),
-            ]);
-
-            if (!monthResponse.ok || !yearResponse.ok) {
-                console.error(
-                    `Error creating ${plan.name}:`,
-                    await monthResponse.json(),
-                    await yearResponse.json()
-                );
-                continue;
-            }
-
-            const monthData = await monthResponse.json();
-            const yearData = await yearResponse.json();
-
-            console.log(`${plan.name} Created Successfully.`);
-
-            newPlans.push({
-                plan_name: plan.name,
-                plan_id: monthData.id, // Storing the monthly plan ID
-                description: plan.description,
-                monthly_price: plan.price,
-                yearly_price: plan.price * INTERVAL_PRICE_MULTIPLIERS.YEAR,
-                currency: plan.currency,
-                month_plan_id: monthData.id,
-                year_plan_id: yearData.id,
-                interval_unit: "MONTH", // ✅ Ensuring interval_unit is present
-            });
-
-            databasePlanIDs.add(monthData.id);
-            databasePlanIDs.add(yearData.id);
         }
+
 
         // Update the database with the new plans
         // ✅ Update the database with the new plans

@@ -4,12 +4,21 @@ import { features } from "process";
 
 interface Plan {
     plan_name: string;
-    plan_id: string;
+    month_plan_id: string;
+    year_plan_id: string;
     description: string;
-    price: number;
+    monthly_price: number;
+    yearly_price: number;
     currency: string;
     interval_unit : string;
-    features : {[key: string]: number};
+    results_per_search: number;
+    backlinks_monitored: number;
+    plugin_clicks: number;
+    keyword_searches: number;
+    competitive_analyses: number;
+    simultaneous_bulk_competitive: number;
+    bulk_keywords: number;
+    serp_scanner: number;
 }
 
 export const getPlansForSubscription = async (): Promise<Plan[]> => {
@@ -30,12 +39,21 @@ export const getPlansForSubscription = async (): Promise<Plan[]> => {
         const plans: Plan[] = fetchedPlans.map((plan: Plan) => {
             return {
                 plan_name: plan.plan_name,
-                plan_id: plan.plan_id,
+                month_plan_id: plan.month_plan_id,
+                year_plan_id: plan.year_plan_id,
                 description: plan.description,
-                price: plan.price,
+                monthly_price: plan.monthly_price,
+                yearly_price: plan.yearly_price,
                 currency: plan.currency,
                 interval_unit : plan.interval_unit,
-                features : plan.features || {},
+                results_per_search: plan.results_per_search,
+                backlinks_monitored: plan.backlinks_monitored,
+                plugin_clicks: plan.plugin_clicks,
+                keyword_searches: plan.keyword_searches,
+                competitive_analyses: plan.competitive_analyses,
+                simultaneous_bulk_competitive: plan.simultaneous_bulk_competitive,
+                bulk_keywords: plan.bulk_keywords,
+                serp_scanner: plan.serp_scanner,
             };
         });
         return plans; // Return the array of plans
